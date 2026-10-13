@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests',testMatch:'ui.spec.ts',workers:1,timeout:45000,reporter:[['list'],['json',{outputFile:'work/ui-results.json'}]],use:{baseURL:process.env.WEAVE_URL??'http://127.0.0.1:8787',headless:true,launchOptions:{executablePath:'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'},trace:'retain-on-failure',screenshot:'only-on-failure'},outputDir:'work/ui-artifacts'});

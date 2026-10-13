@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Weave \u00b7 Independent work. Shared direction.",
+    "caption": "An agent collaboration prototype. Local demonstration; cloud measurements are separate.",
+    "text": "This is Weave, an open source collaboration platform for coding agents. The starting point is a simple observation: when agents can produce changes faster than people can coordinate them, source control becomes a workflow problem. Weave gives agents independent, immutable changes, while keeping intent, context and review attached to the work. This demonstration runs the real application against PostgreSQL and Git's HTTP backend. The deployment target is Cloudflare Workers and Artifacts, with PostgreSQL through Hyperdrive. There is no D one database, no application Durable Object, and no paid model dependency. We will follow two agents from independent changes to one reviewed publication, then resolve a genuine conflict.",
+    "audioSeconds": 49.31229,
+    "duration": 52,
+    "start": 0
+  },
+  {
+    "title": "01 / A workspace, not a clone per task",
+    "caption": "Create a real Git repository. Read source by path and immutable commit.",
+    "text": "We begin in a shared workspace. The source remains a normal Git repository, but an agent does not need to clone its complete history to make a small change. The API reads an explicit path at an immutable commit. To create a change, the Worker constructs only the changed blobs, affected directory trees and commit object. Those objects form a valid Git pack, which is sent directly to Artifacts. This preserves compatibility with existing Git clients while reducing repeated checkout work. The browser is a review surface over the same API. Every action you see here reaches the running service and its durable database.",
+    "audioSeconds": 39.675828,
+    "duration": 42,
+    "start": 52
+  },
+  {
+    "title": "02 / Independent changes, preserved intent",
+    "caption": "Agent-authored changes carry immutable source, task context, evidence, and dependencies.",
+    "text": "Here are two independent contributions. One agent documents the quickstart, while another adds a client module. Each change records its own base commit, title and intent. The context field can preserve a prompt, task identifier, design constraints and reported verification evidence. This context stays with the immutable version, so a reviewer does not need to reconstruct why an agent made a decision. Evidence is explicitly supplied by the agent. Weave does not pretend that an attached passing result means it ran a continuous integration job. A separate trusted reviewer decides whether the change is acceptable. Agent credentials cannot approve or publish their own work.",
+    "audioSeconds": 43.737188,
+    "duration": 46,
+    "start": 94
+  },
+  {
+    "title": "03 / Review exact versions",
+    "caption": "Approval belongs to a specific immutable change. Revisions require new approval.",
+    "text": "Opening a change shows both sides of its file diff and the original context. The reviewer can approve the exact version or request a revision. Notice that review does not mutate the source commit. A revision receives a new change identifier and a fresh review state. This prevents approval from silently carrying over to different code. The implementation also checks project scopes and roles before accessing source, including cached source. Tokens stay in memory in the browser rather than local storage. For this prototype, separate reviewer identities are an operational policy; it does not claim to enforce a two-person human approval requirement.",
+    "audioSeconds": 41.372109,
+    "duration": 44,
+    "start": 140
+  },
+  {
+    "title": "04 / Publish compatible work together",
+    "caption": "Preview dependencies and conflicts. Git checks the expected old head at publication.",
+    "text": "The reviewer now prepares one batch from the approved work. Weave orders dependencies and compares each file with its own base. Changes in different files combine naturally. Compatible changes within a text file can also be reconciled with a bounded three-way merge. Publishing creates one main-branch update. A short PostgreSQL lock protects review state for this workspace, while Git's expected-old-object check prevents the update from overwriting an external push. Other agents can continue proposing during publication, and other workspaces have independent locks. This is deliberate coordination around the shared main branch, rather than a global queue for every agent operation.",
+    "audioSeconds": 43.438821,
+    "duration": 46,
+    "start": 184
+  },
+  {
+    "title": "05 / Conflicts become explicit decisions",
+    "caption": "Overlapping edits stop publication. Carry context into a reviewed resolution.",
+    "text": "Next, two agents change the same value in the same source file. The preview identifies the competing edits and stops publication. It does not ask a model to guess, and it does not silently choose one side. We create a revision against the current main branch and preserve the earlier change's context, including the identifier it supersedes. The reviewer must approve the resolution before it can land. Text merging has strict size and line limits, and it cannot prove semantic correctness. Binary files, symlinks and submodules remain available through Git, but the editing API intentionally supports regular UTF-eight text files only.",
+    "audioSeconds": 42.111156,
+    "duration": 45,
+    "start": 230
+  },
+  {
+    "title": "06 / Recovery and cost controls",
+    "caption": "A durable publication journal, immutable-object cache, and persisted operation cap.",
+    "text": "Correctness also includes what happens when the network fails. Weave writes a publication journal before pushing to Git. If Git accepts the update but the acknowledgement is lost, retrying the same operation identifies the existing commit and completes the metadata without another publication. The end-to-end suite verifies this failure. Costs are controlled before external work: every Artifacts call reserves from a persisted monthly cap, failed attempts count, and cache hits avoid provider calls. There are no automatic paid retries or background model loops. Immutable objects are cached by repository and hash. Mutable heads, approvals and database queries remain fresh.",
+    "audioSeconds": 43.08966,
+    "duration": 46,
+    "start": 275
+  },
+  {
+    "title": "07 / Measured results and honest boundaries",
+    "caption": "32 local changes, 8 concurrent clients. p95 179 ms; publication 479 ms. Not a cloud-scale claim.",
+    "text": "On the recorded local benchmark, eight concurrent clients submitted thirty-two independent changes with zero failures. After immutable caching, the measured submission throughput was about fifty-eight changes per second, the ninety-fifth percentile was one hundred seventy-nine milliseconds, and the combined publication took four hundred seventy-nine milliseconds. The publication uploaded about two point three kilobytes of new Git objects. These numbers describe one machine and one small workload. They are not a distributed scale claim or a comparison with every Git platform. Artifacts currently limits a repository to one gigabyte. Weave's contribution is a working, testable path from independent agent changes to reviewed shared progress, with explicit limits and visible costs.",
+    "audioSeconds": 49.495556,
+    "duration": 52,
+    "start": 321
+  }
+]

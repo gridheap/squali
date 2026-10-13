@@ -1,0 +1,115 @@
+import {diff3Merge} from 'node-diff3';
+import {GitSession,sha256,blobId} from './git.ts';
+import {Problem} from './types.ts';
+import type {Config,Patch,Principal} from './types.ts';
+export type FileDelta={path:string;before:string|null;after:string|null;mode:string;beforeMode:string|null};
+export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
+export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,metrics:p.metrics};}
+export function changeService(config:Config,p:any,principal:Principal){
+ const {sql,artifacts}=config;const repo=artifacts.repo(p.artifact);const g=new GitSession(repo);const pid=p.id;
+ const event=async(tx:any,kind:string,data:unknown)=>tx`INSERT INTO weave_events(project,kind,actor,data) VALUES(${pid},${kind},${principal.id},${tx.json(data)})`;
+ const get=async(cid:string)=>{const [c]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${cid}`;if(!c)throw new Problem(404,'change_missing','Change not found');return c;};
+ async function propose(input:{id:string;title:string;intent:string;context:Record<string,unknown>;dependencies:string[];base?:string;files:Patch[]}){
+  const hash=sha256(JSON.stringify(input));const base=input.base??p.head;await g.commit(base).then(c=>{if(!c)throw new Problem(404,'commit_missing','Base commit not found');});
+  if(input.dependencies.includes(input.id))throw new Problem(400,'dependency_cycle','A change cannot depend on itself');
+  await sql.begin(async tx=>{
+   for(const dep of input.dependencies){const [c]=await tx`SELECT status FROM weave_changes WHERE project=${pid} AND id=${dep}`;if(!c||['rejected','preparing'].includes(c.status))throw new Problem(409,'dependency_missing','Dependencies must already be available');}
+   await tx`INSERT INTO weave_changes(project,id,request_hash,author,title,intent,context,dependencies,base,files) VALUES(${pid},${input.id},${hash},${principal.id},${input.title},${input.intent},${tx.json(JSON.parse(JSON.stringify(input.context)))},${input.dependencies},${base},'[]') ON CONFLICT DO NOTHING`;
+  });
+  return sql.begin(async tx=>{
+   const [c]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id} FOR UPDATE`;
+   if(c.request_hash!==hash||c.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
+   if(c.status!=='preparing')return changeView(c);
+   const built=await g.build(c.base,input.files,`${input.title}\n\nWeave-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
+   const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);
+   const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
+   const [ready]=await tx`UPDATE weave_changes SET oid=${built.oid},files=${tx.json(files)},status='proposed' WHERE project=${pid} AND id=${input.id} RETURNING *`;
+   for(const f of files)await tx`INSERT INTO weave_paths(project,change_id,path) VALUES(${pid},${input.id},${f.path}) ON CONFLICT DO NOTHING`;
+   await event(tx,'change.proposed',{id:c.id,title:c.title,objects:built.objects,bytes:built.bytes});return changeView(ready);
+  });
+ }
+ async function details(cid:string){const c=await get(cid);const diff=[];for(const f of c.files as FileDelta[])diff.push({path:f.path,before:await g.file(c.base,f.path),after:await g.file(c.oid,f.path)});return {...changeView(c),diff};}
+ async function review(cid:string,decision:string,note:string){
+  return sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;const [c]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${cid} FOR UPDATE`;
+   if(!c)throw new Problem(404,'change_missing','Change not found');if(!['proposed','approved','rejected'].includes(c.status))throw new Problem(409,'review_state','This change cannot be reviewed');
+   const [pending]=await tx`SELECT id FROM weave_publications WHERE project=${pid} AND state='preparing' LIMIT 1`;if(pending)throw new Problem(409,'publication_pending','Recover the pending publication before changing approvals');
+   const [r]=await tx`UPDATE weave_changes SET status=${decision},reviewer=${principal.id},review_note=${note},reviewed_at=now() WHERE project=${pid} AND id=${cid} RETURNING *`;await event(tx,'change.'+decision,{id:cid,note,oid:c.oid});return changeView(r);
+  });
+ }
+ async function preview(ids:string[],database:any=sql){
+  const head=await repo.head();if(!head)throw new Problem(409,'head_missing','Main is missing');
+  const rows=await database`SELECT * FROM weave_changes WHERE project=${pid} AND id=ANY(${ids})`;const byId=new Map<string,any>(rows.map((c:any)=>[c.id,c]));
+  if(rows.length!==ids.length)throw new Problem(404,'change_missing','One or more changes do not exist');
+  const ordered:any[]=[];const visited=new Set<string>();const visiting=new Set<string>();
+  const visit=async(cid:string)=>{if(visited.has(cid))return;if(visiting.has(cid))throw new Problem(409,'dependency_cycle','Dependency cycle');visiting.add(cid);const c=byId.get(cid)!;for(const dep of c.dependencies){if(byId.has(dep))await visit(dep);else {const [d]=await database`SELECT status FROM weave_changes WHERE project=${pid} AND id=${dep}`;if(d?.status!=='landed')throw new Problem(409,'dependency_unlanded',`Dependency ${dep} must land first`);}}visited.add(cid);visiting.delete(cid);ordered.push(c);};for(const cid of ids)await visit(cid);
+  const conflicts:any[]=[];const files=new Map<string,Patch>();const applied=new Map<string,string|null>();let mergedLines=0;let sourceBytes=0;let touchedFiles=0;
+  for(const c of ordered){for(const f of c.files as FileDelta[]){const currentEntry=await g.entry(head,f.path);const current=applied.has(f.path)?applied.get(f.path)!:currentEntry?.oid??null;const currentMode=files.has(f.path)?files.get(f.path)!.mode:currentEntry?.mode;
+   if(++touchedFiles>256)throw new Problem(413,'batch_file_limit','A batch may touch at most 256 file revisions');
+   if(currentEntry&&(currentEntry.type!=='blob'||!['100644','100755'].includes(currentEntry.mode))){conflicts.push({change:c.id,path:f.path,reason:'Target is no longer a regular file'});continue;}
+   let content=f.after===null?null:Buffer.from(await g.blob(f.after)).toString('utf8');
+   if(current!==f.before&&current!==f.after){
+    const ours=files.has(f.path)?files.get(f.path)!.content:current?Buffer.from(await g.blob(current)).toString('utf8'):null;
+    const base=f.before?Buffer.from(await g.blob(f.before)).toString('utf8'):null;
+    let merged:string|null=null;
+    if(ours!==null&&base!==null&&content!==null&&![ours,base,content].some(s=>s.includes('\0'))){
+     const a=ours.split('\n'),o=base.split('\n'),b=content.split('\n');mergedLines+=a.length+o.length+b.length;
+     if(Math.max(a.length,o.length,b.length)<=2000&&mergedLines<=12000){
+      const regions=diff3Merge(a,o,b,{excludeFalseConflicts:true});const result:string[]=[];let conflict=false;
+      for(const region of regions){if(region.ok)result.push(...region.ok);else if(region.conflict){const r=region.conflict;
+       if(r.a.length===r.o.length&&r.b.length===r.o.length){for(let i=0;i<r.o.length;i++){if(r.a[i]===r.b[i]||r.b[i]===r.o[i])result.push(r.a[i]);else if(r.a[i]===r.o[i])result.push(r.b[i]);else conflict=true;}}
+       else conflict=true;
+      }}
+      if(!conflict)merged=result.join('\n');
+     }
+    }
+    if(merged===null){conflicts.push({change:c.id,path:f.path,base:f.before,current,incoming:f.after,reason:'Overlapping edits, deletion, or text merge limit; create a reviewed revision'});continue;}
+    content=merged;
+   }
+   sourceBytes+=Buffer.byteLength(content??'');if(sourceBytes>2*1024*1024)throw new Problem(413,'batch_size','A publication may contain at most 2 MiB of changed text');
+   const mode=f.mode===f.beforeMode&&currentMode?currentMode:f.mode;
+   if(content===null&&currentMode&&f.beforeMode&&currentMode!==f.beforeMode){conflicts.push({change:c.id,path:f.path,reason:'Deletion conflicts with a file mode change'});continue;}
+   files.set(f.path,{path:f.path,content,mode:mode as '100644'|'100755'});
+   // A merged buffer can differ from every stored object; subsequent changes use files above.
+   applied.set(f.path,content===null?null:blobId(content));
+
+  }}
+  const unapproved=ordered.filter(c=>c.status!=='approved').map(c=>c.id);
+  return {head,changes:ordered.map(c=>c.id),ready:conflicts.length===0&&unapproved.length===0,conflicts,unapproved,files:[...files.values()]};
+ }
+ async function publish(input:{id:string;changes:string[];expectedHead?:string}){
+  const hash=sha256(JSON.stringify(input));
+  return sql.begin(async tx=>{
+   await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
+   let [saved]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;
+   if(saved&&saved.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Publication ID already used with different input');if(saved?.state==='published')return publicationView(saved);if(saved?.state==='aborted')throw new Problem(409,'publication_aborted','This publication was cancelled; use a new ID');
+   const [other]=await tx`SELECT id FROM weave_publications WHERE project=${pid} AND state='preparing' AND id<>${input.id} LIMIT 1`;if(other)throw new Problem(409,'publication_pending','Retry the pending publication first',{id:other.id});
+   const finalize=async()=>{const [done]=await tx`UPDATE weave_publications SET state='published' WHERE project=${pid} AND id=${input.id} RETURNING *`;await tx`UPDATE weave_projects SET head=${done.oid} WHERE id=${pid}`;await tx`UPDATE weave_changes SET status='landed',publication=${input.id} WHERE project=${pid} AND id=ANY(${done.changes})`;await event(tx,'batch.published',{id:input.id,oid:done.oid,changes:done.changes});return publicationView(done);};
+   if(saved?.oid&&await repo.head()===saved.oid)return finalize();
+   const plan=await preview(input.changes,tx);if(input.expectedHead&&input.expectedHead!==plan.head)throw new Problem(409,'head_moved','Main changed since preview; refresh before publishing');
+   if(!plan.ready)throw new Problem(409,'not_ready','Batch requires approval or conflict resolution',{conflicts:plan.conflicts,unapproved:plan.unapproved});
+   if(!saved){[saved]=await sql`INSERT INTO weave_publications(project,id,request_hash,base,changes,actor) VALUES(${pid},${input.id},${hash},${plan.head},${plan.changes},${principal.id}) RETURNING *`;}
+   if(saved.base!==plan.head)throw new Problem(409,'recovery_required','Main moved while a publication was pending. Inspect Git before recovering.',{publication:input.id,base:saved.base,head:plan.head});
+   const built=await g.build(plan.head,plan.files,`Weave batch ${input.id}\n\nChanges: ${plan.changes.join(', ')}`,principal.id,Math.floor(new Date(saved.created_at).getTime()/1000));
+   await sql`UPDATE weave_publications SET oid=${built.oid},metrics=${sql.json({objects:built.objects,bytes:built.bytes,changes:plan.changes.length})} WHERE project=${pid} AND id=${input.id}`;
+   await repo.push('refs/heads/main',plan.head,built.oid,built.pack);return finalize();
+  });
+ }
+ async function revise(cid:string,input:{id:string;files:Patch[];note:string}){
+  return sql.begin(async tx=>{
+   await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
+   const c=await get(cid);if(c.author!==principal.id&&principal.role!=='admin')throw new Problem(403,'author','Only the author or admin may revise a change');
+   if(c.status==='landed')throw new Problem(409,'revision_state','A landed change needs a new follow-up change');
+   const next=await propose({id:input.id,title:c.title,intent:c.intent,context:{...c.context,supersedes:cid,resolution:input.note},dependencies:c.dependencies,base:(await repo.head())!,files:input.files});
+   await tx`UPDATE weave_changes SET status='superseded' WHERE project=${pid} AND id=${cid}`;await event(tx,'change.revised',{id:cid,replacement:input.id});return next;
+  });
+ }
+ async function abort(publicationId:string,expectedHead:string,note:string){
+  return sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;const [saved]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;
+   if(!saved)throw new Problem(404,'publication_missing','Publication not found');if(saved.state==='aborted')return publicationView(saved);
+   const head=await repo.head();if(saved.state!=='preparing'||head===saved.oid)throw new Problem(409,'already_published','Git already accepted this batch; retry the original publication to finalize it');
+   if(expectedHead!==head||head!==saved.base)throw new Problem(409,'recovery_required','The head has moved. An administrator must reconcile Git history before cancelling.');
+   const [aborted]=await tx`UPDATE weave_publications SET state='aborted' WHERE project=${pid} AND id=${publicationId} RETURNING *`;await event(tx,'batch.aborted',{id:publicationId,note});return publicationView(aborted);
+  });
+ }
+ return {get,propose,details,review,preview,publish,revise,abort};
+}

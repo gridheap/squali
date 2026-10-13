@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gridheap-weave",
+  "account_id": "52f8a24263418828b635c91b6eb06a83",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "artifacts": [{"binding":"ARTIFACTS","namespace":"weave"}],
+  "hyperdrive": [{"binding":"HYPERDRIVE","id":"c5366ae0d2d54d76b2b7daf414c6333d"}],
+  "assets": {"directory":"./public","binding":"ASSETS","run_worker_first":["/api/*"]},
+  "limits": {"cpu_ms":1000},
+  "vars": {"MAX_PROJECTS":"10","MONTHLY_ARTIFACT_CALL_CAP":"2000","ADOBE_KIT_ID":"ggy5hcn"},
+  "observability": {"enabled":false}
+}

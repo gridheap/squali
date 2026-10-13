@@ -1,0 +1,8 @@
+{
+  "audioTracks" : 1,
+  "format" : "Edited narrated walkthrough using captured local application screens",
+  "bytes" : 3092250,
+  "command" : "swift work\/demo\/render.swift work\/demo outputs\/weave-demo.mp4",
+  "durationSeconds" : 373,
+  "videoTracks" : 1
+}
