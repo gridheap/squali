@@ -8,6 +8,7 @@
   "main": "src/worker.ts",
   "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
+  "placement": {"region":"azure:eastus2"},
   "artifacts": [{"binding":"ARTIFACTS","namespace":"weave"}],
   "hyperdrive": [{"binding":"HYPERDRIVE","id":"c5366ae0d2d54d76b2b7daf414c6333d"}],
   "assets": {"directory":"./public","binding":"ASSETS","run_worker_first":["/api/*"]},

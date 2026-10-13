@@ -35,7 +35,7 @@ This separates cacheable immutable content from small mutable coordination recor
 
 ## Demo
 
-`squali-demo.mp4` is a 6 minute 22 second English narrated walkthrough assembled from actual local application screens. It demonstrates the complete local workflow using real PostgreSQL and Git. It is edited, not a continuous screen recording or a cloud performance test. The narration script is [demo-script.json](demo-script.json).
+[squali-demo.mp4](https://github.com/gridheap/squali/releases/download/v0.1.0/squali-demo.mp4) is a 6 minute 22 second English narrated walkthrough assembled from actual local application screens. It demonstrates the complete local workflow using real PostgreSQL and Git. It is edited, not a continuous screen recording or a cloud performance test. The narration script is [demo-script.json](demo-script.json).
 
 ## Reproduction
 

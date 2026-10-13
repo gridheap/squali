@@ -37,3 +37,27 @@ Current Version ID: dda1499d-36f2-4fbe-877a-c2254578f998
 
 Deployed gridheap-weave triggers (2.44 sec)
   squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 5 files from the assets directory /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/public
+🌀 Starting asset upload...
+No updated asset files to upload. Proceeding with deployment...
+Total Upload: 139.39 KiB / gzip: 35.92 KiB
+Worker Startup Time: 21 ms
+Your Worker has access to the following bindings:
+Binding                                                               Resource
+env.HYPERDRIVE (c5366ae0d2d54d76b2b7daf414c6333d)                     Hyperdrive Config
+env.ARTIFACTS (weave)                                                 Artifacts
+env.ASSETS                                                            Assets
+env.MAX_PROJECTS ("10")                                               Environment Variable
+env.MONTHLY_ARTIFACT_CALL_CAP ("2000")                                Environment Variable
+env.ADOBE_KIT_ID ("ggy5hcn")                                          Environment Variable
+env.PRINCIPALS_JSON ("(hidden)")                                      Environment Variable
+
+Uploaded gridheap-weave (4.91 sec)
+Deployed gridheap-weave triggers (2.19 sec)
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+Current Version ID: 9cde75df-6e2d-4ec0-ad60-0978ffa10a35

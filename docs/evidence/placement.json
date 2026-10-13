@@ -1,0 +1,73 @@
+{
+  "source": "https://developers.cloudflare.com/workers/configuration/placement/",
+  "configuredRegion": "azure:eastus2",
+  "providerPlacement": {
+    "mode": "targeted",
+    "target": [
+      63
+    ]
+  },
+  "publicEndpoints": {
+    "enabled": false,
+    "previews_enabled": false
+  },
+  "runs": [
+    {
+      "phase": "before",
+      "command": "python3 work/check-placement.py before",
+      "timestamp": "2026-10-13T22:27:05.990394+00:00",
+      "endpoint": "https://squa.li/api/usage",
+      "requests": 3,
+      "mutations": 0,
+      "providerCalls": 0,
+      "samples": [
+        {
+          "status": 200,
+          "seconds": 1.382112,
+          "applicationReservations": 89
+        },
+        {
+          "status": 200,
+          "seconds": 1.505092,
+          "applicationReservations": 89
+        },
+        {
+          "status": 200,
+          "seconds": 1.586039,
+          "applicationReservations": 89
+        }
+      ],
+      "limitation": "Three sequential HTTP reads from one local network using a public DNS address. Not a load test or statistically robust performance claim."
+    },
+    {
+      "phase": "after",
+      "command": "python3 work/check-placement.py after",
+      "timestamp": "2026-10-13T22:28:01.110346+00:00",
+      "endpoint": "https://squa.li/api/usage",
+      "requests": 3,
+      "mutations": 0,
+      "providerCalls": 0,
+      "samples": [
+        {
+          "status": 200,
+          "seconds": 1.285038,
+          "applicationReservations": 89
+        },
+        {
+          "status": 200,
+          "seconds": 1.218237,
+          "applicationReservations": 89
+        },
+        {
+          "status": 200,
+          "seconds": 1.257282,
+          "applicationReservations": 89
+        }
+      ],
+      "limitation": "Three sequential HTTP reads from one local network using a public DNS address. Not a load test or statistically robust performance claim."
+    }
+  ],
+  "medianBeforeSeconds": 1.505092,
+  "medianAfterSeconds": 1.257282,
+  "limitation": "Six metadata-only requests, zero Artifacts calls. Small observational sample; network conditions and warm state can differ. The control plane returns an opaque numeric target, not the submitted region name."
+}

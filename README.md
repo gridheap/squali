@@ -1,6 +1,6 @@
 # Squali
 
-[Live application](https://squa.li) · [Source](https://github.com/gridheap/squali)
+[Live application](https://squa.li) · [Demo video](https://github.com/gridheap/squali/releases/download/v0.1.0/squali-demo.mp4) · [Source](https://github.com/gridheap/squali)
 
 **Source control for parallel agents.**
 

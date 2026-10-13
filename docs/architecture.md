@@ -55,3 +55,7 @@ The current UI lists bounded recent windows rather than an unbounded archive. Re
 - https://developers.cloudflare.com/artifacts/api/git-protocol/
 - https://developers.cloudflare.com/artifacts/platform/limits/
 - https://developers.cloudflare.com/artifacts/platform/pricing/
+
+## Execution placement
+
+The production API uses `placement.region = "azure:eastus2"` to run near the dedicated PostgreSQL database. Static assets remain served near visitors. Cloudflare accepted this as targeted placement. A bounded before/after observation made three read-only `/api/usage` requests per configuration and no Artifacts calls: median total HTTP duration was 1.505 s before and 1.257 s after. This small sequential sample includes the local network and TLS setup; it is not a load benchmark or a guaranteed improvement. See [placement evidence](evidence/placement.json) and [Cloudflare placement documentation](https://developers.cloudflare.com/workers/configuration/placement/).

@@ -12,3 +12,7 @@ The final browser pass used `WEAVE_URL=http://127.0.0.1:8788 pnpm test:ui` again
 `benchmark-short-transactions.json` records the final transaction design: 34.88 changes/s, p95 243.97 ms in a serial benchmark run. `benchmark-short-transactions-build-overlap.json` records a slower run overlapping deployment build work. All measurements are retained; the current Squali video quotes the final serial run, not a guaranteed latency.
 
 The final branding pass used `SQUALI_URL=http://127.0.0.1:8789 pnpm test:ui`. `production-browser.json` records a read-only check on the final public domain. `domain-routing.json` records the custom domain and disabled Workers development/preview hostnames. `artifacts-analytics.json` records the provider analytics snapshot, which may have ingestion lag and is not an invoice.
+
+`placement.json` records six metadata-only HTTP observations around the Azure East US 2 placement configuration. The request budget remained 89; no Artifacts operations were added.
+
+The original cloud commands were run from the delivery workspace. Portable copies are included as `scripts/cloud-smoke.py` and `scripts/check-placement.py`; they read a private access JSON path through `SQUALI_ACCESS_FILE`. The cloud smoke mutates its `demo` fixture, preserves checkpoints and has a 40-HTTP-attempt / 250-provider-reservation ceiling. Do not rerun a completed live workflow solely for a presentation change. The placement script reads metadata only.

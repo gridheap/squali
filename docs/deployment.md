@@ -44,3 +44,7 @@ There are no schedules, queue consumers, model-provider integrations, or applica
 The public product is Squali at https://squa.li, with source at https://github.com/gridheap/squali. The Worker, PostgreSQL schema, connector and Artifacts namespace retain their original internal `weave` identifiers so existing data and configuration remain intact. They are implementation identifiers, not separate products. `scripts/weave.mjs` and `WEAVE_URL`/`WEAVE_TOKEN` remain compatible aliases; new CLI usage is `scripts/squali.mjs` with `SQUALI_URL`/`SQUALI_TOKEN`.
 
 The Wrangler configuration binds `squa.li` as a custom domain and disables `workers_dev` and preview URLs. Deployment should not restore the old public hostname. Forks must replace the domain, zone ID, account and Hyperdrive configuration with their own values.
+
+## Execution placement
+
+The production API uses `placement.region = "azure:eastus2"` to run near the dedicated PostgreSQL database. Static assets remain served near visitors. Cloudflare accepted this as targeted placement. A bounded before/after observation made three read-only `/api/usage` requests per configuration and no Artifacts calls: median total HTTP duration was 1.505 s before and 1.257 s after. This small sequential sample includes the local network and TLS setup; it is not a load benchmark or a guaranteed improvement. See [placement evidence](evidence/placement.json) and [Cloudflare placement documentation](https://developers.cloudflare.com/workers/configuration/placement/).
