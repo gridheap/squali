@@ -53,5 +53,5 @@
       "expected": 404
     }
   ],
-  "note": "The local network cached pre-deployment DNS. Public Cloudflare DoH returned 104.21.48.51 and 172.67.178.203; TLS was verified with the actual squa.li hostname using that public address."
+  "note": "The default local-network route failed TLS connection establishment; stale DNS/proxy resolution is suspected, not independently confirmed. Public Cloudflare DoH returned 104.21.48.51 and 172.67.178.203; TLS was verified with the actual squa.li hostname using that public address."
 }
