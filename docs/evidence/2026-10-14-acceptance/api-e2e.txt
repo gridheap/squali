@@ -1,23 +1,26 @@
 $ node --import tsx --test tests/api.test.ts
-✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (211.723333ms)
-✔ parallel agent changes preserve context, require review, and publish one Git commit (276.423666ms)
-✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (731.251333ms)
-✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (851.279292ms)
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (221.13825ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (284.523917ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (734.523958ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (804.477292ms)
 request failed Injected loss of publication acknowledgement
-✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (317.267083ms)
-✔ persistent operation limits stop work before the next provider call (63.242166ms)
-✔ binary edits are rejected and an external executable-bit change survives content publication (360.753958ms)
-✔ immutable source reads reuse the cache after authorization (15.746959ms)
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (323.830917ms)
+✔ persistent operation limits stop work before the next provider call (65.96025ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (358.002333ms)
+✔ immutable source reads reuse the cache after authorization (16.294958ms)
 request failed Injected failure before push
-✔ an unpublished failed batch can be cancelled without rewriting Git (328.033542ms)
-✔ standard Git can clone through the authenticated read-only gateway (147.719208ms)
-✔ the complete HTTP workflow makes progress with a single database connection (526.423833ms)
-✔ agents start from the real current head and replay frozen proposals without provider calls (535.184541ms)
-ℹ tests 12
+✔ an unpublished failed batch can be cancelled without rewriting Git (388.0585ms)
+✔ standard Git can clone through the authenticated read-only gateway (151.592625ms)
+✔ the complete HTTP workflow makes progress with a single database connection (522.129333ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (474.604625ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (511.803417ms)
+✔ concurrent publication retries converge on one Git commit and one event (370.508084ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (122.84375ms)
+ℹ tests 15
 ℹ suites 0
-ℹ pass 12
+ℹ pass 15
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 4538.887459
+ℹ duration_ms 5533.230584

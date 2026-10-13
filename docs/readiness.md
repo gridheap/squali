@@ -9,12 +9,12 @@ The competition requires Workers, Artifacts, concurrent agent changes, an open-s
 | Area | Existing evidence | Missing acceptance evidence / behavior |
 |---|---|---|
 | Data model and Git compatibility | Immutable proposal records, context, sparse reads, incremental packs, native clone/fsck | Clerk/GitHub import and scoped agent credentials now pass local acceptance. Production OAuth remains pending; bulk sparse reads/local working-copy cache and complete lineage navigation remain open |
-| Correctness | 12 API E2E tests, publication SIGKILL recovery, GitHub import SIGKILL recovery | Post-acceptance publication termination is fixed and tested; a pre-acceptance termination can still leave `metrics.active` forever; cancellation vs delayed external push needs a safe contract; retry must remain deterministic across reviewer identities |
+| Correctness | 15 API E2E tests, four real publication/cancellation SIGKILL cases, GitHub import SIGKILL recovery | Git acceptance before/after termination, cancellation fencing and cross-reviewer deterministic retry now pass; external head movement during an unresolved outcome still requires explicit reconciliation |
 | Review UI | Local two-change workflow | Multi-file retention and mode/deletion controls are implemented; the two-file revision browser test passes. Selecting publication subsets still needs implementation/acceptance |
 | Cost UI | Published list prices and server-side operation cap | The page now reads actual conservative reservations. Per-workflow cost and a complete deployment cost model remain unmeasured |
 | Concurrency | 32 local small proposals, eight clients | Sustained bounded mixed read/write workload, high contention, duplicate requests, many changes, repeated publication/recovery and bounded client backpressure |
 | Scaling | Cached immutable objects, short SQL locks | Fresh default bases and zero-provider proposal replay are fixed and tested; unpaginated 200-change/100-history views; global operation-counter contention unmeasured |
-| Performance/value | Local throughput and six cloud metadata reads | Same-workload native Git baseline, bytes/CPU/memory, cold/warm behavior, p95/p99 under contention, incremental cost per successful change |
+| Performance/value | Same-workload 32-change native Git comparison; identical Git trees and fsck | CPU/memory, cold/warm behavior, sustained p95/p99 under contention, incremental cloud cost per successful change |
 | Product readiness | Custom domain; legacy tokens; Clerk/import code under acceptance | Normal TLS/HTTP access now succeeds. Clerk production GitHub credentials and backend secret remain pending. Local browser import/agent-credential flows pass; the real OAuth/import walkthrough remains unverified |
 | Demonstration | Edited narrated screenshots | Continuous capture of the improved workflow, failure/recovery, real coordination and measured comparisons |
 
@@ -22,8 +22,9 @@ The competition requires Workers, Artifacts, concurrent agent changes, an open-s
 
 - Multi-file revisions preserve all files; the cost page shows actual reserved usage.
 - Default proposal bases follow Git, and completed proposal replays make no provider calls.
-- Publication recovery after Git acceptance passes a real process-kill test. The pre-acceptance/cancellation gaps above remain.
+- Publication and cancellation recovery pass real process-kill tests before and after Git acceptance. Concurrent retries converge on the saved commit, including its original author. Cancellation appends an unchanged-tree audit commit to reject delayed writes from the previous head.
 - Clerk owner isolation, private GitHub imports, all-page selection, full reachable history/heads/tags, default branches, empty-repository first publication, resumable imports, and scoped/revocable agent credentials pass local API/browser/native-Git tests. Production OAuth is not yet configured.
+- Native Git gzip negotiation is decoded with a 1 MiB expansion cap; invalid data consumes no provider calls. A native Git comparison verifies identical final trees and retained proposal refs; see [performance evidence](performance.md).
 - The old claim that public DNS/TLS still fails is superseded by a normal-route TLS-verified HTTP 200 observation.
 
 ## Work order

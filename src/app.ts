@@ -13,6 +13,15 @@ function patches(value:unknown):Patch[]{
  for(const file of value){validPath(file?.path);if(seen.has(file.path))throw new Problem(400,'duplicate_path','File paths must be unique');seen.add(file.path);if(file.content!==null&&typeof file.content!=='string')throw new Problem(400,'invalid_content','File content must be UTF-8 text or null for deletion');if(typeof file.content==='string'&&file.content.includes('\0'))throw new Problem(422,'binary_file','The editing API accepts UTF-8 text only');if(file.mode&&!['100644','100755'].includes(file.mode))throw new Problem(400,'invalid_mode','Unsupported file mode');bytes+=Buffer.byteLength(file.content??'');if(Buffer.byteLength(file.content??'')>256*1024||bytes>1024*1024)throw new Problem(413,'file_limit','Limit: 256 KiB per file and 1 MiB per changeset');}
  return value;
 }
+async function gitBody(request:Request){
+ const limit=1024*1024;
+ const bounded=async(stream:ReadableStream<Uint8Array>|null)=>{const reader=stream?.getReader();const chunks:Buffer[]=[];let size=0;if(!reader)return Buffer.alloc(0);while(true){const {value,done}=await reader.read();if(done)break;size+=value.byteLength;if(size>limit){await reader.cancel();throw new Problem(413,'git_request_limit','Git negotiation exceeds 1 MiB');}chunks.push(Buffer.from(value));}return Buffer.concat(chunks);};
+ const encoding=request.headers.get('content-encoding')?.toLowerCase()??'identity';
+ if(!['identity','gzip'].includes(encoding))throw new Problem(415,'git_encoding','Git negotiation accepts identity or gzip encoding');
+ let data=await bounded(request.body);
+ if(encoding==='gzip')try{data=await bounded(new Response(data).body!.pipeThrough(new DecompressionStream('gzip')));}catch(error){if(error instanceof Problem)throw error;throw new Problem(400,'git_encoding','Invalid compressed Git negotiation');}
+ const headers=new Headers(request.headers);headers.delete('content-encoding');headers.delete('content-length');return new Request(request,{headers,body:data});
+}
 async function body(request:Request){
  if(!request.headers.get('content-type')?.includes('application/json'))throw new Problem(415,'content_type','Use application/json');
  const reader=request.body?.getReader();let n=0;const chunks=[];if(!reader)throw new Problem(400,'invalid_json','Missing request body');while(true){const {value,done}=await reader.read();if(done)break;n+=value.length;if(n>2*1024*1024){await reader.cancel();throw new Problem(413,'payload_limit','Request exceeds 2 MiB');}chunks.push(Buffer.from(value));}
@@ -60,7 +69,7 @@ export function createApp(config:Config){
     if(action==='git'){
      const suffix='/'+parts.slice(4).join('/')+url.search;
      if(!((request.method==='GET'&&suffix==='/info/refs?service=git-upload-pack')||(request.method==='POST'&&suffix==='/git-upload-pack')))throw new Problem(403,'read_only_git','The Git gateway is read-only; propose writes through the changes API');
-     if(request.method==='POST'){const b=await request.arrayBuffer();if(b.byteLength>1024*1024)throw new Problem(413,'git_request_limit','Git negotiation exceeds 1 MiB');request=new Request(request,{body:b});}
+     if(request.method==='POST')request=await gitBody(request);
      const upstream=await repo.git(request,suffix);return new Response(upstream.body,{status:upstream.status,headers:{'content-type':upstream.headers.get('content-type')??'application/octet-stream','cache-control':'private, no-store'}});
     }
     const changes=changeService(config,p,principal);

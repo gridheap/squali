@@ -19,7 +19,7 @@ Every API request needs `Authorization: Bearer <token>`. Mutation bodies are JSO
 | `/api/projects/:project/preview` | POST | scoped | `changes`: 1–64 IDs. Returns head, conflicts, unapproved changes and changed-file sizes. |
 | `/api/projects/:project/publish` | POST | reviewer/admin | `id`, `changes`, optional `expectedHead`; use preview's head for stale-preview protection. |
 | `/api/projects/:project/publications` | GET | scoped | Most recent 100 durable publication records |
-| `/api/projects/:project/publications/:id/abort` | POST | reviewer/admin | `expectedHead`, `note`; only before Git accepted the batch and while main remains at its recorded base |
+| `/api/projects/:project/publications/:id/abort` | POST | reviewer/admin | `expectedHead`, `note`; appends an unchanged-tree audit commit using Git CAS; returns `cancellationHead`; a delayed publication loses to a successful cancellation |
 | `/api/projects/:project/events` | GET | scoped | `after`: monotonically increasing event cursor; at most 200 events |
 
 `files` is an array of `{path, content, mode?}`. `content: null` deletes a file. Modes are `100644` and `100755`. Paths are repository-relative. File/directory replacements, traversal and `.git` paths are rejected. Use a new immutable change ID to replace an earlier proposal.

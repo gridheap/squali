@@ -4,10 +4,10 @@ import {Problem,ZERO} from './types.ts';
 import type {Config,Patch,Principal} from './types.ts';
 export type FileDelta={path:string;before:string|null;after:string|null;mode:string;beforeMode:string|null};
 export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
-export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
+export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,cancellationHead:p.metrics?.cancellation?.oid??null,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
 export function changeService(config:Config,p:any,principal:Principal){
  const {sql,artifacts}=config;const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const pid=p.id;
- const event=async(tx:any,kind:string,data:unknown)=>tx`INSERT INTO weave_events(project,kind,actor,data) VALUES(${pid},${kind},${principal.id},${tx.json(data)})`;
+ const event=async(tx:any,kind:string,data:unknown,actor=principal.id)=>tx`INSERT INTO weave_events(project,kind,actor,data) VALUES(${pid},${kind},${actor},${tx.json(data)})`;
  const get=async(cid:string)=>{const [c]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${cid}`;if(!c)throw new Problem(404,'change_missing','Change not found');return c;};
  async function propose(input:{id:string;title:string;intent:string;context:Record<string,unknown>;dependencies:string[];base?:string;files:Patch[]}){
   const hash=sha256(JSON.stringify(input));
@@ -88,14 +88,14 @@ export function changeService(config:Config,p:any,principal:Principal){
  async function publish(input:{id:string;changes:string[];expectedHead?:string}){
   const hash=sha256(JSON.stringify(input));
   const [existing]=await sql`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;
-  const validate=(saved:any,checkActive=true)=>{if(saved&&saved.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Publication ID already used with different input');if(saved?.state==='aborted')throw new Problem(409,'publication_aborted','This publication was cancelled; use a new ID');if(checkActive&&saved?.metrics?.active)throw new Problem(409,'publication_busy','This publication is in flight. Wait for its result; an interrupted Worker requires administrator reconciliation.');};
+  const validate=(saved:any,checkCancellation=true)=>{if(saved&&saved.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Publication ID already used with different input');if(checkCancellation&&saved?.state==='preparing'&&saved?.metrics?.cancellation)throw new Problem(409,'cancellation_pending','Finish cancelling this publication before publishing again');if(saved?.state==='aborted')throw new Problem(409,'publication_aborted','This publication was cancelled; use a new ID');};
   validate(existing,false);if(existing?.state==='published')return publicationView(existing);
   const finalize=()=>sql.begin(async tx=>{
    await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
    const [current]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;
    if(current.state==='published')return publicationView(current);if(current.state!=='preparing')throw new Problem(409,'publication_state','Publication changed; reconcile its journal');
    const [done]=await tx`UPDATE weave_publications SET state='published',metrics=metrics-'active' WHERE project=${pid} AND id=${input.id} RETURNING *`;
-   await tx`UPDATE weave_projects SET head=${done.oid} WHERE id=${pid}`;await tx`UPDATE weave_changes SET status='landed',publication=${input.id} WHERE project=${pid} AND id=ANY(${done.changes})`;await event(tx,'batch.published',{id:input.id,oid:done.oid,changes:done.changes});return publicationView(done);
+   await tx`UPDATE weave_projects SET head=${done.oid} WHERE id=${pid}`;await tx`UPDATE weave_changes SET status='landed',publication=${input.id} WHERE project=${pid} AND id=ANY(${done.changes})`;await event(tx,'batch.published',{id:input.id,oid:done.oid,changes:done.changes},done.actor);return publicationView(done);
   });
   if(existing?.oid&&await repo.head()===existing.oid)return finalize();
   validate(existing);
@@ -114,9 +114,13 @@ export function changeService(config:Config,p:any,principal:Principal){
   });
   if(saved.state==='published')return publicationView(saved);
   try{
-   const built=await g.build(plan.head===ZERO?null:plan.head,plan.files,`Squali batch ${input.id}\n\nChanges: ${plan.changes.join(', ')}`,principal.id,Math.floor(new Date(saved.created_at).getTime()/1000));
-   await sql`UPDATE weave_publications SET oid=${built.oid},metrics=${sql.json({active,objects:built.objects,bytes:built.bytes,changes:plan.changes.length})} WHERE project=${pid} AND id=${input.id}`;
-   await repo.push(p.main_ref??'refs/heads/main',plan.head===ZERO?null:plan.head,built.oid,built.pack);return await finalize();
+   const built=await g.build(plan.head===ZERO?null:plan.head,plan.files,`Squali batch ${input.id}\n\nChanges: ${plan.changes.join(', ')}`,saved.actor,Math.floor(new Date(saved.created_at).getTime()/1000));
+   if(saved.oid&&saved.oid!==built.oid)throw new Problem(409,'recovery_required','The recovered commit differs from the publication journal');
+   const written=await sql`UPDATE weave_publications SET oid=${built.oid},metrics=${sql.json({active,objects:built.objects,bytes:built.bytes,changes:plan.changes.length})} WHERE project=${pid} AND id=${input.id} AND state='preparing' AND NOT(COALESCE(metrics,'{}'::jsonb)?'cancellation') AND (oid IS NULL OR oid=${built.oid}) RETURNING id`;
+   if(!written.length){const [current]=await sql`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;validate(current);if(current.state==='published')return publicationView(current);throw new Problem(409,'publication_state','Publication changed before the push');}
+   try{await repo.push(p.main_ref??'refs/heads/main',plan.head===ZERO?null:plan.head,built.oid,built.pack);}
+   catch(error){if(!(error instanceof Problem&&error.code==='head_moved')||await repo.head()!==built.oid)throw error;}
+   return await finalize();
   }finally{
    await sql`UPDATE weave_publications SET metrics=metrics-'active' WHERE project=${pid} AND id=${input.id} AND metrics->>'active'=${active}`;
   }
@@ -135,14 +139,52 @@ export function changeService(config:Config,p:any,principal:Principal){
   });
  }
  async function abort(publicationId:string,expectedHead:string,note:string){
-  const head=await repo.head();
-  return sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;const [saved]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;
-   if(!saved)throw new Problem(404,'publication_missing','Publication not found');if(saved.state==='aborted')return publicationView(saved);
-   if(saved.metrics?.active)throw new Problem(409,'publication_busy','Wait for the in-flight publication before cancelling');
-   if(saved.state!=='preparing'||head===saved.oid)throw new Problem(409,'already_published','Git already accepted this batch; retry the original publication to finalize it');
-   if(expectedHead!==head||head!==saved.base)throw new Problem(409,'recovery_required','The head has moved. An administrator must reconcile Git history before cancelling.');
-   const [aborted]=await tx`UPDATE weave_publications SET state='aborted' WHERE project=${pid} AND id=${publicationId} RETURNING *`;await event(tx,'batch.aborted',{id:publicationId,note});return publicationView(aborted);
+  const [existing]=await sql`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;
+  if(!existing)throw new Problem(404,'publication_missing','Publication not found');
+  if(existing.state==='aborted')return publicationView(existing);
+  const alreadyPublished=()=>new Problem(409,'already_published','Git already accepted this batch; retry the original publication to finalize it');
+  if(existing.state!=='preparing')throw alreadyPublished();
+  const finalizeCancellation=()=>sql.begin(async tx=>{
+   await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
+   const [current]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;
+   if(current.state==='aborted')return publicationView(current);
+   if(current.state!=='preparing')throw alreadyPublished();
+   const cancellation=current.metrics.cancellation;
+   const [aborted]=await tx`UPDATE weave_publications SET state='aborted',metrics=metrics-'active' WHERE project=${pid} AND id=${publicationId} RETURNING *`;
+   await tx`UPDATE weave_projects SET head=${cancellation.oid} WHERE id=${pid}`;
+   await event(tx,'batch.aborted',{id:publicationId,note:cancellation.note,oid:cancellation.oid},cancellation.actor);
+   return publicationView(aborted);
   });
+  const head=await repo.head()??ZERO;
+  if(head===existing.oid)throw alreadyPublished();
+  if(existing.metrics?.cancellation?.oid===head)return finalizeCancellation();
+  if(expectedHead!==head||head!==existing.base)throw new Problem(409,'recovery_required','The head has moved. Reconcile Git history before cancelling.');
+  const saved=await sql.begin(async tx=>{
+   await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
+   const [current]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;
+   if(current.state==='aborted')return current;
+   if(current.state!=='preparing')throw alreadyPublished();
+   if(current.metrics?.cancellation)return current;
+   const cancellation={actor:principal.id,note,timestamp:Math.floor(Date.now()/1000)};
+   const [claimed]=await tx`UPDATE weave_publications SET metrics=COALESCE(metrics,'{}'::jsonb)||${tx.json({cancellation})} WHERE project=${pid} AND id=${publicationId} RETURNING *`;
+   return claimed;
+  });
+  if(saved.state==='aborted')return publicationView(saved);
+  const cancellation=saved.metrics.cancellation;
+  // Moving the Git ref, with an unchanged tree, invalidates every delayed push
+  // from the old base. A SQL flag or elapsed lease cannot fence that transport.
+  const built=await g.build(saved.base===ZERO?null:saved.base,[],`Squali cancel ${publicationId}\n\n${cancellation.note}`,cancellation.actor,cancellation.timestamp);
+  if(cancellation.oid&&cancellation.oid!==built.oid)throw new Problem(409,'recovery_required','Cancellation differs from its saved commit');
+  const written=await sql`UPDATE weave_publications SET metrics=jsonb_set(metrics,'{cancellation,oid}',${sql.json(built.oid)}) WHERE project=${pid} AND id=${publicationId} AND state='preparing' RETURNING id`;
+  if(!written.length){const [current]=await sql`SELECT * FROM weave_publications WHERE project=${pid} AND id=${publicationId}`;if(current.state==='aborted')return publicationView(current);throw alreadyPublished();}
+  try{await repo.push(p.main_ref??'refs/heads/main',saved.base===ZERO?null:saved.base,built.oid,built.pack);}
+  catch(error){
+   const actual=await repo.head()??ZERO;
+   if(actual===saved.oid)throw alreadyPublished();
+   if(actual!==built.oid)throw error;
+  }
+  return finalizeCancellation();
  }
+
  return {get,propose,details,review,preview,publish,revise,abort};
 }

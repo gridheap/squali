@@ -1,9 +1,9 @@
 $ node --import tsx --test tests/github.test.ts
 HTTP Clerk identity: owner isolation, expiry, signature, issuer and authorized party verified.
-✔ Clerk sessions create private owner workspaces and reject forged, expired and foreign sessions (558.224458ms)
+✔ Clerk sessions create private owner workspaces and reject forged, expired and foreign sessions (350.057375ms)
 Import SIGKILL: native Git accepted the atomic pack; restart reconciled all frozen refs; zero duplicate transfers.
 GitHub E2E: paginated catalog cached; private full history + two branches + annotated tag; default trunk; native clone/fsck; proposal/review/publication; replay avoided duplicate transfer.
-✔ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (7401.049625ms)
+✔ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (5613.149875ms)
 ℹ tests 2
 ℹ suites 0
 ℹ pass 2
@@ -11,4 +11,4 @@ GitHub E2E: paginated catalog cached; private full history + two branches + anno
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 8276.05175
+ℹ duration_ms 6160.626416

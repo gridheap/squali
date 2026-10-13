@@ -34,9 +34,9 @@ See [the sign-in and import deployment guide](github-import.md). Production OAut
 
 - Retry create/propose/publish with the same ID and exact input after a timeout.
 - A preparing publication whose commit already equals main is finalized by replaying the original publish request.
-- Cancellation of an ambiguous in-flight publication still needs stronger fencing against a delayed upstream push. Do not treat the current abort endpoint as proof that a timed-out external write can never land; see the readiness audit.
+- Cancellation appends an unchanged-tree audit commit by expected-old-head CAS. A successful cancellation rejects delayed publication pushes from the previous base. If publication wins first, retry its original request to finalize it. Retry an interrupted cancellation with its original expected head and note.
 - If main moved after an ambiguous outcome, freeze that workspace's publishing and inspect the Git graph and journal. Do not force-push or blindly delete journal records. The prototype deliberately requires administrator reconciliation here.
-- If a Worker was terminated while its publication marker is active, first confirm the old invocation has ended and reconcile the recorded commit with Git. Only then clear the active marker as an administrator and replay the original request. No timer clears it automatically.
+- A Worker terminated before Git acceptance can be recovered by replaying the original publication. The saved author and timestamp produce the same commit even if another authorized reviewer retries. Old active markers do not block recovery. No administrator SQL mutation or timeout lease is required.
 - The call cap resets by UTC month. Do not raise it automatically. Reads hitting the immutable cache still work when no upstream call is needed.
 
 ## Teardown

@@ -1,0 +1,16 @@
+{
+  "command": "python3 work/check-compressed-git.py",
+  "timestamp": "2026-10-13T23:43:12.960512+00:00",
+  "url": "https://squa.li",
+  "compressedNegotiation": true,
+  "httpAttempts": 3,
+  "automaticRetries": 0,
+  "nativePackValidation": "git index-pack --stdin passed",
+  "responseBytes": 908,
+  "reservationsBefore": 89,
+  "reservationsAfter": 93,
+  "reservationCeiling": 4,
+  "cap": 2000,
+  "providerMeasuredCalls": "Not available; reservations are not billing counts",
+  "repositoryWrites": 0
+}

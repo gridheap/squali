@@ -8,13 +8,19 @@
     },
     {
       "command": "pnpm test:e2e",
-      "passed": 12,
+      "passed": 15,
       "report": "api-e2e.txt"
     },
     {
       "command": "pnpm test:crash",
-      "passed": 1,
-      "report": "publication-crash.txt"
+      "passed": 4,
+      "report": "publication-crash.txt",
+      "includes": [
+        "SIGKILL before and after publication acceptance",
+        "retry under another reviewer preserves commit and actor",
+        "SIGKILL before and after cancellation acceptance",
+        "native clone, unchanged tree and exactly one audit commit"
+      ]
     },
     {
       "command": "pnpm test:github",
@@ -38,6 +44,12 @@
       "command": "pnpm build",
       "result": "pass",
       "report": "build.txt"
+    },
+    {
+      "command": "pnpm exec tsx scripts/compare-git.ts",
+      "result": "pass",
+      "report": "native-comparison.json",
+      "acceptance": "Identical final Git tree, 32 retained proposal refs per path, native fsck"
     }
   ],
   "liveGithubOAuth": "pending credentials and smoke",
@@ -46,9 +58,14 @@
   "applicationDurableObjects": false,
   "productionSchemaTables": 10,
   "submission": "not submitted; not ready",
-  "deployedVersion": "09f71e52-4a9b-47be-bcf7-21060edcbaed",
-  "deployedCode": "d3b366b",
+  "deployedVersion": "a52d2157-36a5-47d0-a8fc-ac4e6673e2a9",
   "clerkProductionEnabled": false,
   "artifactReservationsAfterMetadataCheck": 89,
-  "metadataCheckVersion": "74a65631-4fa4-429b-aa6f-95db92abf7ea"
+  "metadataCheckVersion": "74a65631-4fa4-429b-aa6f-95db92abf7ea",
+  "artifactReservationsAfterCompressedGitCheck": 93,
+  "compressedGitSmoke": {
+    "report": "compressed-git-live.json",
+    "reservationDelta": 4,
+    "repositoryWrites": 0
+  }
 }

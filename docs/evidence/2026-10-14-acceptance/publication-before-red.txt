@@ -1,0 +1,32 @@
+$ node --import tsx --test tests/crash.test.ts
+✔ a real process kill after Git accepted a batch recovers through the public HTTP API (896.245083ms)
+✖ a process killed before Git acceptance can be resumed by another reviewer with the same commit (746.973542ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1794.815542
+
+✖ failing tests:
+
+test at tests/crash.test.ts:1:3570
+✖ a process killed before Git acceptance can be resumed by another reviewer with the same commit (746.973542ms)
+  AssertionError [ERR_ASSERTION]: {"error":"publication_busy","message":"This publication is in flight. Wait for its result; an interrupted Worker requires administrator reconciliation."}
+  
+  409 !== 201
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/crash.test.ts:47:93)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+[ELIFECYCLE] Command failed with exit code 1.

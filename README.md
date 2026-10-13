@@ -67,13 +67,14 @@ pnpm test:crash
 pnpm test:github
 pnpm build
 BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark
+pnpm exec tsx scripts/compare-git.ts
 ```
 
 API E2E tests start isolated schemas and Git repositories and use real HTTP. They cover concurrency, role authorization, immutable review, conflicts and revisions, dependency ordering, native Git interoperability, external pushes, executable modes, operation caps, cache authorization, acknowledgement loss, and cancelling an unpublished batch. They leave a reproducible fixture under `work/e2e-*`.
 
 Browser tests use an installed Brave browser and an isolated profile. Start `pnpm dev`, then run `pnpm test:ui`. Change `launchOptions.executablePath` in `playwright.config.ts` for an existing browser on another platform. Do not download a browser automatically. Both desktop and mobile views are exercised, alongside successful Adobe font loading, correct Latin/CJK glyph provenance, and bounded fallback under network failure.
 
-The included benchmark is local only. It measures 32 small independent changes against 64 baseline files with eight concurrent clients. It is not evidence of distributed scale or superiority to every Git platform.
+The included benchmark is local only. It measures 32 small independent changes against 64 baseline files with eight concurrent clients. The [native Git comparison](docs/performance.md) uses the same dataset and verifies identical final trees. Neither is evidence of distributed scale or superiority to every Git platform.
 
 ## Design
 
@@ -81,7 +82,7 @@ The included benchmark is local only. It measures 32 small independent changes a
 - **Immutable proposals:** stable operation IDs and request hashes make retries repeatable. Source stays in Artifacts; intent, review and dependency metadata stay in PostgreSQL.
 - **Shared reads:** immutable object caches are keyed by repository, object type and Git hash. Authorization runs before cache access. Branch heads remain uncached.
 - **Batch publication:** a short per-workspace publication lock protects review state, and Git's expected-old-object check protects the branch against external writers. Agents can continue proposing while a batch publishes.
-- **Recoverable publication:** persist the publication intent before pushing. If Git accepts the push but the acknowledgement is lost, retrying the exact operation finalizes its existing commit.
+- **Recoverable publication:** persist the publication intent before pushing. Termination before or after Git acceptance can be recovered with the original operation. Cancellation writes an unchanged-tree audit commit that prevents delayed publication from landing.
 - **Bounded spending:** all Artifacts calls reserve from a persistent monthly cap before execution. Cache hits make no provider calls; failed and unknown outcomes consume the cap. No automatic paid retries, timers or scheduled jobs.
 
 Read [architecture and tradeoffs](docs/architecture.md), [deployment](docs/deployment.md), [failure specification](docs/failure-spec.md), and [submission material](docs/submission.md).

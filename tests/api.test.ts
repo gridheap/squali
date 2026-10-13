@@ -173,3 +173,51 @@ test('agents start from the real current head and replay frozen proposals withou
   const before=(await call('/usage')).data.attempts;const replay=await call('/projects/external/changes',input);assert.equal(replay.status,201);assert.equal(replay.data.oid,made.data.oid);assert.equal((await call('/usage')).data.attempts,before);
  }finally{await fixture.close();}
 });
+
+test('successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit',async()=>{
+ let resume!:()=>void, reached!:()=>void, first=true;
+ const paused=new Promise<void>(r=>reached=r), gate=new Promise<void>(r=>resume=r);
+ const fixture=await startLocal({port:0,test:true,poolSize:1,onPublicationBeforePush:async()=>{if(first){first=false;reached();await gate;}}});
+ const call=async(path:string,b?:unknown)=>{const r=await fetch(fixture.url+'/api'+path,{method:b?'POST':'GET',headers:{authorization:`Bearer ${admin}`,'content-type':'application/json'},body:b?JSON.stringify(b):undefined,signal:AbortSignal.timeout(5000)});return {status:r.status,data:await r.json() as any};};
+ let pending:Promise<any>|undefined;
+ try{
+  const made=await call('/projects',{id:'fence',name:'Cancellation ordering',files:[{path:'base.txt',content:'keep\n'}]});
+  await call('/projects/fence/changes',{id:'one',title:'One',intent:'Delayed transport',files:[{path:'result.txt',content:'delayed\n'}]});await call('/projects/fence/changes/one/review',{decision:'approved'});
+  pending=call('/projects/fence/publish',{id:'delayed',changes:['one']});await paused;
+  const cancelled=await call('/projects/fence/publications/delayed/abort',{expectedHead:made.data.head,note:'Cancel before acceptance'});assert.equal(cancelled.status,200,JSON.stringify(cancelled.data));assert.equal(cancelled.data.state,'aborted');
+  resume();const late=await pending;assert.equal(late.status,409,JSON.stringify(late.data));
+  const project=(await call('/projects/fence')).data;assert.notEqual(project.head,made.data.head);assert.equal(project.head,cancelled.data.cancellationHead);
+  assert.equal((await call('/projects/fence/file?path=base.txt')).data.content,'keep\n');assert.equal((await call('/projects/fence/file?path=result.txt')).status,404);
+  assert.equal((await call('/projects/fence/publish',{id:'delayed',changes:['one']})).status,409);
+  const events=(await call('/projects/fence/events')).data.events;assert.equal(events.filter((e:any)=>e.kind==='batch.aborted').length,1);assert.equal(events.filter((e:any)=>e.kind==='batch.published').length,0);
+  const replacement=await call('/projects/fence/publish',{id:'replacement',changes:['one']});assert.equal(replacement.status,201,JSON.stringify(replacement.data));assert.equal((await call('/projects/fence/file?path=result.txt')).data.content,'delayed\n');
+  const {writeFile}=await import('node:fs/promises');await writeFile(fixture.dir+'/cancellation-report.json',JSON.stringify({command:'pnpm test:e2e',initialHead:made.data.head,cancelled:cancelled.data,latePush:late,replacement:replacement.data,singleDatabaseConnection:true},null,2));
+ }finally{resume();await pending?.catch(()=>{});await fixture.close();}
+});
+
+test('concurrent publication retries converge on one Git commit and one event',async()=>{
+ let resume!:()=>void, reached!:()=>void, first=true;
+ const paused=new Promise<void>(r=>reached=r), gate=new Promise<void>(r=>resume=r);
+ const fixture=await startLocal({port:0,test:true,poolSize:1,onPublicationBeforePush:async()=>{if(first){first=false;reached();await gate;}}});
+ const call=async(path:string,b?:unknown)=>{const r=await fetch(fixture.url+'/api'+path,{method:b?'POST':'GET',headers:{authorization:`Bearer ${admin}`,'content-type':'application/json'},body:b?JSON.stringify(b):undefined,signal:AbortSignal.timeout(5000)});return {status:r.status,data:await r.json() as any};};let pending:Promise<any>|undefined;
+ try{
+  await call('/projects',{id:'parallel',name:'Concurrent retries',files:[{path:'a.txt',content:'a\n'}]});await call('/projects/parallel/changes',{id:'one',title:'One',intent:'Same result',files:[{path:'result.txt',content:'once\n'}]});await call('/projects/parallel/changes/one/review',{decision:'approved'});
+  const input={id:'same',changes:['one']};pending=call('/projects/parallel/publish',input);await paused;
+  const second=await call('/projects/parallel/publish',input);assert.equal(second.status,201,JSON.stringify(second.data));resume();const original=await pending;assert.equal(original.status,201,JSON.stringify(original.data));assert.equal(second.data.oid,original.data.oid);
+  const events=(await call('/projects/parallel/events')).data.events.filter((e:any)=>e.kind==='batch.published');assert.equal(events.length,1);
+  assert.equal((await call('/projects/parallel/publications/same/abort',{expectedHead:second.data.base,note:'Too late'})).status,409);
+ }finally{resume();await pending?.catch(()=>{});await fixture.close();}
+});
+
+test('native Git gzip negotiation succeeds and decompression is bounded before provider calls',async()=>{
+ const {gzipSync}=await import('node:zlib');const {pkt}=await import('../src/git.ts');
+ const current=(await api('/projects',{id:'compressed',name:'Compressed Git',files:[{path:'hello.txt',content:'native gzip\n'}]})).body.head;
+ const negotiation=Buffer.concat([pkt(`want ${current}\n`),Buffer.from('0000'),pkt('done\n')]);
+ const response=await fetch(server.url+'/api/projects/compressed/git/git-upload-pack',{method:'POST',headers:{authorization:`Bearer ${agent}`,'content-type':'application/x-git-upload-pack-request','content-encoding':'gzip'},body:gzipSync(negotiation)});
+ assert.equal(response.status,200);const pack=Buffer.from(await response.arrayBuffer());assert.equal(pack.subarray(0,12).toString(),'0008NAK\nPACK');
+ const before=(await api('/usage')).body.attempts;
+ for(const [body,expected]of [[gzipSync(Buffer.alloc(1024*1024+1)),413],[Buffer.from('malformed gzip'),400]] as const){
+  const rejected=await fetch(server.url+'/api/projects/compressed/git/git-upload-pack',{method:'POST',headers:{authorization:`Bearer ${agent}`,'content-type':'application/x-git-upload-pack-request','content-encoding':'gzip'},body});assert.equal(rejected.status,expected);
+ }
+ assert.equal((await api('/usage')).body.attempts,before);
+});
