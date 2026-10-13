@@ -45,5 +45,10 @@
   "D1": false,
   "applicationDurableObjects": false,
   "productionSchemaTables": 10,
-  "submission": "not submitted; not ready"
+  "submission": "not submitted; not ready",
+  "deployedVersion": "09f71e52-4a9b-47be-bcf7-21060edcbaed",
+  "deployedCode": "d3b366b",
+  "clerkProductionEnabled": false,
+  "artifactReservationsAfterMetadataCheck": 89,
+  "metadataCheckVersion": "74a65631-4fa4-429b-aa6f-95db92abf7ea"
 }

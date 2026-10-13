@@ -1,0 +1,27 @@
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 5 files from the assets directory /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/public
+🌀 Starting asset upload...
+🌀 Found 1 new or modified static asset to upload. Proceeding with upload...
++ /app.js
+Uploaded 1 of 1 asset
+✨ Success! Uploaded 1 file (3 already uploaded) (1.01 sec)
+
+Total Upload: 219.22 KiB / gzip: 56.07 KiB
+Worker Startup Time: 14 ms
+Your Worker has access to the following bindings:
+Binding                                                               Resource
+env.HYPERDRIVE (c5366ae0d2d54d76b2b7daf414c6333d)                     Hyperdrive Config
+env.ARTIFACTS (weave)                                                 Artifacts
+env.ASSETS                                                            Assets
+env.MAX_PROJECTS ("10")                                               Environment Variable
+env.MONTHLY_ARTIFACT_CALL_CAP ("2000")                                Environment Variable
+env.ADOBE_KIT_ID ("ggy5hcn")                                          Environment Variable
+env.PRINCIPALS_JSON ("(hidden)")                                      Environment Variable
+
+Uploaded gridheap-weave (5.87 sec)
+Deployed gridheap-weave triggers (2.11 sec)
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+Current Version ID: 09f71e52-4a9b-47be-bcf7-21060edcbaed
