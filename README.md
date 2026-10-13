@@ -1,10 +1,14 @@
-# Weave
+# Squali
 
-**Independent agent changes. One shared direction.**
+[Live application](https://squa.li) · [Source](https://github.com/gridheap/squali)
 
-Weave is an open-source collaboration prototype for the Cloudflare Git competition. Agents propose immutable changes with intent, context, evidence and dependencies. Reviewers inspect them, reconcile overlapping edits and publish compatible changes in one atomic Git update.
+**Source control for parallel agents.**
+
+Squali is an open-source collaboration prototype for the Cloudflare Git competition. Agents propose immutable changes with intent, context, evidence and dependencies. Reviewers inspect them, reconcile overlapping edits and publish compatible changes in one atomic Git update.
 
 Cloud deployment: **Cloudflare Workers + Artifacts + PostgreSQL through Hyperdrive**. No D1. No application Durable Objects. The local development adapter uses real PostgreSQL and Git's HTTP backend, so the complete workflow runs without cloud credentials or billable calls.
+
+The deployed integration passed real Artifacts publication, authenticated native Git clone and `git fsck`. [Verification evidence](docs/evidence/) separates local benchmarks from cloud smoke results.
 
 ## Run locally
 
@@ -23,16 +27,16 @@ Open http://127.0.0.1:8787. Connect with `local-admin-test-token` to review and 
 3. Review intent, context and the before/after diff. Approve an immutable version.
 4. Preview the approved batch. Compatible line edits reconcile automatically; conflicts require a revision and new approval.
 5. Publish. Git checks the expected old head, and PostgreSQL records the durable publication.
-6. Read the source and publication history. Use the authenticated `/api/projects/<id>/git` gateway for ordinary Git clone/fetch with a Weave token.
+6. Read the source and publication history. Use the authenticated `/api/projects/<id>/git` gateway for ordinary Git clone/fetch with a Squali token.
 
 ## Agent API and CLI
 
 No model provider, token subscription or agent framework is required. Any agent that can call HTTP can participate.
 
 ```sh
-export WEAVE_URL=http://127.0.0.1:8787
-export WEAVE_TOKEN=local-agent-test-token
-node scripts/weave.mjs propose my-project < change.json
+export SQUALI_URL=http://127.0.0.1:8787
+export SQUALI_TOKEN=local-agent-test-token
+node scripts/squali.mjs propose my-project < change.json
 ```
 
 Example `change.json`:
@@ -48,7 +52,7 @@ Example `change.json`:
 }
 ```
 
-Evidence is supplied by the agent; Weave does not execute or certify those commands. Reviewers remain responsible for assessing it.
+Evidence is supplied by the agent; Squali does not execute or certify those commands. Reviewers remain responsible for assessing it.
 
 CLI commands: `projects`, `create`, `changes`, `propose`, `show`, `review`, `revise`, `preview`, `publish`, `events`, `file`, `tree`, `usage`. Mutations read JSON from stdin. Tokens are environment variables, not command arguments. See [the API contract](docs/api.md).
 

@@ -1,0 +1,39 @@
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 5 files from the assets directory /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/public
+🌀 Starting asset upload...
+🌀 Found 2 new or modified static assets to upload. Proceeding with upload...
++ /index.html
++ /app.js
+Uploaded 1 of 2 assets
+Uploaded 2 of 2 assets
+✨ Success! Uploaded 2 files (2 already uploaded) (1.78 sec)
+
+Total Upload: 139.39 KiB / gzip: 35.92 KiB
+Worker Startup Time: 9 ms
+Your Worker has access to the following bindings:
+Binding                                                               Resource
+env.HYPERDRIVE (c5366ae0d2d54d76b2b7daf414c6333d)                     Hyperdrive Config
+env.ARTIFACTS (weave)                                                 Artifacts
+env.ASSETS                                                            Assets
+env.MAX_PROJECTS ("10")                                               Environment Variable
+env.MONTHLY_ARTIFACT_CALL_CAP ("2000")                                Environment Variable
+env.ADOBE_KIT_ID ("ggy5hcn")                                          Environment Variable
+env.PRINCIPALS_JSON ("(hidden)")                                      Environment Variable
+
+Uploaded gridheap-weave (7.13 sec)
+Deployed gridheap-weave triggers (2.07 sec)
+  https://gridheap-weave.gridheap.workers.dev
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+Current Version ID: dda1499d-36f2-4fbe-877a-c2254578f998
+
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+▲ [WARNING] 🚧 `wrangler triggers deploy` is an experimental command. Please report any issues to https://github.com/cloudflare/workers-sdk/issues/new/choose
+
+
+Deployed gridheap-weave triggers (2.44 sec)
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]

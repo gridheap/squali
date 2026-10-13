@@ -1,0 +1,48 @@
+{
+  "command": "BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark",
+  "scope": "LOCAL ONLY: real PostgreSQL and Git HTTP backend; excludes Cloudflare and network latency",
+  "timestamp": "2026-10-13T22:04:42.398Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Max",
+    "logicalCpus": 16,
+    "memoryGiB": 128,
+    "node": "v26.10.0"
+  },
+  "dataset": {
+    "baselineFiles": 64,
+    "baselineBytes": 419400,
+    "changes": 32,
+    "concurrency": 8
+  },
+  "results": {
+    "failures": 0,
+    "writeWallMs": 917,
+    "changesPerSecond": 34.88,
+    "p50Ms": 225.1,
+    "p95Ms": 243.97,
+    "p99Ms": 251.33,
+    "publicationMs": [
+      694
+    ],
+    "publicationMetrics": [
+      {
+        "objects": 35,
+        "bytes": 2346,
+        "changes": 32
+      }
+    ],
+    "usage": {
+      "attempts": 214,
+      "cap": 1000000,
+      "mode": "local Git + PostgreSQL"
+    }
+  },
+  "limitations": [
+    "No comparison against another forge under identical conditions",
+    "One machine; not a distributed or 100,000-agent test",
+    "Local adapter invokes native Git processes; production uses Artifacts RPC",
+    "Source changes are independent and small; conflict-heavy results will differ"
+  ]
+}

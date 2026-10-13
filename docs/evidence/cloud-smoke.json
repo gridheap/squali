@@ -1,0 +1,30 @@
+{
+  "command": "WEAVE_URL=https://gridheap-weave.gridheap.workers.dev python3 work/cloud-smoke.py",
+  "started": "2026-10-13T22:03:55.409844+00:00",
+  "completed": "2026-10-13T22:13:15.197592+00:00",
+  "url": "https://gridheap-weave.gridheap.workers.dev",
+  "steps": {
+    "auth-required": 401,
+    "session": 200,
+    "usage-before": 200,
+    "workspace": 201,
+    "docs": 201,
+    "review-docs": 200,
+    "client": 201,
+    "review-client": 200,
+    "preview": 200,
+    "publish": 201,
+    "file": 200,
+    "scope-denied": 403,
+    "role-denied": 403,
+    "usage-after": 200
+  },
+  "gitCloneAndFsck": true,
+  "httpAttempts": 23,
+  "applicationReservedCalls": 79,
+  "providerReservationCeiling": 250,
+  "automaticRetries": 0,
+  "reusedSuccessfulSteps": true,
+  "publishedCommit": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+  "providerMeasuredCalls": "Not yet available; application reservations are conservative and not billing counts"
+}

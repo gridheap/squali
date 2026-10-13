@@ -1,0 +1,61 @@
+{
+  "start": "2026-10-13T20:00:00Z",
+  "end": "2026-10-13T22:24:08Z",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){artifactsEventsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-13T20:00:00Z\",datetime_leq:\"2026-10-13T22:24:08Z\",repositoryNamespace:\"weave\"}){count dimensions{repositoryName eventKind eventType}}}}}",
+  "response": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "artifactsEventsAdaptiveGroups": [
+              {
+                "count": 1,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "create",
+                  "repositoryName": "weave-demo"
+                }
+              },
+              {
+                "count": 2,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "push",
+                  "repositoryName": "weave-demo"
+                }
+              },
+              {
+                "count": 8,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "token_create",
+                  "repositoryName": "weave-demo"
+                }
+              },
+              {
+                "count": 24,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "read",
+                  "repositoryName": "weave-demo"
+                }
+              },
+              {
+                "count": 1,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "pull",
+                  "repositoryName": "weave-demo"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "providerObservedEvents": 36,
+  "applicationReservations": 89,
+  "note": "Adaptive provider analytics may lag and event definitions differ from conservative application reservations. This is not an invoice. No extra live writes were repeated for branding or domain verification."
+}

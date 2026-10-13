@@ -1,0 +1,33 @@
+{
+  "command": "SQUALI_RESOLVE_IP=104.21.48.51 SQUALI_ACCESS_FILE=<private-access-json> node scripts/verify-domain.mjs",
+  "url": "https://squa.li",
+  "verified": "2026-10-13T22:23:54.790Z",
+  "inputReadyMs": 1790,
+  "connectedReadyMs": 6002,
+  "fonts": {
+    "latin": [
+      {
+        "familyName": "Proxima Nova",
+        "postScriptName": "ProximaNova-Regular",
+        "isCustomFont": true,
+        "glyphCount": 28
+      }
+    ],
+    "cjk": [
+      {
+        "familyName": "PingFang SC",
+        "postScriptName": "PingFangSC-Regular",
+        "isCustomFont": false,
+        "glyphCount": 9
+      }
+    ]
+  },
+  "apiRequests": 11,
+  "applicationReservedCalls": 10,
+  "totalMonthlyReservations": 89,
+  "cap": 2000,
+  "dnsOverride": "104.21.48.51",
+  "errors": [],
+  "readOnly": true,
+  "initialNavigation": "A normal local-network DNS navigation failed before authentication; no Artifacts calls were dispatched. Public DNS address verification passed."
+}

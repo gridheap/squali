@@ -2,9 +2,9 @@ $ playwright test
 
 Running 2 tests using 1 worker
 
-(node:43972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-  ✓  1 tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs (4.2s)
-  ✓  2 tests/ui.spec.ts:30:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (6.0s)
+  ✓  1 tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs (5.4s)
+  ✓  2 tests/ui.spec.ts:31:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (6.4s)
 
-  2 passed (13.6s)
+  2 passed (16.5s)

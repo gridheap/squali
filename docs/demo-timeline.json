@@ -1,9 +1,9 @@
 [
   {
-    "title": "Weave \u00b7 Independent work. Shared direction.",
+    "title": "Squali \u00b7 Source control for parallel agents.",
     "caption": "An agent collaboration prototype. Local demonstration; cloud measurements are separate.",
-    "text": "This is Weave, an open source collaboration platform for coding agents. The starting point is a simple observation: when agents can produce changes faster than people can coordinate them, source control becomes a workflow problem. Weave gives agents independent, immutable changes, while keeping intent, context and review attached to the work. This demonstration runs the real application against PostgreSQL and Git's HTTP backend. The deployment target is Cloudflare Workers and Artifacts, with PostgreSQL through Hyperdrive. There is no D one database, no application Durable Object, and no paid model dependency. We will follow two agents from independent changes to one reviewed publication, then resolve a genuine conflict.",
-    "audioSeconds": 49.31229,
+    "text": "This is Squali, an open source collaboration platform for coding agents. The starting point is a simple observation: when agents can produce changes faster than people can coordinate them, source control becomes a workflow problem. Squali gives agents independent, immutable changes, while keeping intent, context and review attached to the work. This demonstration runs the real application against PostgreSQL and Git's HTTP backend. The deployment target is Cloudflare Workers and Artifacts, with PostgreSQL through Hyperdrive. There is no D one database, no application Durable Object, and no paid model dependency. We will follow two agents from independent changes to one reviewed publication, then resolve a genuine conflict.",
+    "audioSeconds": 49.637732,
     "duration": 52,
     "start": 0
   },
@@ -18,8 +18,8 @@
   {
     "title": "02 / Independent changes, preserved intent",
     "caption": "Agent-authored changes carry immutable source, task context, evidence, and dependencies.",
-    "text": "Here are two independent contributions. One agent documents the quickstart, while another adds a client module. Each change records its own base commit, title and intent. The context field can preserve a prompt, task identifier, design constraints and reported verification evidence. This context stays with the immutable version, so a reviewer does not need to reconstruct why an agent made a decision. Evidence is explicitly supplied by the agent. Weave does not pretend that an attached passing result means it ran a continuous integration job. A separate trusted reviewer decides whether the change is acceptable. Agent credentials cannot approve or publish their own work.",
-    "audioSeconds": 43.737188,
+    "text": "Here are two independent contributions. One agent documents the quickstart, while another adds a client module. Each change records its own base commit, title and intent. The context field can preserve a prompt, task identifier, design constraints and reported verification evidence. This context stays with the immutable version, so a reviewer does not need to reconstruct why an agent made a decision. Evidence is explicitly supplied by the agent. Squali does not pretend that an attached passing result means it ran a continuous integration job. A separate trusted reviewer decides whether the change is acceptable. Agent credentials cannot approve or publish their own work.",
+    "audioSeconds": 43.957778,
     "duration": 46,
     "start": 94
   },
@@ -34,8 +34,8 @@
   {
     "title": "04 / Publish compatible work together",
     "caption": "Preview dependencies and conflicts. Git checks the expected old head at publication.",
-    "text": "The reviewer now prepares one batch from the approved work. Weave orders dependencies and compares each file with its own base. Changes in different files combine naturally. Compatible changes within a text file can also be reconciled with a bounded three-way merge. Publishing creates one main-branch update. A short PostgreSQL lock protects review state for this workspace, while Git's expected-old-object check prevents the update from overwriting an external push. Other agents can continue proposing during publication, and other workspaces have independent locks. This is deliberate coordination around the shared main branch, rather than a global queue for every agent operation.",
-    "audioSeconds": 43.438821,
+    "text": "The reviewer now prepares one batch from the approved work. Squali orders dependencies and compares each file with its own base. Changes in different files combine naturally. Compatible changes within a text file can also be reconciled with a bounded three-way merge. Publishing creates one main-branch update. A short PostgreSQL lock protects review state for this workspace, while Git's expected-old-object check prevents the update from overwriting an external push. Other agents can continue proposing during publication, and other workspaces have independent locks. This is deliberate coordination around the shared main branch, rather than a global queue for every agent operation.",
+    "audioSeconds": 43.67102,
     "duration": 46,
     "start": 184
   },
@@ -50,17 +50,17 @@
   {
     "title": "06 / Recovery and cost controls",
     "caption": "A durable publication journal, immutable-object cache, and persisted operation cap.",
-    "text": "Correctness also includes what happens when the network fails. Weave writes a publication journal before pushing to Git. If Git accepts the update but the acknowledgement is lost, retrying the same operation identifies the existing commit and completes the metadata without another publication. The end-to-end suite verifies this failure. Costs are controlled before external work: every Artifacts call reserves from a persisted monthly cap, failed attempts count, and cache hits avoid provider calls. There are no automatic paid retries or background model loops. Immutable objects are cached by repository and hash. Mutable heads, approvals and database queries remain fresh.",
-    "audioSeconds": 43.08966,
+    "text": "Correctness also includes what happens when the network fails. Squali writes a publication journal before pushing to Git. If Git accepts the update but the acknowledgement is lost, retrying the same operation identifies the existing commit and completes the metadata without another publication. The end-to-end suite verifies this failure. Costs are controlled before external work: every Artifacts call reserves from a persisted monthly cap, failed attempts count, and cache hits avoid provider calls. There are no automatic paid retries or background model loops. Immutable objects are cached by repository and hash. Mutable heads, approvals and database queries remain fresh.",
+    "audioSeconds": 43.321859,
     "duration": 46,
     "start": 275
   },
   {
     "title": "07 / Measured results and honest boundaries",
-    "caption": "32 local changes, 8 concurrent clients. p95 179 ms; publication 479 ms. Not a cloud-scale claim.",
-    "text": "On the recorded local benchmark, eight concurrent clients submitted thirty-two independent changes with zero failures. After immutable caching, the measured submission throughput was about fifty-eight changes per second, the ninety-fifth percentile was one hundred seventy-nine milliseconds, and the combined publication took four hundred seventy-nine milliseconds. The publication uploaded about two point three kilobytes of new Git objects. These numbers describe one machine and one small workload. They are not a distributed scale claim or a comparison with every Git platform. Artifacts currently limits a repository to one gigabyte. Weave's contribution is a working, testable path from independent agent changes to reviewed shared progress, with explicit limits and visible costs.",
-    "audioSeconds": 49.495556,
-    "duration": 52,
+    "caption": "Final local benchmark: 32 changes, 8 concurrent clients. p95 244 ms; publication 694 ms.",
+    "text": "On the final recorded local benchmark, eight concurrent clients submitted thirty-two independent changes with zero failures. The measured submission throughput was about thirty-five changes per second, the ninety-fifth percentile was two hundred forty-four milliseconds, and the combined publication took six hundred ninety-four milliseconds. The publication uploaded about two point three kilobytes of new Git objects. The repository preserves both earlier cache measurements and a slower run that overlapped deployment work. These numbers describe one machine and one small workload. They are not a distributed scale claim or a comparison with every Git platform. Separately, the deployed Cloudflare application passed a bounded test with real Artifacts, PostgreSQL, publication and native Git clone. Visit squa dot li. Squali makes parallel agent changes reviewable, with explicit limits and visible costs.",
+    "audioSeconds": 58.021587,
+    "duration": 61,
     "start": 321
   }
 ]

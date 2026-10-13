@@ -145,3 +145,16 @@ test('standard Git can clone through the authenticated read-only gateway',async(
  const {stdout}=await exec('git',['-C',clone,'show','HEAD:dependency.txt']);assert.equal(stdout,'updated\n');
  const push=await fetch(url+'/info/refs?service=git-receive-pack',{headers:{authorization:`Bearer ${admin}`}});assert.equal(push.status,403);
 });
+
+test('the complete HTTP workflow makes progress with a single database connection',async()=>{
+ const fixture=await startLocal({port:0,test:true,poolSize:1});
+ try{
+  const call=async(path:string,b?:unknown)=>{const r=await fetch(fixture.url+'/api'+path,{method:b?'POST':'GET',headers:{authorization:`Bearer ${admin}`,'content-type':'application/json'},body:b?JSON.stringify(b):undefined,signal:AbortSignal.timeout(4000)});const value=await r.json() as any;assert.ok(r.ok,JSON.stringify(value));return value;};
+  await call('/projects',{id:'small-pool',name:'Single connection',files:[{path:'a.txt',content:'a\n'}]});
+  await Promise.all(['one','two'].map(id=>call('/projects/small-pool/changes',{id,title:id,intent:'Progress under origin connection limits',files:[{path:id+'.txt',content:id+'\n'}]})));
+  for(const id of ['one','two'])await call('/projects/small-pool/changes/'+id+'/review',{decision:'approved'});
+  const batch=await call('/projects/small-pool/publish',{id:'batch',changes:['one','two']});assert.equal(batch.state,'published');
+  await call('/projects/small-pool/changes',{id:'revise-me',title:'Revise',intent:'Keep context',context:{task:'small-pool'},files:[{path:'a.txt',content:'v1\n'}]});
+  const revised=await call('/projects/small-pool/changes/revise-me/revise',{id:'revised',note:'Choose version two',files:[{path:'a.txt',content:'v2\n'}]});assert.equal(revised.context.task,'small-pool');assert.equal(revised.status,'proposed');
+ }finally{await fixture.close();}
+});

@@ -11,11 +11,11 @@ import {meteredLocal} from '../src/budget.ts';
 import {createApp} from '../src/app.ts';
 const exec=promisify(execFile);
 export const localDatabase=process.env.DATABASE_URL??'postgres://weave@127.0.0.1:55439/weave';
-export async function startLocal(opts:{port?:number;adminToken?:string;agentToken?:string;test?:boolean;failPublicationAckOnce?:boolean;failPublicationBeforePushOnce?:boolean;callCap?:number}={}){
+export async function startLocal(opts:{port?:number;adminToken?:string;agentToken?:string;test?:boolean;failPublicationAckOnce?:boolean;failPublicationBeforePushOnce?:boolean;callCap?:number;poolSize?:number}={}){
  const root=resolve('work');await mkdir(root,{recursive:true});const dir=opts.test?await mkdtemp(join(root,'e2e-')):join(root,'local');await mkdir(dir,{recursive:true});
  const schema=opts.test?'test_'+sha256(dir).slice(0,16):'weave_local';
  const bootstrap=postgres(localDatabase,{max:1,onnotice:()=>{}});await bootstrap.unsafe(`CREATE SCHEMA IF NOT EXISTS ${schema}`);await bootstrap.end();
- const sql=postgres(localDatabase,{max:20,connection:{search_path:schema},onnotice:()=>{}});await sql.unsafe(await readFile('src/schema.sql','utf8'));
+ const sql=postgres(localDatabase,{max:opts.poolSize??20,prepare:false,fetch_types:true,connection:{search_path:schema},onnotice:()=>{}});await sql.unsafe(await readFile('src/schema.sql','utf8'));
  const gitServer=createServer(async(req,res)=>{
   const url=new URL(req.url!,'http://localhost');const m=url.pathname.match(/^\/([a-zA-Z0-9_-]+)\.git(\/.*)$/);if(!m){res.writeHead(404).end();return;}
   const child=spawn('git',['http-backend'],{env:{...process.env,GIT_PROJECT_ROOT:dir,GIT_HTTP_EXPORT_ALL:'1',PATH_INFO:`/${m[1]}.git${m[2]}`,QUERY_STRING:url.search.slice(1),REQUEST_METHOD:req.method,CONTENT_TYPE:req.headers['content-type']??'',REMOTE_USER:'local-fixture'}});
@@ -42,5 +42,5 @@ export async function startLocal(opts:{port?:number;adminToken?:string;agentToke
  }});
  const server=createServer(async(req,res)=>{try{const chunks:Buffer[]=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>3*1024*1024){res.writeHead(413).end();return;}chunks.push(chunk);}const headers=new Headers();for(const [k,v]of Object.entries(req.headers))if(v)headers.set(k,Array.isArray(v)?v.join(','):v);const request=new Request(`http://127.0.0.1:${(server.address() as any).port}${req.url}`,{method:req.method,headers,body:chunks.length?Buffer.concat(chunks):undefined});const response=await app(request);res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));}catch(e){console.error(e);res.writeHead(500).end('Internal error');}});
  await new Promise<void>(r=>server.listen(opts.port??8787,'127.0.0.1',r));
- return {url:`http://127.0.0.1:${(server.address() as any).port}`,dir,sql,async close(){await Promise.all([new Promise<void>(r=>server.close(()=>r())),new Promise<void>(r=>gitServer.close(()=>r()))]);await sql.end();}};
+ return {url:`http://127.0.0.1:${(server.address() as any).port}`,dir,sql,async close(){await sql.end({timeout:1});await Promise.all([new Promise<void>(r=>server.close(()=>r())),new Promise<void>(r=>gitServer.close(()=>r()))]);}};
 }

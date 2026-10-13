@@ -1,0 +1,5 @@
+{
+  "command": "SQUALI_URL=http://127.0.0.1:8789 SQUALI_TOKEN=local-agent-test-token node scripts/squali.mjs projects",
+  "status": "passed",
+  "fixture": "Local PostgreSQL and Git; no live provider calls"
+}

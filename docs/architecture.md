@@ -2,9 +2,9 @@
 
 ## What we take from Scion
 
-Anthropic's October 13, 2026 engineering article describes an online-first source-control service. The transferable ideas are client/server asymmetry, incremental commits, independently cacheable immutable objects, sparse access, minimal shared mutable state, and retained intent. Scion's reported speedups are its own results, not Weave's.
+Anthropic's October 13, 2026 engineering article describes an online-first source-control service. The transferable ideas are client/server asymmetry, incremental commits, independently cacheable immutable objects, sparse access, minimal shared mutable state, and retained intent. Scion's reported speedups are its own results, not Squali's.
 
-Weave keeps Git compatibility rather than recreating Scion's storage system. Artifacts supplies repository durability and Git interoperability. Workers supply authenticated APIs and a browser application. PostgreSQL stores workflow metadata, path indexes, idempotency records, review decisions, a publication journal, and operation reservations.
+Squali keeps Git compatibility rather than recreating Scion's storage system. Artifacts supplies repository durability and Git interoperability. Workers supply authenticated APIs and a browser application. PostgreSQL stores workflow metadata, path indexes, idempotency records, review decisions, a publication journal, and operation reservations.
 
 ```mermaid
 flowchart LR
@@ -22,15 +22,15 @@ A proposal has an immutable base commit and its own Git commit under `refs/heads
 
 The Worker hashes blobs, rewrites affected Git trees, constructs a commit and sends a valid pack through Git smart HTTP. It reads sibling entries only in affected directories; this is proportional to the changed ancestor trees, not strictly O(changed bytes) in an extremely wide directory. Pack compression uses level 1 to reduce Worker CPU. Existing blobs remain on the server.
 
-Proposals lock only their own SQL record. A workspace's main branch is the intentional publication boundary. Reviews and publications take a PostgreSQL advisory lock for that workspace; proposal authors remain independent. Unrelated projects have independent publication locks. Publishing many changes amortizes main-branch coordination.
+Proposals hold their own SQL row lock only while finalizing metadata. Git I/O runs outside database transactions, so even a one-connection pool makes progress. A workspace's main branch is the intentional publication boundary. Reviews and publication journal transitions take a short PostgreSQL advisory lock for that workspace; proposal authors remain independent. A persisted active marker prevents concurrent publication or cancellation during Git I/O. Unrelated projects have independent publication locks. Publishing many changes amortizes main-branch coordination.
 
 A preview topologically orders dependencies and checks each file against its own base. Nonoverlapping text edits merge using diff3; equally sized conflicting regions receive a conservative per-line comparison. Deletions, incompatible edits, unsupported modes and bounded-work limits return explicit conflicts. Text compatibility does not establish semantic compatibility. A human or trusted reviewer must assess behavior and evidence.
 
 ## Correctness across PostgreSQL and Git
 
-Git and PostgreSQL cannot participate in one atomic transaction. Weave therefore commits a publication journal before sending the Git update. The commit is deterministic from its saved timestamp, selected changes and parent. Git's expected-old-object check prevents overwriting an external push.
+Git and PostgreSQL cannot participate in one atomic transaction. Squali therefore commits a publication journal before sending the Git update. The commit is deterministic from its saved timestamp, selected changes and parent. Git's expected-old-object check prevents overwriting an external push.
 
-If the network fails after Git accepts the pack, a retry checks whether main equals the journal's commit. If so, it finalizes the SQL metadata without another push. If the push never happened and main remains at the recorded base, the operation can be retried or explicitly cancelled. If an external writer advances or force-pushes main during an unresolved operation, the prototype stops for reconciliation; it does not guess or rewrite Git. This is a known availability limitation, and it preserves data safety.
+If the network fails after Git accepts the pack, a retry checks whether main equals the journal's commit. If so, it finalizes the SQL metadata without another push. If the push never happened and main remains at the recorded base, the operation can be retried or explicitly cancelled. If an external writer advances or force-pushes main during an unresolved operation, the prototype stops for reconciliation; it does not guess or rewrite Git. A Worker terminated before its cleanup can leave an active publication marker. An administrator must confirm the old invocation is no longer running and reconcile Git before clearing it; a timer never guesses that it is safe. These are known availability limitations that preserve data safety.
 
 No global transaction covers all projects. No application Durable Object or per-agent database is created. The optional local adapter runs ordinary `git http-backend`; it is not a fake source store.
 

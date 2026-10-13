@@ -22,3 +22,7 @@ Connect -> create workspace -> submit parallel changes -> review diff/context ->
 ## Bounds and honest claims
 
 Local fixtures use real PostgreSQL and a local Git HTTP backend. They prove behavior, not Cloudflare latency, provider billing, or a 100,000-agent workload. A bounded live Artifacts smoke test is separate. A benchmark records hardware, command, concurrency, operation counts, percentiles, failures and dataset. No claim of universally highest performance without comparative evidence.
+
+## Small PostgreSQL connection pools
+
+A transaction that waits for an Artifacts call can exhaust the origin pool when that call reserves its budget through another SQL connection. Publication journals written through a second connection can cause the same starvation. The HTTP workflow must complete with one available PostgreSQL connection, including concurrent proposals, publication and revision. No database transaction may wait for a provider call or another transaction. Durable preparing records must preserve idempotency and protect review state while Git I/O runs outside a transaction.

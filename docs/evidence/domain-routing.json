@@ -1,0 +1,57 @@
+{
+  "verified": "2026-10-13T22:24:38.074710+00:00",
+  "deploymentCommand": "pnpm exec wrangler triggers deploy",
+  "worker": "gridheap-weave",
+  "subdomainSettings": {
+    "enabled": false,
+    "previews_enabled": false
+  },
+  "customDomain": {
+    "id": "a423d446cd59d1546d5ad7d5d01602448ee1c849",
+    "zone_id": "a9e767db975bf6b80cfdad9df81e972b",
+    "zone_name": "squa.li",
+    "hostname": "squa.li",
+    "service": "gridheap-weave",
+    "environment": "production",
+    "cert_id": "3277dc6d-aede-4ae0-b71e-51c50383b241",
+    "previews_enabled": false,
+    "enabled": true
+  },
+  "checks": [
+    {
+      "command": [
+        "curl",
+        "-sS",
+        "--max-time",
+        "20",
+        "--resolve",
+        "squa.li:443:104.21.48.51",
+        "-o",
+        "/dev/null",
+        "-w",
+        "%{http_code}",
+        "https://squa.li"
+      ],
+      "status": 200,
+      "transportExit": 0,
+      "expected": 200
+    },
+    {
+      "command": [
+        "curl",
+        "-sS",
+        "--max-time",
+        "20",
+        "-o",
+        "/dev/null",
+        "-w",
+        "%{http_code}",
+        "https://gridheap-weave.gridheap.workers.dev"
+      ],
+      "status": 404,
+      "transportExit": 0,
+      "expected": 404
+    }
+  ],
+  "note": "The local network cached pre-deployment DNS. Public Cloudflare DoH returned 104.21.48.51 and 172.67.178.203; TLS was verified with the actual squa.li hostname using that public address."
+}

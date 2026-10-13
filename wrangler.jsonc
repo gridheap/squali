@@ -1,9 +1,12 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "gridheap-weave",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{"pattern":"squa.li","custom_domain":true,"zone_id":"a9e767db975bf6b80cfdad9df81e972b","previews_enabled":false}],
   "account_id": "52f8a24263418828b635c91b6eb06a83",
   "main": "src/worker.ts",
-  "compatibility_date": "2026-10-14",
+  "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
   "artifacts": [{"binding":"ARTIFACTS","namespace":"weave"}],
   "hyperdrive": [{"binding":"HYPERDRIVE","id":"c5366ae0d2d54d76b2b7daf414c6333d"}],

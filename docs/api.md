@@ -34,4 +34,4 @@ Error responses are `{error, message, details?}`. `401` means missing credential
 
 ## Authenticated Git reads
 
-Use `/api/projects/:project/git` as a Git remote and supply the same bearer token through a credential helper or a protected Git configuration. The gateway permits only `info/refs?service=git-upload-pack` and `git-upload-pack`; receive-pack and other operations return `403`. Requests remain project-scoped and upstream calls share the operation cap. The Artifacts remote returned in project metadata requires a separate Artifacts credential; a Weave bearer token is not an Artifacts token.
+Use `/api/projects/:project/git` as a Git remote and supply the same bearer token through a credential helper or a protected Git configuration. The gateway permits only `info/refs?service=git-upload-pack` and `git-upload-pack`; receive-pack and other operations return `403`. Requests remain project-scoped and upstream calls share the operation cap. The Artifacts remote returned in project metadata requires a separate Artifacts credential; a Squali bearer token is not an Artifacts token.

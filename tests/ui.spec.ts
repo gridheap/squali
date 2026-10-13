@@ -4,7 +4,8 @@ const evidence=process.env.WEAVE_UI_EVIDENCE??'work/ui-evidence';
 
 test('reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs',async({page,request})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const started=Date.now();
- await page.goto('/');await expect(page).toHaveTitle(/Weave/);
+ await page.goto('/');await expect(page).toHaveTitle(/Squali/);
+ await expect(page.getByRole('link',{name:'Squali home'})).toBeVisible();
  await page.getByLabel('Access token').fill('local-admin-test-token');await page.getByRole('button',{name:'Connect',exact:true}).click();
  await expect(page.getByText('Connected as reviewer')).toBeVisible();const ready=Date.now()-started;
  await page.getByRole('button',{name:'New workspace',exact:true}).click();const id='browser-'+Date.now();

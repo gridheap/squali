@@ -1,7 +1,7 @@
 {
-  "command": "pnpm test:ui",
-  "readyMs": 2476,
-  "totalMs": 3968,
+  "command": "SQUALI_URL=http://127.0.0.1:8789 pnpm test:ui",
+  "readyMs": 2488,
+  "totalMs": 4889,
   "fonts": {
     "latin": [
       {

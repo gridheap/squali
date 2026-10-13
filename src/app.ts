@@ -22,7 +22,7 @@ export function createApp(config:Config){
  return async(request:Request):Promise<Response>=>{
   const start=performance.now();
   try{
-   const url=new URL(request.url);if(!url.pathname.startsWith('/api/')){const res=await config.assets?.(request)??new Response('Weave API',{status:200});res.headers.set('x-content-type-options','nosniff');res.headers.set('referrer-policy','no-referrer');res.headers.set('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; connect-src 'self' https://use.typekit.net https://p.typekit.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");return res;}
+   const url=new URL(request.url);if(!url.pathname.startsWith('/api/')){const res=await config.assets?.(request)??new Response('Squali API',{status:200});res.headers.set('x-content-type-options','nosniff');res.headers.set('referrer-policy','no-referrer');res.headers.set('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; connect-src 'self' https://use.typekit.net https://p.typekit.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");return res;}
    const auth=request.headers.get('authorization')??'';const principal=config.principals[sha256(auth.startsWith('Bearer ')?auth.slice(7):'')];if(!principal)throw new Problem(401,'unauthorized','Connect with a valid access token');
    const mutating=request.method!=='GET';if(mutating&&request.headers.has('origin')&&request.headers.get('origin')!==url.origin)throw new Problem(403,'origin','Cross-origin mutations are forbidden');
    const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid){id(pid);if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
@@ -33,11 +33,11 @@ export function createApp(config:Config){
    if(resource==='projects'&&!pid&&request.method==='POST'){
     requireRole(['admin']);const input=await body(request);const projectId=id(input.id);if(!principal.projects.includes('*')&&!principal.projects.includes(projectId))throw new Problem(403,'scope','Token cannot create this workspace');const name=text(input.name);const files=patches(input.files??[]);const hash=sha256(JSON.stringify({id:projectId,name,files}));
     await sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended('weave-projects',0))`;const [exists]=await tx`SELECT id FROM weave_projects WHERE id=${projectId}`;if(!exists){const [{count}]=await tx`SELECT count(*) FROM weave_projects`;if(Number(count)>=config.maxProjects)throw new Problem(429,'project_cap','Workspace allocation cap reached');await tx`INSERT INTO weave_projects(id,name,artifact,request_hash) VALUES(${projectId},${name},${'weave-'+projectId},${hash})`;}});
-    const result=await sql.begin(async tx=>{
-     const [p]=await tx`SELECT * FROM weave_projects WHERE id=${projectId} FOR UPDATE`;if(p.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Workspace ID already used with different input');if(p.state==='ready')return projectView(p);
+    const result=await (async()=>{
+     const [p]=await sql`SELECT * FROM weave_projects WHERE id=${projectId}`;if(p.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Workspace ID already used with different input');if(p.state==='ready')return projectView(p);
      await artifacts.create(p.artifact);const repo=artifacts.repo(p.artifact),g=new GitSession(repo);const built=await g.build(null,files,'Initialize '+name,principal.id,Math.floor(new Date(p.created_at).getTime()/1000));const head=await repo.head();if(head!==built.oid)await repo.push('refs/heads/main',null,built.oid,built.pack);const {remote}=await repo.info();
-     const [ready]=await tx`UPDATE weave_projects SET head=${built.oid},remote=${remote},state='ready' WHERE id=${projectId} RETURNING *`;return projectView(ready);
-    });return json(result,201);
+     const [ready]=await sql`UPDATE weave_projects SET head=${built.oid},remote=${remote},state='ready' WHERE id=${projectId} RETURNING *`;return projectView(ready);
+    })();return json(result,201);
    }
    if(resource==='projects'&&pid){
     const p=await getProject(pid);const repo=artifacts.repo(p.artifact);const g=new GitSession(repo);const action=parts[3];
