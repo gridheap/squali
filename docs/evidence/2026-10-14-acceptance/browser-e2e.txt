@@ -1,0 +1,11 @@
+$ playwright test
+
+Running 3 tests using 1 worker
+
+(node:31835) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs (4.2s)
+  ✓  2 tests/ui.spec.ts:31:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (6.1s)
+  ✓  3 tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage (4.1s)
+
+  3 passed (18.1s)

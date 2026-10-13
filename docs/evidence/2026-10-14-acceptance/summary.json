@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-14",
+  "commands": [
+    {
+      "command": "pnpm typecheck",
+      "result": "pass",
+      "report": "typecheck.txt"
+    },
+    {
+      "command": "pnpm test:e2e",
+      "passed": 12,
+      "report": "api-e2e.txt"
+    },
+    {
+      "command": "pnpm test:crash",
+      "passed": 1,
+      "report": "publication-crash.txt"
+    },
+    {
+      "command": "pnpm test:github",
+      "passed": 2,
+      "includes": [
+        "official Clerk JWT verification with fixture sessions",
+        "real native Git history, heads, tags, empty first publication",
+        "simulated provider OAuth boundary",
+        "browser import-all / partial failure / resume / scoped token / sign out",
+        "SIGKILL after accepted import",
+        "deployment import capacity and finite busy response"
+      ],
+      "report": "github-e2e.txt"
+    },
+    {
+      "command": "SQUALI_URL=http://127.0.0.1:8793 pnpm test:ui",
+      "passed": 3,
+      "report": "browser-e2e.txt"
+    },
+    {
+      "command": "pnpm build",
+      "result": "pass",
+      "report": "build.txt"
+    }
+  ],
+  "liveGithubOAuth": "pending credentials and smoke",
+  "cloudRepositoryImportsThisIteration": 0,
+  "D1": false,
+  "applicationDurableObjects": false,
+  "productionSchemaTables": 10,
+  "submission": "not submitted; not ready"
+}

@@ -1,0 +1,7 @@
+{
+  "error": "",
+  "execution": "Succeeded",
+  "exitCode": 0,
+  "output": "{\"database\": \"weave\", \"role\": \"weave_app\", \"tables\": 10, \"verified\": true, \"searchPath\": \"weave\"}\n",
+  "state": "Succeeded"
+}

@@ -2,7 +2,7 @@ import type {Artifacts,Repository} from './types.ts';
 export interface ObjectCache {get(key:string):Promise<unknown|undefined>;set(key:string,value:unknown):Promise<void>}
 /** Call only behind authentication. Keys include repository and immutable Git object IDs. */
 export function cachedArtifacts(storage:Artifacts,cache:ObjectCache):Artifacts {
- return {create:name=>storage.create(name),repo(name){const repo=storage.repo(name);const cached=async<T>(type:string,oid:string,read:()=>Promise<T>)=>{const key=`${name}/${type}/${oid}`;const hit=await cache.get(key);if(hit!==undefined)return hit as T;const value=await read();if(value!==null)await cache.set(key,value);return value;};return {...repo,commit:oid=>cached('commit',oid,()=>repo.commit(oid)),tree:oid=>cached('tree',oid,()=>repo.tree(oid)),blob:oid=>cached('blob',oid,()=>repo.blob(oid))} as Repository;}};
+ return {create:(name,branch)=>storage.create(name,branch),repo(name){const repo=storage.repo(name);const cached=async<T>(type:string,oid:string,read:()=>Promise<T>)=>{const key=`${name}/${type}/${oid}`;const hit=await cache.get(key);if(hit!==undefined)return hit as T;const value=await read();if(value!==null)await cache.set(key,value);return value;};return {...repo,commit:oid=>cached('commit',oid,()=>repo.commit(oid)),tree:oid=>cached('tree',oid,()=>repo.tree(oid)),blob:oid=>cached('blob',oid,()=>repo.blob(oid))} as Repository;}};
 }
 export function memoryCache(maxBytes=8*1024*1024):ObjectCache {
  const entries=new Map<string,{value:unknown;size:number}>();let bytes=0;

@@ -26,3 +26,17 @@ Local fixtures use real PostgreSQL and a local Git HTTP backend. They prove beha
 ## Small PostgreSQL connection pools
 
 A transaction that waits for an Artifacts call can exhaust the origin pool when that call reserves its budget through another SQL connection. Publication journals written through a second connection can cause the same starvation. The HTTP workflow must complete with one available PostgreSQL connection, including concurrent proposals, publication and revision. No database transaction may wait for a provider call or another transaction. Durable preparing records must preserve idempotency and protect review state while Git I/O runs outside a transaction.
+
+## Completion audit: multi-file revisions and usage
+
+The browser must render all files of a proposal when revising it. Editing one file must preserve the other original edits, including deletions and executable modes. Users must be able to add/remove file edits explicitly. A revision must preserve original intent/context and require fresh approval. The cost view must read the deployment's persisted reservation counter and cap, display errors, and must not present provider list prices as measured usage or a bill.
+
+## Actual process termination
+
+Kill the local application process with SIGKILL after the independent native Git server has accepted a publication, before the application acknowledges it or finalizes PostgreSQL. Restart against the same data. The original HTTP publication request must finalize that exact commit and emit one publication event even if the original active marker survived. This acceptance case does not prove recovery before Git acceptance or safe cancellation of a delayed push.
+
+## Clerk identity and GitHub import
+
+Public acceptance seams remain the HTTP API, browser UI and standard Git. Failure cases: forged/expired/wrong-origin/wrong-issuer Clerk session; token used across owners; account switch retaining another owner's data; missing or revoked GitHub scope; organization restrictions; repositories beyond page one; renamed/private/empty repositories; duplicate selections and simultaneous imports; provider rate limit; interrupted transfer and lost acknowledgement; limits exceeded midway; partial success; credentials in logs or URLs; branch/tag/history loss; non-main default branch; Git LFS/submodules silently omitted; repeated clicks charging again; reload losing progress; Adobe loading preventing sign-in or import feedback. Imports create an independent private copy; they must never push to GitHub. Every repository must retain all advertised heads and tags and full Git history. LFS objects and submodule repositories require explicit separate handling, and the UI must disclose that scope before import.
+
+Import admission must preserve database capacity: with one import paused after Git acceptance, a second import request must return a bounded 409 response without acquiring a second long-lived coordination transaction. Resume after termination must not transfer the accepted pack again.

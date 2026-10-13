@@ -11,5 +11,5 @@ export function operationBudget(sql:Sql,cap:number){
 }
 export function meteredLocal(storage:Artifacts,sql:Sql,cap:number):Artifacts{
  const reserve=operationBudget(sql,cap);
- return {async create(name){await reserve(1);return storage.create(name);},repo(name){const repo=storage.repo(name);const result:Record<string,unknown>={};for(const [key,fn] of Object.entries(repo))result[key]=async(...args:unknown[])=>{await reserve(1);return fn(...args);};return result as unknown as Repository;}};
+ return {async create(name,branch){await reserve(1);return storage.create(name,branch);},repo(name){const repo=storage.repo(name);const result:Record<string,unknown>={};for(const [key,fn] of Object.entries(repo))result[key]=async(...args:unknown[])=>{await reserve(1);return fn(...args);};return result as unknown as Repository;}};
 }

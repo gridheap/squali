@@ -16,3 +16,7 @@ The final branding pass used `SQUALI_URL=http://127.0.0.1:8789 pnpm test:ui`. `p
 `placement.json` records six metadata-only HTTP observations around the Azure East US 2 placement configuration. The request budget remained 89; no Artifacts operations were added.
 
 The original cloud commands were run from the delivery workspace. Portable copies are included as `scripts/cloud-smoke.py` and `scripts/check-placement.py`; they read a private access JSON path through `SQUALI_ACCESS_FILE`. The cloud smoke mutates its `demo` fixture, preserves checkpoints and has a 40-HTTP-attempt / 250-provider-reservation ceiling. Do not rerun a completed live workflow solely for a presentation change. The placement script reads metadata only.
+
+## Acceptance update: October 14
+
+[2026-10-14-acceptance/](2026-10-14-acceptance/) contains the later 12 API tests, publication SIGKILL recovery, Clerk/GitHub integrated HTTP/Git/browser tests, mobile import screenshot, 3 browser regression tests, schema migration and build reports. It supersedes the earlier test counts. Production OAuth remains unconfigured; local fixture success is not a live OAuth result. See [readiness](../readiness.md).

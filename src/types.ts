@@ -9,15 +9,16 @@ export interface Repository {
   tree(oid:string):Promise<TreeEntry[]>;
   blob(oid:string):Promise<Uint8Array>;
   git(request:Request,suffix:string):Promise<Response>;
+  receive(refs:import('./git-transfer.ts').GitRef[],pack:ReadableStream<Uint8Array>):Promise<void>;
   push(ref:string,old:string|null,oid:string,pack:Uint8Array):Promise<void>;
 }
 export interface Artifacts {
-  create(name:string):Promise<void>;
+  create(name:string,defaultBranch?:string):Promise<void>;
   repo(name:string):Repository;
 }
-export type Principal={id:string;role:'admin'|'reviewer'|'agent'|'reader';projects:string[]};
+export type Principal={id:string;role:'admin'|'reviewer'|'agent'|'reader';projects:string[];owner?:string};
 export type Patch={path:string;content:string|null;mode?:'100644'|'100755'};
-export type Config={sql:Sql;artifacts:Artifacts;principals:Record<string,Principal>;mode:string;maxProjects:number;monthlyOps:number;assets?:(request:Request)=>Promise<Response>;adobeKit?:string};
+export type Config={sql:Sql;artifacts:Artifacts;principals:Record<string,Principal>;mode:string;maxProjects:number;monthlyOps:number;assets?:(request:Request)=>Promise<Response>;adobeKit?:string;clerk?:{publishableKey:string;secretKey:string;jwtKey?:string;appOrigin?:string;apiOrigin?:string};github?:{apiOrigin:string;gitOrigin:string}};
 export class Problem extends Error {
  constructor(public status:number,public code:string, message:string,public details?:unknown){super(message);}
 }

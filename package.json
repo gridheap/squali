@@ -13,9 +13,12 @@
     "deploy": "wrangler deploy",
     "db:migrate": "tsx scripts/migrate.ts",
     "benchmark": "tsx scripts/benchmark.ts",
-    "demo": "tsx scripts/demo.ts"
+    "demo": "tsx scripts/demo.ts",
+    "test:crash": "node --import tsx --test tests/crash.test.ts",
+    "test:github": "node --import tsx --test tests/github.test.ts"
   },
   "dependencies": {
+    "@clerk/backend": "3.23.2",
     "node-diff3": "3.2.1",
     "postgres": "3.4.9"
   },

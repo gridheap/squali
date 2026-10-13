@@ -31,3 +31,28 @@ CREATE INDEX IF NOT EXISTS weave_events_project ON weave_events(project,seq DESC
 CREATE TABLE IF NOT EXISTS weave_usage (
  month text PRIMARY KEY, attempts bigint NOT NULL DEFAULT 0
 );
+
+ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS owner_id text;
+CREATE INDEX IF NOT EXISTS weave_projects_owner ON weave_projects(owner_id,created_at DESC);
+ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS main_ref text NOT NULL DEFAULT 'refs/heads/main';
+CREATE TABLE IF NOT EXISTS weave_github_catalog (
+ owner_id text NOT NULL,page integer NOT NULL,payload jsonb NOT NULL,expires_at timestamptz NOT NULL,
+ PRIMARY KEY(owner_id,page)
+);
+CREATE TABLE IF NOT EXISTS weave_github_imports (
+ id text PRIMARY KEY,owner_id text NOT NULL,repository_id bigint NOT NULL,
+ project_id text NOT NULL,metadata jsonb NOT NULL,state text NOT NULL DEFAULT 'queued',
+ refs jsonb,head text,attempts integer NOT NULL DEFAULT 0,bytes bigint NOT NULL DEFAULT 0,
+ error text,created_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now(),
+ UNIQUE(owner_id,repository_id)
+);
+CREATE INDEX IF NOT EXISTS weave_github_imports_owner ON weave_github_imports(owner_id,created_at);
+CREATE TABLE IF NOT EXISTS weave_provider_usage (
+ owner_id text NOT NULL,day date NOT NULL,attempts integer NOT NULL DEFAULT 0,PRIMARY KEY(owner_id,day)
+);
+CREATE TABLE IF NOT EXISTS weave_tokens (
+ id text PRIMARY KEY,project text NOT NULL REFERENCES weave_projects(id),
+ token_hash text NOT NULL UNIQUE,label text NOT NULL,role text NOT NULL,
+ expires_at timestamptz NOT NULL,revoked_at timestamptz,created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS weave_tokens_project ON weave_tokens(project,created_at DESC);

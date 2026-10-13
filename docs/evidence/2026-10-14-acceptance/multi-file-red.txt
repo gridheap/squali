@@ -1,0 +1,49 @@
+$ playwright test --grep 'a reviewer revises'
+
+Running 1 test using 1 worker
+
+(node:41079) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage (8.1s)
+
+
+  1) tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator: getByLabel('File path 2', { exact: true })
+    Expected: "b.txt"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('File path 2', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('File path 2', { exact: true })
+
+
+      45 |  await page.getByRole('button',{name:'Update two files',exact:true}).click();await page.getByRole('button',{name:'Revise change',exact:true}).click();
+      46 |  await page.getByLabel('Change ID',{exact:true}).fill('revised');
+    > 47 |  await expect(page.getByLabel('File path 2',{exact:true})).toHaveValue('b.txt');
+         |                                                            ^
+      48 |  await page.getByLabel('File content 1',{exact:true}).fill('a2\n');await page.getByLabel('Resolution note',{exact:true}).fill('Revise A while retaining B');
+      49 |  await page.getByRole('button',{name:'Submit change',exact:true}).click();await page.getByText('Change submitted for review',{exact:true}).waitFor();
+      50 |  const detail=await request.get(`/api/projects/${id}/changes/revised`,{headers}).then(r=>r.json());
+        at /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/ui.spec.ts:47:60
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-a-reviewer-revises-ever-0f376--sees-actual-reserved-usage/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: work/ui-artifacts/ui-a-reviewer-revises-ever-0f376--sees-actual-reserved-usage/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-a-reviewer-revises-ever-0f376--sees-actual-reserved-usage/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace work/ui-artifacts/ui-a-reviewer-revises-ever-0f376--sees-actual-reserved-usage/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage
+[ELIFECYCLE] Command failed with exit code 1.

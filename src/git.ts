@@ -23,7 +23,7 @@ export class GitSession {
  commit(oid:string){if(!/^[a-f0-9]{40}$/.test(oid))throw new Problem(400,'invalid_ref','An immutable 40-character commit ID is required.');if(!this.commits.has(oid))this.commits.set(oid,this.repo.commit(oid));return this.commits.get(oid)!;}
  blob(oid:string){if(!this.blobs.has(oid))this.blobs.set(oid,this.repo.blob(oid));return this.blobs.get(oid)!;}
  async entry(oid:string,path:string):Promise<TreeEntry|null>{
-  validPath(path);const c=await this.commit(oid);if(!c)throw new Problem(404,'commit_missing','Commit does not exist');let tree=c.tree;const parts=path.split('/');
+  validPath(path);if(oid===ZERO)return null;const c=await this.commit(oid);if(!c)throw new Problem(404,'commit_missing','Commit does not exist');let tree=c.tree;const parts=path.split('/');
   for(let i=0;i<parts.length;i++){const e=(await this.tree(tree)).find(e=>e.name===parts[i]);if(!e)return null;if(i===parts.length-1)return e;if(e.type!=='tree')return null;tree=e.oid;}return null;
  }
  async file(oid:string,path:string){const e=await this.entry(oid,path);if(!e)return null;if(e.type!=='blob'||!['100644','100755'].includes(e.mode))throw new Problem(422,'unsupported_file','Only regular files are editable through this API');const bytes=await this.blob(e.oid);if(bytes.length>256*1024)throw new Problem(413,'file_limit','File exceeds the editing API limit');try{const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);if(text.includes('\0'))throw new Error();return text;}catch{throw new Problem(422,'binary_file','The editing API accepts UTF-8 text only');}}

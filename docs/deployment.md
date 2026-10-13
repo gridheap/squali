@@ -26,11 +26,15 @@ Generate tokens with a cryptographic RNG. Never commit raw tokens, paste them in
 
 Static assets include a CSP and referrer policy in `_headers`. The API has the same-origin mutation check and bearer authorization. Production does not include local fixture credentials.
 
+## Clerk and GitHub
+
+See [the sign-in and import deployment guide](github-import.md). Production OAuth remains pending credentials and a live provider smoke. Apply the additive schema migration before deploying this version. Wildcard principals now cover legacy workspaces; personal workspaces require owner sessions or explicit workspace credentials.
+
 ## Recovery
 
 - Retry create/propose/publish with the same ID and exact input after a timeout.
 - A preparing publication whose commit already equals main is finalized by replaying the original publish request.
-- A preparing publication that never reached Git can be cancelled with `POST /publications/:id/abort`, its expected unchanged base and an explanation.
+- Cancellation of an ambiguous in-flight publication still needs stronger fencing against a delayed upstream push. Do not treat the current abort endpoint as proof that a timed-out external write can never land; see the readiness audit.
 - If main moved after an ambiguous outcome, freeze that workspace's publishing and inspect the Git graph and journal. Do not force-push or blindly delete journal records. The prototype deliberately requires administrator reconciliation here.
 - If a Worker was terminated while its publication marker is active, first confirm the old invocation has ended and reconcile the recorded commit with Git. Only then clear the active marker as an administrator and replay the original request. No timer clears it automatically.
 - The call cap resets by UTC month. Do not raise it automatically. Reads hitting the immutable cache still work when no upstream call is needed.

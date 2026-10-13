@@ -1,0 +1,46 @@
+$ node --import tsx --test tests/api.test.ts
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (223.493292ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (298.312875ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (779.226042ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (886.877042ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (346.090958ms)
+✔ persistent operation limits stop work before the next provider call (64.170542ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (409.118292ms)
+✔ immutable source reads reuse the cache after authorization (18.924541ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (355.551791ms)
+✔ standard Git can clone through the authenticated read-only gateway (164.435334ms)
+✔ the complete HTTP workflow makes progress with a single database connection (562.563709ms)
+✖ agents start from the real current head and replay frozen proposals without provider calls (524.452417ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4819.063334
+
+✖ failing tests:
+
+test at tests/api.test.ts:3:12945
+✖ agents start from the real current head and replay frozen proposals without provider calls (524.452417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + '6813d8fed19fad069cdf72d1cbc088d416de531a'
+  - '63263b6b3ab36edfffac21e2cc524e19f5599f83'
+
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/api.test.ts:172:98)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '6813d8fed19fad069cdf72d1cbc088d416de531a',
+    expected: '63263b6b3ab36edfffac21e2cc524e19f5599f83',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+[ELIFECYCLE] Command failed with exit code 1.

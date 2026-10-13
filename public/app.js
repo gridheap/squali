@@ -1,14 +1,17 @@
 const $ = (s, root = document) => root.querySelector(s);
-const state = { token: '', session: null, projects: [], project: null, changes: [], overlaps: [], view: 'changes', search: '', filter: 'active' };
+const state = { clerk: null, authUser: null, authGeneration: 0, githubRepos: [], githubNext: 1, imports: [], importStop: false, token: '', session: null, projects: [], project: null, changes: [], overlaps: [], view: 'changes', search: '', filter: 'active' };
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const short = value => value ? value.slice(0, 8) : '—';
 const tag = value => `<span class="badge ${escape(value)}">${escape(value)}</span>`;
 const gate = text => `<span data-font-gated>${escape(text)}</span>`;
 function status(message, error = false) { $('#status').textContent = message; $('#status').classList.toggle('error', error); }
 async function api(path, body) {
-  const response = await fetch('/api' + path, { method: body === undefined ? 'GET' : 'POST', headers: { authorization: 'Bearer ' + state.token, 'content-type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const generation = state.authGeneration;
+  const token = state.clerk?.session ? await state.clerk.session.getToken() : state.token;
+  const response = await fetch('/api' + path, { method: body === undefined ? 'GET' : 'POST', headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
   const value = await response.json();
-  if (!response.ok) throw new Error(value.message + (value.details ? '\n' + JSON.stringify(value.details) : ''));
+  if (generation !== state.authGeneration) throw new Error('Account changed. Please try again.');
+  if (!response.ok) { const error = new Error(value.message + (value.details ? '\n' + JSON.stringify(value.details) : '')); error.status = response.status; throw error; }
   return value;
 }
 const route = suffix => `/projects/${state.project.id}${suffix}`;
@@ -23,6 +26,10 @@ async function busy(button, fn) {
 function dialog(title, html) {
   $('#dialog-title').textContent = title;
   $('#dialog-body').innerHTML = html + '<div id="dialog-notice" role="status" class="notice"></div>';
+  for (const label of $('#dialog-body').querySelectorAll('label')) for (const child of [...label.childNodes]) {
+    if (child.nodeType !== Node.TEXT_NODE || !child.textContent.trim()) continue;
+    const text = document.createElement('span'); text.dataset.fontGated = ''; text.textContent = child.textContent; child.replaceWith(text);
+  }
   if (!$('#dialog').open) $('#dialog').showModal();
 }
 const close = () => $('#dialog').close();
@@ -30,9 +37,10 @@ $('#dialog').addEventListener('cancel', e => { if ($('#dialog-close').disabled) 
 $('#dialog-close').onclick = close;
 $('#dialog').addEventListener('click', e => { if (e.target === $('#dialog')) { const b = e.target.getBoundingClientRect(); if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) close(); } });
 function connect() {
-  dialog('Connect your workspace', `<form class="form connect-form" id="connect-form" inert><p class="muted" data-font-gated>Use a reviewer or agent token. It stays in memory for this tab and is cleared when you leave.</p><label>Access token<input name="token" type="password" autocomplete="off" required placeholder="Paste your access token" aria-label="Access token"></label><div class="form-actions"><button class="button primary" aria-label="Connect"><span aria-hidden="true">↗</span>${gate('Connect')}</button></div></form>`);
+  dialog('Connect your workspace', `${state.clerk ? '<button class="button primary full-button" id="github-signin" aria-label="Continue with GitHub"><span aria-hidden="true">↗</span>'+gate('Continue with GitHub')+'</button><p class="muted" data-font-gated>Sign in to import your repositories. Agent access tokens remain available below.</p>' : ''}<form class="form connect-form" id="connect-form" inert><p class="muted" data-font-gated>Use a reviewer or agent token. It stays in memory for this tab and is cleared when you leave.</p><label>Access token<input name="token" type="password" autocomplete="off" required placeholder="Paste your access token" aria-label="Access token"></label><div class="form-actions"><button class="button primary" aria-label="Connect"><span aria-hidden="true">↗</span>${gate('Connect')}</button></div></form>`);
+  if ($('#github-signin')) $('#github-signin').onclick = e => busy(e.currentTarget, () => state.clerk.redirectToSignIn({signInForceRedirectUrl:location.origin+'/?view=github',signUpForceRedirectUrl:location.origin+'/?view=github'}));
   const form = $('#connect-form');
-  form.onsubmit = e => { e.preventDefault(); busy($('button', form), async () => { const previous = state.token; state.token = form.elements.token.value; try { state.session = await api('/session'); } catch (e) { state.token = previous; throw e; } form.elements.token.value = ''; close(); $('#connection').textContent = '● ' + state.session.principal.role; $('#mode').textContent = state.session.mode; status('Connected as ' + state.session.principal.id); await loadProjects(); }); };
+  form.onsubmit = e => { e.preventDefault(); busy($('button', form), async () => { const previous = state.token; state.authGeneration++; state.token = form.elements.token.value; try { state.session = await api('/session'); } catch (e) { state.token = previous; throw e; } form.elements.token.value = ''; close(); $('#connection').textContent = '● ' + state.session.principal.role; $('#mode').textContent = state.session.mode; status('Connected as ' + state.session.principal.id); await loadProjects(); }); };
   form.inert = false;
 }
 $('#connect-open').onclick = connect;
@@ -58,18 +66,50 @@ function createWorkspace() {
   const form = $('#workspace-form'); form.onsubmit = e => { e.preventDefault(); busy($('button', form), async () => { const name = form.elements.name.value; const made = await api('/projects', { id: form.elements.id.value, name, files: [{ path: 'README.md', content: `# ${name}\n\nBuilt together with Squali.\n` }] }); state.project = made; close(); status('Workspace created'); await loadProjects(); }); }; form.inert = false;
 }
 $('#new-workspace').onclick = createWorkspace;
+$('#agent-access').onclick = e => busy(e.currentTarget, manageAgents);
 $('#new-change').onclick = () => compose();
 function compose(existing) {
   if (!state.project) return;
-  const first = existing?.diff?.[0];
-  dialog(existing ? 'Resolve with a new revision' : 'Propose a change', `<form class="form" id="change-form" inert><div class="form-row"><label>Change ID<input name="id" required value="change-${Date.now().toString(36)}"></label><label>Change title<input name="title" required value="${escape(existing?.title ?? '')}" placeholder="Add a retry-aware client"></label></div><label>Intent<textarea name="intent" required placeholder="What should change, and what must stay true?">${escape(existing?.intent ?? '')}</textarea></label><div class="form-row"><label>Path<input name="path" required value="${escape(first?.path ?? 'src/client.ts')}"></label><label>Dependencies<input name="dependencies" value="${escape(existing?.dependencies?.join(', ') ?? '')}" placeholder="Optional comma-separated change IDs"></label></div><label>Content<textarea name="content" spellcheck="false" class="code-input">${escape(first?.after ?? 'export const retries = 3;\n')}</textarea></label><label>Context / evidence (JSON)<textarea name="context" spellcheck="false">${escape(JSON.stringify(existing?.context ?? { prompt: '', evidence: [] }, null, 2))}</textarea></label>${existing ? '<label>Resolution note<input name="note" required placeholder="Explain how the competing intents are preserved"></label>' : ''}<div class="form-actions"><button class="button primary" aria-label="Submit change">${gate(existing ? 'Create revision' : 'Submit change')}</button></div></form>`);
-  const form = $('#change-form');form.onsubmit = e => { e.preventDefault(); busy($('button', form), async () => {
-    const f = form.elements; const files = [{ path: f.path.value, content: f.content.value }];
+  let edits = existing ? existing.diff.map(file => ({
+    path: file.path, content: file.after,
+    mode: existing.files.find(delta => delta.path === file.path)?.mode ?? '100644'
+  })) : [{ path: 'src/client.ts', content: 'export const retries = 3;\n', mode: '100644' }];
+  const immutable = existing ? 'readonly' : '';
+  dialog(existing ? 'Resolve with a new revision' : 'Propose a change', `<form class="form" id="change-form" inert>
+    <div class="form-row"><label>Change ID<input name="id" required value="change-${Date.now().toString(36)}"></label><label>Change title<input name="title" required ${immutable} value="${escape(existing?.title ?? '')}" placeholder="Add a retry-aware client"></label></div>
+    <label>Intent<textarea name="intent" required ${immutable}>${escape(existing?.intent ?? '')}</textarea></label>
+    <label>Dependencies<input name="dependencies" ${immutable} value="${escape(existing?.dependencies?.join(', ') ?? '')}" placeholder="Optional comma-separated change IDs"></label>
+    <div id="file-editors"></div><button type="button" class="button" id="add-file" aria-label="Add file"><span aria-hidden="true">＋</span>${gate('Add file')}</button>
+    <label>Context / evidence (JSON)<textarea name="context" spellcheck="false" ${immutable}>${escape(JSON.stringify(existing?.context ?? { prompt: '', evidence: [] }, null, 2))}</textarea></label>
+    ${existing ? '<p class="notice">Original intent, context and dependencies are retained. Edit the complete set of file changes below; removing a file explicitly drops that edit from the revision.</p><label>Resolution note<input name="note" required></label>' : ''}
+    <div class="form-actions"><button class="button primary" aria-label="Submit change"><span aria-hidden="true">↑</span>${gate(existing ? 'Create revision' : 'Submit change')}</button></div></form>`);
+  const form = $('#change-form');
+  const collect = () => [...form.querySelectorAll('[data-file-editor]')].map(row => ({
+    path: $('[data-file-path]', row).value,
+    content: $('[data-file-action]', row).value === 'delete' ? null : $('[data-file-content]', row).value,
+    mode: $('[data-file-mode]', row).value
+  }));
+  function renderEditors() {
+    $('#file-editors').innerHTML = edits.map((file, i) => `<fieldset class="file-editor" data-file-editor>
+      <legend data-font-gated>File ${i + 1}</legend><div class="form-row"><label><span data-font-gated>Path</span><input data-file-path required aria-label="File path ${i + 1}" value="${escape(file.path)}"></label>
+      <label><span data-font-gated>Action</span><select data-file-action aria-label="File action ${i + 1}"><option value="write" ${file.content !== null ? 'selected' : ''}>Write file</option><option value="delete" ${file.content === null ? 'selected' : ''}>Delete file</option></select></label></div>
+      <label data-content-label ${file.content === null ? 'hidden' : ''}><span data-font-gated>Content</span><textarea data-file-content spellcheck="false" class="code-input" aria-label="File content ${i + 1}">${escape(file.content ?? '')}</textarea></label>
+      <div class="form-row"><label><span data-font-gated>Mode</span><select data-file-mode aria-label="File mode ${i + 1}"><option value="100644" ${file.mode === '100644' ? 'selected' : ''}>Regular file</option><option value="100755" ${file.mode === '100755' ? 'selected' : ''}>Executable file</option></select></label>
+      <button type="button" class="button" data-remove-file="${i}" aria-label="Remove file ${i + 1}" ${edits.length === 1 ? 'disabled' : ''}><span aria-hidden="true">×</span>${gate('Remove this edit')}</button></div></fieldset>`).join('');
+    for (const row of form.querySelectorAll('[data-file-editor]')) $('[data-file-action]', row).onchange = e => { $('[data-content-label]', row).hidden = e.target.value === 'delete'; };
+    for (const button of form.querySelectorAll('[data-remove-file]')) button.onclick = () => { edits = collect(); edits.splice(Number(button.dataset.removeFile), 1); renderEditors(); };
+    $('#add-file').disabled = edits.length >= 64;
+  }
+  $('#add-file').onclick = () => { edits = collect(); edits.push({ path: '', content: '', mode: '100644' }); renderEditors(); };
+  renderEditors();
+  form.onsubmit = e => { e.preventDefault(); busy($('button[type="submit"], button[aria-label="Submit change"]', form), async () => {
+    const f = form.elements; const files = collect();
     if (existing) await api(route(`/changes/${existing.id}/revise`), { id: f.id.value, files, note: f.note.value });
     else await api(route('/changes'), { id: f.id.value, title: f.title.value, intent: f.intent.value, context: JSON.parse(f.context.value), dependencies: f.dependencies.value.split(',').map(s => s.trim()).filter(Boolean), base: state.project.head, files });
-    close(); status('Change submitted for review'); await refresh();
+    close(); await refresh(); status('Change submitted for review');
   }); }; form.inert = false;
 }
+
 async function details(cid) {
   const c = await api(route(`/changes/${cid}`));
   dialog(c.title, `<div class="detail-summary">${tag(c.status)}<span class="mono muted">${escape(c.author)} / ${short(c.oid)}</span><span class="muted">base ${short(c.base)}</span></div><h3 data-font-gated>Intent</h3><p class="muted intent-copy">${escape(c.intent)}</p><h3 data-font-gated>Context carried forward</h3><pre class="context">${escape(JSON.stringify(c.context, null, 2))}</pre>${c.dependencies.length ? `<p class="muted">Depends on: ${escape(c.dependencies.join(', '))}</p>` : ''}${c.diff.map(f => `<div class="diff"><div class="diff-title">${escape(f.path)}</div><div class="diff-columns"><pre aria-label="Before">${escape(f.before ?? '(new file)')}</pre><pre aria-label="After">${escape(f.after ?? '(deleted)')}</pre></div></div>`).join('')}<div class="review-actions">${['proposed', 'approved', 'rejected'].includes(c.status) ? `<button class="button primary" id="approve" aria-label="Approve change">${gate('Approve change')}</button><button class="button danger" id="reject" aria-label="Reject change">${gate('Request revision')}</button><button class="button" id="revise" aria-label="Revise change">${gate('Resolve / revise')}</button>` : ''}</div>`);
@@ -90,10 +130,12 @@ async function preview() {
 async function render() {
   document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === state.view));
   $('#crumb').textContent = state.project?.name ?? 'Overview';
+  $('#agent-access').hidden = !state.project || !state.session?.principal.owner;
   $('#new-change').hidden = !state.project || state.view !== 'changes';
   $('#nav-count').textContent = state.changes.filter(c => ['proposed', 'approved'].includes(c.status)).length;
-  $('#page-title').textContent = state.view === 'cost' ? 'Cost & limits' : state.view === 'history' ? 'A history of shared progress.' : state.view === 'source' ? 'Read only what you need.' : state.project?.name ?? 'Your next shared direction.';
+  $('#page-title').textContent = state.view === 'github' ? 'Bring your work to Squali.' : state.view === 'cost' ? 'Cost & limits' : state.view === 'history' ? 'A history of shared progress.' : state.view === 'source' ? 'Read only what you need.' : state.project?.name ?? 'Your next shared direction.';
   $('#subtitle').textContent = state.view === 'cost' ? 'Bound the work. Measure the result. Keep the cost visible.' : state.view === 'history' ? 'Every publication preserves its changes, decisions, and context.' : state.view === 'source' ? 'Browse immutable source without cloning the repository.' : state.project ? 'Independent changes, brought together with intent.' : 'A home for agent changes, context, and the decisions that connect them.';
+  if (state.view === 'github') return renderGitHub();
   if (state.view === 'cost') return renderCost();
   if (!state.project) { $('#content').innerHTML = `<div class="welcome"><div><h2 data-font-gated>More agents.<br>One shared direction.</h2><p data-font-gated>Give each agent space to work. Keep the context. Review the changes that matter, then bring compatible work together.</p><div class="review-actions"><button class="button primary" id="start">${gate(state.session ? 'Create your first workspace' : 'Connect your workspace')} <span aria-hidden="true">↗</span></button></div></div><div class="welcome-diagram" aria-hidden="true"><div class="diagram-lane"><span>agent / docs</span>immutable change</div><div class="diagram-lane"><span>agent / client</span>immutable change</div><div class="diagram-lane"><span>agent / tests</span>immutable change</div><div class="diagram-result">Review → reconcile → publish together</div></div></div>`; $('#start').onclick = state.session ? createWorkspace : connect; return; }
   if (state.view === 'source') return renderSource();
@@ -124,8 +166,99 @@ async function renderSource(path = '') {
   if ($('#source-back')) $('#source-back').onclick = () => renderSource(path.split('/').slice(0, -1).join('/'));
   for (const b of document.querySelectorAll('[data-path]')) b.onclick = () => busy(b, async () => { if (b.dataset.type === 'tree') return renderSource(b.dataset.path); const file = await api(route('/file?ref=' + result.ref + '&path=' + encodeURIComponent(b.dataset.path))); dialog(file.path, `<p class="muted mono">${file.oid}</p><pre class="context">${escape(file.content)}</pre>`); });
 }
-function renderCost() {
-  $('#content').innerHTML = `<div class="cost-grid">${[['Artifacts operations', '$0.15', 'per 1,000 operations above the 10,000 monthly allowance.'], ['Artifacts storage', '$0.50', 'per GB-month above the first 1 GB.'], ['Coordination', 'PostgreSQL', 'Reuses durable SQL. No D1. No application Durable Objects.']].map(([title, value, note]) => `<section class="panel"><div class="panel-body"><div class="aside-title">${title}</div><div class="cost-number">${value}</div><p class="muted">${note}</p></div></section>`).join('')}</div><section class="cost-details"><h2>Bounded by design</h2><p>Each deployment sets a persistent monthly Artifacts call cap. Failed and uncertain calls consume the cap. Writes use immutable operation IDs; retries reuse successful results.</p><p>At most 64 changed files, 256 KiB per editable file, 1 MiB per change, 32 dependencies, and 64 changes per publication. Text reconciliation is bounded to 2,000 lines per input and 12,000 lines per batch.</p><p>Artifacts currently limits each repository to 1 GB. A single enormous monorepo needs a different storage plan. This prototype does not claim 100,000-agent capacity.</p><p>Workers Paid, PostgreSQL hosting, backup, network, and CPU charges are additional. These are provider list prices, not measured deployment costs.</p><a href="https://developers.cloudflare.com/artifacts/platform/pricing/" target="_blank" rel="noopener">Cloudflare pricing · checked October 14, 2026 ↗</a></section>`;
+async function renderCost() {
+  const usage = state.session ? await api('/usage') : null;
+  const measured = usage ? `<section class="panel usage-panel"><div class="panel-body"><h2 data-font-gated>Reserved operations this month</h2><p class="cost-number"><span data-testid="usage-attempts">${Number(usage.attempts).toLocaleString()}</span> / <span data-testid="usage-cap">${Number(usage.cap).toLocaleString()}</span></p><p class="muted">${Math.max(0, usage.cap - usage.attempts).toLocaleString()} reservations remaining · ${escape(usage.mode)}</p><p class="muted">A conservative application counter. Failed and uncertain attempts count; this is not the provider’s measured bill.</p></div></section>` : '<p class="notice">Connect to see this deployment’s usage and remaining allowance.</p>';
+  $('#content').innerHTML = `${measured}<div class="cost-grid">${[['Artifacts operations', '$0.15', 'per 1,000 operations above the 10,000 monthly allowance.'], ['Artifacts storage', '$0.50', 'per GB-month above the first 1 GB.'], ['Coordination', 'PostgreSQL', 'Reuses durable SQL. No D1. No application Durable Objects.']].map(([title, value, note]) => `<section class="panel"><div class="panel-body"><div class="aside-title">${title}</div><div class="cost-number">${value}</div><p class="muted">${note}</p></div></section>`).join('')}</div><section class="cost-details"><h2>Bounded by design</h2><p>Each deployment sets a persistent monthly Artifacts call cap. Failed and uncertain calls consume the cap. Writes use immutable operation IDs; retries reuse successful results.</p><p>At most 64 changed files, 256 KiB per editable file, 1 MiB per change, 32 dependencies, and 64 changes per publication. Text reconciliation is bounded to 2,000 lines per input and 12,000 lines per batch.</p><p>Artifacts currently limits each repository to 1 GB. A single enormous monorepo needs a different storage plan. This prototype does not claim 100,000-agent capacity.</p><p>Workers Paid, PostgreSQL hosting, backup, network, and CPU charges are additional. These are provider list prices, not measured deployment costs.</p><a href="https://developers.cloudflare.com/artifacts/platform/pricing/" target="_blank" rel="noopener">Cloudflare pricing · checked October 14, 2026 ↗</a></section>`;
 }
 await render();
+await initIdentity();
 if (!state.session) connect();
+
+async function initIdentity() {
+  try {
+    const {publishableKey} = await fetch('/api/auth/config').then(r => r.json());
+    if (!publishableKey) return;
+    $('#github-nav').hidden = false;
+    const domain = atob(publishableKey.replace(/^pk_(live|test)_/, '')).replace(/\$$/, '');
+    if (!/^[\w.-]+$/.test(domain)) throw new Error('Invalid sign-in configuration');
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script'); script.src = `https://${domain}/npm/@clerk/clerk-js@6.39.0/dist/clerk.browser.js`; script.crossOrigin = 'anonymous'; script.dataset.clerkPublishableKey = publishableKey;
+      const timer = setTimeout(() => { script.remove(); reject(new Error('GitHub sign-in is taking too long. Reload to retry, or use an agent token.')); }, 12000);
+      script.onload = () => { clearTimeout(timer); resolve(); }; script.onerror = () => { clearTimeout(timer); reject(new Error('GitHub sign-in could not load. Reload to retry.')); }; document.head.append(script);
+    });
+    await window.Clerk.load(); state.clerk = window.Clerk;
+    async function accountChanged({user}) {
+      if ((user?.id ?? null) === state.authUser) return;
+      state.authUser = user?.id ?? null; state.authGeneration++; state.token = ''; state.session = null; state.project = null; state.projects = []; state.changes = []; state.overlaps = []; state.githubRepos = []; state.githubNext = 1; state.imports = []; state.importStop = true;
+      $('#workspace').innerHTML = '<option value="">Select workspace</option>'; $('#sign-out').hidden = !user; $('#connect-open').hidden = !!user;
+      $('#content').replaceChildren(); $('#dialog-body').replaceChildren(); close(); $('#connection').textContent = user ? '● Connecting' : '● Disconnected';
+      if (user) {
+        state.session = await api('/session'); state.view = 'github'; close(); $('#connection').textContent = '● GitHub'; $('#mode').textContent = state.session.mode; await loadProjects(); status('Signed in with GitHub');
+      } else { state.view = 'changes'; await render(); status('Signed out'); connect(); }
+    }
+    state.clerk.addListener(value => accountChanged(value).catch(e => status(e.message, true)));
+    await accountChanged({user:state.clerk.user});
+    $('#sign-out').onclick = e => busy(e.currentTarget, () => state.clerk.signOut());
+  } catch (e) { status(e.message, true); }
+}
+async function fetchGitHubPage() {
+  if (state.githubNext === null) return;
+  const result = await api('/github/repositories?page=' + state.githubNext);
+  const repos = new Map(state.githubRepos.map(r => [r.id, r]));
+  for (const repo of result.repositories) repos.set(repo.id, repo);
+  state.githubRepos = [...repos.values()]; state.githubNext = result.nextPage;
+  if (result.truncated) throw new Error('Repository discovery reached its 10,000-repository safety limit. Import this selection first.');
+}
+async function renderGitHub() {
+  if (!state.session?.principal.owner) {
+    $('#content').innerHTML = '<section class="panel"><div class="panel-body"><h2 data-font-gated>Your repositories, ready for agents.</h2><p class="muted" data-font-gated>Sign in with GitHub to choose repositories or import them all into private Squali workspaces.</p><button class="button primary" id="github-connect" aria-label="Sign in to import"><span aria-hidden="true">↗</span>'+gate('Sign in to import')+'</button></div></section>';
+    $('#github-connect').onclick = connect; return;
+  }
+  if (!state.githubRepos.length && state.githubNext) await fetchGitHubPage();
+  state.imports = (await api('/github/imports')).imports;
+  const imported = new Map(state.imports.map(row => [row.repositoryId, row]));
+  $('#content').innerHTML = `<section class="panel"><div class="panel-head"><h2 data-font-gated>GitHub repositories <small>/ ${state.githubRepos.length}${state.githubNext ? '+' : ''}</small></h2></div><div class="panel-body"><p class="muted" data-font-gated>Import independent private copies, including Git history, branches, and tags. GitHub stays unchanged. Only repositories authorized by GitHub are listed.</p><p class="muted" data-font-gated>Git LFS file payloads and submodule repositories are not copied. Their pointers and links remain in Git. Limit: 256 MiB per transfer; workspace and monthly operation caps also apply.</p><div class="import-actions"><button class="button primary" id="import-all" aria-label="Import all repositories"><span aria-hidden="true">↙</span>${gate('Import all repositories')}</button><button class="button" id="import-selected" aria-label="Import selected"><span aria-hidden="true">＋</span>${gate('Import selected')}</button><button class="button" id="import-resume" aria-label="Resume pending imports"><span aria-hidden="true">↻</span>${gate('Resume pending')}</button><button class="button" id="import-pause" aria-label="Pause imports"><span aria-hidden="true">Ⅱ</span>${gate('Pause')}</button></div><div id="import-progress" role="status" class="notice">${state.imports.filter(r => r.state === 'complete').length} complete · ${state.imports.filter(r => r.state !== 'complete').length} pending</div></div><div class="repository-list">${state.githubRepos.map(repo => { const job = imported.get(repo.id); return `<label class="repository-row"><input type="checkbox" value="${repo.id}" aria-label="Select ${escape(repo.full_name)}" ${job?.state === 'complete' ? 'disabled' : ''}><span><strong data-font-gated>${escape(repo.full_name)}</strong><span class="muted repository-meta" data-font-gated>${repo.private ? 'Private' : 'Public'} · ${escape(repo.default_branch || 'Empty')} · ${Number(repo.size).toLocaleString()} KiB</span>${job?.error ? `<span class="notice error">${escape(job.error)}</span>` : ''}</span>${tag(job?.state ?? 'available')}</label>`; }).join('')}</div>${state.githubNext ? '<div class="panel-body"><button class="button" id="github-more" aria-label="Load more repositories">↓ '+gate('Load more')+'</button></div>' : ''}</section>`;
+  if ($('#github-more')) $('#github-more').onclick = e => busy(e.currentTarget, async () => { await fetchGitHubPage(); await renderGitHub(); });
+  const enqueue = async all => {
+    if (all) while (state.githubNext) { await fetchGitHubPage(); if (state.githubRepos.length > 1000) throw new Error('Choose up to 1,000 repositories for this import batch.'); }
+    const ids = all ? state.githubRepos.map(r => r.id) : [...document.querySelectorAll('.repository-row input:checked')].map(input => Number(input.value));
+    if (!ids.length) throw new Error('Select at least one repository.');
+    await api('/github/imports', {repositoryIds:ids}); await continueImports();
+  };
+  $('#import-all').onclick = e => busy(e.currentTarget, () => enqueue(true));
+  $('#import-selected').onclick = e => busy(e.currentTarget, () => enqueue(false));
+  $('#import-resume').onclick = e => busy(e.currentTarget, continueImports);
+  $('#import-pause').onclick = () => { state.importStop = true; status('Pausing after the current repository. Progress is saved.'); };
+}
+async function continueImports() {
+  if (state.importRunning) return;
+  state.importRunning = true; state.importStop = false;
+  const generation = state.authGeneration; let pauseReason = '';
+  try {
+    const rows = (await api('/github/imports')).imports;
+    for (const row of rows) {
+      if (state.importStop || generation !== state.authGeneration) break;
+      if (row.state === 'complete' || row.attempts >= 3) continue;
+      status('Importing ' + row.repository + '…'); const progress = $('#import-progress'); if (progress) progress.textContent = 'Importing ' + row.repository + '…';
+      try { await api('/github/imports/' + row.id + '/run', {}); }
+      catch (e) { status(row.repository + ': ' + e.message, true); if ([403,409,429].includes(e.status)) { pauseReason = e.message; state.importStop = true; break; } }
+    }
+    if (generation !== state.authGeneration) return;
+    await loadProjects();
+    const rowsNow = (await api('/github/imports')).imports; const pending = rowsNow.filter(r => r.state !== 'complete').length; const complete = rowsNow.length - pending;
+    status(pending ? `${complete} repositories imported. ${pending} pending; progress is saved.${pauseReason ? ' '+pauseReason : ''}` : `${complete} repositories imported. No pending imports.`);
+  } finally { state.importRunning = false; }
+}
+
+async function manageAgents() {
+  const {tokens} = await api(route('/tokens'));
+  dialog('Agent access', `<p class="muted" data-font-gated>Create a credential for this workspace only. An agent can propose changes; a reviewer can approve and publish. Expired or revoked credentials stop working immediately.</p><form class="form" id="agent-form" inert><label>Credential label<input name="label" required maxlength="80" aria-label="Credential label" placeholder="Documentation agent"></label><div class="form-row"><label>Role<select name="role" aria-label="Credential role"><option value="agent">Agent</option><option value="reader">Reader</option><option value="reviewer">Reviewer</option></select></label><label>Expires in days<input type="number" name="days" min="1" max="30" value="7" required aria-label="Expires in days"></label></div><div class="form-actions"><button class="button primary" aria-label="Create agent token"><span aria-hidden="true">＋</span>${gate('Create agent token')}</button></div></form>${tokens.length ? '<h3 data-font-gated>Existing credentials</h3>' : ''}${tokens.map(token => `<div class="repository-row"><span aria-hidden="true">⚿</span><span><strong data-font-gated>${escape(token.label)}</strong><span class="repository-meta muted" data-font-gated>${escape(token.role)} · expires ${escape(new Date(token.expiresAt).toLocaleDateString())}</span></span>${token.revokedAt ? gate('Revoked') : `<button class="button small" data-revoke="${token.id}" aria-label="Revoke ${escape(token.label)}">× ${gate('Revoke')}</button>`}</div>`).join('')}`);
+  const form = $('#agent-form');
+  form.onsubmit = e => { e.preventDefault(); busy($('button', form), async () => {
+    const credential = await api(route('/tokens'), {label:form.elements.label.value,role:form.elements.role.value,days:Number(form.elements.days.value)});
+    dialog('Save your agent credential', `<p class="muted" data-font-gated>This token is shown once. Save it in your agent’s secret manager as SQUALI_TOKEN.</p><div class="form"><label>Agent token<input type="password" readonly value="${escape(credential.token)}" aria-label="Agent token"></label><button class="button" id="copy-agent-token" aria-label="Copy agent token"><span aria-hidden="true">⧉</span>${gate('Copy token')}</button><pre class="context">SQUALI_URL=${escape(location.origin)}\nWorkspace: ${escape(state.project.id)}\nRole: ${escape(credential.role)}</pre></div>`);
+    $('#copy-agent-token').onclick = e => busy(e.currentTarget, async () => { await navigator.clipboard.writeText(credential.token); $('#dialog-notice').textContent = 'Copied. Store it securely; it will not be shown again.'; });
+  }); }; form.inert = false;
+  for (const button of document.querySelectorAll('[data-revoke]')) button.onclick = e => busy(e.currentTarget, async () => { await api(route('/tokens/' + button.dataset.revoke + '/revoke'), {}); await manageAgents(); });
+}

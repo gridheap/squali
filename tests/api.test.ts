@@ -158,3 +158,18 @@ test('the complete HTTP workflow makes progress with a single database connectio
   const revised=await call('/projects/small-pool/changes/revise-me/revise',{id:'revised',note:'Choose version two',files:[{path:'a.txt',content:'v2\n'}]});assert.equal(revised.context.task,'small-pool');assert.equal(revised.status,'proposed');
  }finally{await fixture.close();}
 });
+
+test('agents start from the real current head and replay frozen proposals without provider calls',async()=>{
+ const fixture=await startLocal({port:0,test:true});
+ try{
+  const call=async(path:string,b?:unknown)=>{const r=await fetch(fixture.url+'/api'+path,{method:b?'POST':'GET',headers:{authorization:`Bearer ${admin}`,'content-type':'application/json'},body:b?JSON.stringify(b):undefined});return {status:r.status,data:await r.json() as any};};
+  await call('/projects',{id:'external',name:'External updates',files:[{path:'a.txt',content:'original\n'}]});
+  const {execFile}=await import('node:child_process');const {promisify}=await import('node:util');const {writeFile}=await import('node:fs/promises');const exec=promisify(execFile);const clone=fixture.dir+'/client';
+  const project=(await call('/projects/external')).data;await exec('git',['clone',project.remote,clone]);
+  await writeFile(clone+'/a.txt','external update\n');await exec('git',['-C',clone,'add','.']);await exec('git',['-C',clone,'-c','user.name=External','-c','user.email=external@example.invalid','commit','-m','External writer']);await exec('git',['-C',clone,'push','origin','main']);
+  const current=(await exec('git',['-C',clone,'rev-parse','HEAD'])).stdout.trim();
+  const input={id:'frozen',title:'Based on current source',intent:'Avoid stale default bases',files:[{path:'b.txt',content:'new\n'}]};
+  const made=await call('/projects/external/changes',input);assert.equal(made.status,201);assert.equal(made.data.base,current);
+  const before=(await call('/usage')).data.attempts;const replay=await call('/projects/external/changes',input);assert.equal(replay.status,201);assert.equal(replay.data.oid,made.data.oid);assert.equal((await call('/usage')).data.attempts,before);
+ }finally{await fixture.close();}
+});

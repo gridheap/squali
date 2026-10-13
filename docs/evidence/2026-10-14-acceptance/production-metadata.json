@@ -1,0 +1,24 @@
+{
+  "/": {
+    "status": 200,
+    "evidence": "normal curl; TLS verified"
+  },
+  "/api/auth/config": {
+    "status": 200,
+    "clerkEnabled": false,
+    "error": null
+  },
+  "/api/usage": {
+    "status": 200,
+    "data": {
+      "attempts": 89,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + PostgreSQL"
+    }
+  },
+  "/api/projects": {
+    "status": 200,
+    "legacyWorkspaceCount": 1,
+    "error": null
+  }
+}

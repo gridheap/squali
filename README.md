@@ -10,6 +10,8 @@ Cloud deployment: **Cloudflare Workers + Artifacts + PostgreSQL through Hyperdri
 
 The deployed integration passed real Artifacts publication, authenticated native Git clone and `git fsck`. [Verification evidence](docs/evidence/) separates local benchmarks from cloud smoke results.
 
+**Readiness:** this remains a prototype under acceptance. See [the readiness audit](docs/readiness.md). Clerk/GitHub import passes local acceptance; production OAuth configuration and its live smoke remain pending. [Import workflow and limits](docs/github-import.md).
+
 ## Run locally
 
 Prerequisites: Node.js 24+, pnpm, Git and PostgreSQL 17+. The repository pins Node 24.21.0 and pnpm 11.25.0 using mise. Do not install browsers to run the API tests.
@@ -61,6 +63,8 @@ CLI commands: `projects`, `create`, `changes`, `propose`, `show`, `review`, `rev
 ```sh
 pnpm typecheck
 pnpm test:e2e
+pnpm test:crash
+pnpm test:github
 pnpm build
 BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark
 ```
@@ -86,7 +90,7 @@ Read [architecture and tradeoffs](docs/architecture.md), [deployment](docs/deplo
 
 This is a competition prototype, not a replacement for GitHub's entire product. Artifacts currently caps a repository at 1 GB. The editing API handles UTF-8 regular files; symlinks, submodules and binary blobs are retained by unchanged trees but cannot be edited through the API. Text merges are bounded and cannot establish semantic correctness. One main branch per workspace is the publication boundary. No automatic CI runner, global distributed load claim, offline worktree daemon, LSP, blame index, or directory-level IAM is included.
 
-The UI is single-tenant per deployment, with project-scoped bearer principals. Use separate author and reviewer identities. Public installations should apply Cloudflare Access and appropriate request limits. Production tokens are never stored in browser storage.
+Clerk sessions isolate personal workspaces by owner. Owners can issue expiring, revocable credentials scoped to one workspace for agents, readers and reviewers. Legacy wildcard principals cover legacy workspaces only. GitHub imports preserve the source default branch. Browser application code keeps tokens in memory; Clerk manages its own login session. Apply deployment request limits appropriate to the audience.
 
 ## Fonts and license
 

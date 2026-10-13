@@ -35,3 +35,22 @@ test('font CSS timeout preserves usable inputs and locks the fallback across nav
  await expect(page.locator('link[data-adobe-fonts]')).toHaveCount(0);await page.getByRole('button',{name:'Cost & limits',exact:true}).click();await expect(page.getByRole('heading',{name:'Cost & limits',exact:true})).toBeVisible();
  await page.waitForTimeout(1600);await expect(page.locator('html')).toHaveClass(/wf-inactive/);await expect(page.locator('link[data-adobe-fonts]')).toHaveCount(0);
 });
+
+test('a reviewer revises every file in a proposal and sees actual reserved usage',async({page,request})=>{
+ const headers={authorization:'Bearer local-admin-test-token'};const id='revision-'+Date.now();
+ const call=async(path:string,data:unknown)=>{const r=await request.post('/api'+path,{headers,data});expect(r.ok()).toBe(true);return r.json();};
+ await call('/projects',{id,name:'Revision workspace',files:[{path:'a.txt',content:'a0\n'},{path:'b.txt',content:'b0\n'}]});
+ await call(`/projects/${id}/changes`,{id:'original',title:'Update two files',intent:'Both edits must survive revision',files:[{path:'a.txt',content:'a1\n'},{path:'b.txt',content:'b1\n'}]});
+ await page.goto('/');await page.getByLabel('Access token').fill('local-admin-test-token');await page.getByRole('button',{name:'Connect',exact:true}).click();await page.getByText('Connected as reviewer').waitFor();await page.getByLabel('Current workspace').selectOption(id);
+ await page.getByRole('button',{name:'Update two files',exact:true}).click();await page.getByRole('button',{name:'Revise change',exact:true}).click();
+ await page.getByLabel('Change ID',{exact:true}).fill('revised');
+ await expect(page.getByLabel('File path 2',{exact:true})).toHaveValue('b.txt');
+ await page.getByLabel('File content 1',{exact:true}).fill('a2\n');await page.getByLabel('Resolution note',{exact:true}).fill('Revise A while retaining B');
+ await page.setViewportSize({width:390,height:844});await mkdir(evidence,{recursive:true});await page.screenshot({path:evidence+'/multi-file-mobile.png',fullPage:true});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.setViewportSize({width:1440,height:1000});
+ await page.getByRole('button',{name:'Submit change',exact:true}).click();await page.getByText('Change submitted for review',{exact:true}).waitFor();
+ const detail=await request.get(`/api/projects/${id}/changes/revised`,{headers}).then(r=>r.json());
+ expect(detail.diff.map((f:any)=>[f.path,f.after])).toEqual([['a.txt','a2\n'],['b.txt','b1\n']]);expect(detail.status).toBe('proposed');
+ const usage=await request.get('/api/usage',{headers}).then(r=>r.json());
+ await page.getByRole('button',{name:'Cost & limits',exact:true}).click();await expect(page.getByTestId('usage-attempts')).toHaveText(usage.attempts.toLocaleString());await expect(page.getByTestId('usage-cap')).toHaveText(usage.cap.toLocaleString());
+ await mkdir(evidence,{recursive:true});await page.screenshot({path:evidence+'/revision-usage.png',fullPage:true});
+});

@@ -2,4 +2,4 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; connect-src 'self' https://use.typekit.net https://p.typekit.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://clerk.squa.li; style-src 'self' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; connect-src 'self' https://clerk.squa.li https://use.typekit.net https://p.typekit.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'

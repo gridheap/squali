@@ -1,16 +1,23 @@
 import {diff3Merge} from 'node-diff3';
 import {GitSession,sha256,blobId} from './git.ts';
-import {Problem} from './types.ts';
+import {Problem,ZERO} from './types.ts';
 import type {Config,Patch,Principal} from './types.ts';
 export type FileDelta={path:string;before:string|null;after:string|null;mode:string;beforeMode:string|null};
 export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
 export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
 export function changeService(config:Config,p:any,principal:Principal){
- const {sql,artifacts}=config;const repo=artifacts.repo(p.artifact);const g=new GitSession(repo);const pid=p.id;
+ const {sql,artifacts}=config;const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const pid=p.id;
  const event=async(tx:any,kind:string,data:unknown)=>tx`INSERT INTO weave_events(project,kind,actor,data) VALUES(${pid},${kind},${principal.id},${tx.json(data)})`;
  const get=async(cid:string)=>{const [c]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${cid}`;if(!c)throw new Problem(404,'change_missing','Change not found');return c;};
  async function propose(input:{id:string;title:string;intent:string;context:Record<string,unknown>;dependencies:string[];base?:string;files:Patch[]}){
-  const hash=sha256(JSON.stringify(input));const base=input.base??p.head;await g.commit(base).then(c=>{if(!c)throw new Problem(404,'commit_missing','Base commit not found');});
+  const hash=sha256(JSON.stringify(input));
+  const [existing]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`;
+  if(existing){
+   if(existing.request_hash!==hash||existing.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
+   if(existing.status!=='preparing')return changeView(existing);
+  }
+  const base=existing?.base??input.base??await repo.head()??ZERO;
+  if(base!==ZERO)await g.commit(base).then(c=>{if(!c)throw new Problem(404,'commit_missing','Base commit not found');});
   if(input.dependencies.includes(input.id))throw new Problem(400,'dependency_cycle','A change cannot depend on itself');
   await sql.begin(async tx=>{
    for(const dep of input.dependencies){const [c]=await tx`SELECT status FROM weave_changes WHERE project=${pid} AND id=${dep}`;if(!c||['rejected','preparing'].includes(c.status))throw new Problem(409,'dependency_missing','Dependencies must already be available');}
@@ -19,7 +26,7 @@ export function changeService(config:Config,p:any,principal:Principal){
   const [c]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`;
    if(c.request_hash!==hash||c.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
    if(c.status!=='preparing')return changeView(c);
-   const built=await g.build(c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
+   const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
    const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);
    const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
    return sql.begin(async tx=>{
@@ -39,7 +46,7 @@ export function changeService(config:Config,p:any,principal:Principal){
   });
  }
  async function preview(ids:string[],database:any=sql){
-  const head=await repo.head();if(!head)throw new Problem(409,'head_missing','Main is missing');
+  const head=await repo.head()??ZERO;
   const rows=await database`SELECT * FROM weave_changes WHERE project=${pid} AND id=ANY(${ids})`;const byId=new Map<string,any>(rows.map((c:any)=>[c.id,c]));
   if(rows.length!==ids.length)throw new Problem(404,'change_missing','One or more changes do not exist');
   const ordered:any[]=[];const visited=new Set<string>();const visiting=new Set<string>();
@@ -81,8 +88,8 @@ export function changeService(config:Config,p:any,principal:Principal){
  async function publish(input:{id:string;changes:string[];expectedHead?:string}){
   const hash=sha256(JSON.stringify(input));
   const [existing]=await sql`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;
-  const validate=(saved:any)=>{if(saved&&saved.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Publication ID already used with different input');if(saved?.state==='aborted')throw new Problem(409,'publication_aborted','This publication was cancelled; use a new ID');if(saved?.metrics?.active)throw new Problem(409,'publication_busy','This publication is in flight. Wait for its result; an interrupted Worker requires administrator reconciliation.');};
-  validate(existing);if(existing?.state==='published')return publicationView(existing);
+  const validate=(saved:any,checkActive=true)=>{if(saved&&saved.request_hash!==hash)throw new Problem(409,'idempotency_mismatch','Publication ID already used with different input');if(saved?.state==='aborted')throw new Problem(409,'publication_aborted','This publication was cancelled; use a new ID');if(checkActive&&saved?.metrics?.active)throw new Problem(409,'publication_busy','This publication is in flight. Wait for its result; an interrupted Worker requires administrator reconciliation.');};
+  validate(existing,false);if(existing?.state==='published')return publicationView(existing);
   const finalize=()=>sql.begin(async tx=>{
    await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
    const [current]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;
@@ -91,6 +98,7 @@ export function changeService(config:Config,p:any,principal:Principal){
    await tx`UPDATE weave_projects SET head=${done.oid} WHERE id=${pid}`;await tx`UPDATE weave_changes SET status='landed',publication=${input.id} WHERE project=${pid} AND id=ANY(${done.changes})`;await event(tx,'batch.published',{id:input.id,oid:done.oid,changes:done.changes});return publicationView(done);
   });
   if(existing?.oid&&await repo.head()===existing.oid)return finalize();
+  validate(existing);
   const plan=await preview(input.changes);
   if(input.expectedHead&&input.expectedHead!==plan.head)throw new Problem(409,'head_moved','Main changed since preview; refresh before publishing');
   if(!plan.ready)throw new Problem(409,'not_ready','Batch requires approval or conflict resolution',{conflicts:plan.conflicts,unapproved:plan.unapproved});
@@ -106,9 +114,9 @@ export function changeService(config:Config,p:any,principal:Principal){
   });
   if(saved.state==='published')return publicationView(saved);
   try{
-   const built=await g.build(plan.head,plan.files,`Squali batch ${input.id}\n\nChanges: ${plan.changes.join(', ')}`,principal.id,Math.floor(new Date(saved.created_at).getTime()/1000));
+   const built=await g.build(plan.head===ZERO?null:plan.head,plan.files,`Squali batch ${input.id}\n\nChanges: ${plan.changes.join(', ')}`,principal.id,Math.floor(new Date(saved.created_at).getTime()/1000));
    await sql`UPDATE weave_publications SET oid=${built.oid},metrics=${sql.json({active,objects:built.objects,bytes:built.bytes,changes:plan.changes.length})} WHERE project=${pid} AND id=${input.id}`;
-   await repo.push('refs/heads/main',plan.head,built.oid,built.pack);return await finalize();
+   await repo.push(p.main_ref??'refs/heads/main',plan.head===ZERO?null:plan.head,built.oid,built.pack);return await finalize();
   }finally{
    await sql`UPDATE weave_publications SET metrics=metrics-'active' WHERE project=${pid} AND id=${input.id} AND metrics->>'active'=${active}`;
   }

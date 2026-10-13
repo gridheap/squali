@@ -35,3 +35,19 @@ Error responses are `{error, message, details?}`. `401` means missing credential
 ## Authenticated Git reads
 
 Use `/api/projects/:project/git` as a Git remote and supply the same bearer token through a credential helper or a protected Git configuration. The gateway permits only `info/refs?service=git-upload-pack` and `git-upload-pack`; receive-pack and other operations return `403`. Requests remain project-scoped and upstream calls share the operation cap. The Artifacts remote returned in project metadata requires a separate Artifacts credential; a Squali bearer token is not an Artifacts token.
+
+## Clerk and GitHub
+
+`GET /api/auth/config` is public and returns the configured Clerk publishable key, or `null` while disabled. Other endpoints require a bearer credential. Clerk session JWTs are checked against the configured issuer and authorized origin. Personal workspaces are owner-isolated; scoped machine credentials can access only their workspace. Legacy wildcard credentials cover legacy workspaces only.
+
+| Method | Path | Input / behavior |
+|---|---|---|
+| GET | `/api/github/repositories?page=1` | Owner session; 100 items/page, `repositories`, `nextPage`, `truncated`; cache 15 minutes |
+| POST | `/api/github/imports` | `{repositoryIds:[123,456]}` from a fresh authorized catalog; deduplicated by owner + repository ID |
+| GET | `/api/github/imports` | Durable progress; no secrets returned |
+| POST | `/api/github/imports/:id/run` | `{}`; run or reconcile one job; repeat completed jobs without provider calls; 409 when another import is active |
+| POST | `/api/projects/:id/tokens` | Owner only; `{label,role:'agent'|'reader'|'reviewer',days:1..30}`; raw token revealed once |
+| GET | `/api/projects/:id/tokens` | Owner only; metadata and expiry/revocation, never plaintext tokens or hashes |
+| POST | `/api/projects/:id/tokens/:tokenId/revoke` | Owner only; `{}`; immediately prevents new authenticated requests |
+
+Import returns `queued`, `running`, `failed` or `complete`. A job retains its immutable source refs. A failed job can be resumed within its three-attempt ceiling; limits do not trigger automatic retries. `bytes: null` means transfer size was not recorded before interruption. See [the import guide](github-import.md) for scope, storage limits and production activation status.

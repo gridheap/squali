@@ -6,3 +6,9 @@ html.wf-inactive{--font-sans:var(--app-font-native-sans)}html.wf-loading [data-f
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 .form .code-input{min-height:180px}.intent-copy{margin:8px 0 20px}.full-button{width:100%;margin-top:15px}.overlap-label{color:#a56b3d}
+
+.file-editor{border:1px solid var(--line);border-radius:7px;margin:0 0 16px;padding:16px;display:grid;gap:14px;min-width:0}.file-editor legend{padding:0 6px;font-size:12px;font-weight:600}.file-editor select{padding:10px;border:1px solid var(--line);border-radius:5px;background:#fff;min-width:0}.file-editor [data-remove-file]{align-self:end}.usage-panel{margin-bottom:20px}
+
+.form input,.form select{font-family:var(--font-mono)}
+.import-actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.repository-row{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:16px;align-items:center;padding:18px 24px;border-top:1px solid var(--line);cursor:pointer}.repository-row strong{overflow-wrap:anywhere}.repository-row input{width:16px;height:16px;accent-color:var(--accent)}.repository-meta{display:block;margin-top:5px;font-size:13px}.repository-row .notice{display:block;overflow-wrap:anywhere}.import-actions .button{flex-shrink:0}@media(max-width:560px){.repository-row{padding:16px;gap:10px}.repository-row .badge{font-size:10px}.top-actions{gap:6px}.import-actions .button{font-size:12px}}
+[hidden]{display:none!important}@media(max-width:620px){nav{flex-wrap:wrap;justify-content:flex-start}.topbar{gap:12px}.breadcrumb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top-actions{flex-shrink:0}}

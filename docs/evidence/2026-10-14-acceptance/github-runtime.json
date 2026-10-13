@@ -1,0 +1,7 @@
+{
+  "command": "pnpm test:github",
+  "provider": "local HTTP + real Git, Clerk frontend SDK boundary fixture",
+  "signInReadyMs": 120,
+  "signedInMs": 239,
+  "fontPendingAtSignIn": true
+}
