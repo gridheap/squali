@@ -1,5 +1,7 @@
 # Competition submission material
 
+**Draft only. Full Scion parity and the large private import are not accepted yet. The linked video predates the new source-service and R2 features. Do not submit this as final.**
+
 ## Project
 
 **Squali — source control for parallel agents.**
@@ -8,7 +10,7 @@ Live application: https://squa.li
 
 Repository: https://github.com/gridheap/squali
 
-License: MIT. The local application runs with PostgreSQL and Git; the production adapter targets Cloudflare Workers, Artifacts and Hyperdrive. No D1 or application Durable Objects are used.
+License: MIT. The local application runs with PostgreSQL and Git; the production adapter targets Cloudflare Workers, Artifacts, R2 and Hyperdrive. No D1 or application Durable Objects are used.
 
 ## Vision (form draft)
 

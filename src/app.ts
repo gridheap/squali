@@ -1,3 +1,5 @@
+import {authorizePaths,canPath,containsPath,parseScopes,parseRules} from './permissions.ts';
+import {metadataService} from './metadata.ts';
 import {randomBytes} from 'node:crypto';
 import {githubService} from './github.ts';
 import {authenticate,clerkDomain} from './auth.ts';
@@ -39,9 +41,9 @@ export function createApp(config:Config){
    const principal=await authenticate(request,config);
    const mutating=request.method!=='GET';if(mutating&&request.headers.has('origin')&&request.headers.get('origin')!==url.origin)throw new Problem(403,'origin','Cross-origin mutations are forbidden');
    const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid&&resource==='projects'){id(pid);if(principal.projects.includes('*')){const [owned]=await sql`SELECT owner_id FROM weave_projects WHERE id=${pid}`;if(owned?.owner_id)throw new Problem(403,'scope','Use a workspace-specific credential for personal workspaces');}if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
-   if(resource==='github'){const gh=githubService(config,principal);if(parts[2]==='repositories'&&request.method==='GET')return json(await gh.catalog(Number(url.searchParams.get('page')??1)));if(parts[2]==='imports'){if(parts[3]&&parts[4]==='run'&&request.method==='POST')return json(await gh.run(id(parts[3])));if(!parts[3]&&request.method==='GET')return json(await gh.list());if(!parts[3]&&request.method==='POST')return json(await gh.enqueue((await body(request)).repositoryIds),201);}}
+   if(resource==='github'){const gh=githubService(config,principal);if(parts[2]==='repositories'&&request.method==='GET')return json(await gh.catalog(Number(url.searchParams.get('page')??1)));if(parts[2]==='imports'){if(parts[3]&&parts[4]==='reconcile'&&request.method==='POST')return json(await gh.reconcile(id(parts[3])));if(parts[3]&&parts[4]==='run'&&request.method==='POST')return json(await gh.run(id(parts[3])));if(!parts[3]&&request.method==='GET')return json(await gh.list());if(!parts[3]&&request.method==='POST')return json(await gh.enqueue((await body(request)).repositoryIds),201);}}
    const requireRole=(roles:string[])=>{if(!roles.includes(principal.role))throw new Problem(403,'role','Your role does not allow this operation');};
-   if(resource==='usage'&&request.method==='GET'){const [usage]=await sql`SELECT attempts FROM weave_usage WHERE month=${new Date().toISOString().slice(0,7)}`;return json({attempts:Number(usage?.attempts??0),cap:config.monthlyOps,mode:config.mode});}
+   if(resource==='usage'&&request.method==='GET'){const [usage]=await sql`SELECT attempts FROM weave_usage WHERE month=${new Date().toISOString().slice(0,7)}`;const cache=await sql`SELECT kind,reservations FROM weave_cache_usage WHERE month=${new Date().toISOString().slice(0,7)}`;return json({attempts:Number(usage?.attempts??0),cap:config.monthlyOps,mode:config.mode,cache:{reservedReads:Number(cache.find(r=>r.kind==='reads')?.reservations??0),reservedWrites:Number(cache.find(r=>r.kind==='writes')?.reservations??0),readCap:config.cacheBudget?.reads??null,writeCap:config.cacheBudget?.writes??null}});}
    if(resource==='session'&&request.method==='GET')return json({principal,mode:config.mode,adobeKit:config.adobeKit??null});
    if(resource==='projects'&&!pid&&request.method==='GET'){const rows=principal.projects.includes('*')?await sql`SELECT * FROM weave_projects WHERE state='ready' AND owner_id IS NULL ORDER BY created_at DESC LIMIT 100`:await sql`SELECT * FROM weave_projects WHERE state='ready' AND id=ANY(${principal.projects}) ORDER BY created_at DESC LIMIT 100`;return json({projects:rows.map(projectView)});}
    if(resource==='projects'&&!pid&&request.method==='POST'){
@@ -55,51 +57,88 @@ export function createApp(config:Config){
    }
    if(resource==='projects'&&pid){
     const p=await getProject(pid);const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const action=parts[3];
+    const unrestricted=()=>{if(principal.paths)throw new Problem(403,'path_scope','This endpoint requires access to the whole workspace');};
+    const checkChanges=async(ids:string[])=>{if(!principal.paths)return;const seen=new Set<string>();let pending=ids;while(pending.length){const next=[...new Set(pending)].filter(id=>!seen.has(id));if(!next.length)break;if(seen.size+next.length>64)throw new Problem(400,'scope_graph','Directory-scoped operations inspect at most 64 dependency records');next.forEach(id=>seen.add(id));const rows=await sql`SELECT files,dependencies FROM weave_changes WHERE project=${pid} AND id=ANY(${next})`;for(const row of rows)authorizePaths(principal,row.files.map((f:any)=>f.path));pending=rows.flatMap(row=>row.dependencies);}};
+    if(action==='policy'){
+     if(principal.role!=='admin'||(p.owner_id&&principal.owner!==p.owner_id))throw new Problem(403,'policy_owner','Only the workspace owner can manage review policy');
+     if(request.method==='GET'){const [row]=await sql`SELECT rules,updated_at FROM weave_review_policy WHERE project=${pid}`;return json(row??{rules:[]});}
+     if(request.method==='POST'){const rules=parseRules((await body(request)).rules);await sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${'weave-publish:'+pid},0))`;const [pending]=await tx`SELECT id FROM weave_publications WHERE project=${pid} AND state='preparing' LIMIT 1`;if(pending)throw new Problem(409,'publication_pending','Complete or cancel the in-flight publication before changing policy');await tx`INSERT INTO weave_review_policy(project,rules) VALUES(${pid},${tx.json(rules)}) ON CONFLICT(project) DO UPDATE SET rules=EXCLUDED.rules,updated_at=clock_timestamp()`;});return json({rules});}
+    }
     if(action==='tokens'){
      if(!principal.owner||p.owner_id!==principal.owner)throw new Problem(403,'token_owner','Only the workspace owner may manage agent credentials');
-     const tokenView=(r:any)=>({id:r.id,label:r.label,role:r.role,expiresAt:r.expires_at,revokedAt:r.revoked_at});
+     const tokenView=(r:any)=>({id:r.id,label:r.label,role:r.role,expiresAt:r.expires_at,revokedAt:r.revoked_at,paths:r.paths??null});
      if(request.method==='GET')return json({tokens:(await sql`SELECT * FROM weave_tokens WHERE project=${pid} ORDER BY created_at DESC LIMIT 100`).map(tokenView)});
      if(request.method==='POST'&&parts[5]==='revoke'){await sql`UPDATE weave_tokens SET revoked_at=now() WHERE project=${pid} AND id=${id(parts[4])}`;return json({revoked:true});}
-     if(request.method==='POST'&&!parts[4]){const input=await body(request);const label=text(input.label,80);if(!['agent','reader','reviewer'].includes(input.role)||!Number.isInteger(input.days)||input.days<1||input.days>30)throw new Problem(400,'token_options','Choose agent, reader or reviewer and a lifetime of 1–30 days');
+     if(request.method==='POST'&&!parts[4]){const input=await body(request);const label=text(input.label,80);const paths=parseScopes(input.paths);if(!['agent','reader','reviewer'].includes(input.role)||!Number.isInteger(input.days)||input.days<1||input.days>30)throw new Problem(400,'token_options','Choose agent, reader or reviewer and a lifetime of 1–30 days');
       const token='sq_'+randomBytes(32).toString('base64url');const tokenId='tok_'+randomBytes(12).toString('hex');const expires=new Date(Date.now()+input.days*86400000);
-      const made=await sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${'tokens:'+pid},0))`;const [{count}]=await tx`SELECT count(*) FROM weave_tokens WHERE project=${pid} AND revoked_at IS NULL AND expires_at>now()`;if(Number(count)>=32)throw new Problem(429,'token_cap','At most 32 active credentials per workspace');const [row]=await tx`INSERT INTO weave_tokens(id,project,token_hash,label,role,expires_at) VALUES(${tokenId},${pid},${sha256(token)},${label},${input.role},${expires}) RETURNING *`;return row;});
+      const made=await sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${'tokens:'+pid},0))`;const [{count}]=await tx`SELECT count(*) FROM weave_tokens WHERE project=${pid} AND revoked_at IS NULL AND expires_at>now()`;if(Number(count)>=32)throw new Problem(429,'token_cap','At most 32 active credentials per workspace');const [row]=await tx`INSERT INTO weave_tokens(id,project,token_hash,label,role,expires_at,paths) VALUES(${tokenId},${pid},${sha256(token)},${label},${input.role},${expires},${paths}) RETURNING *`;return row;});
       return json({...tokenView(made),token},201);
      }
     }
-    if(action==='git'){
+    if(action==='objects'&&request.method==='POST'){unrestricted();
+     const input=await body(request);const objects=input.objects;
+     if(!Array.isArray(objects)||!objects.length||objects.length>32||objects.some(o=>!['commit','tree','blob'].includes(o?.type)||typeof o.oid!=='string'||!/^[a-f0-9]{40}$/.test(o.oid)))throw new Problem(400,'object_batch','Request 1–32 immutable Git objects');
+     const result=[];let bytes=0;const seen=new Set<string>();
+     for(const object of objects){const key=object.type+':'+object.oid;if(seen.has(key))continue;seen.add(key);const value=object.type==='commit'?await repo.commit(object.oid):object.type==='tree'?await repo.tree(object.oid):await (async()=>{const blob=await repo.blob(object.oid);if(blob.length>512*1024)throw new Problem(413,'object_bytes','Large files must use the raw blob endpoint');return Buffer.from(blob).toString('base64');})();if(value===null)throw new Problem(404,'object_missing','Object not found');bytes+=Buffer.byteLength(JSON.stringify(value));if(bytes>1024*1024)throw new Problem(413,'object_bytes','Object batch exceeds 1 MiB; request fewer objects');result.push({...object,value});}
+     return json({objects:result});
+    }
+    if(action==='git'){unrestricted();
      const suffix='/'+parts.slice(4).join('/')+url.search;
      if(!((request.method==='GET'&&suffix==='/info/refs?service=git-upload-pack')||(request.method==='POST'&&suffix==='/git-upload-pack')))throw new Problem(403,'read_only_git','The Git gateway is read-only; propose writes through the changes API');
      if(request.method==='POST')request=await gitBody(request);
      const upstream=await repo.git(request,suffix);return new Response(upstream.body,{status:upstream.status,headers:{'content-type':upstream.headers.get('content-type')??'application/octet-stream','cache-control':'private, no-store'}});
     }
     const changes=changeService(config,p,principal);
+    const metadata=metadataService(sql,pid,repo);
+    if(['ancestry','merge-base','diff','bisect'].includes(action)&&request.method==='POST'){
+     const input=await body(request);
+     if(action!=='diff')unrestricted();else if(principal.paths){if(!input.path)unrestricted();validPath(input.path);authorizePaths(principal,[input.path]);}
+     if(action==='ancestry')return json(await metadata.ancestry(input.ancestor,input.descendant));
+     if(action==='merge-base')return json(await metadata.mergeBase(input.left,input.right));
+     if(action==='diff')return json(await metadata.diff(input.from,input.to,input.path));
+     return json(await metadata.bisect(input.good,input.bad));
+    }
+    if(action==='search'&&request.method==='GET'){const ref=url.searchParams.get('ref')??await repo.head();if(!ref)return json({matches:[],next:null});const path=url.searchParams.get('path')??'';if(principal.paths){if(!path)unrestricted();authorizePaths(principal,[path]);}return json(await metadata.search(ref,url.searchParams.get('query')??'',path,url.searchParams.get('cursor')??undefined));}
+    if(['path-history','blame','commit'].includes(action)&&request.method==='GET'){
+     const ref=url.searchParams.get('ref')??await repo.head();if(!ref)throw new Problem(404,'commit_missing','Repository is empty');
+     if(action==='commit'){unrestricted();return json(await metadata.commit(ref));}
+     const path=url.searchParams.get('path')??'';authorizePaths(principal,[path]);
+     if(action==='blame')return json(await metadata.blame(ref,path));const history=await metadata.history(ref,path,Number(url.searchParams.get('limit')??20));return json(principal.paths?{...history,commits:history.commits.map(({oid,parents})=>({oid,parents}))}:history);
+    }
+    if(action==='revert'&&request.method==='POST'){unrestricted();
+     requireRole(['admin','agent']);const input=await body(request);const head=await repo.head();if(!head)throw new Problem(404,'commit_missing','Repository is empty');
+     return json(await changes.propose({id:id(input.id),title:'Revert '+text(input.commit,40),intent:input.note?text(input.note,4000):'Revert this commit through review',context:{reverts:input.commit},dependencies:[],base:head,files:await metadata.revert(input.commit,head)}),201);
+    }
     if(action==='changes'&&request.method==='GET'&&!parts[4]){
      const rows=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND status<>'preparing' ORDER BY created_at DESC LIMIT 200`;
      const overlaps=await sql`SELECT a.change_id AS left_id,b.change_id AS right_id,a.path FROM weave_paths a JOIN weave_paths b ON a.project=b.project AND a.path=b.path AND a.change_id<b.change_id JOIN weave_changes ca ON ca.project=a.project AND ca.id=a.change_id JOIN weave_changes cb ON cb.project=b.project AND cb.id=b.change_id WHERE a.project=${pid} AND ca.status IN ('proposed','approved') AND cb.status IN ('proposed','approved') LIMIT 200`;
-     return json({changes:rows.map(changeView),overlaps});
+     let visible=rows.filter(c=>c.files.every((f:any)=>canPath(principal,f.path)));if(principal.paths){let count;do{count=visible.length;const allowed=new Set(visible.map(c=>c.id));visible=visible.filter(c=>c.dependencies.every((dependency:string)=>allowed.has(dependency)));}while(visible.length!==count);}const visibleIds=new Set(visible.map(c=>c.id));return json({changes:visible.map(changeView),overlaps:overlaps.filter(o=>visibleIds.has(o.left_id)&&visibleIds.has(o.right_id))});
     }
     if(action==='changes'&&request.method==='POST'&&!parts[4]){
-     requireRole(['admin','agent']);const b=await body(request);const deps=b.dependencies??[];if(!Array.isArray(deps)||deps.length>32||new Set(deps).size!==deps.length)throw new Problem(400,'dependencies','At most 32 unique dependencies');deps.forEach(id);
+     requireRole(['admin','agent']);const b=await body(request);const deps=b.dependencies??[];if(!Array.isArray(deps)||deps.length>32||new Set(deps).size!==deps.length)throw new Problem(400,'dependencies','At most 32 unique dependencies');deps.forEach(id);await checkChanges(deps);
      const context=b.context??{};if(!context||typeof context!=='object'||Array.isArray(context)||Buffer.byteLength(JSON.stringify(context))>32768)throw new Problem(400,'context','Context must be an object up to 32 KiB');
      if(b.base!==undefined&&(typeof b.base!=='string'||!/^[a-f0-9]{40}$/.test(b.base)))throw new Problem(400,'invalid_ref','Base must be an immutable commit');
-     return json(await changes.propose({id:id(b.id),title:text(b.title),intent:text(b.intent,4000),context,dependencies:deps,base:b.base,files:patches(b.files)}),201);
+     return json(await changes.propose({id:id(b.id),title:text(b.title),intent:text(b.intent,4000),context,dependencies:deps,base:b.base,files:(()=>{const files=patches(b.files);authorizePaths(principal,files.map(f=>f.path));return files;})()}),201);
     }
-    if(action==='changes'&&parts[4]&&request.method==='GET')return json(await changes.details(id(parts[4])));
-    if(action==='changes'&&parts[5]==='revise'&&request.method==='POST'){requireRole(['admin','agent']);const b=await body(request);return json(await changes.revise(id(parts[4]),{id:id(b.id),files:patches(b.files),note:text(b.note,4000)}),201);}
+    if(action==='changes'&&parts[4]&&request.method==='GET'){await checkChanges([id(parts[4])]);return json(await changes.details(id(parts[4])));}
+    if(action==='changes'&&parts[5]==='revise'&&request.method==='POST'){requireRole(['admin','agent']);await checkChanges([id(parts[4])]);const b=await body(request);authorizePaths(principal,patches(b.files).map(f=>f.path));return json(await changes.revise(id(parts[4]),{id:id(b.id),files:patches(b.files),note:text(b.note,4000)}),201);}
     if(action==='changes'&&parts[5]==='review'&&request.method==='POST'){
-     requireRole(['admin','reviewer']);const b=await body(request);if(!['approved','rejected','proposed'].includes(b.decision))throw new Problem(400,'decision','Choose approved, rejected or proposed');return json(await changes.review(id(parts[4]),b.decision,text(b.note??'',4000,true)));
+     requireRole(['admin','reviewer']);await checkChanges([id(parts[4])]);const b=await body(request);if(!['approved','rejected','proposed'].includes(b.decision))throw new Problem(400,'decision','Choose approved, rejected or proposed');return json(await changes.review(id(parts[4]),b.decision,text(b.note??'',4000,true)));
     }
     if((action==='preview'||action==='publish')&&request.method==='POST'){
-     if(action==='publish')requireRole(['admin','reviewer']);const b=await body(request);if(!Array.isArray(b.changes)||!b.changes.length||b.changes.length>64||new Set(b.changes).size!==b.changes.length)throw new Problem(400,'batch','Select 1–64 unique changes');b.changes.forEach(id);
+     if(action==='publish')requireRole(['admin','reviewer']);const b=await body(request);if(!Array.isArray(b.changes)||!b.changes.length||b.changes.length>64||new Set(b.changes).size!==b.changes.length)throw new Problem(400,'batch','Select 1–64 unique changes');b.changes.forEach(id);await checkChanges(b.changes);
      if(action==='preview'){const plan=await changes.preview(b.changes);return json({...plan,files:plan.files.map(f=>({path:f.path,bytes:Buffer.byteLength(f.content??''),deleted:f.content===null}))});}
      return json(await changes.publish({id:id(b.id),changes:b.changes,expectedHead:b.expectedHead}),201);
     }
-    if(action==='events'&&request.method==='GET'){const after=Number(url.searchParams.get('after')??0);if(!Number.isSafeInteger(after)||after<0)throw new Problem(400,'cursor','Invalid cursor');return json({events:await sql`SELECT * FROM weave_events WHERE project=${pid} AND seq>${after} ORDER BY seq LIMIT 200`});}
-    if(action==='publications'&&parts[5]==='abort'&&request.method==='POST'){requireRole(['admin','reviewer']);const b=await body(request);return json(await changes.abort(id(parts[4]),text(b.expectedHead,40),text(b.note,4000)));}
-    if(action==='publications'&&request.method==='GET')return json({publications:(await sql`SELECT * FROM weave_publications WHERE project=${pid} ORDER BY created_at DESC LIMIT 100`).map(publicationView)});
+    if(action==='events'&&request.method==='GET'){unrestricted();const after=Number(url.searchParams.get('after')??0);if(!Number.isSafeInteger(after)||after<0)throw new Problem(400,'cursor','Invalid cursor');return json({events:await sql`SELECT * FROM weave_events WHERE project=${pid} AND seq>${after} ORDER BY seq LIMIT 200`});}
+    if(action==='publications'&&parts[5]==='abort'&&request.method==='POST'){unrestricted();requireRole(['admin','reviewer']);const b=await body(request);return json(await changes.abort(id(parts[4]),text(b.expectedHead,40),text(b.note,4000)));}
+    if(action==='publications'&&request.method==='GET'){unrestricted();return json({publications:(await sql`SELECT * FROM weave_publications WHERE project=${pid} ORDER BY created_at DESC LIMIT 100`).map(publicationView)});}
     if(!action&&request.method==='GET')return json({...projectView(p),head:await repo.head()});
-    if(action==='file'&&request.method==='GET'){const ref=url.searchParams.get('ref')??await repo.head()??p.head;const path=url.searchParams.get('path')??'';validPath(path);if(!ref)throw new Problem(404,'file_missing','The repository is empty');const content=await g.file(ref,path);if(content===null)throw new Problem(404,'file_missing','File not found');const entry=await g.entry(ref,path);return json({path,ref,content,oid:entry!.oid,mode:entry!.mode});}
-    if(action==='tree'&&request.method==='GET'){const ref=url.searchParams.get('ref')??await repo.head()??p.head;const path=url.searchParams.get('path');if(!ref)return json({ref:null,path:'',entries:[]});const commit=await g.commit(ref);if(!commit)throw new Problem(404,'commit_missing','Commit not found');const entry=path?await g.entry(ref,path):null;if(path&&entry?.type!=='tree')throw new Problem(404,'tree_missing','Directory not found');return json({ref,path:path??'',entries:await g.tree(entry?.oid??commit.tree)});}
+    if(action==='blob'&&request.method==='GET'){
+     const path=url.searchParams.get('path')??'';validPath(path);authorizePaths(principal,[path]);const ref=url.searchParams.get('ref')??await repo.head();if(!ref)throw new Problem(404,'file_missing','Repository is empty');const entry=await g.entry(ref,path);if(!entry||entry.type!=='blob'||!['100644','100755'].includes(entry.mode))throw new Problem(404,'file_missing','Regular file not found');const bytes=await repo.blob(entry.oid);if(bytes.length>32*1024*1024)throw new Problem(413,'blob_limit','Git blob exceeds the 32 MiB read limit');return new Response(new ReadableStream({start(controller){controller.enqueue(bytes);controller.close();}}),{headers:{'content-type':'application/octet-stream','content-length':String(bytes.length),'x-git-oid':entry.oid,'x-git-mode':entry.mode,'cache-control':'private, no-store','x-content-type-options':'nosniff','content-disposition':'attachment'}});
+    }
+    if(action==='file'&&request.method==='GET'){const ref=url.searchParams.get('ref')??await repo.head()??p.head;const path=url.searchParams.get('path')??'';validPath(path);authorizePaths(principal,[path]);if(!ref)throw new Problem(404,'file_missing','The repository is empty');const content=await g.file(ref,path);if(content===null)throw new Problem(404,'file_missing','File not found');const entry=await g.entry(ref,path);return json({path,ref,content,oid:entry!.oid,mode:entry!.mode});}
+    if(action==='tree'&&request.method==='GET'){const ref=url.searchParams.get('ref')??await repo.head()??p.head;const path=url.searchParams.get('path');if(path&&principal.paths&&!canPath(principal,path)&&!principal.paths.some(prefix=>containsPath(path,prefix)))throw new Problem(403,'path_scope','This credential cannot access that path');if(!ref)return json({ref:null,path:'',entries:[]});const commit=await g.commit(ref);if(!commit)throw new Problem(404,'commit_missing','Commit not found');const entry=path?await g.entry(ref,path):null;if(path&&entry?.type!=='tree')throw new Problem(404,'tree_missing','Directory not found');return json({ref,path:path??'',entries:(await g.tree(entry?.oid??commit.tree)).filter(e=>{const item=path?path+'/'+e.name:e.name;return canPath(principal,item)||e.type==='tree'&&principal.paths?.some(prefix=>containsPath(item,prefix));})});}
    }
    throw new Problem(404,'not_found','API route not found');
   }catch(e){if(e instanceof Problem)return json({error:e.code,message:e.message,details:e.details},e.status);console.error('request failed',e instanceof Error?e.message:'unknown');return json({error:'internal_error',message:'Request failed; retry with the same operation ID.'},500);}

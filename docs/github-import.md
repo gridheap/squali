@@ -2,12 +2,12 @@
 
 ## Status
 
-The code passes local HTTP, browser and real Git acceptance tests. **Production GitHub sign-in is not activated yet:** the Squali production Clerk instance still needs GitHub OAuth client credentials, and the Worker needs `CLERK_SECRET_KEY`. No user's GitHub repositories have been imported into production by this work. The existing public application retains token access until Clerk is configured.
+Production Clerk keys and GitHub OAuth are configured; real sign-in and repository discovery work. Identity sign-in requests `read:user` and `user:email`. Repository discovery/import requires a separate explicit `repo` grant. Local private-import acceptance passes. The large live fixture (85,563 commits, 1,020 refs, about 310 MiB packed) has used three interrupted transfer attempts and is not yet imported successfully.
 
 ## User workflow
 
 1. Continue with GitHub through Clerk's hosted account portal.
-2. Open **GitHub repositories**. Squali lists repositories GitHub authorizes, including private, collaborator and organization repositories. Organization restrictions and SSO authorization still apply.
+2. Open **GitHub repositories**, then explicitly **Grant repository access**. Squali lists repositories GitHub authorizes, including private, collaborator and organization repositories. Organization restrictions and SSO authorization still apply.
 3. Select repositories, or use **Import all repositories**. The latter walks all catalog pages before enqueueing a deduplicated batch.
 4. The deployment admits one active import at a time to preserve capacity in the five-connection origin pool. The browser processes one durable import at a time. Pause stops after the current repository. Closing the browser stops further dispatch; reopen and choose **Resume pending**. There is no unattended queue consumer or schedule.
 5. Completed repositories become private workspaces. Create proposals, review, and publish against the original default branch. An empty repository can receive its first commit through the same review workflow.
@@ -26,8 +26,8 @@ Private source credentials are fetched from Clerk on the server, used only in re
 - Immutable source refs are saved before transfer. Retries inspect destination refs first. A completed copy never downloads again.
 - PostgreSQL advisory locks prevent parallel dispatch of the same job and release on process death. Expected-empty ref writes protect against late duplicate writers. Atomic receive is requested only when the destination advertises support; otherwise the workspace remains unavailable until every ref is present.
 - A real SIGKILL test proves recovery after Git accepted the import. It does not prove every network/provider failure condition.
-- Limit: 100 pages / 10,000 discovered repositories; 1,000 queued records per account; 5,000 refs and 256 MiB per transfer; three explicitly dispatched import attempts. Jobs remain visible when limits stop them. Stream size is bounded even when metadata underestimates it.
-- At most 32 active automation credentials per workspace.
+- Limit: 100 pages / 10,000 discovered repositories; 1,000 queued records per account; 5,000 refs and 512 MiB per transfer; three explicitly dispatched import attempts. Jobs remain visible when limits stop them. Stream size is bounded even when metadata underestimates it.
+- At most 32 active automation credentials per workspace; optional directory prefixes narrow read/write scope.
 - GitHub catalog/import provider dispatch is capped at 500 requests per account per database day; there are no automatic retries.
 - Existing deployment caps remain 10 workspaces and 2,000 conservative Artifacts reservations/month. **Import all does not bypass these caps.** Large accounts can therefore have pending jobs rather than all repositories completing.
 - Artifacts source storage is metered separately from call reservations. A transfer ceiling bounds work but is not a storage invoice. An acknowledgement recovered after a crash may report unknown transferred bytes (`null`).
@@ -39,11 +39,11 @@ Production instance: `ins_3KexhIQI8xE85ENLgecfyc89Nwu`.
 Frontend API: `https://clerk.squa.li`; hosted account portal: `https://accounts.squa.li`.
 GitHub OAuth callback: `https://clerk.squa.li/v1/oauth_callback`.
 
-1. Register the prepared **Squali** OAuth app in the `gridheap` organization. Use exact callback matching. Add its Client ID and Client Secret to Clerk's production GitHub connection.
-2. For private repositories, configure GitHub's `repo` OAuth scope in Clerk. GitHub defines this scope as repository read/write access; Squali's integration implements reads from GitHub only. Each user must consent in GitHub, and organizations may need to approve access.
+1. The **Squali** OAuth app is registered in `gridheap` (application `3930566`, Client ID `Ov23liNk8xGWYFISCUjn`) and configured in Clerk. The callback uses exact matching. Forks must create their own app and credentials.
+2. Keep the default sign-in scopes at `read:user` and `user:email`; the import screen uses Clerk external-account reauthorization with the additional `repo` scope. GitHub defines this scope as repository read/write access; Squali's integration implements reads from GitHub only. Each user must consent in GitHub, and organizations may need to approve access.
 3. Save `CLERK_SECRET_KEY` outside the repository in a mode-0600 file. Set `CLERK_PUBLISHABLE_KEY` to this production instance's public key. `CLERK_JWT_KEY` is optional; absent that, Clerk's SDK uses its cached verification keys. The backend checks issuer, signature, expiry, session identity and `azp=https://squa.li`.
 4. Supply keys using Wrangler secrets/configuration and deploy. Never paste secret values into command arguments or source files. The domain's static CSP already allows the specific `clerk.squa.li` origin; forks must replace this with their own Clerk domain.
-5. Run one bounded live sign-in/import smoke, then reconcile reservations. Use a single small owned test repository, not **Import all**, for deployment verification. The real provider smoke has not yet run.
+5. Run one bounded live sign-in/import smoke, then reconcile reservations. Use a single small owned test repository, not **Import all**, for deployment verification. Real login has been verified; the selected large private import remains incomplete. Check received refs without starting a transfer using the per-job button or `/reconcile`.
 
 ## Repeatable acceptance
 

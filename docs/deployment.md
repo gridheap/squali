@@ -28,7 +28,7 @@ Static assets include a CSP and referrer policy in `_headers`. The API has the s
 
 ## Clerk and GitHub
 
-See [the sign-in and import deployment guide](github-import.md). Production OAuth remains pending credentials and a live provider smoke. Apply the additive schema migration before deploying this version. Wildcard principals now cover legacy workspaces; personal workspaces require owner sessions or explicit workspace credentials.
+See [the sign-in and import deployment guide](github-import.md). Production OAuth is configured and real login works; the large import acceptance remains incomplete. Apply the additive schema migration before deploying this version. Wildcard principals now cover legacy workspaces; personal workspaces require owner sessions or explicit workspace credentials.
 
 ## Recovery
 
@@ -52,3 +52,7 @@ The Wrangler configuration binds `squa.li` as a custom domain and disables `work
 ## Execution placement
 
 The production API uses `placement.region = "azure:eastus2"` to run near the dedicated PostgreSQL database. Static assets remain served near visitors. Cloudflare accepted this as targeted placement. A bounded before/after observation made three read-only `/api/usage` requests per configuration and no Artifacts calls: median total HTTP duration was 1.505 s before and 1.257 s after. This small sequential sample includes the local network and TLS setup; it is not a load benchmark or a guaranteed improvement. See [placement evidence](evidence/placement.json) and [Cloudflare placement documentation](https://developers.cloudflare.com/workers/configuration/placement/).
+
+## R2 and execution limits
+
+Bind a private `OBJECTS` bucket (production: `squali-objects`). Add a lifecycle rule for prefix `objects/`, expiring after seven days. Run the additive SQL migration before deploying the cache or policy version. Set `MONTHLY_R2_READ_CAP=20000` and `MONTHLY_R2_WRITE_CAP=2000`; reservations are conservative batches and include failures. The Worker CPU ceiling is 30,000 ms for bounded large transfers. This is a maximum per request, not a measured execution time. There is no timer, queue consumer or automatic retry.

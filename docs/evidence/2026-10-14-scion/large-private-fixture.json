@@ -1,0 +1,6 @@
+{
+  "error": "",
+  "execution": "Succeeded",
+  "output": "{\"source\": \"git/git\", \"fork\": \"gridheap/squali-git-benchmark\", \"privateCopy\": \"gridheap/squali-private-git-benchmark\", \"commits\": 85563, \"refs\": 1020, \"packBytes\": 324579659, \"largestBlobBytes\": 1088754, \"head\": \"6de20f6092dcf9bdb1c8efe03db4b70c82b423dd\", \"durationSeconds\": 113.12, \"fsck\": \"passed\"}\n",
+  "state": "Succeeded"
+}

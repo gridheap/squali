@@ -1,0 +1,13 @@
+$ node --import tsx --test tests/metadata.test.ts
+{"command":"pnpm test:metadata","mergeBase":"4d4207b9e366696f7fbaa0f11ba3a202c96d7ffa","mergedHead":"731770ae1f548739a761763b15b89f877e363ec8","blameCommits":["3af23d52756a998b4b8d911a920c02f38ab24270","4d4207b9e366696f7fbaa0f11ba3a202c96d7ffa","458713b8405470d2ecdb2c65c64ea569d31b7ef9"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (678.206625ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (158.927584ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1008.435958

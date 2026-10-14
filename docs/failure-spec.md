@@ -54,3 +54,29 @@ The comparison runs only on the local Git HTTP server and PostgreSQL. Both paths
 ## Native Git compressed negotiation
 
 Native Git compresses sufficiently long upload-pack requests with gzip. The authenticated Git gateway must preserve their meaning and cap decompressed negotiation at 1 MiB before any provider call. A valid compressed request must return a real pack; malformed gzip, unknown encodings and compressed expansion beyond the limit must be rejected. Local HTTP fixtures must also support native Git's compressed requests so they can exercise the comparison accurately.
+
+## Production runtime and large private imports
+
+The HTTP import workflow must run with Cloudflare Workers fetch semantics (only follow/manual redirects). Redirect responses from identity, catalog or Git endpoints must fail without forwarding credentials. Large imports must remain streamed and bounded by provider capacity, with one admitted transfer, finite time and bytes, immutable ref checkpoints, and no automatic retries. Verify a real multi-hundred-MiB Git repository and exact destination refs/history, separately from authorization and owner isolation. Reject metadata over the admitted limit before Artifacts allocation. Login with identity-only scope must remain usable; repository access is an explicit later authorization.
+
+## R2 immutable tier
+
+HTTP reads must authenticate before local, edge or R2 caches. Replacing the Worker and edge cache must retain immutable R2 results without another Artifacts call. Duplicate content must not be uploaded repeatedly; abandoned upload claims expire only with a documented bound. R2 failures and quota exhaustion must fail closed instead of flooding Artifacts. Persist separate finite R2 read/write reservations, cap each cached object, and expire entries. Invalid object formats must never become source data. Cache failure must never lose authoritative Git objects.
+
+## Sparse client and immutable object API
+
+Use HTTP and the real CLI process. Select directories without copying unrelated files or Git history; hydrate individual files later. Two workspaces on one machine reuse immutable disk objects only after current authorization. Bound cache bytes, object batches and response bytes. Reject invalid object IDs, traversal, symlinks and unsafe local destinations. Never overwrite local modifications or materialize Git symlinks/submodules as normal files. Preserve executable modes, immutable base commit and exact edited paths when proposing. Cache corruption is detected by object identity; interrupted files use atomic writes. Token revocation and future path restrictions must not be bypassed by the object API.
+
+## Server-side metadata
+
+Use HTTP against real Git: fork two commits, reconcile their independent line changes, then verify merge bases, both-parent ancestry, changed-tree diff, paginated first-parent path history, line blame through both merge parents, bisect candidates and reviewed revert. Derived answers are immutable/versioned and reused. Invalid IDs, missing objects, unrelated histories, binary files and query bounds fail explicitly; a truncated traversal must never produce a false ancestry/merge-base result. Revert is a new proposal and cannot overwrite later edits. Queries do not run repository code.
+
+Publications now preserve accepted proposal commits as additional Git parents, so native ancestry and blame retain agent authorship. The original main commit remains the first parent. Freeze the parent list in the publication journal before constructing the pack; recovery of older journals without this field retains the former single-parent format. Cancellation commits do not acquire proposal parents.
+
+## Directory permissions and approval policy
+
+Restrict a real owner-issued credential to one directory. Verify file, tree, native Git, raw object, diff, event, proposal details/list, dependencies, review, revision and publication paths cannot reveal or change another directory. Directory scopes are boundary-aware, not raw string prefixes. A restricted token cannot mint broader tokens or policy. Policies require independent approval and supplied evidence on matching paths; updating a policy invalidates earlier approvals. Evidence remains self-reported, not proof of command execution. Use the publication lock to prevent policy changes while a publication is in flight.
+
+### Large binary materialization
+
+A large imported Git blob must not be mistaken for an editable UTF-8 file. Raw reads must reject unauthorized paths before object access, preserve exact bytes and executable modes, validate immutable identities, cap one object at 32 MiB, and avoid unbounded cache growth. The CLI must not route binary files through base64 JSON object batches with a 1 MiB response limit. Editing remains limited to 256 KiB UTF-8 files. A warm shared cache must not widen a narrower credential.

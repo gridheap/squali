@@ -1,0 +1,21 @@
+{
+  "source": "git/git",
+  "publicFork": "gridheap/squali-git-benchmark",
+  "privateCopy": "gridheap/squali-private-git-benchmark",
+  "sourceCommits": 85563,
+  "sourceRefs": 1020,
+  "sourcePackBytes": 324579659,
+  "attempts": 3,
+  "state": "failed",
+  "reconciliation": "Destination refs are incomplete. No transfer was started.",
+  "success": false,
+  "knownFailure": "Second transfer exceeded Worker CPU; third returned a generic interruption before stage diagnostics were deployed",
+  "automaticRetries": 0,
+  "artifactReservationsAfterVerification": 150,
+  "artifactCap": 2000,
+  "r2ReservedReads": 16,
+  "r2ReadCap": 20000,
+  "r2ReservedWrites": 8,
+  "r2WriteCap": 2000,
+  "providerMeasuredCalls": "Unavailable for this run"
+}

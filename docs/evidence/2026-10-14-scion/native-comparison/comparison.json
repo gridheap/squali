@@ -1,0 +1,65 @@
+{
+  "command": "pnpm exec tsx scripts/compare-git.ts",
+  "timestamp": "2026-10-14T05:08:33.311Z",
+  "scope": "Local Git HTTP and real PostgreSQL, five database connections; no cloud calls",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Max",
+    "logicalCpus": 16,
+    "memoryGiB": 128,
+    "node": "v26.10.0",
+    "git": "git version 2.54.0 (Apple Git-157)"
+  },
+  "dataset": {
+    "baselineFiles": 64,
+    "baselineBytes": 419400,
+    "changes": 32,
+    "concurrency": 8
+  },
+  "limitations": [
+    "32 observations per path; p99 is effectively the maximum, not a tail-latency estimate",
+    "Native Git omits owner authorization, review records, SQL journaling and reservation accounting",
+    "Warm native clients reuse full clones; clone preparation is reported separately",
+    "Native publication uses an octopus Git merge; Squali has its own bounded text merge and proposal metadata",
+    "One machine and independent edits; no distributed scaling, cost-per-workflow or conflict-heavy claim"
+  ],
+  "squali": {
+    "failures": 0,
+    "proposalWallMs": 502,
+    "proposalsPerSecond": 63.74,
+    "p50Ms": 115.72,
+    "p95Ms": 145.04,
+    "p99Ms": 146.36,
+    "reviewMs": 51.87,
+    "publicationMs": 333.05,
+    "publicationMetrics": {
+      "objects": 35,
+      "bytes": 3143,
+      "changes": 32
+    },
+    "localAdapterReservations": 241,
+    "verification": {
+      "tree": "d3c9183b8919adab49d3e680f7daeb6f7f809279",
+      "files": 96,
+      "fsck": "pass"
+    }
+  },
+  "nativeGit": {
+    "failures": 0,
+    "clonePreparationMs": 360.55,
+    "proposalWallMs": 780.72,
+    "proposalsPerSecond": 40.99,
+    "p50Ms": 189.8,
+    "p95Ms": 203.08,
+    "p99Ms": 203.72,
+    "publicationMs": 1438.95,
+    "verification": {
+      "tree": "d3c9183b8919adab49d3e680f7daeb6f7f809279",
+      "files": 96,
+      "fsck": "pass"
+    }
+  },
+  "identicalFinalTree": true,
+  "proposalRefsPerPath": 32
+}

@@ -1,0 +1,26 @@
+$ node --import tsx --test tests/api.test.ts
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (230.936917ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (273.204ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (793.143583ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (928.554084ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (370.297083ms)
+✔ persistent operation limits stop work before the next provider call (72.782666ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (379.503084ms)
+✔ immutable source reads reuse the cache after authorization (16.857959ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (433.569458ms)
+✔ standard Git can clone through the authenticated read-only gateway (158.423209ms)
+✔ the complete HTTP workflow makes progress with a single database connection (555.732167ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (541.527333ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (594.3525ms)
+✔ concurrent publication retries converge on one Git commit and one event (406.981458ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (130.492792ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6079.377834

@@ -6,11 +6,11 @@
 
 Squali is an open-source collaboration prototype for the Cloudflare Git competition. Agents propose immutable changes with intent, context, evidence and dependencies. Reviewers inspect them, reconcile overlapping edits and publish compatible changes in one atomic Git update.
 
-Cloud deployment: **Cloudflare Workers + Artifacts + PostgreSQL through Hyperdrive**. No D1. No application Durable Objects. The local development adapter uses real PostgreSQL and Git's HTTP backend, so the complete workflow runs without cloud credentials or billable calls.
+Cloud deployment: **Cloudflare Workers + Artifacts + R2 + PostgreSQL through Hyperdrive**. No D1. No application Durable Objects. The local development adapter uses real PostgreSQL and Git's HTTP backend, so the complete workflow runs without cloud credentials or billable calls.
 
 The deployed integration passed real Artifacts publication, authenticated native Git clone and `git fsck`. [Verification evidence](docs/evidence/) separates local benchmarks from cloud smoke results.
 
-**Readiness:** this remains a prototype under acceptance. See [the readiness audit](docs/readiness.md). Clerk/GitHub import passes local acceptance; production OAuth configuration and its live smoke remain pending. [Import workflow and limits](docs/github-import.md).
+**Readiness:** this remains a prototype under acceptance. See [the readiness audit](docs/readiness.md). Clerk production login works. Sparse clients, R2 caching, metadata APIs and directory policy have local acceptance evidence; a large private Artifacts import remains incomplete. See the [Scion capability map](docs/scion-parity.md). [Import workflow and limits](docs/github-import.md).
 
 ## Run locally
 
@@ -58,6 +58,8 @@ Evidence is supplied by the agent; Squali does not execute or certify those comm
 
 CLI commands: `projects`, `create`, `changes`, `propose`, `show`, `review`, `revise`, `preview`, `publish`, `events`, `file`, `tree`, `usage`. Mutations read JSON from stdin. Tokens are environment variables, not command arguments. See [the API contract](docs/api.md).
 
+See [sparse working copies](docs/working-copy.md) to materialize only selected paths and reuse immutable objects across jobs.
+
 ## Verification
 
 ```sh
@@ -65,6 +67,10 @@ pnpm typecheck
 pnpm test:e2e
 pnpm test:crash
 pnpm test:github
+pnpm test:storage
+pnpm test:sparse
+pnpm test:metadata
+pnpm test:permissions
 pnpm build
 BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark
 pnpm exec tsx scripts/compare-git.ts
@@ -89,7 +95,7 @@ Read [architecture and tradeoffs](docs/architecture.md), [deployment](docs/deplo
 
 ## Explicit limits
 
-This is a competition prototype, not a replacement for GitHub's entire product. Artifacts currently caps a repository at 1 GB. The editing API handles UTF-8 regular files; symlinks, submodules and binary blobs are retained by unchanged trees but cannot be edited through the API. Text merges are bounded and cannot establish semantic correctness. One main branch per workspace is the publication boundary. No automatic CI runner, global distributed load claim, offline worktree daemon, LSP, blame index, or directory-level IAM is included.
+This is a competition prototype, not a replacement for GitHub's entire product. Artifacts currently caps a repository at 1 GB. The editing API handles UTF-8 regular files; symlinks, submodules and binary blobs are retained by unchanged trees but cannot be edited through the API. Text merges are bounded and cannot establish semantic correctness. One main branch per workspace is the publication boundary. No automatic CI runner, global distributed load claim, node socket daemon, OS virtual filesystem or complete large-history graph index is included. Server-side history/blame and directory IAM are implemented within documented query bounds.
 
 Clerk sessions isolate personal workspaces by owner. Owners can issue expiring, revocable credentials scoped to one workspace for agents, readers and reviewers. Legacy wildcard principals cover legacy workspaces only. GitHub imports preserve the source default branch. Browser application code keeps tokens in memory; Clerk manages its own login session. Apply deployment request limits appropriate to the audience.
 

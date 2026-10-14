@@ -1,0 +1,11 @@
+$ playwright test --grep-invert 'Adobe resolves'
+
+Running 3 tests using 1 worker
+
+(node:81281) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui.spec.ts:31:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (6.0s)
+  ✓  2 tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage (5.5s)
+  ✓  3 tests/ui.spec.ts:58:1 › reviewer selects a publication subset and inspects source history and blame (11.2s)
+
+  3 passed (25.2s)

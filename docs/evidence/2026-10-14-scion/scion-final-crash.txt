@@ -1,0 +1,13 @@
+$ node --import tsx --test tests/crash.test.ts
+✔ a real process kill after Git accepted a batch recovers through the public HTTP API (816.916834ms)
+✔ a process killed before Git acceptance can be resumed by another reviewer with the same commit (849.389542ms)
+✔ cancellation survives SIGKILL before Git acceptance and retains one unchanged-tree audit commit (1047.355625ms)
+✔ cancellation survives SIGKILL after Git acceptance and retains one unchanged-tree audit commit (960.022375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3803.850959

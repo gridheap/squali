@@ -1,6 +1,6 @@
 # HTTP contract
 
-Every API request needs `Authorization: Bearer <token>`. Mutation bodies are JSON. Tokens map to a principal ID, a role and an explicit project allowlist. `*` grants access to every project in that installation.
+Every API request needs `Authorization: Bearer <token>`. Mutation bodies are JSON. Tokens map to a principal ID, a role and an explicit project allowlist. `*` covers legacy workspaces only; owner workspaces require owner sessions or explicit workspace credentials.
 
 | Route | Method | Role | Input / behavior |
 | --- | --- | --- | --- |
@@ -51,3 +51,30 @@ Use `/api/projects/:project/git` as a Git remote and supply the same bearer toke
 | POST | `/api/projects/:id/tokens/:tokenId/revoke` | Owner only; `{}`; immediately prevents new authenticated requests |
 
 Import returns `queued`, `running`, `failed` or `complete`. A job retains its immutable source refs. A failed job can be resumed within its three-attempt ceiling; limits do not trigger automatic retries. `bytes: null` means transfer size was not recorded before interruption. See [the import guide](github-import.md) for scope, storage limits and production activation status.
+
+## Source service and policy
+
+All immutable refs are full 40-character commit IDs. Authorization runs before cache access. Directory credentials cannot use whole-repository Git or raw object batches.
+
+| Method | Project suffix | Input / result |
+|---|---|---|
+| POST | `/objects` | `{objects:[{type:"commit"|"tree"|"blob",oid}]}`; 1–32 objects; 1 MiB JSON result; blobs above 512 KiB use `/blob` |
+| GET | `/blob?ref=&path=` | Exact regular-file bytes up to 32 MiB; private/no-store; Git object identity header |
+| GET | `/commit?ref=` | Immutable commit metadata |
+| POST | `/ancestry` | `{ancestor,descendant}` → `isAncestor` |
+| POST | `/merge-base` | `{left,right}` → all lowest common `bases` |
+| POST | `/diff` | `{from,to,path?}` → changed files; at most 64 files / 1 MiB text / 256 trees |
+| GET | `/path-history?ref=&path=&limit=` | First-parent history, 1–50 entries; at most 64 scanned commits/page; `next` ref |
+| GET | `/blame?ref=&path=` | Original commit and line per line; 2,000 lines, 4 million comparison budget |
+| POST | `/bisect` | `{good,bad}` → first-parent candidate or culprit; no test execution |
+| POST | `/revert` | `{id,commit,note?}` → an inverse proposal requiring review; conflicting later edits stop |
+| GET | `/search?ref=&query=&path=&cursor=` | Path-name search; 50 matches, 2,000 entries / 64 trees per page; query-bound cursor |
+| GET/POST | `/policy` | Owner/admin; `{rules:[{prefix,independentReview,requireEvidence}]}`; up to 32 rules |
+
+Graph computations are bounded to 256 unique commits per request. Versioned derived records are reused. These limits return explicit errors, not partial ancestry answers. For directory tokens, history omits unrestricted commit messages/trees and diff/search require an authorized path. Proposal operations validate their dependency closure before source reads (up to 64 records). The recent scoped list includes only changes whose dependency closure is also visible within that window.
+
+Token creation accepts optional `paths:["docs","src/api"]`; omit or use `null` for a whole workspace. Policies require distinct principals where configured; evidence is supplied by the agent, not attested CI. Updating policy invalidates earlier affected approvals and is blocked while a publication is unresolved.
+
+`POST /api/github/imports/:id/reconcile` checks destination refs and finalizes a complete import without downloading or allocating another repository. An incomplete result returns 409 without changing its failure evidence or transfer count. `/run` has a three-transfer-attempt ceiling.
+
+`GET /api/usage` also returns `cache.reservedReads`, `reservedWrites`, `readCap` and `writeCap`. These are application reservations, not provider billing measurements.

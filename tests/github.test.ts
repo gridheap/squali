@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import {generateKeyPairSync,sign} from 'node:crypto';
 import {startLocal} from '../scripts/local.ts';
 const {privateKey,publicKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+// Workers only supports follow/manual. Exercise its fetch contract at the HTTP boundary.
+const nativeFetch=globalThis.fetch;
+globalThis.fetch=((input:RequestInfo|URL,init?:RequestInit)=>{if(init?.redirect==='error')throw new TypeError('Workers does not support redirect:error');return nativeFetch(input,init);}) as typeof fetch;
 const domain='squali-fixture.clerk.accounts.dev';
 const clerk={publishableKey:'pk_test_'+Buffer.from(domain+'$').toString('base64'),secretKey:'sk_test_fixture',jwtKey:publicKey.export({type:'spki',format:'pem'}).toString()};
 export function session(user:string,origin:string,extra:Record<string,unknown>={}){const now=Math.floor(Date.now()/1000);const encoded=[{alg:'RS256',typ:'JWT',kid:'fixture'},{iss:'https://'+domain,sub:user,sid:'sess_fixture',azp:origin,iat:now,nbf:now-5,exp:now+300,...extra}].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).join('.');return encoded+'.'+sign('RSA-SHA256',Buffer.from(encoded),privateKey).toString('base64url');}
@@ -38,14 +41,16 @@ test('Clerk sessions create private owner workspaces and reject forged, expired 
 
 test('GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer',async()=>{
  const {createServer}=await import('node:http');const {execFile}=await import('node:child_process');const {promisify}=await import('node:util');const exec=promisify(execFile);const {writeFile}=await import('node:fs/promises');
- const source=await startLocal({port:0,test:true});let transferCount=0;let catalogCount=0;let revokedSecond=false;
+ const source=await startLocal({port:0,test:true});let transferCount=0;let catalogCount=0;let revokedSecond=false;let repositoryScope=true;let redirectToken=false;let redirectHits=0;
  const create=async(id:string)=>fetch(source.url+'/api/projects',{method:'POST',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:JSON.stringify({id,name:id,files:[{path:'README.md',content:'Private source\n'}]})}).then(r=>r.json()) as Promise<any>;
  const upstream=await create('origin');const empty=await create('empty-source');await exec('git',['init','--bare','--initial-branch=main',source.dir+'/truly-empty.git']);const emptyRemote=empty.remote.replace('weave-empty-source.git','truly-empty.git');
  const checkout=source.dir+'/checkout';await exec('git',['clone',upstream.remote,checkout]);await exec('git',['-C',checkout,'checkout','-b','trunk']);await writeFile(checkout+'/second.txt','second commit\n');await exec('git',['-C',checkout,'add','.']);await exec('git',['-C',checkout,'-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-m','Second source commit']);await exec('git',['-C',checkout,'-c','user.name=Fixture','-c','user.email=fixture@example.invalid','tag','-a','v1','-m','Annotated release']);await exec('git',['-C',checkout,'push','origin','trunk','refs/tags/v1']);const head=(await exec('git',['-C',checkout,'rev-parse','HEAD'])).stdout.trim();
- const records=[{id:101,full_name:'owner/private',private:true,default_branch:'trunk',size:5,archived:false,permissions:{pull:true}},{id:102,full_name:'owner/second',private:false,default_branch:'main',size:1,archived:false,permissions:{pull:true}},{id:103,full_name:'owner/empty',private:true,default_branch:'main',size:0,archived:false,permissions:{pull:true}}];
+ const records=[{id:101,full_name:'owner/private',private:true,default_branch:'trunk',size:322175,archived:false,permissions:{pull:true}},{id:102,full_name:'owner/second',private:false,default_branch:'main',size:1,archived:false,permissions:{pull:true}},{id:103,full_name:'owner/empty',private:true,default_branch:'main',size:0,archived:false,permissions:{pull:true}}];
  const provider=createServer(async(req,res)=>{
   const url=new URL(req.url!,'http://fixture');
-  if(url.pathname.includes('/oauth_access_tokens/')){res.setHeader('content-type','application/json');res.end(JSON.stringify([{token:'github-fixture-only',scopes:['repo'],provider:'oauth_github'}]));return;}
+  if(url.pathname==='/credential-sink'){redirectHits++;res.writeHead(500).end();return;}
+  if(url.pathname.includes('/oauth_access_tokens/')&&redirectToken){res.writeHead(302,{location:providerUrl+'/credential-sink'}).end();return;}
+  if(url.pathname.includes('/oauth_access_tokens/')){res.setHeader('content-type','application/json');res.end(JSON.stringify([{token:'github-fixture-only',scopes:repositoryScope?['repo','read:user','user:email']:['read:user','user:email'],provider:'oauth_github'}]));return;}
   if(req.headers.authorization!=='Bearer github-fixture-only'&&!req.headers.authorization?.startsWith('Basic ')){res.writeHead(401).end();return;}
   if(url.pathname==='/user/repos'){catalogCount++;const page=Number(url.searchParams.get('page')??1);if(page===1)res.setHeader('Link','<http://fixture/user/repos?page=2>; rel="next"');res.setHeader('content-type','application/json');res.end(JSON.stringify(page===1?[records[0]]:records.slice(1)));return;}
   if(url.pathname==='/repositories/102'&&revokedSecond){res.writeHead(404).end();return;}
@@ -56,14 +61,22 @@ test('GitHub catalog and resumable import preserve private Git history, branches
  const server=await startLocal({port:0,test:true,failImportCreateOnce:true,clerk:{...clerk,apiOrigin:providerUrl},github:{apiOrigin:providerUrl,gitOrigin:providerUrl+'/git'}});
  try{
   const call=async(path:string,data?:unknown,user='user_alice')=>{const r=await fetch(server.url+'/api'+path,{method:data===undefined?'GET':'POST',headers:{authorization:'Bearer '+session(user,server.url),'content-type':'application/json'},body:data===undefined?undefined:JSON.stringify(data)});return {status:r.status,body:await r.json() as any};};
+  repositoryScope=false;
+  assert.equal((await call('/session')).status,200,'Identity-only sign-in remains usable');
+  const unconnected=await call('/github/repositories');assert.equal(unconnected.status,403);assert.equal(unconnected.body.error,'github_scope');assert.equal(catalogCount,0,'No repository discovery before consent');
+  repositoryScope=true;redirectToken=true;
+  assert.equal((await call('/github/repositories')).status,403);assert.equal(redirectHits,0,'Credentials cannot follow provider redirects');
+  redirectToken=false;
   const first=await call('/github/repositories');assert.equal(first.status,200,JSON.stringify(first.body));assert.equal(first.body.repositories[0].private,true);assert.equal(first.body.nextPage,2);
   await call('/github/repositories');assert.equal(catalogCount,1,'Fresh catalog is reused');
   const second=await call('/github/repositories?page=2');assert.equal(second.body.nextPage,null);
   const queued=await call('/github/imports',{repositoryIds:[101,101,102]});assert.equal(queued.status,201,JSON.stringify(queued.body));assert.equal(queued.body.imports.length,2);
   const item=queued.body.imports.find((r:any)=>r.repositoryId===101);
+  const checked=await call('/github/imports/'+item.id+'/reconcile',{});assert.equal(checked.status,409);assert.equal(transferCount,0,'Reconciliation never starts a transfer');assert.equal((await call('/github/imports')).body.imports.find((r:any)=>r.id===item.id).state,'queued');assert.equal((await call('/github/imports')).body.imports.find((r:any)=>r.id===item.id).attempts,0);
   assert.equal((await call('/github/imports/'+item.id+'/run',{},'user_bob')).status,404);
   assert.equal((await call('/github/imports/'+item.id+'/run',{})).status,502);
   const result=await call('/github/imports/'+item.id+'/run',{});assert.equal(result.status,200,JSON.stringify(result.body));assert.equal(result.body.state,'complete');assert.equal(result.body.head,head);
+  assert.equal((await call('/github/imports/'+item.id+'/reconcile',{})).body.state,'complete');
   const repeated=await call('/github/imports/'+item.id+'/run',{});assert.equal(repeated.body.head,head);assert.equal(transferCount,1,'Retry must not download a successful pack');
   assert.equal((await call('/github/imports',{repositoryIds:[101]})).body.imports[0].id,item.id);
   const projectId=result.body.projectId;const projects=(await call('/projects')).body.projects;assert.equal(projects[0].head,head);
@@ -77,16 +90,19 @@ test('GitHub catalog and resumable import preserve private Git history, branches
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
    await page.route('https://use.typekit.net/**',async route=>{await new Promise(r=>setTimeout(r,3500));await route.abort();});
-   await page.route('https://'+domain+'/**',route=>route.fulfill({contentType:'application/javascript',body:`const listeners=[];window.Clerk={user:null,session:null,load:async()=>{},addListener:f=>listeners.push(f),redirectToSignIn:async()=>{window.Clerk.user={id:'user_alice'};window.Clerk.session={getToken:async()=>${JSON.stringify(session('user_alice',server.url))}};for(const f of listeners)f({user:window.Clerk.user,session:window.Clerk.session});},signOut:async()=>{window.Clerk.user=null;window.Clerk.session=null;for(const f of listeners)f({user:null,session:null});}};` }));
+   await page.route('https://'+domain+'/**',route=>route.fulfill({contentType:'application/javascript',body:`const listeners=[];const granted=location.search.includes('scope=repo');const account={provider:'github',approvedScopes:granted?'read:user user:email repo':'read:user user:email',reauthorize:async p=>{if(p.additionalScopes.join()!=='repo'||p.redirectUrl!==location.origin+'/?view=github')throw Error('Wrong scope or callback');return {verification:{externalVerificationRedirectURL:{href:location.origin+'/?view=github&scope=repo'}}};}};const fixtureUser={id:'user_alice',externalAccounts:[account]};const fixtureSession={getToken:async()=>${JSON.stringify(session('user_alice',server.url))}};window.Clerk={user:granted?fixtureUser:null,session:granted?fixtureSession:null,load:async()=>{},addListener:f=>listeners.push(f),redirectToSignIn:async()=>{window.Clerk.user=fixtureUser;window.Clerk.session={getToken:async()=>${JSON.stringify(session('user_alice',server.url))}};for(const f of listeners)f({user:window.Clerk.user,session:window.Clerk.session});},signOut:async()=>{window.Clerk.user=null;window.Clerk.session=null;for(const f of listeners)f({user:null,session:null});}};` }));
    const uiStarted=Date.now();await page.goto(server.url,{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Continue with GitHub',exact:true}).waitFor();const signInReadyMs=Date.now()-uiStarted;const pendingFont=await page.locator('html').getAttribute('class');assert.match(pendingFont??'',/wf-loading/);
    await page.getByRole('button',{name:'Continue with GitHub',exact:true}).click();await page.getByText('Signed in with GitHub',{exact:true}).waitFor();assert.match((await page.locator('html').getAttribute('class'))??'',/wf-loading/);
    await mkdir('work/github-evidence',{recursive:true});await writeFile('work/github-evidence/runtime.json',JSON.stringify({command:'pnpm test:github',provider:'local HTTP + real Git, Clerk frontend SDK boundary fixture',signInReadyMs,signedInMs:Date.now()-uiStarted,fontPendingAtSignIn:true},null,2));
-   await page.getByRole('button',{name:'GitHub repositories',exact:true}).click();await page.getByRole('button',{name:'Import all repositories',exact:true}).waitFor();
+   await page.getByRole('button',{name:'GitHub repositories',exact:true}).click();
+   assert.equal(await page.getByRole('button',{name:'Import all repositories',exact:true}).count(),0,'Login alone must not start repository discovery');
+   await page.getByRole('button',{name:'Grant repository access',exact:true}).click();
+   await page.getByRole('button',{name:'Import all repositories',exact:true}).waitFor();
    revokedSecond=true;await page.getByRole('button',{name:'Import all repositories',exact:true}).click();await page.getByText('2 repositories imported. 1 pending; progress is saved.',{exact:true}).waitFor();
    revokedSecond=false;await page.getByRole('button',{name:'Resume pending imports',exact:true}).click();await page.getByText('3 repositories imported. No pending imports.',{exact:true}).waitFor();
    assert.equal(transferCount,2,'Import all reuses the first import and transfers only the second');
    await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await mkdir('work/github-evidence',{recursive:true});await page.screenshot({path:'work/github-evidence/import-mobile.png',fullPage:true});
-   await page.getByRole('button',{name:'Agent access',exact:true}).click();await page.getByLabel('Credential label',{exact:true}).fill('Browser agent');await page.getByRole('button',{name:'Create agent token',exact:true}).click();
+   await page.getByRole('button',{name:'Agent access',exact:true}).click();await page.getByLabel('Credential label',{exact:true}).fill('Browser agent');await page.getByLabel('Allowed paths',{exact:true}).fill('docs');await page.getByRole('button',{name:'Create agent token',exact:true}).click();
    const scoped=await page.getByLabel('Agent token',{exact:true}).inputValue();assert.match(scoped,/^sq_/);await page.getByRole('button',{name:'Close details',exact:true}).click();
    await page.getByRole('button',{name:'Sign out',exact:true}).click();assert.equal(await page.getByText('owner/private',{exact:true}).count(),0);assert.deepEqual(errors,[]);
   }finally{await browser.close();}

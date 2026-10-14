@@ -15,7 +15,11 @@
     "benchmark": "tsx scripts/benchmark.ts",
     "demo": "tsx scripts/demo.ts",
     "test:crash": "node --import tsx --test tests/crash.test.ts",
-    "test:github": "node --import tsx --test tests/github.test.ts"
+    "test:github": "node --import tsx --test tests/github.test.ts",
+    "test:storage": "node --import tsx --test tests/storage.test.ts",
+    "test:sparse": "node --import tsx --test tests/sparse.test.ts",
+    "test:metadata": "node --import tsx --test tests/metadata.test.ts",
+    "test:permissions": "node --import tsx --test tests/permissions.test.ts"
   },
   "dependencies": {
     "@clerk/backend": "3.23.2",

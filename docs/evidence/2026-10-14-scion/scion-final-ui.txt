@@ -1,0 +1,57 @@
+$ playwright test
+
+Running 4 tests using 1 worker
+
+(node:84111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs (36.5s)
+(node:90165) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/ui.spec.ts:31:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (6.0s)
+  ✓  3 tests/ui.spec.ts:39:1 › a reviewer revises every file in a proposal and sees actual reserved usage (10.3s)
+  ✓  4 tests/ui.spec.ts:58:1 › reviewer selects a publication subset and inspects source history and blame (8.9s)
+
+
+  1) tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs
+
+    Error: expect(locator).toHaveClass(expected) failed
+
+    Locator: locator('html')
+    Expected pattern: /wf-active/
+    Received string:  "wf-inactive"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveClass" locator('html') with timeout 5000ms
+      - waiting for locator('html')
+        14 × locator resolved to <html lang="en" class="wf-inactive">…</html>
+           - unexpected value "wf-inactive"
+
+
+      20 |  await page.getByRole('button',{name:'Close details',exact:true}).click();await page.getByRole('button',{name:'Add retry-aware client',exact:true}).click();await page.getByRole('button',{name:'Approve change',exact:true}).click();await page.getByRole('button',{name:'Close details',exact:true}).click();
+      21 |  await page.getByRole('button',{name:'Preview batch',exact:true}).click();await expect(page.getByText('Ready to publish')).toBeVisible();await page.getByRole('button',{name:'Publish batch',exact:true}).click();await expect(page.getByText('Published 2 changes')).toBeVisible();
+    > 22 |  await expect(page.locator('html')).toHaveClass(/wf-active/);await expect(page.locator('link[data-adobe-fonts]')).toHaveCount(1);
+         |                                     ^
+      23 |  const client=await page.context().newCDPSession(page);await client.send('DOM.enable');await client.send('CSS.enable');const {root}=await client.send('DOM.getDocument');
+      24 |  const fonts:Record<string,unknown>={};for(const [name,selector]of [['latin','#font-latin'],['cjk','#font-cjk']]){const {nodeId}=await client.send('DOM.querySelector',{nodeId:root.nodeId,selector});fonts[name]=(await client.send('CSS.getPlatformFontsForNode',{nodeId})).fonts;}
+      25 |  expect(JSON.stringify(fonts.latin)).toContain('Proxima');expect(JSON.stringify(fonts.cjk)).toContain('PingFang');
+        at /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/ui.spec.ts:22:37
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-reviewer-completes-the--54139-solves-Latin-and-CJK-glyphs/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: work/ui-artifacts/ui-reviewer-completes-the--54139-solves-Latin-and-CJK-glyphs/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-reviewer-completes-the--54139-solves-Latin-and-CJK-glyphs/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace work/ui-artifacts/ui-reviewer-completes-the--54139-solves-Latin-and-CJK-glyphs/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/ui.spec.ts:5:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs
+  3 passed (1.1m)
+[ELIFECYCLE] Command failed with exit code 1.

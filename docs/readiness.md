@@ -1,45 +1,24 @@
 # Original goal and submission readiness
 
-Status: **not ready for final submission**. This supersedes any earlier suggestion that deployment and submission materials alone meant the original request was complete. The user requested a complete agent collaboration product informed by Anthropic's source-control design, with strong performance and cost efficiency, without D1.
+**Not ready for final submission. Full Scion parity is not complete.** The goal is an online source-control service with strong performance and cost efficiency, using Workers, Artifacts and R2, without D1. The [Scion capability map](scion-parity.md) is the acceptance boundary.
 
-The competition requires Workers, Artifacts, concurrent agent changes, an open-source license, a 5–10 minute video and runnable instructions. Its judging weights are originality/prototype quality (50%), concurrency/coordination/context/review/conflicts (25%), and usability (25%). Meeting the delivery format alone is insufficient.
+## Verified
 
-## Acceptance gaps identified by inspecting the implementation
+- Incremental immutable proposals, context/dependencies, review, conflict revisions and selected batch publication. New publications retain the proposal commits as additional Git parents; deterministic recovery journals freeze that parent list.
+- Fifteen HTTP/Git workflow tests and four real publication/cancellation SIGKILL tests pass.
+- Clerk/GitHub integration tests cover owner isolation, progressive permission, private history/branches/tags, import recovery after SIGKILL, explicit destination reconciliation and directory credentials.
+- R2 tier restart/failure isolation, sparse and binary materialization, graph/diff/history/blame/revert/bisect queries, search pagination and path policy have saved end-to-end results.
+- Three current browser workflow/fallback tests pass. The full browser run's live Adobe activation test timed out twice under the current network; its workflow completed, but glyph activation did not pass in these runs. Earlier successful glyph evidence remains historical, not a substitute for this result.
+- Local native-Git comparison uses identical content and ancestry-preserving publication on both paths, with native clone/fsck verification. See [performance](performance.md).
+- Production Clerk configuration and real GitHub sign-in work. The R2 bucket, seven-day lifecycle, updated SQL schema and Worker are deployed at https://squa.li. Legacy workers.dev and preview URLs remain disabled.
 
-| Area | Existing evidence | Missing acceptance evidence / behavior |
-|---|---|---|
-| Data model and Git compatibility | Immutable proposal records, context, sparse reads, incremental packs, native clone/fsck | Clerk/GitHub import and scoped agent credentials now pass local acceptance. Production OAuth remains pending; bulk sparse reads/local working-copy cache and complete lineage navigation remain open |
-| Correctness | 15 API E2E tests, four real publication/cancellation SIGKILL cases, GitHub import SIGKILL recovery | Git acceptance before/after termination, cancellation fencing and cross-reviewer deterministic retry now pass; external head movement during an unresolved outcome still requires explicit reconciliation |
-| Review UI | Local two-change workflow | Multi-file retention and mode/deletion controls are implemented; the two-file revision browser test passes. Selecting publication subsets still needs implementation/acceptance |
-| Cost UI | Published list prices and server-side operation cap | The page now reads actual conservative reservations. Per-workflow cost and a complete deployment cost model remain unmeasured |
-| Concurrency | 32 local small proposals, eight clients | Sustained bounded mixed read/write workload, high contention, duplicate requests, many changes, repeated publication/recovery and bounded client backpressure |
-| Scaling | Cached immutable objects, short SQL locks | Fresh default bases and zero-provider proposal replay are fixed and tested; unpaginated 200-change/100-history views; global operation-counter contention unmeasured |
-| Performance/value | Same-workload 32-change native Git comparison; identical Git trees and fsck | CPU/memory, cold/warm behavior, sustained p95/p99 under contention, incremental cloud cost per successful change |
-| Product readiness | Custom domain; legacy tokens; Clerk/import code under acceptance | Normal TLS/HTTP access now succeeds. Clerk production GitHub credentials and backend secret remain pending. Local browser import/agent-credential flows pass; the real OAuth/import walkthrough remains unverified |
-| Demonstration | Edited narrated screenshots | Continuous capture of the improved workflow, failure/recovery, real coordination and measured comparisons |
+## Still required
 
-## Changes verified after this audit
+1. Complete and independently verify the large private repository import. Its 85,563-commit source fixture passed fsck; three production transfers did not complete. Do not reset the attempt ceiling or label the fixture preparation a successful Squali import.
+2. Complete scalable graph/path indices, working-copy updates, richer semantic approval and archive navigation. Explicit sparse hydration is not filesystem virtualization.
+3. Measure sustained mixed contention, CPU/memory, cold/warm cache behavior and cloud cost per successful workflow. The small local sample does not establish universal highest performance or best value.
+4. Replace the older edited demo with a continuous capture of current behavior and accurate limitations. Then have the eligible team member perform the competition submission.
 
-- Multi-file revisions preserve all files; the cost page shows actual reserved usage.
-- Default proposal bases follow Git, and completed proposal replays make no provider calls.
-- Publication and cancellation recovery pass real process-kill tests before and after Git acceptance. Concurrent retries converge on the saved commit, including its original author. Cancellation appends an unchanged-tree audit commit to reject delayed writes from the previous head.
-- Clerk owner isolation, private GitHub imports, all-page selection, full reachable history/heads/tags, default branches, empty-repository first publication, resumable imports, and scoped/revocable agent credentials pass local API/browser/native-Git tests. Production OAuth is not yet configured.
-- Native Git gzip negotiation is decoded with a 1 MiB expansion cap; invalid data consumes no provider calls. A native Git comparison verifies identical final trees and retained proposal refs; see [performance evidence](performance.md).
-- The old claim that public DNS/TLS still fails is superseded by a normal-route TLS-verified HTTP 200 observation.
+The competition asks for Workers, Artifacts, concurrent agent changes, an open-source license, runnable instructions and a 5–10 minute video. Its format requirements do not by themselves establish product readiness. No submission has been made.
 
-## Work order
-
-1. Fix data-loss and correctness problems with failing HTTP/browser E2E tests first.
-2. Complete the multi-file review and real-usage workflows, then verify the public entry points.
-3. Prove crash/retry behavior using actual process termination; avoid automatic lease expiry that could let an old writer act after cancellation.
-4. Complete existing-repository/agent workflows and bounded list/read interfaces.
-5. Run a bounded local performance matrix and honest native Git comparison. Use existing cloud evidence for unchanged behavior; new live checks must have explicit operation ceilings.
-6. Update the public deployment and demo only after the corresponding acceptance checks pass.
-
-No full cloud load test or provider quota increase is authorized by this document. A universal “highest performance” claim cannot be established by one implementation's measurements; identify the workload and publish comparative evidence instead.
-
-## Sources
-
-- https://www.anthropic.com/engineering/redesigning-source-control
-- https://www.cloudflare.com/git-competition/
-- https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf
+Sources: [article](https://www.anthropic.com/engineering/redesigning-source-control), [competition](https://www.cloudflare.com/git-competition/), [rules](https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf).

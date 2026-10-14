@@ -1,0 +1,30 @@
+$ wrangler deploy
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 5 files from the assets directory /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/public
+🌀 Starting asset upload...
+🌀 Found 1 new or modified static asset to upload. Proceeding with upload...
++ /app.js
+Uploaded 1 of 1 asset
+✨ Success! Uploaded 1 file (3 already uploaded) (1.33 sec)
+
+Total Upload: 252.26 KiB / gzip: 63.75 KiB
+Worker Startup Time: 25 ms
+Your Worker has access to the following bindings:
+Binding                                                               Resource
+env.HYPERDRIVE (c5366ae0d2d54d76b2b7daf414c6333d)                     Hyperdrive Config
+env.OBJECTS (squali-objects)                                          R2 Bucket
+env.ARTIFACTS (weave)                                                 Artifacts
+env.ASSETS                                                            Assets
+env.MAX_PROJECTS ("10")                                               Environment Variable
+env.MONTHLY_ARTIFACT_CALL_CAP ("2000")                                Environment Variable
+env.MONTHLY_R2_READ_CAP ("20000")                                     Environment Variable
+env.MONTHLY_R2_WRITE_CAP ("2000")                                     Environment Variable
+env.ADOBE_KIT_ID ("ggy5hcn")                                          Environment Variable
+
+Uploaded gridheap-weave (14.77 sec)
+Deployed gridheap-weave triggers (2.66 sec)
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+Current Version ID: 7e2af5c0-29bd-4c7c-99c2-7f30412a0338

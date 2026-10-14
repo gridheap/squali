@@ -54,3 +54,17 @@ test('a reviewer revises every file in a proposal and sees actual reserved usage
  await page.getByRole('button',{name:'Cost & limits',exact:true}).click();await expect(page.getByTestId('usage-attempts')).toHaveText(usage.attempts.toLocaleString());await expect(page.getByTestId('usage-cap')).toHaveText(usage.cap.toLocaleString());
  await mkdir(evidence,{recursive:true});await page.screenshot({path:evidence+'/revision-usage.png',fullPage:true});
 });
+
+test('reviewer selects a publication subset and inspects source history and blame',async({page,request})=>{
+ const headers={authorization:'Bearer local-admin-test-token'},id='surface-'+Date.now();
+ const post=async(path:string,data:unknown)=>{const response=await request.post('/api'+path,{headers,data});expect(response.ok()).toBe(true);return response.json();};
+ await post('/projects',{id,name:'Source service',files:[{path:'docs/guide.md',content:'Start\n'},{path:'other.txt',content:'Keep\n'}]});
+ for(const [cid,path]of [['guide','docs/guide.md'],['other','other.txt']]){await post(`/projects/${id}/changes`,{id:cid,title:cid,intent:'Review selected work',files:[{path,content:'Changed\n'}]});await post(`/projects/${id}/changes/${cid}/review`,{decision:'approved'});}
+ await page.goto('/');await page.getByLabel('Access token').fill('local-admin-test-token');await page.getByRole('button',{name:'Connect',exact:true}).click();await page.getByText('Connected as reviewer').waitFor();await page.getByLabel('Current workspace').selectOption(id);
+ await page.getByRole('checkbox',{name:'Include other',exact:true}).uncheck();await page.getByRole('button',{name:'Preview batch',exact:true}).click();await expect(page.getByText('Ready to publish',{exact:true})).toBeVisible();await page.getByRole('button',{name:'Publish batch',exact:true}).click();await expect(page.getByText(/Published 1 changes/)).toBeVisible();
+ const remaining=await request.get(`/api/projects/${id}/changes/other`,{headers}).then(r=>r.json());expect(remaining.status).toBe('approved');
+ await page.getByRole('button',{name:'Source',exact:true}).click();await page.getByLabel('Search repository paths',{exact:true}).fill('guide');await page.getByRole('button',{name:'Find paths',exact:true}).click();await page.getByRole('button',{name:'Open docs/guide.md',exact:true}).click();
+ await page.getByRole('button',{name:'Blame lines',exact:true}).click();await expect(page.getByRole('heading',{name:'Blame · docs/guide.md',exact:true})).toBeVisible();await expect(page.getByText('Changed',{exact:true})).toBeVisible();await page.getByRole('button',{name:'Close details',exact:true}).click();
+ await page.getByRole('button',{name:'Review policy',exact:true}).click();await page.getByLabel('Review rules (JSON)',{exact:true}).fill('[{"prefix":"docs","independentReview":true,"requireEvidence":true}]');await page.getByRole('button',{name:'Save review policy',exact:true}).click();await expect(page.getByText('Review policy saved',{exact:true})).toBeVisible();
+ await page.setViewportSize({width:390,height:844});await mkdir(evidence,{recursive:true});await page.screenshot({path:evidence+'/source-service-mobile.png',fullPage:true});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

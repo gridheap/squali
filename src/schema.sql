@@ -56,3 +56,20 @@ CREATE TABLE IF NOT EXISTS weave_tokens (
  expires_at timestamptz NOT NULL,revoked_at timestamptz,created_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS weave_tokens_project ON weave_tokens(project,created_at DESC);
+CREATE TABLE IF NOT EXISTS weave_cache_usage (
+ month text NOT NULL, kind text NOT NULL, reservations bigint NOT NULL,
+ PRIMARY KEY(month,kind)
+);
+CREATE TABLE IF NOT EXISTS weave_cache_entries (
+ key text PRIMARY KEY, expires_at timestamptz NOT NULL
+);
+CREATE TABLE IF NOT EXISTS weave_derived (
+ project text NOT NULL REFERENCES weave_projects(id), kind text NOT NULL, key text NOT NULL,
+ value jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(project,kind,key)
+);
+ALTER TABLE weave_tokens ADD COLUMN IF NOT EXISTS paths text[];
+CREATE TABLE IF NOT EXISTS weave_review_policy (
+ project text PRIMARY KEY REFERENCES weave_projects(id), rules jsonb NOT NULL,
+ updated_at timestamptz NOT NULL DEFAULT now()
+);
