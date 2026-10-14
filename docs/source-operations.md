@@ -36,7 +36,7 @@ Keep the native Git cache, `cache.json` identity marker and `state/state.json` t
 
 Whole-workspace credentials can read `GET /api/projects/:id/changesets/:gitOidOrChangesetId`. Administrators can inspect `GET /api/projects/:id/source`, including object counts, changesets, refs and Git compatibility status.
 
-`POST /api/projects/:id/source/derive` accepts `{ "kind":"tree", "version":1, "changesets":["<immutable-id>"] }` or kind `generation`. Kind `indexes` rebuilds the specialized graph/path structures in bounded parent-order steps. The implementation validates kinds and versions and enforces a bounded dependency traversal. Derived records are reusable and reconstructible. Graph/path bulk builders remain specialized; this is not an arbitrary-code plugin endpoint.
+`POST /api/projects/:id/source/derive` accepts `{ "kind":"tree", "version":1, "changesets":["<immutable-id>"] }` or kind `generation`. Kind `indexes` rebuilds graph/path structures and resolves missing parent dependencies through the same versioned engine used for tree/generation results. It accepts a single head when the missing closure fits the limits: 1,024 results, 8,192 dependency records, 16 MiB graph/path metadata and 100,000 path events. Larger rebuilds use parent-order batches. Eager and lazy paths share the resolver; storage and vectorized calculations are adapters. Unknown kinds and versions are rejected.
 
 The authenticated raw source protocol is `POST /api/projects/:id/rpc` with operations `head`, `object` and `stat`. Directory-scoped credentials must use authorized path APIs. See the [node cache guide](node-cache.md) for its clients.
 

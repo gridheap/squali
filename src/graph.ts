@@ -1,6 +1,7 @@
 import type {TransactionSql} from 'postgres';
 import {createHash,randomUUID} from 'node:crypto';
 import {Problem} from './types.ts';
+import {resolveDerivedBatch} from './derived-data.ts';
 import type {Commit,Repository,Sql} from './types.ts';
 
 type Node=Commit & {generation:number|null;depth:number;span:number;treeSpan:number;jumps:string[]};
@@ -64,11 +65,7 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
     const parents:Node[]=[];let missing:string|undefined;
     for(const parent of node.parents){const p=await get(parent);if(!p||p.generation===null){missing=parent;break;}parents.push(p);}
     if(missing){if(stack.length>=100000)throw new Problem(422,'index_depth','Index ancestry exceeds 100,000 pending commits');stack.push(missing);continue;}
-    const first=parents[0];const jumps:string[]=first?[first.oid]:[];
-    for(let level=1;level<32&&jumps[level-1];level++){const previous=await complete(jumps[level-1]);if(!previous.jumps[level-1])break;jumps.push(previous.jumps[level-1]);}
-    const generation=1+Math.max(0,...parents.map(p=>p.generation!)),depth=first?first.depth+1:0,span=parents.length===1?first.span+1:0,treeSpan=first&&first.tree===node.tree?first.treeSpan+1:0;
-    await sql`UPDATE weave_commit_graph SET generation=${generation},first_depth=${depth},linear_span=${span},tree_span=${treeSpan},jumps=${jumps} WHERE project=${project} AND version=${VERSION} AND oid=${oid} AND generation IS NULL`;
-    nodes.set(oid,{...node,generation,depth,span,treeSpan,jumps});stack.pop();completed++;
+    await completeGraphBatch(sql,project,[oid],nodes);stack.pop();completed++;
    }
    const result=await get(root);return {ref:root,complete:result?.generation!==null&&!!result,reads,completed,pending:stack.length,generation:result?.generation??null};
   }finally{
@@ -126,24 +123,38 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
 /** Complete imported, already hash-verified metadata in parent-order batches.
  * Jump dependencies are fetched a level at a time, avoiding one SQL round trip per jump per commit.
  */
-export async function completeGraphBatch(sql:Sql|TransactionSql<{}>,project:string,ids:string[]){
+export async function completeGraphBatch(sql:Sql|TransactionSql<{}>,project:string,ids:string[],memo=new Map<string,Node>()){
  if(!ids.length||ids.length>256)throw new Problem(400,'index_batch','Complete 1–256 imported commits');
- const rows=await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=1 AND oid=ANY(${ids})`;
- if(rows.length!==new Set(ids).size)throw new Problem(409,'index_required','Commit metadata is missing');
- const nodes=new Map<string,any>(rows.map(r=>[r.oid,r]));
- const external=[...new Set(rows.flatMap(r=>r.parents as string[]))].filter(id=>!nodes.has(id));
- if(external.length)for(const r of await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=1 AND oid=ANY(${external})`)nodes.set(r.oid,r);
- const pending=new Map(rows.filter(r=>r.generation===null).map(r=>[r.oid,r])),completed:any[]=[];
- while(pending.size){let progress=false;for(const [id,node] of pending){const parents=node.parents.map((p:string)=>nodes.get(p));if(parents.some((p:any)=>!p||p.generation===null))continue;
-   const first=parents[0];Object.assign(node,{generation:1+Math.max(0,...parents.map((p:any)=>Number(p.generation))),first_depth:first?Number(first.first_depth)+1:0,linear_span:parents.length===1?Number(first.linear_span)+1:0,tree_span:first&&first.tree===node.tree?Number(first.tree_span)+1:0,jumps:first?[first.oid]:[]});completed.push(node);pending.delete(id);progress=true;
-  }if(!progress)throw new Problem(409,'index_required','Complete earlier parent batches first');}
- for(let level=1;level<32;level++){
-  const active=completed.filter(n=>n.jumps.length===level);if(!active.length)break;
-  const needed=[...new Set(active.map(n=>n.jumps[level-1] as string))].filter(id=>!nodes.has(id));
-  if(needed.length)for(const r of await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=1 AND oid=ANY(${needed})`)nodes.set(r.oid,r);
-  for(const n of active){const previous=nodes.get(n.jumps[level-1]);if(!previous||previous.generation===null)throw new Problem(503,'index_invalid','Jump dependency is incomplete');if(previous.jumps[level-1])n.jumps.push(previous.jumps[level-1]);}
- }
- const updates=completed.map(n=>({project,version:1,oid:n.oid as string,tree:n.tree as string,parents:n.parents as string[],message:n.message as string,generation:Number(n.generation),first_depth:Number(n.first_depth),linear_span:Number(n.linear_span),tree_span:Number(n.tree_span),jumps:n.jumps as string[]}));
- if(updates.length)await sql`INSERT INTO weave_commit_graph ${sql(updates,'project','version','oid','tree','parents','message','generation','first_depth','linear_span','tree_span','jumps')} ON CONFLICT(project,version,oid) DO UPDATE SET generation=EXCLUDED.generation,first_depth=EXCLUDED.first_depth,linear_span=EXCLUDED.linear_span,tree_span=EXCLUDED.tree_span,jumps=EXCLUDED.jumps WHERE weave_commit_graph.generation IS NULL`;
- return {completed:completed.length};
+ const nodes=new Map(memo);let metadataBytes=0;
+ const decode=(r:any):Node=>({oid:r.oid,tree:r.tree,parents:r.parents,message:r.message,generation:r.generation===null?null:Number(r.generation),depth:Number(r.first_depth),span:Number(r.linear_span),treeSpan:Number(r.tree_span),jumps:r.jumps});
+ async function read(keys:string[]){const missing=keys.filter(key=>!nodes.has(key));if(missing.length)for(const r of await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=1 AND oid=ANY(${missing})`)nodes.set(r.oid,decode(r));return new Map(keys.filter(key=>nodes.get(key)?.generation!=null).map(key=>[key,nodes.get(key)!]));}
+ const result=await resolveDerivedBatch<Node,Node>({kind:'commit-graph',version:VERSION,read,
+  async load(keys){
+   const missing=keys.filter(key=>!nodes.has(key));
+   if(missing.length){const sizes=await sql`SELECT size FROM weave_source_objects WHERE project=${project} AND kind='commit' AND oid=ANY(${missing})`;metadataBytes+=sizes.reduce((total,row)=>total+Number(row.size),0);if(metadataBytes>16*1024*1024)throw new Problem(422,'derived_budget','Derive earlier graph batches first: metadata exceeds 16 MiB');}
+   if(missing.length)for(const row of await sql`SELECT oid,raw FROM weave_source_objects WHERE project=${project} AND kind='commit' AND oid=ANY(${missing})`){
+    const raw=Buffer.from(row.raw),at=raw.indexOf('\n\n'),header=raw.subarray(0,at).toString(),tree=header.match(/^tree ([a-f0-9]{40})$/m)?.[1];
+    if(at<0||!tree||createHash('sha1').update(`commit ${raw.length}\0`).update(raw).digest('hex')!==row.oid)throw new Problem(503,'index_input','Canonical Git metadata is invalid');
+    nodes.set(row.oid,{oid:row.oid,tree,parents:[...header.matchAll(/^parent ([a-f0-9]{40})$/gm)].map(m=>m[1]),message:raw.subarray(at+2).toString(),generation:null,depth:0,span:0,treeSpan:0,jumps:[]});
+   }
+   return new Map(keys.filter(key=>nodes.has(key)).map(key=>[key,{key,parents:nodes.get(key)!.parents,input:nodes.get(key)!}]));
+  },
+  async compute(inputs,resolved){
+   const values=new Map<string,Node>();
+   for(const {key,input,parents:ids} of inputs){const parents=ids.map(id=>resolved.get(id)!),first=parents[0];const node={...input,generation:1+Math.max(0,...parents.map(p=>p.generation!)),depth:first?first.depth+1:0,span:parents.length===1?first.span+1:0,treeSpan:first&&first.tree===input.tree?first.treeSpan+1:0,jumps:first?[first.oid]:[]};values.set(key,node);nodes.set(key,node);resolved.set(key,node);}
+   // One fetch per jump level, shared by all commits in the admitted batch.
+   for(let level=1;level<32;level++){
+    const active=[...values.values()].filter(node=>node.jumps.length===level);if(!active.length)break;
+    await read([...new Set(active.map(node=>node.jumps[level-1]))]);
+    for(const node of active){const previous=nodes.get(node.jumps[level-1]);if(!previous||previous.generation===null)throw new Problem(503,'index_invalid','Jump dependency is incomplete');if(previous.jumps[level-1])node.jumps.push(previous.jumps[level-1]);}
+   }
+   return values;
+  },
+  async save(values){
+   const rows=[...values.values()].map(n=>({project,version:VERSION,oid:n.oid,tree:n.tree,parents:n.parents,message:n.message,generation:n.generation!,first_depth:n.depth,linear_span:n.span,tree_span:n.treeSpan,jumps:n.jumps}));
+   for(let at=0;at<rows.length;at+=256)await sql`INSERT INTO weave_commit_graph ${sql(rows.slice(at,at+256),'project','version','oid','tree','parents','message','generation','first_depth','linear_span','tree_span','jumps')} ON CONFLICT(project,version,oid) DO UPDATE SET generation=EXCLUDED.generation,first_depth=EXCLUDED.first_depth,linear_span=EXCLUDED.linear_span,tree_span=EXCLUDED.tree_span,jumps=EXCLUDED.jumps WHERE weave_commit_graph.generation IS NULL`;
+  }
+ },ids);
+ for(const [key,node]of nodes)memo.set(key,node);
+ return {completed:result.computed};
 }

@@ -1,6 +1,7 @@
 import {createHash} from 'node:crypto';
 import {Problem,type Sql,type Commit,type TreeEntry,type RawObject,type SourceDelta} from './types.ts';
 import {completeGraphBatch} from './graph.ts';
+import {completePathBatch} from './path-index.ts';
 
 /** Import immutable deltas in batches; SQL work follows tree depth rather than file count. */
 export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decodeCommit:(id:string,raw:Uint8Array)=>Commit,decodeTree:(raw:Uint8Array)=>TreeEntry[],prepared?:{objects:RawObject[];delta:SourceDelta[]}){
@@ -50,10 +51,9 @@ export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decode
  });
  await sql.begin(async tx=>{
   if(manifests.length)await tx`INSERT INTO weave_changesets ${tx(manifests,'project','id','git_oid','parents','files','metadata')} ON CONFLICT DO NOTHING`;
-  const paths=commits.flatMap(c=>[...new Set(files.get(c.oid)!.map(f=>f.path as string))].map(path=>({project,version:1,path,git_oid:c.oid})));
-  for(let i=0;i<paths.length;i+=2000)await tx`INSERT INTO weave_source_paths ${tx(paths.slice(i,i+2000),'project','version','path','git_oid')} ON CONFLICT DO NOTHING`;
   if(commits.length)await tx`INSERT INTO weave_commit_graph ${tx(commits.map(c=>({project,version:1,oid:c.oid,tree:c.tree,parents:c.parents,message:c.message})),'project','version','oid','tree','parents','message')} ON CONFLICT DO NOTHING`;
   await completeGraphBatch(tx,project,ids);
+  await completePathBatch(tx,project,ids);
  });
  return {completed:ids.length};
 }

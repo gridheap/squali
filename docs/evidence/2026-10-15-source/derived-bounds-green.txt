@@ -1,0 +1,16 @@
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (426.608ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (224.146208ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":40,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✔ online proposal persists its known delta with bounded SQL and exact import identity (255.517042ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","files":64,"queries":39}
+✔ one 64-file proposal stores its path index in one bounded SQL batch (168.992417ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 839.44175

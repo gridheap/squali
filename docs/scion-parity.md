@@ -11,14 +11,14 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 | Separate publication | Reviewed subset/dependencies, reconciliation, immutable revisions and CAS on the published ref | One authoritative main update remains serialized |
 | Server operations | Diff, commit, merge, single-commit and continuous rebase, conflicts, revert, executable bisect | Continuous rebase: 64 single-parent commits, eight steps/request; merge commits use explicit-parent rebase |
 | Commit graph and path history | Eager generation/skip index, multi-parent ancestry/merge bases, indexed path events, history and blame | General graph traversal: 50,000-node budget; history and path queries are paginated |
-| Derived data | Versioned recursive derivation, eager/lazy evaluation, rebuilding trees/commits/indexes from canonical deltas | Graph/path bulk builders retain specialized implementations; no automatic background backfill |
+| Derived data | Versioned recursive derivation, eager/lazy evaluation, rebuilding trees/commits/indexes from canonical deltas | One shared dependency engine with vectorized graph/path adapters; bounded reconstruction, no automatic background backfill |
 | Virtualized files | Actual Linux FUSE mount: ordinary `ls`, `stat` and `cat`, metadata without file bodies, lazy content | FUSE mounts are immutable/read-only. Writable changes use the sparse working-copy client/API |
 | Node daemon and tiered cache | Private Unix socket, concurrent miss coalescing, bounded shared cache, verified snapshots, Worker memory/edge and durable R2 | No dedicated regional cache fleet or measured 99% hit rate at every tier |
 | Fault isolation | Cache errors fail closed, upload leases and late-ack reconciliation, revoked credentials, bounded snapshots, no authority bypass | Same-user local cache directories are not an OS security boundary between hostile processes |
 | IAM and review constraints | Clerk owner isolation, expiring role/path credentials, parser-backed JS comment-only and JSON value policies | Semantic scope is explicit; it is not general proof of program equivalence or trusted CI attestation |
 | Private GitHub import | Persistent background jobs, single native worker, frozen cache/journal, pause/resume, short internal credential leases, no browser pack transfer | Real production GitHub login and the private catalog pass; full 421,219-object private import remains in progress |
 | Git interoperability | Published-only Artifacts export, incremental clone/fetch, native cache seeding, exact tags, lost-ack reconciliation, rebuildable derived copy | Worker export: 8,192 new objects/16 MiB; Artifacts remains limited to a 1 GB compatibility repository |
-| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 18 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
+| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 21 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
 
 ## Responsibilities
 

@@ -74,3 +74,10 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 
 - `node24-full-e2e.txt`: 65/65 with the exact pinned Node 24.21.0 runtime. Command: `/Users/binbinsh/.local/share/mise/installs/node/24.21.0/bin/node --import tsx --test tests/*.test.ts`.
 - `demo-continuous-preflight.txt` and `recording-format.json`: the current demonstration workflow and a short continuous capture/MP4 format check pass. The quick probe is not a final competition video. See [recording instructions](../../demo-source.md).
+
+## Unified derivation checkpoint
+
+- `derived-full-e2e.txt`: 67/67 on pinned Node 24.21.0; `derived-typecheck.txt`, `derived-build.txt` and `derived-deploy.txt` retain the checks and Worker `788ca13e-62d5-4229-8d7a-52cf4e3eae93`.
+- `derived-indexes-red.txt` / `derived-indexes-focused.txt`: eager and lazy graph/path derivation use one dependency mechanism. Deleting indexes and restarting, then requesting one head, rebuilds its parents and preserves merge ancestry/path history with zero extra blob I/O.
+- `derived-bounds-red.txt` / `derived-bounds-green.txt`: oversized path events and missing canonical parents are rejected before a completion marker.
+- Current SQL: 40 for four-file proposal, 39 for 64-file proposal, 21 for 128-commit sealing. Earlier transcripts retain their earlier revision counts.

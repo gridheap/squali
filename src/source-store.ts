@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {gzipSync,gunzipSync,inflateSync} from 'node:zlib';
 import {Problem} from './types.ts';
 import {derivedData} from './derived-data.ts';
+import {completePathBatch} from './path-index.ts';
 import {completeGraphBatch,commitGraph} from './graph.ts';
 import type {Artifacts,Commit,RawObject,Repository,Sql,TreeEntry} from './types.ts';
 export interface SourceBucket {
@@ -111,36 +112,18 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
  const tree=async(project:string,id:string)=>{const value=await row(project,id);if(!value||value.kind!=='tree')throw new Problem(404,'tree_missing','Source tree not found');return decodeTree(value.raw);};
  const commit=async(project:string,id:string)=>{const value=await row(project,id);return value?.kind==='commit'?decodeCommit(id,value.raw):null;};
  async function changeset(project:string,id:string){const [value]=await sql`SELECT * FROM weave_changesets WHERE project=${project} AND (id=${id} OR git_oid=${id})`;if(!value)throw new Problem(404,'changeset_missing','Changeset is not complete');return {id:value.id,gitOid:value.git_oid,parents:value.parents,files:value.files,metadata:value.metadata};}
- async function seal(project:string,id:string){
-  const [existing]=await sql`SELECT id FROM weave_changesets WHERE project=${project} AND git_oid=${id}`;if(existing)return changeset(project,id);
-  const c=await commit(project,id);if(!c)throw new Problem(404,'commit_missing','Source commit not found');const parents=[];for(const parent of c.parents)parents.push((await changeset(project,parent)).id);
-  const first=c.parents[0]?await commit(project,c.parents[0]):null;const files:any[]=[];let work=0;
-  async function walk(before:string|null,after:string|null,prefix:string){if(before===after)return;if(++work>8192)throw new Problem(422,'source_tree_budget','Changeset derivation exceeds 8,192 changed trees');const a=new Map((before?await tree(project,before):[]).map(v=>[v.name,v])),b=new Map((after?await tree(project,after):[]).map(v=>[v.name,v]));
-   for(const name of [...new Set([...a.keys(),...b.keys()])].sort()){const old=a.get(name),next=b.get(name),path=prefix?prefix+'/'+name:name;if(old?.oid===next?.oid&&old?.mode===next?.mode&&old?.rawMode===next?.rawMode)continue;
-    if(old?.type==='tree'||next?.type==='tree'){if(old&&old.type!=='tree')files.push({path,mode:null,blob:null,gitOid:null});if(old?.type==='tree')await walk(old.oid,next?.type==='tree'?next.oid:null,path);else if(next?.type==='tree')await walk(null,next.oid,path);if(next?.type==='tree'||!next)continue;}
-    if(!next){files.push({path,mode:null,blob:null,gitOid:null});continue;}
-    if(next.mode==='160000'){files.push({path,mode:next.mode,blob:null,gitOid:next.oid});continue;}
-    const data=await row(project,next.oid);if(data?.kind!=='blob'||!data.blob||data.blob_state!=='ready')throw new Problem(409,'source_incomplete','Changed blob is missing',{path});files.push({path,mode:next.mode,...(next.rawMode?{rawMode:next.rawMode}:{}),blob:data.blob,gitOid:next.oid});if(files.length>100000)throw new Problem(422,'source_file_budget','Changeset has too many changed paths');
-   }
-  }
-  await walk(first?.tree??null,c.tree,'');files.sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0);const data=await raw(project,id),split=data.indexOf('\n\n');const metadata={rawSuffix:data.subarray(data.indexOf(10)+1).toString('base64'),headers:data.subarray(0,split).toString().split('\n').filter(line=>!line.startsWith('tree ')),message:c.message};const manifest={version:1,parents,files,metadata};const identity=hash('sha256',JSON.stringify(manifest));
-  await sql`INSERT INTO weave_changesets(project,id,git_oid,parents,files,metadata) VALUES(${project},${identity},${id},${parents},${sql.json(files)},${sql.json(metadata)}) ON CONFLICT DO NOTHING`;
-  if(files.length){const paths=[...new Set(files.map(f=>f.path as string))].map(path=>({project,version:1,path,git_oid:id}));await sql`INSERT INTO weave_source_paths ${sql(paths,'project','version','path','git_oid')} ON CONFLICT DO NOTHING`;}
-  await sql`INSERT INTO weave_commit_graph(project,version,oid,tree,parents,message) VALUES(${project},1,${id},${c.tree},${c.parents},${c.message}) ON CONFLICT DO NOTHING`;return changeset(project,id);
- }
+ async function seal(project:string,id:string){await sealBatch(project,[id]);return changeset(project,id);}
  async function derive(project:string,kind:unknown,version:unknown,ids:unknown){
   if(!['tree','generation','indexes'].includes(kind as string)||version!==1||!Array.isArray(ids)||!ids.length||ids.length>128||ids.some(id=>typeof id!=='string'||!/^([a-f0-9]{40}|[a-f0-9]{64})$/.test(id)))throw new Problem(400,'derived_options','Use tree, generation or indexes version 1 with 1–128 immutable changesets');
+  if(kind==='indexes'){
+   const rows=await sql`SELECT id,git_oid FROM weave_changesets WHERE project=${project} AND (id=ANY(${ids}) OR git_oid=ANY(${ids}))`;
+   if(ids.some(id=>!rows.some(r=>r.id===id||r.git_oid===id)))throw new Problem(404,'changeset_missing','Changeset is not complete');
+   const commits=rows.map(r=>r.git_oid as string),graph=await completeGraphBatch(sql,project,commits),paths=await completePathBatch(sql,project,commits);
+   return {...graph,pathResults:paths.computed};
+  }
   const manifests=new Map<string,Awaited<ReturnType<typeof changeset>>>();
   const manifest=async(key:string)=>{if(!manifests.has(key))manifests.set(key,await changeset(project,key));return manifests.get(key)!;};
   const canonical=[];for(const id of ids)canonical.push((await manifest(id)).id);
-  if(kind==='indexes'){
-   const commits:string[]=[];
-   for(const key of canonical){const m=await manifest(key),c=await commit(project,m.gitOid);if(!c)throw new Problem(409,'derived_tree_required','Rebuild compatibility trees before the graph index');commits.push(c.oid);
-    await sql`INSERT INTO weave_commit_graph(project,version,oid,tree,parents,message) VALUES(${project},1,${c.oid},${c.tree},${c.parents},${c.message}) ON CONFLICT DO NOTHING`;
-    const paths=[...new Set<string>(m.files.map((f:any)=>f.path as string))].map(path=>({project,version:1,path,git_oid:c.oid}));if(paths.length)await sql`INSERT INTO weave_source_paths ${sql(paths,'project','version','path','git_oid')} ON CONFLICT DO NOTHING`;
-   }
-   return await completeGraphBatch(sql,project,commits);
-  }
   const engine=derivedData(sql,project);
   if(kind==='generation')return {results:await engine.batch<{generation:number}>({kind:'source-generation',version:1,dependencies:async key=>(await manifest(key)).parents,compute:async(_key,parents)=>({generation:1+Math.max(0,...parents.map(p=>p.generation))})},canonical)};
   type Node={change?:any;children:Map<string,Node>};
@@ -165,6 +148,7 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
  async function history(project:string,start:string,path:string,limit=20,cursor?:string){
   immutable(start);if(!Number.isInteger(limit)||limit<1||limit>50)throw new Problem(400,'limit','History limit is 1–50');
   const graph=commitGraph(sql,project,{commit:id=>commit(project,id)}),root=await graph.get(start);if(!root||root.generation===null)throw new Problem(409,'index_required','Complete the source commit index first');
+  await completePathBatch(sql,project,[start]);
   let offset=0;
   if(cursor){const [saved]=await sql`SELECT value FROM weave_derived WHERE project=${project} AND kind='source-path-cursor:v1' AND key=${cursor}`;if(!saved||saved.value.start!==start||saved.value.path!==path||!Number.isSafeInteger(saved.value.offset))throw new Problem(400,'history_cursor','Cursor does not match this immutable path query');offset=saved.value.offset;}
   const rows=await sql`SELECT g.* FROM weave_source_paths p JOIN weave_commit_graph g ON g.project=p.project AND g.version=p.version AND g.oid=p.git_oid WHERE p.project=${project} AND p.version=1 AND p.path=${path} AND g.generation IS NOT NULL AND g.first_depth<=${root.depth} ORDER BY g.first_depth DESC,g.oid DESC LIMIT 256 OFFSET ${offset}`;
