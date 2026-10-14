@@ -1,4 +1,4 @@
-import {diffIndices} from 'node-diff3';
+import {diffIndices,diff3Merge} from 'node-diff3';
 import {commitGraph} from './graph.ts';
 import {GitSession,sha256,validPath} from './git.ts';
 import {Problem,ZERO} from './types.ts';
@@ -38,6 +38,39 @@ export function metadataService(sql:Sql,project:string,repo:Repository){
   return {ref:oid,path,lines};
  });}
  async function revert(target:string,head:string):Promise<Patch[]>{const c=await commit(ref(target));const changes=await diff(c.parents[0]??ZERO,target);const files:Patch[]=[];for(const file of changes.files){if(file.binary)throw new Problem(422,'binary_file','Binary reverts require native tooling');const current=await g.entry(head,file.path);if((current?.oid??null)!==file.afterOid||(current?.mode??null)!==file.mode)throw new Problem(409,'revert_conflict','Later edits conflict with the revert',{path:file.path});files.push({path:file.path,content:file.before,...(file.beforeMode?{mode:file.beforeMode}:{})});}return files;}
+ async function rebase(source:string,onto:string,parent?:number,resolutions:Patch[]=[]){
+  const c=await commit(ref(source));await commit(ref(onto));
+  if(parent!==undefined&&(!Number.isInteger(parent)||parent<1||parent>c.parents.length)||c.parents.length>1&&parent===undefined)throw new Problem(400,'rebase_parent','Select an existing parent number for a merge commit');
+  const parentNumber=c.parents.length?(parent??1):0,base=c.parents[parentNumber-1]??ZERO;
+  const delta=await diff(base,source),resolved=new Map(resolutions.map(f=>[f.path,f])),conflictPaths=new Set<string>(),conflicts:any[]=[],files:Patch[]=[];let work=0,bytes=0,comparedBytes=0;
+  const choose=<T>(before:T,target:T,incoming:T):{value:T;conflict:boolean}=>target===before?{value:incoming,conflict:false}:incoming===before||target===incoming?{value:target,conflict:false}:{value:incoming,conflict:true};
+  for(const f of delta.files){
+   if(f.binary)throw new Problem(422,'binary_file','Rebase supports regular UTF-8 files within the editing limits');
+   const entry=await g.entry(onto,f.path);
+   if(entry&&(entry.type!=='blob'||!['100644','100755'].includes(entry.mode)))throw new Problem(422,'rebase_object','The target path is not a regular file',{path:f.path});
+   const parts=f.path.split('/');for(let i=1;i<parts.length;i++){const ancestor=await g.entry(onto,parts.slice(0,i).join('/'));if(ancestor&&ancestor.type!=='tree')throw new Problem(422,'path_collision','A target file blocks this directory path',{path:f.path});}
+   const target=await g.file(onto,f.path);comparedBytes+=Buffer.byteLength(f.before??'')+Buffer.byteLength(target??'')+Buffer.byteLength(f.after??'');if(comparedBytes>2*1024*1024)throw new Problem(413,'rebase_size','Rebase comparisons and conflict details exceed 2 MiB');
+   const text=choose<string|null>(f.before,target,f.after),mode=choose<string|null>(f.beforeMode,entry?.mode??null,f.mode);
+   if(text.conflict&&f.before!==null&&target!==null&&f.after!==null){
+    const a=target.split('\n'),o=f.before.split('\n'),b=f.after.split('\n');work+=a.length+o.length+b.length;
+    if(Math.max(a.length,o.length,b.length)<=2000&&work<=12000){
+     const output:string[]=[];let conflict=false;
+     for(const region of diff3Merge(a,o,b,{excludeFalseConflicts:true})){if(region.ok)output.push(...region.ok);else if(region.conflict){const r=region.conflict;if(r.a.length===r.o.length&&r.b.length===r.o.length){for(let i=0;i<r.o.length;i++){const line=choose(r.o[i],r.a[i],r.b[i]);if(line.conflict)conflict=true;output.push(line.value);}}else conflict=true;}}
+     if(!conflict){text.value=output.join('\n');text.conflict=false;}
+    }
+   }
+   let patch:Patch;
+   if(text.conflict||mode.conflict){
+    conflictPaths.add(f.path);const resolution=resolved.get(f.path);
+    if(!resolution){conflicts.push({path:f.path,base:f.before,target,incoming:f.after,baseMode:f.beforeMode,targetMode:entry?.mode??null,incomingMode:f.mode,reason:'Resolve overlapping content, deletion or mode changes'});continue;}
+    patch={...resolution,...(resolution.content!==null?{mode:resolution.mode??entry?.mode as Patch['mode']??f.mode??'100644'}:{})};
+   }else patch={path:f.path,content:text.value,...(text.value!==null?{mode:mode.value as Patch['mode']}:{})};
+   bytes+=Buffer.byteLength(patch.content??'');if(Buffer.byteLength(patch.content??'')>256*1024||bytes>1024*1024)throw new Problem(413,'rebase_size','Rebased text exceeds the editing limits');files.push(patch);
+  }
+  if(resolutions.some(f=>!conflictPaths.has(f.path)))throw new Problem(400,'rebase_resolution','Resolutions may only name conflicted paths');
+  if(conflicts.length)throw new Problem(409,'rebase_conflict','Resolve these paths and repeat with the same immutable source and target',{commit:source,onto,base,conflicts});
+  return {files,parent:parentNumber,base};
+ }
  async function search(oid:string,query:string,path='',cursor?:string){ref(oid);if(path)validPath(path);if(typeof query!=='string'||query.length>128)throw new Problem(400,'search','Search text is limited to 128 characters');
   const identity={ref:oid,query,path};let stack:{oid:string;path:string;offset:number}[];
   if(cursor){if(!/^[a-f0-9]{64}$/.test(cursor))throw new Problem(400,'cursor','Invalid search cursor');const [row]=await sql`SELECT value FROM weave_derived WHERE project=${project} AND kind='search-cursor-v1' AND key=${cursor}`;if(!row||row.value.identity.ref!==oid||row.value.identity.query!==query||row.value.identity.path!==path)throw new Problem(400,'cursor','Search cursor belongs to another query');stack=row.value.stack;}
@@ -46,5 +79,5 @@ export function metadataService(sql:Sql,project:string,repo:Repository){
   let next:string|null=null;if(stack.length){const value={identity,stack};next=sha256(JSON.stringify(value));await sql`INSERT INTO weave_derived(project,kind,key,value) VALUES(${project},'search-cursor-v1',${next},${sql.json(value)}) ON CONFLICT DO NOTHING`;}
   return {ref:oid,matches,next,visited};
  }
- return {commit,ancestry:graph.ancestry,mergeBase:graph.mergeBase,diff,history,blame,bisect:graph.bisect,revert,search,index:graph.build,indexStatus:graph.status,indexCommits:graph.ingest};
+ return {commit,ancestry:graph.ancestry,mergeBase:graph.mergeBase,diff,history,blame,bisect:graph.bisect,revert,rebase,search,index:graph.build,indexStatus:graph.status,indexCommits:graph.ingest};
 }

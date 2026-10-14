@@ -1,0 +1,33 @@
+✖ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (832.864583ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1005.343042
+
+✖ failing tests:
+
+test at tests/rebase.test.ts:1:337
+✖ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (832.864583ms)
+  Error: file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/squali.mjs:8
+  if(!routes[command])throw new Error('Usage: node scripts/squali.mjs projects|create|changes|propose|show|review|revise|preview|publish|events|file|tree|usage [project] [change-id or path]. Mutations read JSON from stdin.');
+                            ^
+
+  Error: Usage: node scripts/squali.mjs projects|create|changes|propose|show|review|revise|preview|publish|events|file|tree|usage [project] [change-id or path]. Mutations read JSON from stdin.
+      at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/squali.mjs:8:27
+      at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+      at async node:internal/modules/esm/loader:650:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+  Node.js v26.10.0
+
+      at ChildProcess.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/rebase.test.ts:26:377)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at Socket.<anonymous> (node:internal/child_process:526:11)
+      at Socket.emit (node:events:514:20)
+      at Pipe.<anonymous> (node:net:362:12)

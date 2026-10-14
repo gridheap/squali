@@ -1,0 +1,146 @@
+{
+  "command": "node scripts/verify-rebase.mjs",
+  "target": {
+    "base": "https://squa.li",
+    "project": "demo",
+    "ref": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+    "id": "scion-rebase-20261014"
+  },
+  "steps": {
+    "before": {
+      "status": 200,
+      "path": "/usage",
+      "body": {
+        "attempts": 152,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 24,
+          "reservedWrites": 12,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "head-before": {
+      "status": 200,
+      "path": "/projects/demo",
+      "body": {
+        "id": "demo",
+        "name": "Weave Cloud Demo",
+        "head": null,
+        "remote": "https://52f8a24263418828b635c91b6eb06a83.artifacts.cloudflare.net/git/weave/weave-demo.git",
+        "state": "ready"
+      }
+    },
+    "source": {
+      "status": 200,
+      "path": "/projects/demo/commit?ref=81ed4005b0b8b0b641b6d7eccc5110169708d409",
+      "body": {
+        "oid": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+        "tree": "0006e1144cc589e277ef3edcf64aef51d8ad5ff0",
+        "message": "Weave batch cloud-smoke-v1\n\nChanges: docs, client",
+        "parents": [
+          "90bf76d054ef66186897e9f09d379e0c2ad0c699"
+        ]
+      }
+    },
+    "rebase": {
+      "status": 201,
+      "path": "/projects/demo/rebase",
+      "request": {
+        "id": "scion-rebase-20261014",
+        "commit": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+        "onto": "90bf76d054ef66186897e9f09d379e0c2ad0c699",
+        "parent": 1,
+        "note": "Bounded production rebase acceptance; review required before any publication"
+      },
+      "body": {
+        "id": "scion-rebase-20261014",
+        "project": "demo",
+        "title": "Rebase 81ed4005b0b8",
+        "intent": "Bounded production rebase acceptance; review required before any publication",
+        "context": {
+          "rebase": {
+            "base": "90bf76d054ef66186897e9f09d379e0c2ad0c699",
+            "onto": "90bf76d054ef66186897e9f09d379e0c2ad0c699",
+            "commit": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+            "parent": 1,
+            "resolutionsHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          }
+        },
+        "dependencies": [],
+        "base": "90bf76d054ef66186897e9f09d379e0c2ad0c699",
+        "oid": "9acf01375f42f5357b368327603dae2caadfdfb2",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-14T10:20:42.588Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "docs/quickstart.md",
+            "after": "44f310dc3c77cba7707066dabe895f4560410d31",
+            "before": null,
+            "beforeMode": null
+          },
+          {
+            "mode": "100644",
+            "path": "src/client.ts",
+            "after": "b801c7aa3416c075a7726ee8ebc9b3641f02d719",
+            "before": null,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "rebased-commit": {
+      "status": 200,
+      "path": "/projects/demo/commit?ref=9acf01375f42f5357b368327603dae2caadfdfb2",
+      "body": {
+        "oid": "9acf01375f42f5357b368327603dae2caadfdfb2",
+        "tree": "0006e1144cc589e277ef3edcf64aef51d8ad5ff0",
+        "parents": [
+          "90bf76d054ef66186897e9f09d379e0c2ad0c699"
+        ],
+        "message": "Rebase 81ed4005b0b8\n\nSquali-Change: scion-rebase-20261014\nIntent: Bounded production rebase acceptance; review required before any publication"
+      }
+    },
+    "head-after": {
+      "status": 200,
+      "path": "/projects/demo",
+      "body": {
+        "id": "demo",
+        "name": "Weave Cloud Demo",
+        "head": null,
+        "remote": "https://52f8a24263418828b635c91b6eb06a83.artifacts.cloudflare.net/git/weave/weave-demo.git",
+        "state": "ready"
+      }
+    },
+    "after": {
+      "status": 200,
+      "path": "/usage",
+      "body": {
+        "attempts": 172,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    }
+  },
+  "httpAttempts": 7,
+  "completed": "2026-10-14T10:20:47.389Z",
+  "newArtifactReservations": 20,
+  "providerMeasuredCalls": "Unavailable; application reservations are conservative",
+  "mainMutations": 0,
+  "proposalsCreated": 1,
+  "largeImportTransfers": 0,
+  "automaticRetries": 0
+}

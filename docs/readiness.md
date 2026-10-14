@@ -5,6 +5,7 @@
 ## Verified
 
 - Incremental immutable proposals, context/dependencies, review, conflict revisions and selected batch publication. New publications retain the proposal commits as additional Git parents; deterministic recovery journals freeze that parent list.
+- A bounded single-commit rebase matches native Git’s resulting tree, preserves upstream content/modes, exposes resolvable conflicts and requires fresh approval. It is available through HTTP and CLI. [Evidence](evidence/2026-10-14-rebase/).
 - Fifteen HTTP/Git workflow tests and four real publication/cancellation SIGKILL tests pass.
 - Clerk/GitHub integration tests cover owner isolation, progressive permission, private history/branches/tags, import recovery after SIGKILL, explicit destination reconciliation and directory credentials.
 - R2 tier restart/failure isolation, sparse and binary materialization, graph/diff/history/blame/revert/bisect queries, search pagination and path policy have saved end-to-end results.

@@ -1,0 +1,37 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (242.300584ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (271.083458ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (623.441834ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (692.259625ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (317.338917ms)
+✔ persistent operation limits stop work before the next provider call (95.387958ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (341.449584ms)
+✔ immutable source reads reuse the cache after authorization (14.547417ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (396.54275ms)
+✔ standard Git can clone through the authenticated read-only gateway (127.620625ms)
+✔ the complete HTTP workflow makes progress with a single database connection (494.891042ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (470.648125ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (470.673583ms)
+✔ concurrent publication retries converge on one Git commit and one event (373.668041ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (105.719959ms)
+{"command":"pnpm test:metadata","mergeBase":"f6eec7d1d2a7a067825797335b748b18c4659d3f","mergedHead":"f166384c72162280e4cc7065b2d213388c62601d","blameCommits":["9437e9c5ba92787e18649c2e90403430fa76038f","f6eec7d1d2a7a067825797335b748b18c4659d3f","b664fbbf7a61a243c8cbe1bbdb3960f2fd3fb1a7"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (808.016625ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (179.453541ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1314.204541ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"7a08079b7110ee64ca02f9d9af964d9af6f75bf9"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1086.419917ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (776.708125ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (486.584625ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5225.261916

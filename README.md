@@ -56,7 +56,7 @@ Example `change.json`:
 
 Evidence is supplied by the agent; Squali does not execute or certify those commands. Reviewers remain responsible for assessing it.
 
-CLI commands: `projects`, `create`, `changes`, `propose`, `show`, `review`, `revise`, `preview`, `publish`, `events`, `file`, `tree`, `usage`. Mutations read JSON from stdin. Tokens are environment variables, not command arguments. See [the API contract](docs/api.md).
+CLI commands: `projects`, `create`, `changes`, `propose`, `show`, `review`, `revise`, `rebase`, `preview`, `publish`, `events`, `file`, `tree`, `usage`. Mutations read JSON from stdin. Tokens are environment variables, not command arguments. See [the API contract](docs/api.md).
 
 See [sparse working copies](docs/working-copy.md) to materialize only selected paths and reuse immutable objects across jobs.
 
@@ -71,7 +71,7 @@ pnpm test:storage
 pnpm test:sparse
 pnpm test:metadata
 pnpm test:permissions
-node --import tsx --test tests/graph.test.ts
+node --import tsx --test tests/graph.test.ts tests/rebase.test.ts
 pnpm build
 BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark
 pnpm exec tsx scripts/compare-git.ts

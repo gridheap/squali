@@ -27,7 +27,8 @@ test('directory credentials cannot escape via Git, object batches, metadata or p
   assert.equal((await call('/projects/paths/index',{ref:p.head},token)).status,403);
   assert.equal((await call('/projects/paths/index/commits',{ref:p.head,commits:[]},token)).status,403);
   assert.equal((await call('/projects/paths/index?ref='+p.head,undefined,token)).status,403);
-  assert.equal((await call('/usage')).body.attempts,indexUsage,'Index scope rejection precedes provider reads');
+  assert.equal((await call('/projects/paths/rebase',{id:'scope-rebase',commit:p.head,onto:p.head},token)).status,403);
+  assert.equal((await call('/usage')).body.attempts,indexUsage,'Index and rebase scope rejection precedes provider reads');
   const hidden=(await call('/projects/paths/changes',{id:'hidden',title:'Secret edit',intent:'Private',files:[{path:'secrets/private.txt',content:'new\n'}]})).body;
   assert.equal((await call('/projects/paths/changes/'+hidden.id,undefined,token)).status,403);assert.deepEqual((await call('/projects/paths/changes',undefined,token)).body.changes,[]);
   assert.equal((await call('/projects/paths/changes',{id:'escape',title:'Escape',intent:'Escape',files:[{path:'secrets/private.txt',content:'wrong'}]},token)).status,403);

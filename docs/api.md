@@ -67,11 +67,12 @@ All immutable refs are full 40-character commit IDs. Authorization runs before c
 | GET | `/path-history?ref=&path=&limit=` | First-parent history, 1–50 entries; at most 64 scanned commits/page; `next` ref |
 | GET | `/blame?ref=&path=` | Original commit and line per line; 2,000 lines, 4 million comparison budget |
 | POST | `/bisect` | `{good,bad}` → first-parent candidate or culprit; no test execution |
+| POST | `/rebase` | `{id,commit,onto,parent?,resolutions?,note?}` → one commit rebased as a fresh proposal; `parent` is one-based and mandatory for merges |
 | POST | `/revert` | `{id,commit,note?}` → an inverse proposal requiring review; conflicting later edits stop |
 | GET | `/search?ref=&query=&path=&cursor=` | Path-name search; 50 matches, 2,000 entries / 64 trees per page; query-bound cursor |
 | GET/POST | `/policy` | Owner/admin; `{rules:[{prefix,independentReview,requireEvidence}]}`; up to 32 rules |
 
-Graph computations are bounded to 256 unique commits per request. Versioned derived records are reused. These limits return explicit errors, not partial ancestry answers. For directory tokens, history omits unrestricted commit messages/trees and diff/search require an authorized path. Proposal operations validate their dependency closure before source reads (up to 64 records). The recent scoped list includes only changes whose dependency closure is also visible within that window.
+Unindexed history/blame computations retain a 256-commit request budget; indexed graph queries use the 50,000-node bound described below. Versioned derived records are reused. These limits return explicit errors, not partial ancestry answers. For directory tokens, history omits unrestricted commit messages/trees and diff/search require an authorized path. Proposal operations validate their dependency closure before source reads (up to 64 records). The recent scoped list includes only changes whose dependency closure is also visible within that window.
 
 Token creation accepts optional `paths:["docs","src/api"]`; omit or use `null` for a whole workspace. Policies require distinct principals where configured; evidence is supplied by the agent, not attested CI. Updating policy invalidates earlier affected approvals and is blocked while a publication is unresolved.
 
@@ -88,3 +89,11 @@ Unrestricted administrators can use:
 - `POST /api/projects/:id/index/commits` with `{ "ref": "<provider-root>", "commits": [{ "oid": "<sha1>", "body": "<base64 raw Git commit>" }] }`: accept 1–256 hash-verified commits, at most 1 MiB decoded metadata. New records must connect to already provider-anchored history. Duplicate uploads do not overwrite data or reread the root. This does not import Git objects into Artifacts.
 
 Small graph queries can derive their index on demand. Larger incomplete histories return `409 index_required`; this is not a false ancestry result. Generation ordering preserves all parents and all best merge bases. First-parent skip pointers accelerate ancestry along linear spans and first-parent bisect. A completed graph query is bounded to 50,000 visited/loaded nodes. Indexed unchanged-tree spans also accelerate history and blame; a general path index is still outstanding.
+
+## Rebase a commit
+
+`node scripts/squali.mjs rebase <project> < rebase.json` calls the same HTTP operation. Supply explicit immutable `commit` and `onto` IDs; rebase never silently selects a moving main branch. Whole-workspace admin or agent access is required.
+
+Text and executable modes use a three-way reconciliation. A `409 rebase_conflict` response includes the base, target and incoming text for each unresolved path. Repeat with `resolutions:[{path,content,mode?}]` for those paths only; content may be null to delete. No proposal is created until every conflict is resolved. Unknown resolution paths are rejected. The resulting proposal requires new approval and does not supersede the original proposal automatically.
+
+Bounds: 64 changed files, 256 KiB per editable file, 1 MiB source diff/output, 2 MiB aggregate comparison/conflict text, 2,000 lines per compared file and 12,000 aggregate merge lines. Unsupported binary/symlink/submodule and file/directory transitions require native tooling. Merge commits require an explicit existing parent number. This is a single-commit rebase, not an interactive branch rewrite.

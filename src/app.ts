@@ -107,6 +107,11 @@ export function createApp(config:Config){
      const path=url.searchParams.get('path')??'';authorizePaths(principal,[path]);
      if(action==='blame')return json(await metadata.blame(ref,path));const history=await metadata.history(ref,path,Number(url.searchParams.get('limit')??20));return json(principal.paths?{...history,commits:history.commits.map(({oid,parents})=>({oid,parents}))}:history);
     }
+    if(action==='rebase'&&request.method==='POST'){unrestricted();requireRole(['admin','agent']);
+     const input=await body(request),changeId=id(input.id),note=input.note===undefined?'Reapply this commit onto an explicit immutable base':text(input.note,4000),resolutions=patches(input.resolutions??[]);
+     const plan=await metadata.rebase(input.commit,input.onto,input.parent,resolutions);
+     return json(await changes.propose({id:changeId,title:'Rebase '+input.commit.slice(0,12),intent:note,context:{rebase:{commit:input.commit,onto:input.onto,parent:plan.parent,base:plan.base,resolutionsHash:sha256(JSON.stringify(resolutions))}},dependencies:[],base:input.onto,files:plan.files}),201);
+    }
     if(action==='revert'&&request.method==='POST'){unrestricted();
      requireRole(['admin','agent']);const input=await body(request);const head=await repo.head();if(!head)throw new Problem(404,'commit_missing','Repository is empty');
      return json(await changes.propose({id:id(input.id),title:'Revert '+text(input.commit,40),intent:input.note?text(input.note,4000):'Revert this commit through review',context:{reverts:input.commit},dependencies:[],base:head,files:await metadata.revert(input.commit,head)}),201);

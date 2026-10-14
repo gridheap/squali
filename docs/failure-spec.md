@@ -107,3 +107,16 @@ Public seam: working-copy CLI connected to the real HTTP application, PostgreSQL
 - An interrupted update leaves files and manifest inconsistent; a resume overwrites edits made after interruption.
 - Network failure halfway through download mutates the working tree before all required objects are available.
 - Cache/working-copy data is reused across a revoked or narrower credential without authorization.
+
+# Server rebase
+
+Public seams: authenticated HTTP and CLI, verified against a native Git cherry-pick on an isolated local clone. This operation rebases one immutable commit; merge commits require an explicit parent number. It does not claim an interactive rewrite of an arbitrary branch.
+
+- Reapplying a commit loses independent target edits, additions, deletions or executable modes.
+- A merge commit silently chooses a parent or a missing target is treated as an empty tree.
+- Overlapping edits, delete/modify, add/add and file/directory or unsupported object collisions overwrite target content.
+- Conflict resolution modifies a path that was not conflicted, omits a required resolution or bypasses editing limits.
+- A failed plan creates source mutations; a successful rebase moves main or inherits an old approval.
+- Retrying with the same operation creates another commit; changing immutable inputs under the same ID succeeds.
+- Directory-scoped and read-only credentials reach hidden source before authorization is checked.
+- Text merge work, file counts, input bytes or provider work are unbounded.
