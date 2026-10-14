@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-14T22:28:00Z",
+  "worker": "e1f856e1-0fb9-4492-85b5-8d2f7a070dac",
+  "url": "https://squa.li",
+  "actions": [
+    "Reload the signed-in Squali page",
+    "Click Refresh import progress once",
+    "Read the success status and the private fixture row"
+  ],
+  "status": "Import progress refreshed.",
+  "objectsProcessed": 270208,
+  "sourceObjects": 421219,
+  "nativeAttempts": 1,
+  "state": "running",
+  "screenshot": "production-import-refresh.png",
+  "privacy": "Screenshot shows controls only, excluding all repository names",
+  "scope": "Read-only UI refresh; no run/pause/resume action"
+}

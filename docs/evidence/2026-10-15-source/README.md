@@ -88,3 +88,9 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 - `derived-blame-typecheck.txt`, `derived-blame-build.txt` and `derived-blame-deploy.txt`: current verification and production Worker `a428c389-bc06-42c8-b2f8-53b9a2d6b10e`.
 
 - `verify-canonical-red.txt` / `verify-canonical-green.txt`: the final import verifier now checks a deterministic canonical-delta sample separately from Git export. The local E2E proves exact deltas/parents/content hashes/raw metadata and deliberately corrupts a canonical content address; verification stops before a second Git transfer. Production is limited to eight sampled changesets, still within 40 API attempts and one clone.
+
+- `import-refresh-red.txt` / `import-refresh-green.txt`: the private-import browser flow has a distinct read-only progress refresh. The E2E advances the persisted job counter, refreshes it visibly, and asserts zero `/run` requests before exercising explicit pause/resume. The mobile screenshot includes the new control. Font tokens and loader are reused.
+
+- `import-completion-red.txt` / `import-completion-green.txt`: `node --import tsx --test tests/native-jobs.test.ts` first reproduces the missing completed workspace, then verifies that read-only refresh adds it to the selector without a reload. The same transition is shared by automatic polling and catalog navigation. `import-completion-typecheck.txt`, `import-completion-build.txt` and `import-completion-deploy.txt` record checks and Worker `e1f856e1-0fb9-4492-85b5-8d2f7a070dac`.
+
+- `production-import-refresh.json` / `.png`: real Clerk session, deployed refresh control, success feedback and the retained private job at 270,208 / 421,219 objects. Only progress was read; no job was restarted.

@@ -1,0 +1,22 @@
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (11359.379875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11527.919917
+
+✖ failing tests:
+
+test at tests/native-jobs.test.ts:1:522
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (11359.379875ms)
+  locator.waitFor: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#workspace option[value="gh-d6e8ae51b944adee12dd62c6"]')[22m
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/native-jobs.test.ts:41:1915) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('#workspace option[value="gh-d6e8ae51b944adee12dd62c6"]')` ]
+  }
