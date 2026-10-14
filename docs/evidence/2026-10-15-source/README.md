@@ -86,3 +86,5 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 - `final-copy-ui.txt` and `final-copy-ui/`: four browser E2E tests pass after clarifying workspace/publication copy. Real Proxima Nova Latin and PingFang SC CJK, bounded fallback, navigation reuse, mobile layout and source history/blame are verified.
 
 - `derived-blame-typecheck.txt`, `derived-blame-build.txt` and `derived-blame-deploy.txt`: current verification and production Worker `a428c389-bc06-42c8-b2f8-53b9a2d6b10e`.
+
+- `verify-canonical-red.txt` / `verify-canonical-green.txt`: the final import verifier now checks a deterministic canonical-delta sample separately from Git export. The local E2E proves exact deltas/parents/content hashes/raw metadata and deliberately corrupts a canonical content address; verification stops before a second Git transfer. Production is limited to eight sampled changesets, still within 40 API attempts and one clone.

@@ -35,7 +35,7 @@ The [current full report](evidence/2026-10-15-source/derived-blame-full-e2e.txt)
 
 ## Extra release gates
 
-1. The private fixture's 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB raw history complete source ingestion and native seeding. One retained verification clone must pass fsck and full object/ref equality. Root tree and selected history/blame must match the native input.
+1. The private fixture's 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB raw history complete source ingestion and native seeding. One retained verification clone must pass fsck and full object/ref equality. Root tree and selected history/blame must match the native input. A bounded canonical-delta sample must independently match native paths, hashes, parent mappings and original commit metadata.
 2. Production Clerk/GitHub sign-in and private catalog are verified; the completed private workspace must also pass its browser workflow.
 3. Reconcile final application reservations with provider metrics, preserving reporting lag, failed attempts, Azure costs and ongoing storage exposure. Reuse existing successful performance samples.
 4. Record and inspect the current 5–10 minute demonstration, review the runnable open-source package, and let the eligible team member personally submit the entry.

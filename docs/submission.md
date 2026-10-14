@@ -47,7 +47,7 @@ Run `node --import tsx --test tests/*.test.ts` for the complete API/CLI suite. T
 
 ## Remaining acceptance gates
 
-The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. Source ingestion is still running. The final verifier will compare all exported objects and refs, native fsck, source tree and selected history/blame results against that frozen cache, using one retained clone and a bounded API journal.
+The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. Source ingestion is still running. The final verifier will compare all exported objects and refs, native fsck, source tree, selected history/blame results and a bounded canonical-delta sample against that frozen cache, using one retained clone and a bounded API journal.
 
 The [fixed Scion checklist](scion-acceptance.md) requires 19 of 20 fully verified items and all mandatory architecture gates. Tree, generation, graph, path and blame results share the same versioned dependency engine, with bounded vectorized adapters and retained eager/lazy reconstruction evidence. FUSE is read-only; changes use the sparse client or API. Text editing, graph queries and Git bridge exports have documented budgets. See [readiness](readiness.md) and [capability boundaries](scion-parity.md).
 

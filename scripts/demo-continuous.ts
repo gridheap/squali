@@ -10,7 +10,7 @@ import {startLocal} from './local.ts';
 const quick=process.argv.includes('--quick'),capture=!quick||process.env.SQUALI_DEMO_CAPTURE==='1',dir=resolve(process.env.SQUALI_DEMO_DIR??'work/continuous-demo');
 const scenes=JSON.parse(await readFile('docs/demo-source-script.json','utf8')) as {title:string;caption:string;seconds:number;text:string}[];
 const proof=resolve(process.env.SQUALI_PRIVATE_PROOF??'docs/evidence/2026-10-15-source/private-verification.json');
-if(!quick){const accepted=JSON.parse(await readFile(proof,'utf8'));assert.equal(accepted.complete,true,'Finish production private verification before recording');assert.equal(accepted.nativeFsck,true);}
+if(!quick){const accepted=JSON.parse(await readFile(proof,'utf8'));assert.equal(accepted.complete,true,'Finish production private verification before recording');assert.equal(accepted.nativeFsck,true);assert.ok(accepted.canonicalChangesetsVerified>0,'Verify canonical source deltas before recording');}
 await mkdir(dir+'/audio',{recursive:true});await mkdir(dir+'/screens',{recursive:true});if(capture)await mkdir(dir+'/capture',{recursive:true});
 const exec=promisify(execFile);
 if(!quick)for(let i=0;i<scenes.length;i++){const path=dir+'/audio/'+String(i).padStart(2,'0');await writeFile(path+'.txt',scenes[i].text);await exec('say',['-v','Samantha','-r','157','-f',path+'.txt','-o',path+'.aiff']);const info=await exec('afinfo',[path+'.aiff']);const seconds=Number(info.stdout.match(/estimated duration: ([\d.]+) sec/)?.[1]);assert.ok(Number.isFinite(seconds),'Read the generated narration duration');scenes[i].seconds=Math.max(scenes[i].seconds,Math.ceil(seconds)+4);}

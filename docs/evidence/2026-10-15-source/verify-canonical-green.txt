@@ -1,0 +1,10 @@
+{"command":"python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-Jqp2xg/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-Jqp2xg/verification --file README.md","timestamp":"2026-10-14T22:15:42Z","complete":true,"project":"verify","head":"7cb69b7116df12fbc7b15f0f0015f51784dd531d","objects":8,"commits":2,"refs":2,"objectInventorySha256":"98f71c8f0d09f07be017413a2a1c5e7c577149695adfc3d76c85ed2278d6ed72","nativeFsck":true,"canonicalChangesetsVerified":2,"canonicalSampleOids":["7cb69b7116df12fbc7b15f0f0015f51784dd531d","4b168d0d617697b187041479c3123e461b705612"],"rootTreeMatches":true,"sparseFile":"README.md","sparseFileSha256":"4ade948481e0a98f43dc59468d3454e2bc347538de8a35e6ffd6313e04fc2204","historyMatchesNative":true,"blameMatchesNative":true,"firstParentDistance":1,"httpAttempts":13,"gitTransfers":1,"limitations":["Full exported Git closure is verified; source R2 bodies are identity-checked on ingestion and sampled here","Up to eight canonical deltas are independently compared with native Git; this is a bounded sample, not all changesets","One selected file exercises history/blame; other files retain the documented query budgets","No automatic network retry; complete replay makes zero HTTP or Git transfers"]}
+✔ import verification checks complete native identity and reuses its successful transfer (1267.068708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1415.342375

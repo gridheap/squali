@@ -26,6 +26,6 @@ node --import tsx scripts/demo-continuous.ts
 swift scripts/render-continuous.swift work/continuous-demo work/continuous-demo/squali-source-demo.mp4
 ```
 
-The recorder refuses a final run without a complete production report and native fsck. It synthesizes English narration with the installed Samantha voice, measures its duration and reserves scene time before capture. The renderer checks a 5–10 minute successful capture, continuous timestamps and narration fit. The result includes a machine-readable report and five decoded frames for visual verification. Inspect the final video and audio before publishing it.
+The recorder refuses a final run without a complete production report, native fsck and canonical-delta verification. It synthesizes English narration with the installed Samantha voice, measures its duration and reserves scene time before capture. The renderer checks a 5–10 minute successful capture, continuous timestamps and narration fit. The result includes a machine-readable report and five decoded frames for visual verification. Inspect the final video and audio before publishing it.
 
 `SQUALI_DEMO_DIR`, `SQUALI_PRIVATE_PROOF` and `SQUALI_BROWSER` override the output directory, accepted report and existing browser executable. Keep failure and preflight reports separate from the final recording. Source narration: [demo-source-script.json](demo-source-script.json).
