@@ -9,11 +9,11 @@
   "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
   "placement": {"region":"azure:eastus2"},
-  "r2_buckets": [{"binding":"OBJECTS","bucket_name":"squali-objects"}],
+  "r2_buckets": [{"binding":"OBJECTS","bucket_name":"squali-objects"},{"binding":"SOURCE","bucket_name":"squali-source"}],
   "artifacts": [{"binding":"ARTIFACTS","namespace":"weave"}],
   "hyperdrive": [{"binding":"HYPERDRIVE","id":"c5366ae0d2d54d76b2b7daf414c6333d"}],
   "assets": {"directory":"./public","binding":"ASSETS","run_worker_first":["/api/*"]},
   "limits": {"cpu_ms":30000},
-  "vars": {"MAX_PROJECTS":"10","MONTHLY_ARTIFACT_CALL_CAP":"2000","MONTHLY_R2_READ_CAP":"20000","MONTHLY_R2_WRITE_CAP":"2000","ADOBE_KIT_ID":"ggy5hcn"},
+  "vars": {"MAX_PROJECTS":"10","MONTHLY_SOURCE_READ_CAP":"200000","MONTHLY_SOURCE_WRITE_CAP":"200000","SOURCE_REPOSITORY_BYTE_CAP":"107374182400","MONTHLY_ARTIFACT_CALL_CAP":"2000","MONTHLY_R2_READ_CAP":"20000","MONTHLY_R2_WRITE_CAP":"2000","ADOBE_KIT_ID":"ggy5hcn"},
   "observability": {"enabled":false}
 }

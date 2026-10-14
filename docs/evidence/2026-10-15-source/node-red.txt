@@ -1,0 +1,22 @@
+✖ node daemon coalesces misses, persists verified objects, restores a refreshed snapshot and isolates failed reads (218.2895ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 405.201083
+
+✖ failing tests:
+
+test at tests/node-cache.test.ts:1:985
+✖ node daemon coalesces misses, persists verified objects, restores a refreshed snapshot and isolates failed reads (218.2895ms)
+  Error: /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/node-daemon.py': [Errno 2] No such file or directory
+  
+      at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/node-cache.test.ts:21:502)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async start (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/node-cache.test.ts:21:380)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/node-cache.test.ts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

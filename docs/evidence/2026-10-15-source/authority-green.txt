@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"710d2d9e78d4055d7edcd7be255754ba05d55844"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (292.276708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 518.927583

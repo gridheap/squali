@@ -1,0 +1,7 @@
+{
+  "error": "",
+  "execution": "Succeeded",
+  "exit": 0,
+  "output": "{\"fuseDevice\": true, \"header\": false}\n{\"exit\": 0, \"stdout\": \"{\\\"command\\\": \\\"SQUALI_PROJECT=scion-source-pilot python3 tests/fuse-e2e.py --work /var/tmp/squali-fuse-acceptance\\\", \\\"mountedMs\\\": 2275.21, \\\"mounts\\\": 2, \\\"directoryContentReads\\\": 0, \\\"nativeReadExact\\\": true, \\\"binaryBytes\\\": 4096, \\\"cold\\\": {\\\"originObjects\\\": 5, \\\"originBlobs\\\": 2, \\\"hits\\\": 1, \\\"coalesced\\\": 0, \\\"networkBytes\\\": 4621, \\\"failures\\\": 0, \\\"cachedBytes\\\": 4621}, \\\"warm\\\": {\\\"originObjects\\\": 5, \\\"originBlobs\\\": 2, \\\"hits\\\": 5, \\\"coalesced\\\": 0, \\\"networkBytes\\\": 4621, \\\"failures\\\": 0, \\\"cachedBytes\\\": 4621}, \\\"daemonFailureIsolated\\\": true, \\\"passed\\\": true}\\n\", \"stderr\": \"ls: /var/tmp/squali-fuse-acceptance/mount-0: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/.: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/README.md: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/binary.dat: No data available\\n\"}\n",
+  "state": "Succeeded"
+}

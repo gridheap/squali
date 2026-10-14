@@ -1,0 +1,33 @@
+✖ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (1482.239708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1715.392041
+
+✖ failing tests:
+
+test at tests/source.test.ts:1:25547
+✖ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (1482.239708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'c0e71c925500ab40155bf72fdb9d746f46775a2f'
+  - ]
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source.test.ts:158:145)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'c0e71c925500ab40155bf72fdb9d746f46775a2f' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

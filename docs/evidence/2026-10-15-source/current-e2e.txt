@@ -1,0 +1,39 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (270.904459ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (302.504041ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (792.462917ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (870.454959ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (412.502667ms)
+✔ persistent operation limits stop work before the next provider call (113.318458ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (415.105084ms)
+✔ immutable source reads reuse the cache after authorization (21.440375ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (528.078292ms)
+✔ standard Git can clone through the authenticated read-only gateway (182.763208ms)
+✔ the complete HTTP workflow makes progress with a single database connection (716.374917ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (668.304208ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (746.163417ms)
+✔ concurrent publication retries converge on one Git commit and one event (511.267167ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (149.192041ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1572.079917ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"6655c2b35c945ffe2921afc888a2bfa0a84b7851"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1270.895958ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (974.366167ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (632.706916ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"e97b65426be57e11e14396eef52d4704549a47d2"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (267.033625ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (936.527458ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (293.044125ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6885.692791

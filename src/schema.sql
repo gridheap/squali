@@ -86,3 +86,37 @@ CREATE TABLE IF NOT EXISTS weave_graph_builds (
 );
 ALTER TABLE weave_commit_graph ADD COLUMN IF NOT EXISTS tree_span bigint NOT NULL DEFAULT 0;
 CREATE INDEX IF NOT EXISTS weave_graph_parents ON weave_commit_graph USING gin(parents);
+
+ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS storage text NOT NULL DEFAULT 'artifacts';
+CREATE TABLE IF NOT EXISTS weave_source_blobs (
+ hash text PRIMARY KEY, size bigint NOT NULL, compressed_size bigint NOT NULL,
+ state text NOT NULL DEFAULT 'uploading', lease_until timestamptz NOT NULL DEFAULT now()+interval '5 minutes'
+);
+CREATE TABLE IF NOT EXISTS weave_source_objects (
+ project text NOT NULL REFERENCES weave_projects(id), oid text NOT NULL, kind text NOT NULL,
+ size bigint NOT NULL, blob text REFERENCES weave_source_blobs(hash), raw bytea,
+ PRIMARY KEY(project,oid)
+);
+CREATE TABLE IF NOT EXISTS weave_changesets (
+ project text NOT NULL REFERENCES weave_projects(id), id text NOT NULL, git_oid text NOT NULL,
+ parents text[] NOT NULL, files jsonb NOT NULL, metadata jsonb NOT NULL,
+ created_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(project,id), UNIQUE(project,git_oid)
+);
+CREATE TABLE IF NOT EXISTS weave_source_refs (
+ project text NOT NULL REFERENCES weave_projects(id), name text NOT NULL, oid text NOT NULL,
+ PRIMARY KEY(project,name)
+);
+CREATE TABLE IF NOT EXISTS weave_source_usage (
+ month text NOT NULL, kind text NOT NULL, attempts bigint NOT NULL DEFAULT 0,
+ PRIMARY KEY(month,kind)
+);
+ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS source_manifest text;
+CREATE TABLE IF NOT EXISTS weave_source_bytes (
+ project text PRIMARY KEY REFERENCES weave_projects(id), bytes bigint NOT NULL DEFAULT 0
+);
+
+ALTER TABLE weave_source_blobs ADD COLUMN IF NOT EXISTS attempts integer NOT NULL DEFAULT 1;
+CREATE TABLE IF NOT EXISTS weave_source_paths (
+ project text NOT NULL REFERENCES weave_projects(id), version integer NOT NULL,
+ path text NOT NULL, git_oid text NOT NULL, PRIMARY KEY(project,version,path,git_oid)
+);

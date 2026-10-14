@@ -46,7 +46,7 @@ export class GitSession {
   const header=Buffer.alloc(12);header.write('PACK');header.writeUInt32BE(2,4);header.writeUInt32BE(objects.size,8);const buffers=[header];
   for(const {type,data} of objects.values()){let size=data.length;let byte=({commit:1,tree:2,blob:3}[type]!)<<4|(size&15);size=Math.floor(size/16);const h=[];while(size){h.push(byte|128);byte=size&127;size=Math.floor(size/128);}h.push(byte);buffers.push(Buffer.from(h),deflateSync(data,{level:1}));}
   const payload=Buffer.concat(buffers);const pack=Buffer.concat([payload,createHash('sha1').update(payload).digest()]);
-  return {oid,tree,pack,objects:objects.size,bytes:pack.length};
+  return {oid,tree,pack,objects:objects.size,bytes:pack.length,rawObjects:[...objects].map(([oid,value])=>({oid,type:value.type as import('./types.ts').RawObject['type'],data:value.data}))};
  }
 }
 export async function pushHttp(remote:string,token:string,ref:string,old:string|null,oid:string,pack:Uint8Array){

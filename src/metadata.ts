@@ -5,7 +5,7 @@ import {Problem,ZERO} from './types.ts';
 import type {Commit,Repository,Sql,TreeEntry,Patch} from './types.ts';
 
 /** Versioned derived answers. No client depends on the representation in this table. */
-export function metadataService(sql:Sql,project:string,repo:Repository){
+export function metadataService(sql:Sql,project:string,repo:Repository,pathLatest?:(oid:string,path:string)=>Promise<string>){
  const graph=commitGraph(sql,project,repo);
  const g=new GitSession(repo);const commits=new Map<string,Commit>();let trees=0,lineWork=0;
  const ref=(oid:unknown)=>{if(typeof oid!=='string'||!/^[a-f0-9]{40}$/.test(oid))throw new Problem(400,'invalid_ref','Use an immutable commit ID');return oid;};
@@ -32,7 +32,7 @@ export function metadataService(sql:Sql,project:string,repo:Repository){
  }
  type Line={text:string;commit:string;originalLine:number};
  async function blame(oid:string,path:string):Promise<{ref:string;path:string;lines:Line[]}>{ref(oid);validPath(path);return derive('blame',oid+':'+sha256(path),async()=>{
-  const stable=await graph.unchanged(oid);if(stable!==oid)return {ref:oid,path,lines:(await blame(stable,path)).lines};
+  const stable=pathLatest?await pathLatest(oid,path):await graph.unchanged(oid);if(stable!==oid)return {ref:oid,path,lines:(await blame(stable,path)).lines};
   const c=await commit(oid),content=await g.file(oid,path);if(content===null)throw new Problem(404,'file_missing','File not found');const text=content.split('\n');if(text.at(-1)==='')text.pop();if(text.length>2000)throw new Problem(413,'blame_limit','Blame accepts at most 2,000 lines');const lines:Line[]=text.map((text,i)=>({text,commit:oid,originalLine:i+1}));
   for(const parent of c.parents){const entry=await g.entry(parent,path);if(!entry)continue;const previous=await blame(parent,path);const old=previous.lines.map(l=>l.text);lineWork+=old.length*text.length;if(lineWork>4000000)throw new Problem(422,'query_budget','Blame comparison budget exceeded; choose a smaller file');const hunks=diffIndices(old,text);let a=0,b=0;for(const h of [...hunks,{buffer1:[old.length,0],buffer2:[text.length,0]}]){while(a<h.buffer1[0]&&b<h.buffer2[0]){if(lines[b].commit===oid)lines[b]={...previous.lines[a]};a++;b++;}a=h.buffer1[0]+h.buffer1[1];b=h.buffer2[0]+h.buffer2[1];}}
   return {ref:oid,path,lines};

@@ -1,0 +1,7 @@
+{
+  "error": "",
+  "execution": "Failed",
+  "exit": 1,
+  "output": "{\"fuseDevice\": true, \"header\": false}\n{\"exit\": 1, \"stdout\": \"\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"/var/tmp/squali-fuse-code/tests/fuse-e2e.py\\\", line 31, in <module>\\n    listing=command('ls','-la',str(mounts[0])).decode();assert 'README.md' in listing and 'binary.dat' in listing\\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/var/tmp/squali-fuse-code/tests/fuse-e2e.py\\\", line 23, in command\\n    result=subprocess.run(args,capture_output=True,timeout=25,check=True);assert not result.stderr,result.stderr.decode();return result.stdout\\n                                                                                 ^^^^^^^^^^^^^^^^^\\nAssertionError: ls: /var/tmp/squali-fuse-acceptance/mount-0: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/.: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/README.md: No data available\\nls: /var/tmp/squali-fuse-acceptance/mount-0/binary.dat: No data available\\n\\n\"}\n",
+  "state": "Succeeded"
+}

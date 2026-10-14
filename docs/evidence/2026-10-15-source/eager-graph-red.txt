@@ -1,0 +1,29 @@
+✖ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (636.275125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 883.247541
+
+✖ failing tests:
+
+test at tests/source.test.ts:1:3912
+✖ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (636.275125ms)
+  AssertionError [ERR_ASSERTION]: A native source import eagerly completes its graph index
+  
+  false !== true
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source.test.ts:45:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

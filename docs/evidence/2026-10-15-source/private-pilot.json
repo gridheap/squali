@@ -1,0 +1,32 @@
+{
+  "exit": 2,
+  "seconds": 113.667,
+  "stdout": "{\"stage\": \"objects\", \"objectsProcessed\": 2048, \"commitsProcessed\": 0, \"httpAttempts\": 43, \"uploadedBytes\": 17888144, \"complete\": false, \"reused\": false}\n",
+  "stderr": "",
+  "state": {
+    "stage": "objects",
+    "objectsProcessed": 2048,
+    "commitsProcessed": 0,
+    "httpAttempts": 43,
+    "uploadedBytes": 17888144,
+    "complete": false,
+    "sourceObjects": 421219,
+    "sourceBytes": 8332097572
+  },
+  "usage": {
+    "source": {
+      "reads": 1,
+      "writes": 832
+    },
+    "attempts": 172,
+    "cap": 2000,
+    "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+    "cache": {
+      "reservedReads": 32,
+      "reservedWrites": 20,
+      "readCap": 20000,
+      "writeCap": 2000
+    }
+  },
+  "command": "python3 work/run-source-import.py 16 600"
+}

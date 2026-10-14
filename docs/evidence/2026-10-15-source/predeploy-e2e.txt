@@ -1,0 +1,45 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (311.449875ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (294.579333ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (701.292875ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (752.093041ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (360.141083ms)
+✔ persistent operation limits stop work before the next provider call (116.260208ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (345.861ms)
+✔ immutable source reads reuse the cache after authorization (20.9605ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (475.685459ms)
+✔ standard Git can clone through the authenticated read-only gateway (149.954625ms)
+✔ the complete HTTP workflow makes progress with a single database connection (608.563166ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (539.721333ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (570.092708ms)
+✔ concurrent publication retries converge on one Git commit and one event (417.454667ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (118.836292ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1490.88175ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"c80f960fcc4c07c7769cb1af6bc0031941127c53"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1321.75925ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (827.664083ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (538.206541ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"af153b203860afecb616833fa2b9cf9d089b109c"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (375.713542ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (872.09275ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (227.516792ms)
+{"command":"node --import tsx --test tests/source.test.ts","binaryBytes":2097152,"incompressible":true,"exactBytes":true}
+✔ native source importer transfers an incompressible binary above the JSON batch limit (357.11775ms)
+{"command":"node --import tsx --test tests/source.test.ts","expiredUploadRecovered":true,"putAttempts":2,"concurrentResumeDeduplicated":true}
+✔ an expired failed source upload can be resumed once without racing an active lease (104.617792ms)
+{"command":"node --import tsx --test tests/source.test.ts","canonicalRebuild":true,"removedAllGitMetadata":true,"nativeCommitsExact":3,"versionedRecursiveDerivation":true,"extraBlobWrites":0}
+✔ canonical changesets rebuild every Git tree and commit after all compatibility metadata is removed (492.149333ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6113.269583

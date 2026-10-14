@@ -1,0 +1,64 @@
+{
+  "command": "python3 work/source-pilot.py",
+  "completed": "2026-10-14T18:58:47.489132+00:00",
+  "project": "scion-source-pilot",
+  "status": {
+    "objects": 8,
+    "bytes": 4901,
+    "changesets": 2,
+    "refs": [
+      {
+        "name": "refs/heads/main",
+        "oid": "fc333795683b8b9624911e1d02779902401306ff"
+      },
+      {
+        "name": "refs/tags/v1",
+        "oid": "1c237fd51f42a9fe123dcc957f5b2ae6bceaa8d4"
+      }
+    ]
+  },
+  "import": {
+    "stage": "complete",
+    "objectsProcessed": 8,
+    "commitsProcessed": 2,
+    "httpAttempts": 4,
+    "uploadedBytes": 4868,
+    "complete": true,
+    "reused": false
+  },
+  "before": {
+    "source": {
+      "reads": 0,
+      "writes": 0
+    },
+    "attempts": 172,
+    "cap": 2000,
+    "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+    "cache": {
+      "reservedReads": 32,
+      "reservedWrites": 20,
+      "readCap": 20000,
+      "writeCap": 2000
+    }
+  },
+  "after": {
+    "source": {
+      "reads": 1,
+      "writes": 3
+    },
+    "attempts": 172,
+    "cap": 2000,
+    "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+    "cache": {
+      "reservedReads": 32,
+      "reservedWrites": 20,
+      "readCap": 20000,
+      "writeCap": 2000
+    }
+  },
+  "verified": true,
+  "nativeTreeExact": true,
+  "artifactsCalls": 0,
+  "sourcePuts": 3,
+  "providerMeasuredCalls": "Awaiting R2 analytics; reservations are not a billing count"
+}

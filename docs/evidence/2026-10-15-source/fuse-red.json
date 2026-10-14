@@ -1,0 +1,7 @@
+{
+  "error": "",
+  "execution": "Failed",
+  "exit": 1,
+  "output": "{\"fuseDevice\": true, \"header\": false}\n{\"exit\": 1, \"stdout\": \"\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"/var/tmp/squali-fuse-code/tests/fuse-e2e.py\\\", line 28, in <module>\\n    target=root/('mount-'+str(i));target.mkdir(exist_ok=True);mounts.append(target);start(['python3','scripts/squali-fuse.py','--socket',sock,'--project',project,'--mount',str(target)],'fuse-'+str(i),clean)\\n                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/var/tmp/squali-fuse-code/tests/fuse-e2e.py\\\", line 20, in start\\n    if not line:raise RuntimeError('Startup failed: '+name+' '+(root/(name+'.stderr')).read_text()[-2000:])\\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nRuntimeError: Startup failed: fuse-0 python3: can't open file '/var/tmp/squali-fuse-code/scripts/squali-fuse.py': [Errno 2] No such file or directory\\n\\n\"}\n",
+  "state": "Succeeded"
+}

@@ -1,0 +1,30 @@
+✖ native source importer transfers an incompressible binary above the JSON batch limit (427.659875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 624.576
+
+✖ failing tests:
+
+test at tests/source.test.ts:1:13305
+✖ native source importer transfers an incompressible binary above the JSON batch limit (427.659875ms)
+  Error: Command failed: python3 scripts/import-source.py binary-source /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-BrRAlA/binary-source --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-BrRAlA/binary-import --max-objects 100 --max-bytes 10000000
+  Compressed object exceeds the current single-batch limit
+  
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/import-source.py binary-source /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-BrRAlA/binary-source --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-BrRAlA/binary-import --max-objects 100 --max-bytes 10000000',
+    stdout: '{"stage": "objects", "objectsProcessed": 0, "commitsProcessed": 0, "httpAttempts": 1, "uploadedBytes": 0, "complete": false, "reused": false}\n',
+    stderr: 'Compressed object exceeds the current single-batch limit\n'
+  }

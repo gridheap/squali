@@ -28,7 +28,7 @@ export function changeService(config:Config,p:any,principal:Principal){
    if(c.request_hash!==hash||c.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
    if(c.status!=='preparing')return changeView(c);
    const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
-   const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);
+   if(!await repo.persist?.(built.oid,built.rawObjects)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
    const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
    return sql.begin(async tx=>{
    const [current]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id} FOR UPDATE`;

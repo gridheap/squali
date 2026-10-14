@@ -1,8 +1,10 @@
 import type postgres from 'postgres';
 export type Sql = ReturnType<typeof postgres>;
-export type TreeEntry = {name:string;mode:string;type:'tree'|'blob'|'commit';oid:string};
+export type TreeEntry = {name:string;mode:string;rawMode?:string;type:'tree'|'blob'|'commit';oid:string};
 export type Commit = {oid:string;tree:string;parents:string[];message:string};
+export type RawObject={oid:string;type:'commit'|'tree'|'blob'|'tag';data:Uint8Array};
 export interface Repository {
+  persist?(oid:string,objects:RawObject[]):Promise<boolean>;
   info():Promise<{name:string;remote:string}>;
   head(ref?:string):Promise<string|null>;
   commit(oid:string):Promise<Commit|null>;
@@ -18,7 +20,7 @@ export interface Artifacts {
 }
 export type Principal={id:string;role:'admin'|'reviewer'|'agent'|'reader';projects:string[];owner?:string;paths?:string[]};
 export type Patch={path:string;content:string|null;mode?:'100644'|'100755'};
-export type Config={sql:Sql;artifacts:Artifacts;principals:Record<string,Principal>;mode:string;maxProjects:number;monthlyOps:number;cacheBudget?:{reads:number;writes:number};assets?:(request:Request)=>Promise<Response>;adobeKit?:string;clerk?:{publishableKey:string;secretKey:string;jwtKey?:string;appOrigin?:string;apiOrigin?:string};github?:{apiOrigin:string;gitOrigin:string}};
+export type Config={source?:import('./source-store.ts').SourceStore;sql:Sql;artifacts:Artifacts;principals:Record<string,Principal>;mode:string;maxProjects:number;monthlyOps:number;cacheBudget?:{reads:number;writes:number};assets?:(request:Request)=>Promise<Response>;adobeKit?:string;clerk?:{publishableKey:string;secretKey:string;jwtKey?:string;appOrigin?:string;apiOrigin?:string};github?:{apiOrigin:string;gitOrigin:string}};
 export class Problem extends Error {
  constructor(public status:number,public code:string, message:string,public details?:unknown){super(message);}
 }
