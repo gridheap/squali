@@ -86,7 +86,7 @@ test('GitHub catalog and resumable import preserve private Git history, branches
   assert.equal((await call('/projects/'+projectId,undefined,'user_bob')).status,403);
   assert.equal((await call('/github/imports')).body.imports.find((r:any)=>r.id===item.id).state,'complete');
   const {chromium}=await import('@playwright/test');const {mkdir}=await import('node:fs/promises');
-  const browser=await chromium.launch({executablePath:'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',headless:true});const context=await browser.newContext();const page=await context.newPage();page.setDefaultTimeout(10000);
+  const browser=await chromium.launch({executablePath:process.env.SQUALI_BROWSER??(process.platform==='darwin'?'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser':'/usr/bin/google-chrome'),headless:true});const context=await browser.newContext();const page=await context.newPage();page.setDefaultTimeout(10000);
   try{
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
    await page.route('https://use.typekit.net/**',async route=>{await new Promise(r=>setTimeout(r,3500));await route.abort();});

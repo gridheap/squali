@@ -1,0 +1,29 @@
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":38,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✔ online proposal persists its known delta with bounded SQL and exact import identity (232.074209ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","files":64,"queries":97}
+✖ one 64-file proposal stores its path index in one bounded SQL batch (200.086167ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 597.587791
+
+✖ failing tests:
+
+test at tests/proposal-cost.test.ts:1:2617
+✖ one 64-file proposal stores its path index in one bounded SQL batch (200.086167ms)
+  AssertionError [ERR_ASSERTION]: The 64-file proposal used 97 SQL queries
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/proposal-cost.test.ts:35:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

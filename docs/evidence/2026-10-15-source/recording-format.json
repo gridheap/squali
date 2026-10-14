@@ -1,0 +1,13 @@
+{
+  "bytes" : 610724,
+  "durationSeconds" : 5.7999999999999998,
+  "encodedFrames" : 29,
+  "format" : "Continuous CDP capture, five fps, H.264\/AAC; no cuts or scene retiming",
+  "videoTracks" : 1,
+  "audioTracks" : 0,
+  "quick" : true,
+  "success" : true,
+  "command" : "swift scripts\/render-continuous.swift work\/continuous-format work\/continuous-format\/format-check.mp4",
+  "captureDurationSeconds" : 5.6335181660000009,
+  "rawFrames" : 18
+}

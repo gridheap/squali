@@ -1,0 +1,27 @@
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":46,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✖ online proposal persists its known delta with bounded SQL and exact import identity (226.62325ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 420.476625
+
+✖ failing tests:
+
+test at tests/proposal-cost.test.ts:1:226
+✖ online proposal persists its known delta with bounded SQL and exact import identity (226.62325ms)
+  AssertionError [ERR_ASSERTION]: Online proposal used 46 SQL queries; reuse its known file delta
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/proposal-cost.test.ts:23:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

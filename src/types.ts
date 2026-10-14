@@ -3,9 +3,10 @@ export type Sql = ReturnType<typeof postgres>;
 export type TreeEntry = {name:string;mode:string;rawMode?:string;type:'tree'|'blob'|'commit';oid:string};
 export type Commit = {oid:string;tree:string;parents:string[];message:string};
 export type RawObject={oid:string;type:'commit'|'tree'|'blob'|'tag';data:Uint8Array};
+export type SourceDelta={path:string;mode:string|null;gitOid:string|null;rawMode?:string};
 export interface Repository {
   writeLease?():Promise<{remote:string;token:string}>;
-  persist?(oid:string,objects:RawObject[]):Promise<boolean>;
+  persist?(oid:string,objects:RawObject[],delta?:SourceDelta[]):Promise<boolean>;
   info():Promise<{name:string;remote:string}>;
   head(ref?:string):Promise<string|null>;
   commit(oid:string):Promise<Commit|null>;

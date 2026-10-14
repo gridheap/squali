@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/source-upload-pool.test.ts","objects":24,"peak":6,"passedSlowObject":true,"puts":24}
+✔ source upload fills six bounded slots without waiting for an entire wave (227.876542ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 393.638292

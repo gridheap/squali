@@ -18,6 +18,8 @@ The baseline exposed sequential blob reads during publication. Publication now r
 
 Batch sealing 128 commits fell from 1,793 SQL queries to 18 in the retained local fixture. Hyperdrive metrics showed connection waiting during concurrent proposals while PostgreSQL CPU peaked at 28.69% and IOPS at 36 of its 120 provisioned limit. The latest deployment uses one database connection per Worker request and a lazy request-local project lookup. Its single-connection concurrent E2E passes; the cloud samples above predate that final connection change.
 
+Online proposals now carry their known file delta into source sealing. A four-file proposal fell from 46 to 35 SQL queries, and a 64-file proposal fell from 97 to 34 after batching its path-index insert. Re-sealing the same commit through the independent import path produces the identical canonical changeset ID, including deletions and executable modes. These are local query counts, not a cloud latency ratio. See `proposal-cost-red.txt`, `proposal-paths-red.txt` and `proposal-full-e2e.txt` in the source evidence directory.
+
 ## Cache and cost boundaries
 
 Actual Linux FUSE evidence uses two mounts through one shared node daemon: the first run took 2.275 seconds and fetched two content objects; the repeated run took 1.284 seconds with zero new objects. Directory metadata fetched no file bodies. Stopping the daemon made reads fail without direct origin bypass. These results do not establish a 99% fleet cache hit rate.
@@ -47,3 +49,5 @@ Native clone preparation took 360.55 ms, excluded from proposal timing. Squali r
 This is one bounded local sample on an Apple M4 Max with 128 GiB RAM. With 32 observations, p99 is effectively the maximum. Bare Git does not provide Squali's identity, review or journal services. Results do not measure distributed workloads, contention, CPU/memory consumption, network egress or cloud cost per workflow. They cannot establish universal “highest performance” or “best value”.
 
 The first comparison exposed dropped gzip negotiation on larger clones. The gateway now bounds compressed and expanded negotiation to 1 MiB. The retained failure and success reports document that fix.
+
+Source upload now refills six request slots as they finish, instead of waiting for each eight-object wave. The E2E deliberately blocks the first object and proves later objects proceed with at most six operations outstanding, one PUT per unique object and no PUT on replay. This matches [Workers’ pending-connection limit](https://developers.cloudflare.com/workers/platform/limits/#simultaneous-open-connections). It changes scheduling, not the admitted object count.

@@ -7,14 +7,16 @@ import {startLocal} from '../scripts/local.ts';
 
 // Failure specification: counts pass despite missing refs/objects; native clone differs;
 // source APIs hide bad trees/history; rerunning verification repeats a large clone;
-// transient errors silently retry or expose credentials in the retained report.
+// transient errors silently retry or expose credentials in the retained report;
+// a rename with an edit loses unchanged lines from the original path.
 test('import verification checks complete native identity and reuses its successful transfer',async()=>{
  const server=await startLocal({port:0,test:true,source:true});const exec=promisify(execFile);
  try{
   const native=server.dir+'/native';await exec('git',['init','--initial-branch=main',native]);
   const git=(...args:string[])=>exec('git',['-C',native,...args]);await git('config','user.name','Fixture');await git('config','user.email','fixture@example.invalid');
-  await writeFile(native+'/README.md','stable\nfirst\n');await git('add','.');await git('commit','-m','First');
-  await writeFile(native+'/README.md','stable\nsecond\n');await writeFile(native+'/image.bin',Buffer.from([0,1,127,255]));await git('add','.');await git('commit','-m','Second');await git('tag','-a','v1','-m','Release');
+  const stable=Array.from({length:20},(_,i)=>'Stable context '+i+'\n').join('');
+  await writeFile(native+'/README',stable+'first\n');await git('add','.');await git('commit','-m','First');
+  await git('mv','README','README.md');await writeFile(native+'/README.md',stable+'second\n');await writeFile(native+'/image.bin',Buffer.from([0,1,127,255]));await git('add','.');await git('commit','-m','Second');await git('tag','-a','v1','-m','Release');
   await fetch(server.url+'/api/projects',{method:'POST',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:JSON.stringify({id:'verify',name:'Verify import',storage:'source',import:true,files:[]})});
   const env={...process.env,SQUALI_URL:server.url,SQUALI_TOKEN:'local-admin-test-token'};
   await exec('python3',['scripts/import-source.py','verify',native,'--state',server.dir+'/ingest'],{env});

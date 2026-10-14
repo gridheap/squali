@@ -4,7 +4,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 const scenes=JSON.parse(await readFile('docs/demo-timeline.json','utf8'));
 const dir=process.env.WEAVE_DEMO_DIR??'work/demo';await mkdir(dir+'/frames',{recursive:true});
 const server=await startLocal({port:0,test:true});
-const browser=await chromium.launch({executablePath:'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',headless:true});
+const browser=await chromium.launch({executablePath:process.env.SQUALI_BROWSER??(process.platform==='darwin'?'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser':'/usr/bin/google-chrome'),headless:true});
 const context=await browser.newContext({viewport:{width:1440,height:900},deviceScaleFactor:1,bypassCSP:true});const page=await context.newPage();
 const frames:{time:number;file:string}[]=[];
 async function api(path:string,body?:unknown,agent=false){const r=await fetch(server.url+'/api'+path,{method:body?'POST':'GET',headers:{authorization:'Bearer '+(agent?'local-agent-test-token':'local-admin-test-token'),'content-type':'application/json'},body:body?JSON.stringify(body):undefined});const value=await r.json() as any;if(!r.ok)throw new Error(JSON.stringify(value));return value;}

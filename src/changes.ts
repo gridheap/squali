@@ -2,7 +2,7 @@ import {enforceReviewPolicy,prepareReviewContent} from './permissions.ts';
 import {diff3Merge} from 'node-diff3';
 import {GitSession,sha256,blobId,type BuildPatch} from './git.ts';
 import {Problem,ZERO} from './types.ts';
-import type {Config,Patch,Principal} from './types.ts';
+import type {Config,Patch,Principal,SourceDelta} from './types.ts';
 export type FileDelta={path:string;before:string|null;after:string|null;afterBytes?:number;mode:string;beforeMode:string|null};
 export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
 export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,cancellationHead:p.metrics?.cancellation?.oid??null,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
@@ -28,13 +28,13 @@ export function changeService(config:Config,p:any,principal:Principal){
    if(c.request_hash!==hash||c.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
    if(c.status!=='preparing')return changeView(c);
    const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
-   if(!await repo.persist?.(built.oid,built.rawObjects)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
-   const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,afterBytes:Buffer.byteLength(f.content??''),mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
+   const files:FileDelta[]=[],delta:SourceDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode&&before?.rawMode===after?.rawMode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,afterBytes:Buffer.byteLength(f.content??''),mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});delta.push({path:f.path,gitOid:after?.oid??null,mode:after?.mode??null,...(after?.rawMode?{rawMode:after.rawMode}:{})});}
+   if(!await repo.persist?.(built.oid,built.rawObjects,delta)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
    return sql.begin(async tx=>{
    const [current]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id} FOR UPDATE`;
    if(current.status!=='preparing')return changeView(current);
    const [ready]=await tx`UPDATE weave_changes SET oid=${built.oid},files=${tx.json(files)},status='proposed' WHERE project=${pid} AND id=${input.id} RETURNING *`;
-   for(const f of files)await tx`INSERT INTO weave_paths(project,change_id,path) VALUES(${pid},${input.id},${f.path}) ON CONFLICT DO NOTHING`;
+   if(files.length)await tx`INSERT INTO weave_paths ${tx(files.map(f=>({project:pid,change_id:input.id,path:f.path})),'project','change_id','path')} ON CONFLICT DO NOTHING`;
    await event(tx,'change.proposed',{id:c.id,title:c.title,objects:built.objects,bytes:built.bytes});return changeView(ready);
   });
  }

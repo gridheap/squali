@@ -63,7 +63,9 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   });
   const claimed=new Set(claim.map(r=>r.hash)),ready:string[]=[];const uploads=prepared.filter(v=>v.blob&&claimed.has(v.blob));
   if(uploads.length)await reserve('writes',uploads.length);
-  let failed=false;for(let i=0;i<uploads.length;i+=8){const results=await Promise.allSettled(uploads.slice(i,i+8).map(async value=>{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}));if(results.some(r=>r.status==='rejected'))failed=true;}
+  // Refill each slot as soon as it completes. A slow object must not stall
+  // an entire wave; six slots match Workers' pending connection allowance.
+  let failed=false,next=0;await Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}}));
   if(ready.length)await sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=ANY(${ready})`;
   if(failed)throw new Problem(503,'source_upload','Some blob uploads did not complete; resume checks each immutable identity');
   const unclaimed=prepared.filter(v=>v.blob&&!claimed.has(v.blob));
@@ -173,6 +175,11 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   return {commits,next:nextCursor?start:null,cursor:nextCursor,scanned,order:'first-parent'};
  }
  async function latestPath(project:string,start:string,path:string){const result=await history(project,start,path,1);if(!result.commits.length&&result.cursor)throw new Problem(422,'path_query_budget','Path candidates require another bounded history page');return result.commits[0]?.oid??start;}
+ async function renameCandidates(project:string,id:string,parent:string,path:string){
+  const current=await commit(project,id);if(current?.parents[0]!==parent)return [];
+  const rows=await sql`SELECT f->>'path' AS path FROM weave_changesets c CROSS JOIN LATERAL jsonb_array_elements(c.files) f WHERE c.project=${project} AND c.git_oid=${id} AND f->>'mode' IS NULL ORDER BY f->>'path' LIMIT 33`;
+  if(rows.length>32)throw new Problem(422,'rename_budget','Blame rename detection exceeds 32 deleted candidates');return rows.map(r=>r.path as string).filter(candidate=>candidate!==path);
+ }
  async function rpc(project:string,input:any):Promise<Response>{
   if(input.op==='head'){const [p]=await sql`SELECT head FROM weave_projects WHERE id=${project}`;return Response.json({head:p.head});}
   if(input.op==='stat'){
@@ -197,7 +204,7 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
     async commit(id){const p=await project(name);return p?commit(p.id,id):original.commit(id);},
     async tree(id){const p=await project(name);return p?tree(p.id,id):original.tree(id);},
     async blob(id){const p=await project(name);return p?raw(p.id,id):original.blob(id);},
-    async persist(id,values){const p=await project(name);if(!p)return false;await objects(p.id,values);await sealBatch(p.id,[id]);return true;},
+    async persist(id,values,delta){const p=await project(name);if(!p)return false;await objects(p.id,values);await sealSourceBatch(sql,p.id,[id],decodeCommit,decodeTree,delta?{objects:values,delta}:undefined);return true;},
     async push(ref,old,id,pack){const p=await project(name);if(!p)return original.push(ref,old,id,pack);await objects(p.id,unpackWrittenPack(pack));await sealBatch(p.id,[id]);await sql.begin(async tx=>{const [current]=await tx`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref} FOR UPDATE`;if(current?.oid===id)return;if((current?.oid??null)!==old)throw new Problem(409,'head_moved','The source ref changed');if(current){const result=await tx`UPDATE weave_source_refs SET oid=${id} WHERE project=${p.id} AND name=${ref} AND oid=${old} RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref changed');}else {const result=await tx`INSERT INTO weave_source_refs(project,name,oid) VALUES(${p.id},${ref},${id}) ON CONFLICT DO NOTHING RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref was created concurrently');}});},
     async receive(refs,stream){if(!await project(name))return original.receive(refs,stream);await stream.cancel();throw new Problem(409,'source_import','Use the resumable source object importer');},
     async git(request,suffix){const p=await project(name);return p?exporter.git(p,request,suffix):original.git(request,suffix);}
@@ -205,5 +212,5 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   }
   return {repo,async create(name,branch){if(!await project(name))await fallback.create(name,branch);}};
  }
- return {caps,exportPrepare:(p:any,refs:unknown)=>exportBridge.prepareSeed(p,refs),exportConfirm:(p:any,refs:unknown)=>exportBridge.confirmSeed(p,refs),exportIndex:(p:any,manifest:unknown,ids:unknown)=>exportBridge.seedObjects(p,manifest,ids),artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,latestPath};
+ return {caps,exportPrepare:(p:any,refs:unknown)=>exportBridge.prepareSeed(p,refs),exportConfirm:(p:any,refs:unknown)=>exportBridge.confirmSeed(p,refs),exportIndex:(p:any,manifest:unknown,ids:unknown)=>exportBridge.seedObjects(p,manifest,ids),artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,latestPath,renameCandidates};
 }

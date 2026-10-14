@@ -66,3 +66,11 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 - `pool-acceptance.txt`: 24 focused tests after lazy project lookup and one database connection per Worker request; `single-connection-concurrent.txt` checks eight concurrent clients with one local database connection. `pool-deploy.txt` records Worker `f5e53d14-c978-4137-b411-d9320e94e87f`.
 
 - `source-ui.txt`: current source-default application, four browser E2E tests passed. Exact command: `SQUALI_URL=http://127.0.0.1:8799 WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/source-ui pnpm test:ui`; server: `startLocal({port:8799,test:true,source:true})`. Screenshots and actual Latin/CJK glyph provenance are retained in `source-ui/`.
+
+- `proposal-full-e2e.txt`: 64/64 after direct online delta sealing and batched proposal paths. Four-file proposal SQL: 46 → 35; 64-file proposal: 97 → 34. Import re-sealing retains the exact changeset identity. `proposal-typecheck.txt`, `proposal-build.txt` and `proposal-deploy.txt` retain verification and Worker `49af2766-b09f-41ac-8d9d-5f8b5bea422e`.
+
+- `rename-pool-full-e2e.txt`: 65/65. Retains the native edited-rename blame comparison, preservation of historical permission bytes during unrelated edits, and bounded rolling uploads. `blame-rename-red.txt`, `legacy-edit-red.txt` and `upload-pool-red.txt` record the prior failures. `upload-pool-green.txt` also verifies the final timer guard. Latest deployment: `9cca4890-8a8e-4dcf-85f5-debd3f83dc63`.
+- `verify-import-fixture-count-failure.txt` is an earlier fixture assertion error (eight objects, initially expected nine); the final complete suites contain the corrected passing verifier.
+
+- `node24-full-e2e.txt`: 65/65 with the exact pinned Node 24.21.0 runtime. Command: `/Users/binbinsh/.local/share/mise/installs/node/24.21.0/bin/node --import tsx --test tests/*.test.ts`.
+- `demo-continuous-preflight.txt` and `recording-format.json`: the current demonstration workflow and a short continuous capture/MP4 format check pass. The quick probe is not a final competition video. See [recording instructions](../../demo-source.md).

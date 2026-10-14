@@ -5,7 +5,7 @@ const url=process.env.SQUALI_URL??'https://squa.li';
 const access=JSON.parse(await readFile(process.env.SQUALI_ACCESS_FILE,'utf8'));
 const evidence=process.env.SQUALI_EVIDENCE??'work/production';
 await mkdir(evidence,{recursive:true});
-const browser=await chromium.launch({executablePath:'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',headless:true,args:process.env.SQUALI_RESOLVE_IP?[`--host-resolver-rules=MAP ${new URL(url).hostname} ${process.env.SQUALI_RESOLVE_IP}`]:[]});
+const browser=await chromium.launch({executablePath:process.env.SQUALI_BROWSER??(process.platform==='darwin'?'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser':'/usr/bin/google-chrome'),headless:true,args:process.env.SQUALI_RESOLVE_IP?[`--host-resolver-rules=MAP ${new URL(url).hostname} ${process.env.SQUALI_RESOLVE_IP}`]:[]});
 const context=await browser.newContext({viewport:{width:1440,height:1000}});const page=await context.newPage();
 const errors=[],requests=[];let apiRequests=0;
 page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(new URL(r.url()).hostname+new URL(r.url()).pathname));

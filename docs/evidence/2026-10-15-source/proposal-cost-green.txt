@@ -1,0 +1,52 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (313.954958ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (246.638041ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (435.453375ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (600.232208ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (338.317542ms)
+✔ persistent operation limits stop work before the next provider call (160.545541ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (281.7895ms)
+✔ immutable source reads reuse the cache after authorization (15.719459ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (425.684083ms)
+✔ standard Git can clone through the authenticated read-only gateway (135.576542ms)
+✔ the complete HTTP workflow makes progress with a single database connection (502.118792ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (488.470416ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (534.100458ms)
+✔ concurrent publication retries converge on one Git commit and one event (445.838542ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (104.481791ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":38,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✔ online proposal persists its known delta with bounded SQL and exact import identity (243.70875ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"1f7143d5f9d9a70cae8dcc3b2d1ee3db5bcc2ae8"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (401.117583ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (764.503375ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (275.214167ms)
+{"command":"node --import tsx --test tests/source.test.ts","binaryBytes":2097152,"incompressible":true,"exactBytes":true}
+✔ native source importer transfers an incompressible binary above the JSON batch limit (406.464667ms)
+{"command":"node --import tsx --test tests/source.test.ts","expiredUploadRecovered":true,"putAttempts":2,"concurrentResumeDeduplicated":true}
+✔ an expired failed source upload can be resumed once without racing an active lease (180.104667ms)
+{"command":"node --import tsx --test tests/source.test.ts","canonicalRebuild":true,"removedAllGitMetadata":true,"nativeCommitsExact":3,"versionedRecursiveDerivation":true,"extraBlobWrites":0}
+✔ canonical changesets rebuild every Git tree and commit after all compatibility metadata is removed (475.473292ms)
+{"command":"node --import tsx --test tests/source.test.ts","rawObjectRpc":true,"metadataOnlyInspection":true,"hashVerified":true}
+✔ source RPC serves verified raw objects and file sizes without fetching file content during directory inspection (138.23025ms)
+✔ regional source object cache serves immutable hits and fails closed when its cache layer fails (137.958417ms)
+{"command":"node --import tsx --test tests/source.test.ts","nativeCommits":512,"eagerGraph":true,"pathCandidates":1,"unrelatedChurnSkipped":511,"blameMatchesNative":true}
+✔ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (629.85975ms)
+✔ source reconstruction preserves legacy non-UTF-8 commit metadata byte for byte (298.4665ms)
+{"command":"node --import tsx --test tests/source.test.ts","originalFailingTree":"0323c14ecfac54b060a52ef54b9ea38377adede0","historicMode":"100664","displayMode":"100644","reconstructedBytesExact":true}
+✔ historic Git permission modes import without changing immutable tree identity (307.791916ms)
+✔ a lost retry acknowledgement recovers when the gzip representation differs from the original claim (141.728334ms)
+{"command":"node --import tsx --test --test-name-pattern=\"parent-ordered\" tests/source.test.ts","commits":128,"queries":17,"ms":205}
+✔ a parent-ordered import seals 128 changesets in bounded database batches (528.035834ms)
+{"command":"node --import tsx --test --test-name-pattern=\"provider budget\" tests/source.test.ts","sourceComplete":true,"compatibilityLimitExplicit":true,"artifactsCalls":0}
+✔ source import completes when its Git compatibility copy exceeds the provider budget (327.894958ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5223.960625

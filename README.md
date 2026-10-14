@@ -12,7 +12,7 @@ Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyp
 
 ## Run locally
 
-Prerequisites: Node.js 24+, pnpm, Git and PostgreSQL 17+. The repository pins Node 24.21.0 and pnpm 11.25.0 with mise. Python 3 is needed for native import, bisect and filesystem clients. API tests do not need a browser.
+Prerequisites: Node.js 24+, pnpm, Git and PostgreSQL 17+. The repository pins Node 24.21.0 and pnpm 11.25.0 with mise. Python 3 is needed for native import, bisect and filesystem clients. The API-only suite (`pnpm test:api`) does not need a browser. The complete E2E suite includes the GitHub/native-import browser flow and needs an installed browser.
 
 ```sh
 pnpm install
@@ -63,14 +63,14 @@ Credentials are environment variables, not command arguments. Browser applicatio
 
 ```sh
 pnpm typecheck
-node --import tsx --test tests/*.test.ts
+pnpm test:e2e
 pnpm build
 BENCH_STORAGE=source BENCH_CHANGES=64 BENCH_CONCURRENCY=8 pnpm benchmark
 ```
 
 API/CLI E2E starts real PostgreSQL and HTTP services with a persistent filesystem adapter at the R2 boundary. Native Git independently checks object, tree, history and publication results. Tests retain their exact commands and reports in the evidence directory. Production measurements are labelled separately from local benchmarks.
 
-Browser tests use an installed Brave browser with an isolated profile. Start `pnpm dev`, then run `pnpm test:ui`. Configure an existing executable on another platform; do not download a browser automatically. Tests exercise desktop/mobile flow, font fallback and Latin/CJK glyph selection.
+Browser tests use an isolated profile and the installed Brave browser on macOS. On Linux the default is `/usr/bin/google-chrome`; set `SQUALI_BROWSER` to another existing Chromium executable. No test installs or downloads a browser. Start `pnpm dev`, then run `pnpm test:ui`. The typography test also requires the platform’s CJK UI fonts. Tests exercise desktop/mobile flow, font fallback and Latin/CJK glyph selection.
 
 ## Architecture
 

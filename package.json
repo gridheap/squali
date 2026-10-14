@@ -6,7 +6,7 @@
   "packageManager": "pnpm@11.25.0",
   "scripts": {
     "dev": "tsx scripts/dev.ts",
-    "test:e2e": "node --import tsx --test tests/api.test.ts",
+    "test:e2e": "node --import tsx --test tests/*.test.ts",
     "test:ui": "playwright test",
     "typecheck": "tsc --noEmit",
     "build": "wrangler deploy --dry-run --outdir dist",
@@ -19,7 +19,8 @@
     "test:storage": "node --import tsx --test tests/storage.test.ts",
     "test:sparse": "node --import tsx --test tests/sparse.test.ts",
     "test:metadata": "node --import tsx --test tests/metadata.test.ts",
-    "test:permissions": "node --import tsx --test tests/permissions.test.ts"
+    "test:permissions": "node --import tsx --test tests/permissions.test.ts",
+    "test:api": "node --import tsx --test tests/api.test.ts"
   },
   "dependencies": {
     "@clerk/backend": "3.23.2",

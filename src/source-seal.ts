@@ -1,11 +1,14 @@
 import {createHash} from 'node:crypto';
-import {Problem,type Sql,type Commit,type TreeEntry} from './types.ts';
+import {Problem,type Sql,type Commit,type TreeEntry,type RawObject,type SourceDelta} from './types.ts';
 import {completeGraphBatch} from './graph.ts';
 
 /** Import immutable deltas in batches; SQL work follows tree depth rather than file count. */
-export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decodeCommit:(id:string,raw:Uint8Array)=>Commit,decodeTree:(raw:Uint8Array)=>TreeEntry[]){
+export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decodeCommit:(id:string,raw:Uint8Array)=>Commit,decodeTree:(raw:Uint8Array)=>TreeEntry[],prepared?:{objects:RawObject[];delta:SourceDelta[]}){
  const known=new Map<string,string>((await sql`SELECT git_oid,id FROM weave_changesets WHERE project=${project} AND git_oid=ANY(${ids})`).map(r=>[r.git_oid,r.id]));
  const pending=[...new Set(ids)].filter(id=>!known.has(id)),objects=new Map<string,any>();let metadataBytes=0,treeEntries=0;
+ // Only the in-process writer supplies this delta, after admitting and verifying
+ // its objects. Imported/untrusted input always derives deltas from the trees.
+ if(prepared){if(ids.length!==1)throw new Problem(500,'source_delta','A known delta belongs to one commit');for(const value of prepared.objects)if(value.type==='commit'||value.type==='tree'){objects.set(value.oid,{kind:value.type,raw:value.data});metadataBytes+=value.data.length;}}
  async function load(wanted:string[]){
   const missing=[...new Set(wanted)].filter(id=>!objects.has(id));
   for(let i=0;i<missing.length;i+=1000){const part=missing.slice(i,i+1000),sizes=await sql`SELECT oid,kind,size FROM weave_source_objects WHERE project=${project} AND oid=ANY(${part})`;
@@ -19,10 +22,11 @@ export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decode
  const external=[...new Set(commits.flatMap(c=>c.parents))].filter(id=>!known.has(id)&&!pending.includes(id));
  if(external.length)for(const row of await sql`SELECT git_oid,id FROM weave_changesets WHERE project=${project} AND git_oid=ANY(${external})`)known.set(row.git_oid,row.id);
  const order=new Set(known.keys());for(const c of commits){if(c.parents.some(id=>!order.has(id)))throw new Problem(404,'changeset_missing','Seal earlier parents before their children');order.add(c.oid);}
- await load(commits.flatMap(c=>c.parents.slice(0,1)));
+ if(!prepared)await load(commits.flatMap(c=>c.parents.slice(0,1)));
  type Walk={commit:string;before:string|null;after:string|null;prefix:string};
- let frontier:Walk[]=commits.map(c=>({commit:c.oid,before:c.parents[0]?decodeCommit(c.parents[0],objects.get(c.parents[0]).raw).tree:null,after:c.tree,prefix:''}));
+ let frontier:Walk[]=prepared?[]:commits.map(c=>({commit:c.oid,before:c.parents[0]?decodeCommit(c.parents[0],objects.get(c.parents[0]).raw).tree:null,after:c.tree,prefix:''}));
  const files=new Map<string,any[]>(commits.map(c=>[c.oid,[]])),trees=new Map<string,TreeEntry[]>();let work=0,fileCount=0;
+ if(prepared&&pending.length)files.set(ids[0],prepared.delta.map(f=>({path:f.path,mode:f.mode,...(f.rawMode?{rawMode:f.rawMode}:{}),blob:null,gitOid:f.gitOid})));
  function add(id:string,file:any){if(++fileCount>100000)throw new Problem(413,'source_seal_budget','Split this changeset batch: more than 100,000 changed paths');files.get(id)!.push(file);}
  while(frontier.length){const step=frontier.filter(w=>w.before!==w.after);frontier=[];work+=step.length;if(work>8192)throw new Problem(413,'source_seal_budget','Split this changeset batch: more than 8,192 changed trees');
   await load(step.flatMap(w=>[w.before,w.after].filter((id):id is string=>!!id)));
