@@ -83,6 +83,8 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
  }
  async function ancestry(ancestor:string,descendant:string){
   await ensure(ancestor,descendant);const target=await complete(ancestor);const pending=[descendant],seen=new Set<string>();
+  const tip=await complete(descendant),distance=tip.depth-target.depth;
+  if(distance>=0&&(await firstAncestor(descendant,distance))?.oid===ancestor)return {isAncestor:true,ancestor,descendant};
   while(pending.length){const oid=pending.pop()!;if(oid===ancestor)return {isAncestor:true,ancestor,descendant};if(seen.has(oid))continue;if(seen.size>=QUERY_NODES)throw new Problem(422,'query_budget','Graph query exceeds its node budget');seen.add(oid);
    const node=await complete(oid);if(node.generation!<=target.generation!)continue;
    const distance=Math.min(node.span,node.generation!-target.generation!);
@@ -92,6 +94,11 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
  }
  async function mergeBase(left:string,right:string){
   await ensure(left,right);
+  // A proven first-parent ancestor is the unique best common ancestor.
+  // Answer this common mainline query with jumps before painting merge edges.
+  const a=await complete(left),b=await complete(right);
+  if(a.depth<=b.depth&&(await firstAncestor(right,b.depth-a.depth))?.oid===left)return {bases:[left]};
+  if(b.depth<a.depth&&(await firstAncestor(left,a.depth-b.depth))?.oid===right)return {bases:[right]};
   // Paint both sides in descending generation order. Common ancestors become
   // stale; stop when only their stale ancestry remains. This retains all best
   // bases, including criss-cross merges, without walking the shared prefix.

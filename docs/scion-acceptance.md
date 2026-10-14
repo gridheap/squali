@@ -8,7 +8,7 @@ The denominator is fixed at 20. At least 19 must pass, and items **3, 4, 5, 6, 1
 
 ## Fixed requirements and evidence
 
-The [current full report](evidence/2026-10-15-source/database-protocol-full-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
+The [current full report](evidence/2026-10-15-source/mainline-graph-full-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
 
 | # | Requirement | Completion criterion | Evidence / remaining gate |
 |---|---|---|---|

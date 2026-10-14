@@ -22,7 +22,7 @@ Generate tokens with a cryptographic RNG. Never commit raw tokens, paste them in
 
 4. Set the monthly Artifacts call cap and project cap. The initial configuration allows 2,000 attempted calls/month and 100 projects. A bounded cloud smoke test should use one workspace, two independent changes and one publication; exercise conflicts/revisions with the local E2E fixtures, with a total ceiling of 250 reservations. Do not run the local benchmark against the live provider.
 5. Configure the Adobe kit in `public/index.html` and `ADOBE_KIT_ID`. Use its official CSS embed; no font files are bundled. The application gates dependent text for at most 2.8 seconds per CSS/font stage while native editors and feedback remain usable.
-6. Run `pnpm typecheck`, `node --import tsx --test tests/*.test.ts`, `pnpm build`, then `pnpm deploy`. Validate the Worker entry point, authentication, real Artifacts reads/writes, and the PostgreSQL journal. Record both the provider usage view and the application's conservative call counter.
+6. Run `pnpm typecheck`, `pnpm test:e2e`, `pnpm build`, then `pnpm deploy`. Validate the Worker entry point, authentication, real Artifacts reads/writes, and the PostgreSQL journal. Record both the provider usage view and the application's conservative call counter.
 
 Static assets include a CSP and referrer policy in `_headers`. The API has the same-origin mutation check and bearer authorization. Production does not include local fixture credentials.
 

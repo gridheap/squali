@@ -1,0 +1,88 @@
+{
+  "command": "python3 /var/lib/squali-cloud-acceptance/cloud-acceptance.py source-acceptance-20261015 --state /var/lib/squali-cloud-acceptance/prepared-state --label 'production prepared protocol and canonical input reuse' --follow-up --series prepared",
+  "label": "production prepared protocol and canonical input reuse",
+  "origin": "https://squa.li",
+  "timestamp": "2026-10-14T23:12:30Z",
+  "complete": true,
+  "httpAttempts": 25,
+  "segments": 1,
+  "dataset": {
+    "baselineFiles": 64,
+    "baselineBytes": 419400,
+    "changes": 8,
+    "concurrency": 8,
+    "storage": "source"
+  },
+  "results": {
+    "publishedFiles": 8,
+    "changesets": 102,
+    "writeWallMs": 3476.459,
+    "changesPerSecond": 2.301,
+    "p50Ms": 1486.231,
+    "p95Ms": 3368.849,
+    "p99Ms": 3368.849,
+    "publicationMs": 1824.657,
+    "publishedHead": "2a342bc03f5099adfd8ff2d7aa563a59c3e891c0",
+    "cacheSamples": [],
+    "usageBefore": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 76,
+        "writes": 142902
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    },
+    "usageBeforePublication": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 76,
+        "writes": 142997
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    },
+    "usageAfter": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 77,
+        "writes": 143055
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    }
+  },
+  "limitations": [
+    "One origin client location and small independent text changes; no distributed-scale claim",
+    "Usage counters are shared deployment reservations; concurrent import traffic is included",
+    "First/repeat reads do not imply an empty global cache or isolate",
+    "Eight clients share the supplied agent principal; this is not an eight-user identity benchmark",
+    "No automatic retries; resumed write wall time includes pauses between segments"
+  ],
+  "deploymentVersion": "40919ac2-91fe-490d-9843-6465a853843a",
+  "gitCommit": "6e73423848251e78b5c296f044b1bd9805a75ad7"
+}

@@ -72,7 +72,7 @@ Independent approved changes retain their verified blob identities and byte leng
 
 The initial real cloud sample published 64 changes in 26.95 seconds. After the content-reuse change, a smaller eight-change smoke published in 2.25 seconds. These are different sample sizes and do not establish a speedup ratio. Both ran while the private import was active. CPU and I/O metrics show the database was not saturated; Hyperdrive observed connection wait during concurrent requests. The Worker now limits each request to one database connection and lazily shares its immutable project lookup within the request.
 
-The resolver admits at most 1,024 missing results and 8,192 dependency records per invocation. Graph/path reconstruction additionally bounds metadata to 16 MiB, and path derivation to 100,000 events. Larger rebuilds use parent-order batches. Graph skip pointers are computed by level with shared database reads; 128-commit sealing uses 21 SQL queries in the current retained fixture.
+The resolver admits at most 1,024 missing results and 8,192 dependency records per invocation. Graph/path reconstruction additionally bounds metadata to 16 MiB, and path derivation to 100,000 events. Larger rebuilds use parent-order batches. Graph skip pointers are computed by level with shared database reads; 128-commit sealing uses 17 SQL queries in the current retained fixture.
 
 Blame declares its path-stable and parent line results as dependencies in that same engine. Existing `blame-renames-v1` cache identities are preserved. A rebuilt head may fetch its current body and a rename candidate; completed parent line results are reused, and a complete hot result adds no source I/O. Other cached metadata query results use the shared resolver as leaf definitions.
 

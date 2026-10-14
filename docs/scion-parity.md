@@ -18,7 +18,7 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 | IAM and review constraints | Clerk owner isolation, expiring role/path credentials, parser-backed JS comment-only and JSON value policies | Semantic scope is explicit; it is not general proof of program equivalence or trusted CI attestation |
 | Private GitHub import | Persistent background jobs, single native worker, frozen cache/journal, pause/resume, short internal credential leases, no browser pack transfer | Real production GitHub login and the private catalog pass; full 421,219-object private import remains in progress |
 | Git interoperability | Published-only Artifacts export, incremental clone/fetch, native cache seeding, exact tags, lost-ack reconciliation, rebuildable derived copy | Worker export: 8,192 new objects/16 MiB; Artifacts remains limited to a 1 GB compatibility repository |
-| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 21 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
+| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 17 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
 
 ## Responsibilities
 

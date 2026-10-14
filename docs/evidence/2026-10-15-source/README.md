@@ -123,3 +123,14 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 - `database-protocol-red.txt` reproduces the missing protocol statements. `database-protocol-green.txt` and `database-protocol.json` observe 57 prepared statements and 35 reused statements on the real PostgreSQL connection after HTTP creation, dependent proposals, review, publication and repeated reads. Parameters remain distinct, arrays decode correctly, and the published canonical commit retains three parents.
 - `database-protocol-full-e2e.txt` passes **73/73** at four test processes. Typecheck and dry-run build pass. This is a driver-protocol correction; production latency will be measured separately once, after deployment.
 - `production-immutable-cache.json` records the earlier admission/cache deployment's six-request production read check: identical commit/file bytes, one source read reservation and zero Artifacts operations. A repeated file read took 421 ms from the local internet client, compared with its first observation of 1,019 ms. It is not a cloud write benchmark or a guaranteed empty-cache comparison.
+
+## Prepared protocol production acceptance
+
+- `database-protocol-deploy.txt`: Worker `40919ac2-91fe-490d-9843-6465a853843a`, source commit `6e73423`.
+- `cloud-prepared.json`: retained Azure eastus2 command, eight unique changes/eight clients, 25 HTTP attempts, no retries, 2.301 changes/s, p50 1,486.23 ms, p95 3,368.85 ms, publication 1,824.66 ms. The two-second proposal target remains unmet. Artifacts calls do not increase; global write reservations include private ingestion. This is the final planned live write sample.
+
+## Mainline graph query acceptance
+
+- `mainline-merge-base-red.txt`: the cold 1,024-commit query used 1,026 SQL statements. `mainline-merge-base-green.txt` reduces both argument orders to 13.
+- `mainline-ancestry-red.txt`: the native fixture adds 128 merge commits and reproduces 387 statements for positive ancestry. `mainline-ancestry-green.txt` reduces it to 13, preserves criss-cross and second-parent results, and performs no new provider object reads.
+- `mainline-graph-full-e2e.txt`: `pnpm test:e2e`, 73/73. `mainline-graph-typecheck.txt` and `mainline-graph-build.txt` retain typecheck/dry-run success. This query correction does not justify repeating successful live write benchmarks.

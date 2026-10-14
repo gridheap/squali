@@ -1,0 +1,16 @@
+{"mainlineMergeBaseSql":[13,13],"commits":1024}
+{"mainlineAncestrySql":13,"nativeMergeCommits":128}
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":7,"mergeBase":"66635db0896aa9ac655abf9483bce8259c9e1e4a","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (1063.092125ms)
+{"command":"node --import tsx --test tests/graph.test.ts","nativeIndexCLI":true,"finiteStepBudget":2,"completedIndexReused":true}
+✔ native-repository index CLI uploads verified metadata with an explicit finite step budget (446.974792ms)
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["663c7adfed4ae82ea9ac1a78b73d8ccbd9d20cfe","fba29fa2cb5acbbefd949b32d110a1aee3b7d114"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (832.926ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2469.715167

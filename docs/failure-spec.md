@@ -120,3 +120,9 @@ Public seams: authenticated HTTP and CLI, verified against a native Git cherry-p
 - Retrying with the same operation creates another commit; changing immutable inputs under the same ID succeeds.
 - Directory-scoped and read-only credentials reach hidden source before authorization is checked.
 - Text merge work, file counts, input bytes or provider work are unbounded.
+
+## Deep mainline merge-base query
+
+Public seam: authenticated `/merge-base` HTTP requests over a persisted native-Git commit index. A cold query between two versions on one first-parent chain must not read every intervening commit. Failures include linear database round trips over 1,024 commits, wrong results when arguments are reversed, mistaking equal depth for shared ancestry, losing a second-parent/criss-cross base, and hiding the cost behind a previous request's cache. Native `git merge-base --all` is the independent result oracle. The retained E2E bounds each cold mainline query to 32 SQL statements; divergent/all-parent cases keep their existing native comparisons.
+
+The same first-parent shortcut is required for positive `/ancestry` queries through a merge-heavy mainline. The native fixture includes 128 two-parent commits in its 1,024-commit chain. Negative ancestry and genuine second-parent answers must still use the all-parent algorithm.

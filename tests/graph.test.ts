@@ -7,14 +7,14 @@ import {startLocal} from '../scripts/local.ts';
 const exec=promisify(execFile);
 
 test('bounded resumable indexing serves deep history through HTTP without rereading Git objects',async()=>{
- const server=await startLocal({port:0,test:true});
+ let queries=0;const server=await startLocal({port:0,test:true,onQuery:()=>queries++});
  const call=async(path:string,body?:unknown)=>{const r=await fetch(server.url+'/api'+path,{method:body?'POST':'GET',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:body?JSON.stringify(body):undefined});return {status:r.status,body:await r.json() as any};};
  try{
   const p=await call('/projects',{id:'graph',name:'Deep graph'});assert.equal(p.status,201);
   const repo=join(server.dir,'weave-graph.git');
   // Native Git creates the independent fixture, including a branch from old history.
   let data='blob\nmark :10000\ndata 7\nstable\n\n';
-  for(let i=1;i<=1024;i++)data+=`commit refs/heads/main\nmark :${i}\ncommitter Fixture <fixture@example.invalid> ${1700000000+i} +0000\ndata ${Buffer.byteLength('commit '+i)}\ncommit ${i}\n${i>1?'from :'+(i-1)+'\n':''}M 100644 :10000 stable.txt\n\n`;
+  for(let i=1;i<=1024;i++)data+=`commit refs/heads/main\nmark :${i}\ncommitter Fixture <fixture@example.invalid> ${1700000000+i} +0000\ndata ${Buffer.byteLength('commit '+i)}\ncommit ${i}\n${i>1?'from :'+(i-1)+'\n':''}${i%8===0?'merge :'+(i-2)+'\n':''}M 100644 :10000 stable.txt\n\n`;
   data+='commit refs/heads/alternative\nmark :2000\ncommitter Fixture <fixture@example.invalid> 1700002000 +0000\ndata 11\nalternative\nfrom :512\nM 100644 :10000 stable.txt\n\n';
   const importer=spawn('git',['--git-dir',repo,'fast-import','--quiet','--force']);let stderr='';importer.stderr.on('data',c=>stderr+=c);importer.stdin.end(data);await new Promise<void>((resolve,reject)=>importer.on('close',code=>code===0?resolve():reject(Error(stderr))));
   const git=async(...args:string[])=>(await exec('git',['--git-dir',repo,...args])).stdout.trim();
@@ -33,7 +33,10 @@ test('bounded resumable indexing serves deep history through HTTP without reread
   assert.ok(steps>1,'Large indexing is explicitly resumable');
   assert.equal((await call('/projects/graph/index',{ref:fork,limit:64})).body.complete,true);
   const before=(await call('/usage')).body.attempts;
-  assert.equal((await call('/projects/graph/ancestry',{ancestor:root,descendant:head})).body.isAncestor,true);
+  const mainlineQueries:number[]=[];
+  for(const [left,right]of [[root,head],[head,root]]){queries=0;const result=await call('/projects/graph/merge-base',{left,right});assert.equal(result.status,200,JSON.stringify(result.body));assert.deepEqual(result.body.bases,[root]);mainlineQueries.push(queries);assert.ok(queries<=32,`A cold mainline merge-base must use the index; observed ${queries} SQL statements`);}
+  console.log(JSON.stringify({mainlineMergeBaseSql:mainlineQueries,commits:1024}));
+  queries=0;assert.equal((await call('/projects/graph/ancestry',{ancestor:root,descendant:head})).body.isAncestor,true);const mainlineAncestrySql=queries;assert.ok(queries<=32,`A mainline ancestry query through merges must use the index; observed ${queries} SQL statements`);console.log(JSON.stringify({mainlineAncestrySql,nativeMergeCommits:128}));
   assert.equal((await call('/projects/graph/ancestry',{ancestor:fork,descendant:head})).body.isAncestor,false);
   const merge=await call('/projects/graph/merge-base',{left:head,right:fork});assert.equal(merge.status,200,JSON.stringify(merge.body));assert.deepEqual(merge.body.bases,[base]);
   const bisect=await call('/projects/graph/bisect',{good:root,bad:head});assert.equal(bisect.status,200,JSON.stringify(bisect.body));assert.equal(bisect.body.remaining,1023);assert.equal(bisect.body.candidate,await git('rev-parse','main~511'));
