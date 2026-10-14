@@ -10,7 +10,7 @@
 - The persistent native GitHub consumer runs on the existing Azure VM. It admits one active job, retains Git/input journals, continues healthy checkpoints, and never automatically restarts a failed job. Browser fixture tests cover login/catalog/private import, pause/resume and owner isolation.
 - Source-backed rebase, semantic approval and Git export work with a single database connection. Export transfers do not hold database transactions. A slow export does not block another workspace or allow duplicate export.
 - Local 64-change/8-client source sample: 318.19 changes/s, p95 95.93 ms, zero new blob writes during publication. These are local measurements, not cloud throughput. Batch sealing 128 commits uses 21 SQL queries versus the earlier 1,793.
-- Mobile UI, workflow, failure fallback and warm Adobe glyph selection have saved browser evidence. Cold Adobe CSS exceeded its 2.8-second budget in one run; fallback remained stable. Warm Proxima Nova Latin and platform PingFang SC CJK were confirmed through CDP.
+- Mobile UI, workflow, failure fallback and warm Adobe glyph selection have saved browser evidence. Cold Adobe CSS exceeded its 2.8-second budget in one run; fallback remained stable. The latest copy-verification run activated Adobe on a cold navigation in 2.468 seconds; the reviewer action completed in 2.607 seconds. Proxima Nova Latin and platform PingFang SC CJK were confirmed through CDP. Earlier failures remain retained.
 - Latest Worker: `a428c389-bc06-42c8-b2f8-53b9a2d6b10e`, at https://squa.li. The legacy workers.dev and preview URLs remain disabled. Source R2 objects have no expiry; disposable cache objects expire after seven days. No D1 or application Durable Object.
 
 ## Still required before submission

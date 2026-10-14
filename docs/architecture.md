@@ -25,7 +25,7 @@ A canonical changeset is a SHA-256 identity over its parents, first-parent path 
 
 Git SHA-1 object identities remain available for interoperability. Imported raw encodings and historical permission modes are retained. Git commits and trees can be reconstructed from canonical changesets; reconstruction is checked against independent native Git fixtures. Git packs are transport, not authoritative source storage. Authoritative R2 blobs have no expiry. A separate disposable cache bucket expires after seven days.
 
-Derived records are versioned and rebuildable. The generic recursive engine currently derives trees and generations. Specialized builders populate full-parent graph generations, first-parent jump pointers and path-event indexes in bounded batches. Path history skips unrelated churn. Unifying those specialized builders into the generic framework remains an explicit gap.
+Derived records are versioned and rebuildable. One dependency resolver handles trees, generations, graph skip pointers, path events and parent-dependent blame. Eager batches and lazy misses share ordering, cache reuse, cycle checks and finite bounds. Graph and path storage adapters retain vectorized SQL. Path history skips unrelated churn; cached metadata answers keep their existing identities across this migration. See the [fixed acceptance checklist](scion-acceptance.md) for reconstruction and native-Git evidence.
 
 ## Concurrency and publication
 
