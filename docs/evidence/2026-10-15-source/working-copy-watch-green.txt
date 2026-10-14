@@ -1,0 +1,9 @@
+✔ bounded working-copy watch reports real filesystem changes without network or implicit tracking (3434.37125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3533.694375

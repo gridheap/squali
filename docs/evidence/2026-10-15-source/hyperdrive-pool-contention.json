@@ -1,0 +1,51 @@
+{
+  "command": "python3 work/hyperdrive-pool-contention.py",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){before:hyperdrivePoolSizesAdaptiveGroups(limit:100,filter:{configId:\"c5366ae0d2d54d76b2b7daf414c6333d\",datetime_geq:\"2026-10-14T22:30:00Z\",datetime_leq:\"2026-10-14T22:35:00Z\"}){avg{currentPoolSize availablePoolSlots waitingClients} max{maxPoolSize currentPoolSize waitingClients} dimensions{coloCode}}after:hyperdrivePoolSizesAdaptiveGroups(limit:100,filter:{configId:\"c5366ae0d2d54d76b2b7daf414c6333d\",datetime_geq:\"2026-10-14T22:35:00Z\",datetime_leq:\"2026-10-14T22:40:00Z\"}){avg{currentPoolSize availablePoolSlots waitingClients} max{maxPoolSize currentPoolSize waitingClients} dimensions{coloCode}}}}}",
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "after": [
+              {
+                "avg": {
+                  "availablePoolSlots": 0.95,
+                  "currentPoolSize": 1,
+                  "waitingClients": 0.006666666666666667
+                },
+                "dimensions": {
+                  "coloCode": "IAD"
+                },
+                "max": {
+                  "currentPoolSize": 1,
+                  "maxPoolSize": 1,
+                  "waitingClients": 2
+                }
+              }
+            ],
+            "before": [
+              {
+                "avg": {
+                  "availablePoolSlots": 0.9568106312292359,
+                  "currentPoolSize": 1,
+                  "waitingClients": 0.013289036544850499
+                },
+                "dimensions": {
+                  "coloCode": "IAD"
+                },
+                "max": {
+                  "currentPoolSize": 1,
+                  "maxPoolSize": 1,
+                  "waitingClients": 3
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "definitions": "connectionLatency measures connection establishment, not a dedicated pool-wait timer. waitingClients and availablePoolSlots are the direct contention metrics.",
+  "source": "https://developers.cloudflare.com/hyperdrive/observability/metrics/"
+}

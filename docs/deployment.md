@@ -7,7 +7,7 @@ Cloudflare Workers Paid with Artifacts access, a dedicated PostgreSQL database a
 The checked-in account ID targets the owner's Grid Heap account. Forks must set their own account ID. `wrangler.jsonc` binds the `weave` Artifacts namespace; the namespace is created implicitly when its first repository is created through the binding. REST API permissions and Workers binding authentication are separate. Regenerate types with `pnpm exec wrangler types` after editing bindings.
 
 1. Create a dedicated PostgreSQL database and role. Grant that role only its own `weave` schema. Use TLS and a connection limit. Set the role's database-specific default `search_path` to `weave`; Hyperdrive does not preserve the driver startup setting. Run `DATABASE_URL=... pnpm db:migrate` using credentials injected securely in the process environment.
-2. Create a Hyperdrive configuration with caching disabled and an origin connection limit of five. Add `hyperdrive: [{binding: "HYPERDRIVE", id: "..."}]` to Wrangler. Prefer private connectivity; do not broadly open a database firewall.
+2. Create a Hyperdrive configuration with caching disabled and an origin connection limit of eight (with database capacity and role headroom verified). Add `hyperdrive: [{binding: "HYPERDRIVE", id: "..."}]` to Wrangler. Prefer private connectivity; do not broadly open a database firewall.
 3. Supply `PRINCIPALS_JSON` as a Worker secret. It maps SHA-256 token digests to principals:
 
 ```json
@@ -63,6 +63,6 @@ Bind a separate private `SOURCE` R2 bucket (production `squali-source`). Keep au
 
 Apply the additive schema before deployment. New production workspaces use the source adapter by default; old Artifacts workspaces keep their storage type. Native import needs the dedicated service in [source operations](source-operations.md), Python/Git and a protected PostgreSQL connection. Enable `NATIVE_IMPORTS=true` only after the runner is ready. Use one active job, 1 GiB memory, a finite service lifetime and three starts/hour. Current jobs retain their cumulative eight-hour and HTTP/object budgets across restarts.
 
-Use existing VM/database capacity where possible. The production database role allows eight connections; Hyperdrive admits five origin connections and the native runner holds one notification/coordination connection. Network work does not pin a transaction. Install code while the runner is idle; changing the Worker or service must not restart a successful import from zero.
+Use existing VM/database capacity where possible. The production database role allows twelve connections; Hyperdrive admits eight origin connections and the native runner holds one notification/coordination connection. Network work does not pin a transaction. Install code while the runner is idle; changing the Worker or service must not restart a successful import from zero.
 
 A large initial Git compatibility seed uses the native cache and a live internal lease. Worker-only exports admit 8,192 objects / 16 MiB expanded data. Exceeding Artifacts' repository size limit leaves source data available with an explicit compatibility-limit status. Keep both storage domains in backups; the source blobs and canonical PostgreSQL records are authoritative.

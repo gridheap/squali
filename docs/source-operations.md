@@ -74,7 +74,7 @@ This is a fixed 64-change, eight-client sample with 64 baseline files, 64 approv
 
 The report names client location and records global application counters, which may include concurrent imports. Eight clients can share one agent principal; this does not imply eight separately authenticated users. A repeated file read is a cache observation, not proof that the first read started with all cache layers empty. Preserve failed or resumed samples and state their timing limitations.
 
-After a substantive performance change, `--follow-up` admits one eight-change sample in the same workspace, with a separate retained journal. It reuses the baseline, writes eight new blobs, and has a 40-request total ceiling (25 healthy requests). It does not recreate or rerun the successful 64-change baseline. The result is a smaller smoke sample, not a directly comparable throughput benchmark.
+After a substantive performance change, `--follow-up` admits one eight-change sample in the same workspace, with a separate retained journal. It reuses the baseline, writes eight new blobs, and has a 40-request total ceiling (25 healthy requests). It does not recreate or rerun the successful 64-change baseline. Give a later justified follow-up a stable `--series` name and its own retained journal; a completed series must not be repeated with a fresh name. Default series identity remains `optimized`. The result is a smaller smoke sample, not a directly comparable throughput benchmark.
 
 ## Independently verify a completed import
 

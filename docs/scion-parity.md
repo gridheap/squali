@@ -6,7 +6,7 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 
 | Article capability | Implemented and tested | Remaining boundary |
 |---|---|---|
-| Online clients; optional working copy | Authenticated source, metadata and change APIs; HTTP CLI and sparse working copy | The CLI implements the documented workflows, rather than every Git command |
+| Online clients; optional working copy | Authenticated source, metadata and change APIs; HTTP CLI, sparse working copy and bounded native file monitor | The CLI implements the documented workflows, rather than every Git command |
 | Immutable incremental changesets | SHA-256 changeset identity, parent identities, first-parent file deltas, compressed content-addressed blobs; no proposal refs | PostgreSQL admission counters still coordinate finite usage budgets |
 | Separate publication | Reviewed subset/dependencies, reconciliation, immutable revisions and CAS on the published ref | One authoritative main update remains serialized |
 | Server operations | Diff, commit, merge, single-commit and continuous rebase, conflicts, revert, executable bisect | Continuous rebase: 64 single-parent commits, eight steps/request; merge commits use explicit-parent rebase |

@@ -3,6 +3,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {mkdir,readFile,writeFile,rename,readdir,lstat,chmod,unlink,rm} from 'node:fs/promises';
 import {resolve,join,dirname,relative,isAbsolute} from 'node:path';
 const [command,...args]=process.argv.slice(2);
+if(command==='watch'){await (await import('./working-copy-watch.mjs')).watchWorkingCopy(args);}else{
 const base=(process.env.SQUALI_URL??'http://127.0.0.1:8787').replace(/\/$/,'');
 const token=process.env.SQUALI_TOKEN;if(!token)throw Error('Set SQUALI_TOKEN; credentials are never stored in the working copy.');
 const cacheRoot=resolve(process.env.SQUALI_CACHE_DIR??'.squali-cache');const CACHE_LIMIT=64*1024*1024;
@@ -105,5 +106,6 @@ async function changes(root,manifest){const result=[];for(const [path,entry]of O
 let result;
 if(command==='checkout') {const [pid,target,...paths]=args;if(!target||!paths.length)throw Error('checkout <project> <new-directory> <path...>');await authorize(pid);const root=resolve(target);await mkdir(root,{mode:0o700});const info=await request('/projects/'+project);result=await materialize(root,{version:1,origin:base,project,ref:info.head,paths,files:{}},paths);}
 else if(['hydrate','status','propose','add','update'].includes(command)){const root=resolve(args[0]??'');const manifest=await load(root);if(command!=='update'&&await pendingUpdate(root))throw Error('Resume the pending update before another working-copy command');if(command==='update'){result=await update(root,manifest,args[1]);}else if(command==='add'){result=await add(root,manifest,args.slice(1));}else if(command==='hydrate'){if(args.length<2)throw Error('hydrate <directory> <path...>');result=await materialize(root,manifest,args.slice(1));}else{const files=await changes(root,manifest);if(command==='status')result={base:manifest.ref,changes:files.map(f=>({path:f.path,deleted:f.content===null,mode:f.mode}))};else{if(!args[1]||!args[2]||!files.length)throw Error('propose <directory> <id> <title>; tracked changes required');result=await request('/projects/'+project+'/changes',{id:args[1],title:args[2],intent:args[2],base:manifest.ref,files});if(!/^[a-f0-9]{40}$/.test(result.oid??''))throw Error('Server did not confirm a durable commit');manifest.ref=result.oid;for(const file of files){if(file.content===null)delete manifest.files[file.path];else manifest.files[file.path]={oid:oid(Buffer.from(file.content)),mode:file.mode??manifest.files[file.path]?.mode??'100644'};}await save(root,manifest);}}}
-else throw Error('Commands: checkout, hydrate, add, update, status, propose');
+else throw Error('Commands: checkout, hydrate, add, update, status, propose, watch');
 console.log(JSON.stringify(result,null,2));
+}

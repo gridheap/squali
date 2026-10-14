@@ -1,0 +1,30 @@
+{
+  "command": "PATCH Hyperdrive origin_connection_limit to 8, then GET verification",
+  "timestamp": "2026-10-14T22:36:37.708837+00:00",
+  "config": "c5366ae0d2d54d76b2b7daf414c6333d",
+  "before": 5,
+  "after": 8,
+  "queryCaching": false,
+  "postgres": {
+    "database": "weave",
+    "role": "weave_app",
+    "before": [
+      8,
+      false,
+      false,
+      false
+    ],
+    "after": [
+      12,
+      false,
+      false,
+      false
+    ],
+    "currentRoleConnections": 6,
+    "poolTarget": 8,
+    "hardRoleLimit": 12,
+    "connectionsTerminated": 0,
+    "reason": "Eight concurrent source clients plus bounded native/monitor connections; fixed database SKU unchanged"
+  },
+  "scope": "Dedicated Squali pool and role only; no pool restart, database resize or application usage cap change"
+}

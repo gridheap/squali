@@ -52,7 +52,7 @@ node scripts/squali.mjs propose my-project < change.json
 Evidence is supplied by the agent. Squali does not execute or certify it. Reviewers assess behavior and evidence; optional semantic policy verifies specific JavaScript AST or JSON-value constraints.
 
 - [HTTP API](docs/api.md): proposals, review, publication, diff, history, blame, ancestry, bisect, revert and single/continuous rebase.
-- [Working copies](docs/working-copy.md): sparse materialization, edits, update and crash recovery.
+- [Working copies](docs/working-copy.md): sparse materialization, native change monitoring, edits, update and crash recovery.
 - [Node daemon and Linux FUSE](docs/node-cache.md): shared object reads, checked snapshots and lazy read-only mounts.
 - [Source administration](docs/source-operations.md): native ingestion, derivation, automatic bisect and a bounded cloud acceptance command.
 - [Clerk and GitHub import](docs/github-import.md): owner isolation, repository consent, durable jobs and pause/resume.

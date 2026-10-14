@@ -1,0 +1,26 @@
+✖ working-copy watch stops at its event limit and rejects a base changed during startup (395.500042ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 522.343666
+
+✖ failing tests:
+
+test at tests/working-copy-watch.test.ts:1:3714
+✖ working-copy watch stops at its event limit and rejects a base changed during startup (395.500042ms)
+  AssertionError [ERR_ASSERTION]: Never advertise a stale working-copy base as ready
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/working-copy-watch.test.ts:49:258)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

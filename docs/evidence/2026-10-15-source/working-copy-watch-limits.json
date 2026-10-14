@@ -1,0 +1,33 @@
+{
+  "command": "node --import tsx --test tests/working-copy-watch.test.ts",
+  "eventLimit": {
+    "event": "stopped",
+    "reason": "event-limit",
+    "complete": true,
+    "networkRequests": 0,
+    "nativeEvents": 1,
+    "hashedBytes": 13,
+    "metadataEntries": 4,
+    "peakWatchedDirectories": 3,
+    "changes": [
+      {
+        "path": "src/base.txt",
+        "status": "modified",
+        "oid": "5ea2ed416fbd4a4cbe227b75fe255dd7fa6bd4d6",
+        "mode": "100644"
+      }
+    ]
+  },
+  "startupRace": {
+    "event": "stopped",
+    "reason": "rescan-required",
+    "complete": false,
+    "networkRequests": 0,
+    "nativeEvents": 0,
+    "hashedBytes": 0,
+    "metadataEntries": 0,
+    "peakWatchedDirectories": 1,
+    "changes": [],
+    "message": "Working-copy base changed during startup; restart the watcher"
+  }
+}

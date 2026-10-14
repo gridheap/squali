@@ -1,0 +1,51 @@
+{
+  "command": "python3 work/hyperdrive-connection-metrics.py",
+  "sample": "eight-connection pool smoke plus ongoing private import",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){hyperdriveQueriesAdaptiveGroups(limit:200,filter:{configId:\"c5366ae0d2d54d76b2b7daf414c6333d\",datetime_geq:\"2026-10-14T22:35:00Z\",datetime_leq:\"2026-10-14T22:45:00Z\"}){count dimensions{datetimeFiveMinutes coloCode eventStatus} sum{connectionLatency queryLatency originReadLatency originWriteLatency queryBytes resultBytes}}}}}",
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "hyperdriveQueriesAdaptiveGroups": [
+              {
+                "count": 3661,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T22:35:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 133126,
+                  "originReadLatency": 31649,
+                  "originWriteLatency": 586,
+                  "queryBytes": 420679,
+                  "queryLatency": 43636,
+                  "resultBytes": 5182017
+                }
+              },
+              {
+                "count": 2384,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T22:40:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 43,
+                  "originReadLatency": 22437,
+                  "originWriteLatency": 820,
+                  "queryBytes": 494491,
+                  "queryLatency": 23727,
+                  "resultBytes": 4493742
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "note": "Provider window aggregates include other requests; these are not per-request traces."
+}

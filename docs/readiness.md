@@ -5,7 +5,7 @@
 ## Verified at the latest checkpoint
 
 - Canonical changesets with first-parent deltas, independent compressed R2 blobs, separate CAS publication and no proposal refs. Git trees/commits can be reconstructed from canonical data.
-- Source authority, native import, Git clone/fetch and recovery, single/continuous rebase, semantic review, automatic bisect, graph/path indices, directory IAM, sparse working-copy recovery and cache isolation have retained E2E evidence. The latest complete API/CLI suite has **68 passing tests**.
+- Source authority, native import, Git clone/fetch and recovery, single/continuous rebase, semantic review, automatic bisect, graph/path indices, directory IAM, sparse working-copy recovery and cache isolation have retained E2E evidence. The latest complete API/CLI suite has **70 passing tests**.
 - Real Linux FUSE performs lazy content reads through the node socket; two mounts share a cache. Metadata inspection fetches no file bodies. Verified snapshots and failure isolation are tested. Mounts remain read-only; writable operations use the sparse client/API.
 - The persistent native GitHub consumer runs on the existing Azure VM. It admits one active job, retains Git/input journals, continues healthy checkpoints, and never automatically restarts a failed job. Browser fixture tests cover login/catalog/private import, pause/resume and owner isolation.
 - Source-backed rebase, semantic approval and Git export work with a single database connection. Export transfers do not hold database transactions. A slow export does not block another workspace or allow duplicate export.

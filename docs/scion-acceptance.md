@@ -8,12 +8,12 @@ The denominator is fixed at 20. At least 19 must pass, and items **3, 4, 5, 6, 1
 
 ## Fixed requirements and evidence
 
-The [current full report](evidence/2026-10-15-source/release-core-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
+The [current full report](evidence/2026-10-15-source/working-copy-watch-full-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
 
 | # | Requirement | Completion criterion | Evidence / remaining gate |
 |---|---|---|---|
 | 1 | Online source API | Read and write through authenticated APIs without a client repository | `source.test.ts`, `api.test.ts`, deployed source API |
-| 2 | Client/server separation | Clients handle files/cache; the server performs source operations | `sparse.test.ts`, `metadata.test.ts`, writable sparse client and node daemon; FUSE remains read-only |
+| 2 | Client/server separation | Clients handle files/cache; the server performs source operations | `sparse.test.ts`, `metadata.test.ts`, writable sparse client, bounded native filesystem watcher and node daemon; FUSE remains read-only |
 | 3 | Immutable incremental changesets | Durable first-parent deltas and content identities reconstruct the version | `source.test.ts`: remove compatibility metadata, rebuild identical trees/commits, preserve historical modes and non-UTF-8 commit bytes |
 | 4 | Independent change creation | Creating changes does not move refs or coordinate main | `source.test.ts`, `publication-cost.test.ts`: no proposal refs, zero Artifacts calls, separate publication CAS |
 | 5 | Distributed content storage | The source service does not need a complete repository on one node; source survives Git compatibility limits | R2 authority and SQL canonical deltas; source-limit E2E passes. **Large private production gate pending** |
@@ -42,4 +42,4 @@ The [current full report](evidence/2026-10-15-source/release-core-e2e.txt) runs 
 
 ## Explicit boundaries
 
-The native Git importer has one active job and a cached input, while normal source operations do not require that cache. The present PostgreSQL origin has not demonstrated Spanner-scale throughput. The FUSE mount is read-only; the writable sparse client detects edits when invoked. There is no dedicated regional cache fleet or measured 99% cache hit rate. Text, graph, rename and export operations have published limits. These boundaries must remain visible in any final coverage claim.
+The native Git importer has one active job and a cached input, while normal source operations do not require that cache. The present PostgreSQL origin has not demonstrated Spanner-scale throughput. The FUSE mount is read-only; the writable sparse client has an explicit bounded filesystem monitor and submits edits on command. There is no dedicated regional cache fleet or measured 99% cache hit rate. Text, graph, rename and export operations have published limits. These boundaries must remain visible in any final coverage claim.

@@ -1,0 +1,30 @@
+✖ bounded working-copy watch reports real filesystem changes without network or implicit tracking (346.771042ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 477.164291
+
+✖ failing tests:
+
+test at tests/working-copy-watch.test.ts:1:398
+✖ bounded working-copy watch reports real filesystem changes without network or implicit tracking (346.771042ms)
+  Error: Watch exited before ready: file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:7
+  const token=process.env.SQUALI_TOKEN;if(!token)throw Error('Set SQUALI_TOKEN; credentials are never stored in the working copy.');
+                                                       ^
+  
+  Error: Set SQUALI_TOKEN; credentials are never stored in the working copy.
+      at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:7:54
+      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+      at async node:internal/modules/esm/loader:647:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  
+  Node.js v24.21.0
+  
+      at ChildProcess.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/working-copy-watch.test.ts:26:81)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:295:12)
