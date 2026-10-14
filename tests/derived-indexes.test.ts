@@ -45,3 +45,24 @@ test('path derivation rejects oversized or disconnected canonical inputs before 
   console.log(JSON.stringify({command:'node --import tsx --test tests/derived-indexes.test.ts',oversizedDeltaRejected:true,missingParentRejected:true,incompleteMarkerPublished:false}));
  }finally{await server.close();}
 });
+
+// Failure specification: unifying derived answers discards valid cache entries,
+// changes line origins through an edited rename, or re-fetches a cached parent.
+test('blame dependency rebuilding preserves native line origins and existing versioned cache entries',async()=>{
+ const {execFile}=await import('node:child_process'),{promisify}=await import('node:util');const exec=promisify(execFile);
+ const server=await startLocal({port:0,test:true,source:true});
+ const call=async(path:string,body?:unknown)=>{const r=await fetch(server.url+'/api'+path,{method:body===undefined?'GET':'POST',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});const value=await r.json() as any;assert.ok(r.ok,JSON.stringify(value));return value;};
+ try{
+  const original=Array.from({length:20},(_,i)=>'original line '+i).join('\n')+'\n';
+  const p=await call('/projects',{id:'blame-derived',name:'Blame dependencies',files:[{path:'README',content:original}]});
+  const c=await call('/projects/blame-derived/changes',{id:'rename',title:'Rename and edit',intent:'Retain prior line origins',base:p.head,files:[{path:'README',content:null},{path:'README.md',content:original+'added line\n'}]});await call('/projects/blame-derived/changes/rename/review',{decision:'approved'});const head=(await call('/projects/blame-derived/publish',{id:'publish',changes:['rename']})).oid;
+  const native=server.dir+'/blame.git';await exec('git',['-c','http.extraHeader=Authorization: Bearer local-admin-test-token','clone','--mirror',server.url+'/api/projects/blame-derived/git',native]);
+  const raw=(await exec('git',['--git-dir',native,'blame','--root','--line-porcelain',head,'--','README.md'])).stdout,expected=[...raw.matchAll(/^([a-f0-9]{40}) (\d+) \d+(?: \d+)?$/gm)].map(m=>[m[1],Number(m[2])]);
+  const first=await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual(first.lines.map((l:any)=>[l.commit,l.originalLine]),expected);
+  const cached=(await server.sql`SELECT key,value FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v1'`);assert.ok(cached.length>=3,'Blame persists reusable parent results');
+  const usage=(await call('/usage')).source;
+  await server.sql`DELETE FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v1' AND key LIKE ${head+':%'}`;
+  const rebuilt=await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual(rebuilt,first);const after=(await call('/usage')).source;assert.ok(after.reads-usage.reads<=2,'Only the current file and edited-rename candidate may be fetched; parent line results are cached');assert.equal(after.writes,usage.writes);await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual((await call('/usage')).source,after,'A complete cached result adds no source I/O');
+  console.log(JSON.stringify({command:'node --import tsx --test tests/derived-indexes.test.ts',recursiveBlame:true,editedRenameMatchesGit:true,parentCacheReused:true,existingCacheIdentityPreserved:true}));
+ }finally{await server.close();}
+});

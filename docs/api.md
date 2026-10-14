@@ -111,7 +111,7 @@ New production workspaces use `storage:"source"` by default. Creation accepts an
 | POST | `/source/blob/:oid` | Admin; binary gzip body for a large individual blob |
 | POST | `/source/changesets` | Admin; `{commits:["<git-oid>"]}` in parent order; derives graph/path metadata |
 | POST | `/source/finish` | Admin; `{refs:[{name,oid}],defaultBranch,gitBridgeLimited?}`; verifies closure and completes the durable job |
-| POST | `/source/derive` | Admin; `{kind:"tree" or "generation",version:1,changesets:[...]}`; bounded reusable derivation |
+| POST | `/source/derive` | Admin; `{kind:"tree", "generation" or "indexes",version:1,changesets:[...]}`; bounded reusable derivation |
 | POST | `/rpc` | Unrestricted credential; `head`, `object`, `stat` under the node-cache protocol |
 
 Import preflight rejects changed refs/budgets, oversized objects and invalid identities. Gzip blobs admit at most 32 MiB expanded content. Metadata batches have separate byte/tree/entry/path bounds. `413 source_seal_budget` can be continued with a smaller parent-ordered batch. Other errors require diagnosis; there is no automatic paid retry.

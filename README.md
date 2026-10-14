@@ -8,7 +8,7 @@ Squali implements the public Scion design as an online source service. Agents cr
 
 Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyperdrive**. R2 holds independently compressed content-addressed blobs. PostgreSQL holds canonical changesets and workflow state. Artifacts provides a derived Git compatibility copy. No D1 or application Durable Objects are used.
 
-**Under acceptance; not submitted.** The fixed [Scion capability map](docs/scion-parity.md), [source design](docs/source-architecture.md) and [retained evidence](docs/evidence/2026-10-15-source/) distinguish implemented features from outstanding production gates. Do not infer Anthropic's reported scale or speedups from this implementation. The earlier release video predates this architecture.
+**Under acceptance; not submitted.** The fixed [20-item Scion checklist](docs/scion-acceptance.md), [source design](docs/source-architecture.md) and [retained evidence](docs/evidence/2026-10-15-source/) distinguish implemented features from outstanding production gates. Do not infer Anthropic's reported scale or speedups from this implementation. The earlier release video predates this architecture.
 
 ## Run locally
 
@@ -76,7 +76,7 @@ Browser tests use an isolated profile and the installed Brave browser on macOS. 
 
 - **Canonical deltas:** immutable changesets identify parents and changed paths. Independently compressed R2 blobs are shared by content identity. Trees and Git commits are reconstructible compatibility data.
 - **Separate publication:** proposals do not move refs. A short workspace publication boundary installs an approved selection; unrelated proposals and workspaces keep progressing.
-- **Derived data:** versioned trees, graph generations, skip pointers and path events accelerate server operations. Bulk import seals parent-ordered changesets and indexes them in bounded SQL batches.
+- **Derived data:** one versioned dependency engine computes trees, generations, graph skips, path events and blame. Eager batches and lazy rebuilds reuse parent results; bulk import stays within bounded SQL batches.
 - **Sparse reads:** node daemon, Worker cache and source store expose the same immutable object protocol. Authorization precedes cache lookup. Linux FUSE fetches content when an ordinary tool opens a file.
 - **Native import:** an existing Azure VM processes one PostgreSQL job at a time, retaining its Git cache and ingestion journal. Idle jobs use database notifications, with no paid HTTP polling.
 - **Bounded cost:** persistent caps cover source R2, disposable cache and Artifacts separately. Failed and uncertain attempts count. Replay reuses confirmed data; a failed import does not restart itself.
@@ -87,7 +87,7 @@ Read [architecture](docs/architecture.md), [deployment](docs/deployment.md), [fa
 
 Artifacts currently limits a repository to 1 GB; a larger source import remains usable through source APIs and explicitly reports Git compatibility unavailable. Native ingestion defaults to 500,000 objects, 16 GiB raw data and 12,000 HTTP attempts across restarts. These are admission limits, not measured scale claims. Editable files are UTF-8 regular files, at most 256 KiB each; binary objects, symlinks and submodules are preserved during import but are not edited through the text API. FUSE mounts are read-only; edits use the sparse client/API. One main branch is the publication boundary.
 
-Continuous rebase handles up to 64 single-parent commits. Individual merge-commit rebase needs an explicit parent. Graph queries retain a 50,000-node budget. Specialized graph/path builders have not yet been unified into the generic derivation framework. Automatic CI, full-text code search and an Anthropic-scale distributed load test are outside the current implementation. See the readiness page for the live private-import and login gates.
+Continuous rebase handles up to 64 single-parent commits. Individual merge-commit rebase needs an explicit parent. Graph queries retain a 50,000-node budget. Derived reconstruction admits 1,024 missing results per invocation; larger histories use parent-order batches. Automatic CI, full-text code search and an Anthropic-scale distributed load test are outside the current implementation. See the readiness page for the live private-import and login gates.
 
 ## Fonts and license
 

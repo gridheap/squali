@@ -81,3 +81,8 @@ The FUSE mount is currently immutable/read-only; writable edits use the existing
 - `derived-indexes-red.txt` / `derived-indexes-focused.txt`: eager and lazy graph/path derivation use one dependency mechanism. Deleting indexes and restarting, then requesting one head, rebuilds its parents and preserves merge ancestry/path history with zero extra blob I/O.
 - `derived-bounds-red.txt` / `derived-bounds-green.txt`: oversized path events and missing canonical parents are rejected before a completion marker.
 - Current SQL: 40 for four-file proposal, 39 for 64-file proposal, 21 for 128-commit sealing. Earlier transcripts retain their earlier revision counts.
+
+- `derived-blame-full-e2e.txt`: 68/68, after routing recursive blame and cached metadata results through the shared resolver. Existing versioned cache keys are preserved. `derived-blame-baseline.txt` established the native rename/cache contract before the refactor; `derived-blame-focused.txt` verifies it afterward. `derived-blame-before.txt` retains an overly strict initial test assertion: rebuilding a missing head can fetch its current body and a rename candidate even when parent line results are cached. The corrected contract permits those two reads; a complete hot result permits none.
+- `final-copy-ui.txt` and `final-copy-ui/`: four browser E2E tests pass after clarifying workspace/publication copy. Real Proxima Nova Latin and PingFang SC CJK, bounded fallback, navigation reuse, mobile layout and source history/blame are verified.
+
+- `derived-blame-typecheck.txt`, `derived-blame-build.txt` and `derived-blame-deploy.txt`: current verification and production Worker `a428c389-bc06-42c8-b2f8-53b9a2d6b10e`.

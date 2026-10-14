@@ -41,7 +41,7 @@ Clerk handles GitHub sign-in. A connected user's authorized private repositories
 
 Follow [README](../README.md) and [source operations](source-operations.md). Local development defaults to the source store and needs PostgreSQL, Git, Python 3 and the pinned Node/pnpm toolchain. Fixture tokens are separate from production credentials.
 
-Run `node --import tsx --test tests/*.test.ts` for the complete API/CLI suite. The current retained report has [67 passing tests](evidence/2026-10-15-source/derived-full-e2e.txt). Rendered workflow, mobile, font-loading fallback, actual glyph provenance, native FUSE and failure/recovery evidence are indexed in [the evidence guide](evidence/2026-10-15-source/README.md).
+Run `node --import tsx --test tests/*.test.ts` for the complete API/CLI suite. The current retained report has [68 passing tests](evidence/2026-10-15-source/derived-blame-full-e2e.txt). Rendered workflow, mobile, font-loading fallback, actual glyph provenance, native FUSE and failure/recovery evidence are indexed in [the evidence guide](evidence/2026-10-15-source/README.md).
 
 [Performance evidence](performance.md) separates current source results from earlier Git-adapter results. A production 64-change/8-client sample and an eight-change optimization follow-up are retained, including unfavorable latency and initial authorization failures. Different batch sizes are not a controlled speedup comparison. [The source budget](source-import-budget.md) distinguishes provider metrics, application reservations and ongoing Azure/storage costs.
 
@@ -49,7 +49,7 @@ Run `node --import tsx --test tests/*.test.ts` for the complete API/CLI suite. T
 
 The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. Source ingestion is still running. The final verifier will compare all exported objects and refs, native fsck, source tree and selected history/blame results against that frozen cache, using one retained clone and a bounded API journal.
 
-The fixed Scion checklist requires 19 of 20 fully verified items and all mandatory architecture gates. Tree, generation, graph and path results share the same versioned dependency engine, with bounded vectorized adapters and retained eager/lazy reconstruction evidence. FUSE is read-only; changes use the sparse client or API. Text editing, graph queries and Git bridge exports have documented budgets. See [readiness](readiness.md) and [capability boundaries](scion-parity.md).
+The [fixed Scion checklist](scion-acceptance.md) requires 19 of 20 fully verified items and all mandatory architecture gates. Tree, generation, graph, path and blame results share the same versioned dependency engine, with bounded vectorized adapters and retained eager/lazy reconstruction evidence. FUSE is read-only; changes use the sparse client or API. Text editing, graph queries and Git bridge exports have documented budgets. See [readiness](readiness.md) and [capability boundaries](scion-parity.md).
 
 A **continuous 5–10 minute demonstration of the accepted current version is still required**. The old v0.1.0 video predates the source architecture and must not be used as the final submission video.
 

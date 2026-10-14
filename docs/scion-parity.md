@@ -2,7 +2,7 @@
 
 Source: [Anthropic, Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control), October 13, 2026. Checkpoint: October 15.
 
-Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the fixed 20-item checklist, with mandatory architecture gates and additional private-import, performance and cost gates. Final competition submission is still pending. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.
+Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the [fixed 20-item checklist](scion-acceptance.md), with mandatory architecture gates and additional private-import, performance and cost gates. Final competition submission is still pending. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.
 
 | Article capability | Implemented and tested | Remaining boundary |
 |---|---|---|
@@ -11,7 +11,7 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 | Separate publication | Reviewed subset/dependencies, reconciliation, immutable revisions and CAS on the published ref | One authoritative main update remains serialized |
 | Server operations | Diff, commit, merge, single-commit and continuous rebase, conflicts, revert, executable bisect | Continuous rebase: 64 single-parent commits, eight steps/request; merge commits use explicit-parent rebase |
 | Commit graph and path history | Eager generation/skip index, multi-parent ancestry/merge bases, indexed path events, history and blame | General graph traversal: 50,000-node budget; history and path queries are paginated |
-| Derived data | Versioned recursive derivation, eager/lazy evaluation, rebuilding trees/commits/indexes from canonical deltas | One shared dependency engine with vectorized graph/path adapters; bounded reconstruction, no automatic background backfill |
+| Derived data | Versioned recursive derivation, eager/lazy evaluation, parent-dependent blame, rebuilding trees/commits/indexes from canonical deltas | One shared dependency engine with vectorized graph/path adapters; bounded reconstruction, no automatic background backfill |
 | Virtualized files | Actual Linux FUSE mount: ordinary `ls`, `stat` and `cat`, metadata without file bodies, lazy content | FUSE mounts are immutable/read-only. Writable changes use the sparse working-copy client/API |
 | Node daemon and tiered cache | Private Unix socket, concurrent miss coalescing, bounded shared cache, verified snapshots, Worker memory/edge and durable R2 | No dedicated regional cache fleet or measured 99% hit rate at every tier |
 | Fault isolation | Cache errors fail closed, upload leases and late-ack reconciliation, revoked credentials, bounded snapshots, no authority bypass | Same-user local cache directories are not an OS security boundary between hostile processes |

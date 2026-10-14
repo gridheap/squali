@@ -1,0 +1,36 @@
+✖ blame dependency rebuilding preserves native line origins and existing versioned cache entries (486.391083ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 660.958708
+
+✖ failing tests:
+
+test at tests/derived-indexes.test.ts:1:5015
+✖ blame dependency rebuilding preserves native line origins and existing versioned cache entries (486.391083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      readCap: 1000000,
+  +   reads: 6,
+  -   reads: 4,
+      writeCap: 1000000,
+      writes: 2
+    }
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/derived-indexes.test.ts:65:125)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { readCap: 1000000, writeCap: 1000000, reads: 6, writes: 2 },
+    expected: { readCap: 1000000, writeCap: 1000000, reads: 4, writes: 2 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
