@@ -1,0 +1,128 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (718.434041ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (500.450875ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (806.910084ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (932.390541ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (539.965959ms)
+✔ persistent operation limits stop work before the next provider call (213.210667ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (406.173667ms)
+✔ immutable source reads reuse the cache after authorization (23.91975ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (527.005083ms)
+✔ standard Git can clone through the authenticated read-only gateway (151.763834ms)
+✔ the complete HTTP workflow makes progress with a single database connection (548.974625ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (592.671083ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (615.627209ms)
+✔ concurrent publication retries converge on one Git commit and one event (472.361792ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (117.23475ms)
+{"command":"node --import tsx --test tests/bisect-run.test.ts","commits":16,"culprit":"86bb9f79ba8b26f0badaac1dbcaa9df46857443e","executedTests":6,"persistentResume":true,"replayNewRequests":0}
+✔ automatic sparse bisect executes a test, resumes checkpoints and avoids repeating completed tests (1592.544ms)
+{"command":"python3 scripts/cloud-acceptance.py acceptance --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-FDf3nU/acceptance --label 'local validation'","label":"local validation","origin":"http://127.0.0.1:50844","timestamp":"2026-10-14T22:52:58Z","complete":true,"httpAttempts":143,"segments":1,"dataset":{"baselineFiles":64,"baselineBytes":419400,"changes":64,"concurrency":8,"storage":"source"},"results":{"publishedFiles":64,"changesets":66,"writeWallMs":1199.516,"changesPerSecond":53.355,"p50Ms":144.106,"p95Ms":193.049,"p99Ms":196.132,"publicationMs":46.318,"publishedHead":"be400740fb9e98ef7386479531e082afabcfd2a9","cacheSamples":[{"file":"seed/file-0.txt","firstMs":9.352,"repeatMs":11.941},{"file":"seed/file-15.txt","firstMs":7.368,"repeatMs":4.278},{"file":"seed/file-31.txt","firstMs":6.925,"repeatMs":4.502},{"file":"seed/file-63.txt","firstMs":4.019,"repeatMs":3.603}],"usageBefore":{"source":{"readCap":1000000,"writeCap":1000000,"reads":0,"writes":0},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}},"usageBeforePublication":{"source":{"readCap":1000000,"writeCap":1000000,"reads":0,"writes":128},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}},"usageAfter":{"source":{"readCap":1000000,"writeCap":1000000,"reads":8,"writes":128},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}}},"limitations":["One origin client location and small independent text changes; no distributed-scale claim","Usage counters are shared deployment reservations; concurrent import traffic is included","First/repeat reads do not imply an empty global cache or isolate","Eight clients share the supplied agent principal; this is not an eight-user identity benchmark","No automatic retries; resumed write wall time includes pauses between segments"]}
+✔ bounded cloud acceptance CLI publishes 64 changes and reuses its completed journal (2831.956417ms)
+✔ a real process kill after Git accepted a batch recovers through the public HTTP API (1540.178083ms)
+✔ a process killed before Git acceptance can be resumed by another reviewer with the same commit (1194.836916ms)
+✔ cancellation survives SIGKILL before Git acceptance and retains one unchanged-tree audit commit (1249.657417ms)
+✔ cancellation survives SIGKILL after Git acceptance and retains one unchanged-tree audit commit (1160.559834ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (865.987334ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (352.837292ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","recursiveBlame":true,"editedRenameMatchesGit":true,"parentCacheReused":true,"existingCacheIdentityPreserved":true}
+✔ blame dependency rebuilding preserves native line origins and existing versioned cache entries (692.456833ms)
+HTTP Clerk identity: owner isolation, expiry, signature, issuer and authorized party verified.
+✔ Clerk sessions create private owner workspaces and reject forged, expired and foreign sessions (841.399292ms)
+Import SIGKILL: native Git accepted the atomic pack; restart reconciled all frozen refs; zero duplicate transfers.
+GitHub E2E: paginated catalog cached; private full history + two branches + annotated tag; default trunk; native clone/fsck; proposal/review/publication; replay avoided duplicate transfer.
+✔ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (6567.53575ms)
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":7,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (2902.887ms)
+{"command":"node --import tsx --test tests/graph.test.ts","nativeIndexCLI":true,"finiteStepBudget":2,"completedIndexReused":true}
+✔ native-repository index CLI uploads verified metadata with an explicit finite step budget (477.596166ms)
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["15417a3ade430be58adb49f1c09042f755ce43ae","72997a50564136a9f87cce13c9c22d59ebaee564"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (675.837709ms)
+{"command":"pnpm test:metadata","mergeBase":"42e3f1c501f52de170cd4f3986eefa4d41f04db4","mergedHead":"36e59bcb1dbf7f2b54126eeee3c26adf9f3ec7fa","blameCommits":["de54b680a164f4924ebc63407f0b5c2e409ec67b","42e3f1c501f52de170cd4f3986eefa4d41f04db4","7e3e60c88c9a5c6d4dfa89014964084141d00f59"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (1607.814292ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (387.343833ms)
+{"command":"node --import tsx --test tests/native-jobs.test.ts","private":true,"backgroundNativeJob":true,"nativeTransfers":1,"completedReplayTransfers":0,"branchesAndTags":4,"ownerIsolation":true,"credentialsKeptOffBrowser":true,"competingRunnerRejected":true,"pauseBeforeStart":true}
+✔ one-click private imports run outside the browser, preserve native history, and reuse completed work (6729.937ms)
+{"command":"node --import tsx --test tests/node-cache.test.ts","concurrentReaders":12,"sourceReads":1,"snapshotRestored":true,"unauthorizedWorkspaceDenied":true,"failedOriginAttempts":1,"head":"de473701feadabd11100e437a800ced876b232ac"}
+✔ node daemon coalesces misses, persists verified objects, restores a refreshed snapshot and isolates failed reads (754.189167ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1974.142208ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":40,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✔ online proposal persists its known delta with bounded SQL and exact import identity (566.821833ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","files":64,"queries":39}
+✔ one 64-file proposal stores its path index in one bounded SQL batch (274.853333ms)
+{"command":"node --import tsx --test tests/publication-cost.test.ts","changes":64,"publication":"c7b2a5cf50741d38063345cb3d4ede97d092dbc1","queries":65,"extraBlobReads":0,"extraBlobWrites":0}
+✔ source publication reuses admitted blobs and batches metadata for 64 independent changes (2233.940167ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"0c7a66e827256916512b19ebc2237d7133048641"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1932.6735ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (1117.438875ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (749.994917ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","sourceAuthority":true,"continuousCommits":3,"nativeTree":"f18cf1bdf1d03b1182cd0222a82f4b9fcf80b537","processRestart":true,"conflictResume":true,"freshReviewRequired":true}
+✔ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (853.941042ms)
+{"command":"node --import tsx --test tests/semantic.test.ts","javascriptAst":true,"commentDirectivesRejected":true,"jsonValues":true,"duplicateKeysRejected":true,"enforcedOnReviewAndPublication":true}
+✔ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (921.014583ms)
+{"command":"node --import tsx --test tests/source-cache.test.ts","coldCommitQueries":1,"warmSourceQueries":0,"warmR2Reads":0,"cacheFailureNoOrigin":true,"corruptionRejected":true,"scopeAndRevocationLive":true,"projectIsolation":true}
+✔ immutable HTTP reads share validated cache records without repeated source SQL, while authorization stays live (405.131041ms)
+{"command":"node --import tsx --test tests/source-git.test.ts","nativeClone":true,"incrementalFetch":true,"unpublishedObjectsExcluded":true,"repeatedFetchNewSourceReads":0}
+✔ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (1268.760541ms)
+request failed Lost export acknowledgement
+{"command":"node --import tsx --test tests/source-git.test.ts","lostAckReconciled":true,"lostAckExtraSourceReads":0,"derivedRepositoryDeleted":true,"rebuildVerifiedByGit":true}
+✔ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (742.995417ms)
+✔ source Git exports allocate separate provider repositories per workspace (746.247542ms)
+✔ one slow Git export leaves database capacity for another workspace and rejects duplicate export (547.059292ms)
+{"command":"node --import tsx --test tests/source-upload-pool.test.ts","objects":24,"peak":6,"passedSlowObject":true,"puts":24}
+✔ source upload fills six bounded slots without waiting for an entire wave (286.339792ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"90d6d24eaa04a6ddeb8021d4b6f79056d0a99aac"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (628.438458ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (1123.658542ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (366.965583ms)
+{"command":"node --import tsx --test tests/source.test.ts","binaryBytes":2097152,"incompressible":true,"exactBytes":true}
+✔ native source importer transfers an incompressible binary above the JSON batch limit (530.94125ms)
+{"command":"node --import tsx --test tests/source.test.ts","expiredUploadRecovered":true,"putAttempts":2,"concurrentResumeDeduplicated":true}
+✔ an expired failed source upload can be resumed once without racing an active lease (239.215584ms)
+{"command":"node --import tsx --test tests/source.test.ts","canonicalRebuild":true,"removedAllGitMetadata":true,"nativeCommitsExact":3,"versionedRecursiveDerivation":true,"extraBlobWrites":0}
+✔ canonical changesets rebuild every Git tree and commit after all compatibility metadata is removed (597.601167ms)
+{"command":"node --import tsx --test tests/source.test.ts","rawObjectRpc":true,"metadataOnlyInspection":true,"hashVerified":true}
+✔ source RPC serves verified raw objects and file sizes without fetching file content during directory inspection (179.453417ms)
+✔ regional source object cache serves immutable hits and fails closed when its cache layer fails (177.131291ms)
+{"command":"node --import tsx --test tests/source.test.ts","nativeCommits":512,"eagerGraph":true,"pathCandidates":1,"unrelatedChurnSkipped":511,"blameMatchesNative":true}
+✔ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (671.675584ms)
+✔ source reconstruction preserves legacy non-UTF-8 commit metadata byte for byte (356.350416ms)
+{"command":"node --import tsx --test tests/source.test.ts","originalFailingTree":"0323c14ecfac54b060a52ef54b9ea38377adede0","historicMode":"100664","displayMode":"100644","reconstructedBytesExact":true}
+✔ historic Git permission modes import without changing immutable tree identity (426.410791ms)
+✔ a lost retry acknowledgement recovers when the gzip representation differs from the original claim (182.501625ms)
+{"command":"node --import tsx --test --test-name-pattern=\"parent-ordered\" tests/source.test.ts","commits":128,"queries":21,"ms":193}
+✔ a parent-ordered import seals 128 changesets in bounded database batches (575.489583ms)
+{"command":"node --import tsx --test --test-name-pattern=\"provider budget\" tests/source.test.ts","sourceComplete":true,"compatibilityLimitExplicit":true,"artifactsCalls":0}
+✔ source import completes when its Git compatibility copy exceeds the provider budget (381.033542ms)
+{"command":"pnpm test:sparse","sourceFiles":4,"sparseFiles":2,"firstNetworkObjects":5,"secondNetworkObjects":0,"sharedCacheHits":5,"hydratedFiles":1,"gitClone":false,"proposal":"sparse-change"}
+✔ sparse CLI checks out only requested paths, reuses immutable objects, hydrates and proposes without Git clone (1347.977125ms)
+{"command":"pnpm test:sparse","update":true,"realProcessDeath":true,"editedAfterCrashProtected":true,"hydratedPathRetained":true,"executableMode":true,"untrackedPreserved":true}
+✔ working-copy update survives process death and preserves edits, hydrated paths and file modes (1412.108583ms)
+{"command":"pnpm test:sparse","explicitAdd":true,"published":true,"unseenContentPreserved":true}
+✔ sparse clients explicitly add new files and preserve unseen remote content (1100.753459ms)
+{"command":"pnpm test:sparse","binaryBytes":2097152,"firstNetworkObjects":3,"repeatedNetworkObjects":0,"exactBytes":true}
+✔ sparse checkout reads a large imported binary through an authorized bounded raw endpoint (707.197958ms)
+{"command":"pnpm test:storage","persistentObjects":4,"reads":9,"writes":4,"restartedWorkers":2,"originCallsOnRestart":0,"authBeforeCache":true,"outageDoesNotFanOut":true}
+✔ HTTP immutable reads survive cache-tier restart, isolate credentials and stop on R2 outage (838.489417ms)
+{"command":"pnpm test:storage","failedUploads":1,"repeatedOriginCalls":0,"persistentAdmission":true}
+✔ an interrupted R2 upload cannot repeatedly refill from Artifacts after Worker restart (462.814125ms)
+{"command":"python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-bCSxAE/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-bCSxAE/verification --file README.md","timestamp":"2026-10-14T22:52:59Z","complete":true,"project":"verify","head":"8f5140bd1e4b0a53ba0993394893daeba296a58a","objects":8,"commits":2,"refs":2,"objectInventorySha256":"ba74ab73c5bae44a511ebb15f674a847c8f7ba68695989ce4ee2045404884f13","nativeFsck":true,"canonicalChangesetsVerified":2,"canonicalSampleOids":["8f5140bd1e4b0a53ba0993394893daeba296a58a","35d7d10f3422ce25d41b552c5af11fe8872c28dc"],"rootTreeMatches":true,"sparseFile":"README.md","sparseFileSha256":"4ade948481e0a98f43dc59468d3454e2bc347538de8a35e6ffd6313e04fc2204","historyMatchesNative":true,"blameMatchesNative":true,"firstParentDistance":1,"httpAttempts":13,"gitTransfers":1,"limitations":["Full exported Git closure is verified; source R2 bodies are identity-checked on ingestion and sampled here","Up to eight canonical deltas are independently compared with native Git; this is a bounded sample, not all changesets","One selected file exercises history/blame; other files retain the documented query budgets","No automatic network retry; complete replay makes zero HTTP or Git transfers"]}
+✔ import verification checks complete native identity and reuses its successful transfer (1742.292709ms)
+✔ bounded working-copy watch reports real filesystem changes without network or implicit tracking (3448.83575ms)
+✔ working-copy watch stops at its event limit and rejects a base changed during startup (324.12075ms)
+ℹ tests 71
+ℹ suites 0
+ℹ pass 71
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8106.69925

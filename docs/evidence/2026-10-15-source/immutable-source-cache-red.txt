@@ -1,0 +1,29 @@
+✖ immutable HTTP reads share validated cache records without repeated source SQL, while authorization stays live (253.747125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 380.40425
+
+✖ failing tests:
+
+test at tests/source-cache.test.ts:1:302
+✖ immutable HTTP reads share validated cache records without repeated source SQL, while authorization stays live (253.747125ms)
+  AssertionError [ERR_ASSERTION]: Warm HTTP commit, directory and file reads should not query immutable source rows
+  
+  11 !== 0
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-cache.test.ts:25:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

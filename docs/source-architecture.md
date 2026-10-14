@@ -75,3 +75,7 @@ The initial real cloud sample published 64 changes in 26.95 seconds. After the c
 The resolver admits at most 1,024 missing results and 8,192 dependency records per invocation. Graph/path reconstruction additionally bounds metadata to 16 MiB, and path derivation to 100,000 events. Larger rebuilds use parent-order batches. Graph skip pointers are computed by level with shared database reads; 128-commit sealing uses 21 SQL queries in the current retained fixture.
 
 Blame declares its path-stable and parent line results as dependencies in that same engine. Existing `blame-renames-v1` cache identities are preserved. A rebuilt head may fetch its current body and a rename candidate; completed parent line results are reused, and a complete hot result adds no source I/O. Other cached metadata query results use the shared resolver as leaf definitions.
+
+### Verified immutable object cache
+
+The Worker uses the same project-scoped cache path for source commits, trees, tags and admitted blobs. Each binary record includes the kind and SHA-256 checksum; each read also validates the Git object identity. A warm object does not query PostgreSQL source rows or read R2. Authentication, workspace state and path permissions remain live checks before object access. Cache failures stop at that tier. The local HTTP acceptance sample reduces repeated source-row queries from 11 to zero; this is separate from production latency measurements.

@@ -42,13 +42,33 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
  let exportBridge:ReturnType<typeof sourceExporter>;
  async function reserve(kind:'reads'|'writes',n=1){const cap=caps[kind];if(!Number.isSafeInteger(cap)||cap<1)throw new Problem(503,'source_config','Source operation budget is not configured');const month=new Date().toISOString().slice(0,7);const rows=await sql`INSERT INTO weave_source_usage(month,kind,attempts) SELECT ${month},${kind},${n} WHERE ${n}::bigint<=${cap}::bigint ON CONFLICT(month,kind) DO UPDATE SET attempts=weave_source_usage.attempts+${n} WHERE weave_source_usage.attempts+${n}<=${cap} RETURNING attempts`;if(!rows.length)throw new Problem(429,'source_budget','Authoritative source operation budget exhausted');}
  async function row(project:string,id:string){immutable(id);const [value]=await sql`SELECT o.*,b.state AS blob_state FROM weave_source_objects o LEFT JOIN weave_source_blobs b ON b.hash=o.blob WHERE o.project=${project} AND o.oid=${id}`;return value;}
- async function raw(project:string,id:string){const value=await row(project,id);if(!value)throw new Problem(404,'object_missing','Source object not found');if(value.kind!=='blob')return Buffer.from(value.raw);if(value.blob_state!=='ready')throw new Problem(503,'source_pending','Source blob acceptance has not been confirmed');
-  const cacheKey='source/'+project+'/blob/'+id;
-  if(cache){let hit;try{hit=await cache.get(cacheKey);}catch{throw new Problem(503,'source_cache','Source cache is unavailable; no bypass attempted');}if(hit!==undefined){if(!(hit instanceof Uint8Array)||hit.length!==Number(value.size)||hash('sha256',hit)!==value.blob||oid('blob',hit)!==id)throw new Problem(503,'source_cache_corrupt','Cached source identity mismatch');return Buffer.from(hit);}}
-  await reserve('reads');let object;try{object=await bucket.get('blobs/v1/'+value.blob);}catch{throw new Problem(503,'source_unavailable','Authoritative blob storage is unavailable');}if(!object)throw new Problem(503,'source_missing','Authoritative blob is missing; no origin fallback was attempted');
-  let data:Buffer;try{const compressed=await object.arrayBuffer();if(compressed.byteLength>33*1024*1024)throw Error();data=gunzipSync(Buffer.from(compressed),{maxOutputLength:32*1024*1024});}catch{throw new Problem(503,'source_corrupt','Invalid compressed source blob');}
-  if(data.length!==Number(value.size)||hash('sha256',data)!==value.blob||oid('blob',data)!==id)throw new Problem(503,'source_corrupt','Source blob identity mismatch');if(cache)try{await cache.set(cacheKey,data);}catch{throw new Problem(503,'source_cache','Source cache fill failed; no direct bypass enabled');}return data;
+ // Only admitted immutable records enter this cache. Authentication, project
+ // state and directory scope are checked by the HTTP layer on every request.
+ async function readObject(project:string,id:string):Promise<RawObject|null>{
+  immutable(id);const cacheKey='source/'+project+'/object/v2/'+id;
+  if(cache){
+   let hit;try{hit=await cache.get(cacheKey);}catch{throw new Problem(503,'source_cache','Source cache is unavailable; no bypass attempted');}
+   if(hit!==undefined){
+    if(!(hit instanceof Uint8Array))throw new Problem(503,'source_cache_corrupt','Invalid cached source record');
+    const record=Buffer.from(hit),at=record.indexOf(0),type=record.subarray(0,at).toString() as RawObject['type'],data=record.subarray(at+33);
+    if(at<3||at>6||record.length<at+33||data.length>32*1024*1024||!['commit','tree','blob','tag'].includes(type)||hash('sha256',data)!==record.subarray(at+1,at+33).toString('hex')||oid(type,data)!==id)throw new Problem(503,'source_cache_corrupt','Cached source identity mismatch');
+    return {oid:id,type,data};
+   }
+  }
+  const value=await row(project,id);if(!value)return null;const type=value.kind as RawObject['type'];let data:Buffer;
+  if(type==='blob'){
+   if(value.blob_state!=='ready')throw new Problem(503,'source_pending','Source blob acceptance has not been confirmed');
+   await reserve('reads');let object;try{object=await bucket.get('blobs/v1/'+value.blob);}catch{throw new Problem(503,'source_unavailable','Authoritative blob storage is unavailable');}if(!object)throw new Problem(503,'source_missing','Authoritative blob is missing; no origin fallback was attempted');
+   try{const compressed=await object.arrayBuffer();if(compressed.byteLength>33*1024*1024)throw Error();data=gunzipSync(Buffer.from(compressed),{maxOutputLength:32*1024*1024});}catch{throw new Problem(503,'source_corrupt','Invalid compressed source blob');}
+  }else{
+   if(!['commit','tree','tag'].includes(type)||!(value.raw instanceof Uint8Array))throw new Problem(503,'source_corrupt','Invalid source metadata');data=Buffer.from(value.raw);
+  }
+  const sha=hash('sha256',data);
+  if(data.length!==Number(value.size)||data.length>32*1024*1024||type==='blob'&&sha!==value.blob||oid(type,data)!==id)throw new Problem(503,'source_corrupt','Source object identity mismatch');
+  if(cache)try{await cache.set(cacheKey,Buffer.concat([Buffer.from(type+'\0'),Buffer.from(sha,'hex'),data]));}catch{throw new Problem(503,'source_cache','Source cache fill failed; no direct bypass enabled');}
+  return {oid:id,type,data};
  }
+ async function raw(project:string,id:string){const value=await readObject(project,id);if(!value)throw new Problem(404,'object_missing','Source object not found');return Buffer.from(value.data);}
  async function objects(project:string,values:(RawObject & {compressed?:Uint8Array})[]){
   if(values.length>8192)throw new Problem(413,'source_objects','Too many objects');let bytes=0;
   for(const value of values){immutable(value.oid);bytes+=value.data.length;if(value.data.length>32*1024*1024||bytes>64*1024*1024)throw new Problem(413,'source_objects','Object upload exceeds its bound');if(!['commit','tree','blob','tag'].includes(value.type)||oid(value.type,value.data)!==value.oid)throw new Problem(400,'source_hash','Git object identity mismatch');if(value.type==='commit')decodeCommit(value.oid,value.data);if(value.type==='tree')decodeTree(value.data);}
@@ -109,8 +129,8 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   await sql.begin(async tx=>{const [current]=await tx`SELECT state,source_manifest FROM weave_projects WHERE id=${project} FOR UPDATE`;if(current.source_manifest===identity&&current.state==='ready')return;if(current.state!=='importing')throw new Problem(409,'source_import_state','Import state changed');if(ordered.length)await tx`INSERT INTO weave_source_refs ${tx(ordered.map(r=>({project,name:r.name,oid:r.oid})),'project','name','oid')}`;await tx`UPDATE weave_projects SET state='ready',head=${head},main_ref=${main},source_manifest=${identity},git_bridge_limited=${gitBridgeLimited} WHERE id=${project}`;await tx`UPDATE weave_github_imports SET state='complete',engine='source',head=${head},refs=${tx.json(ordered)},error=NULL,updated_at=now() WHERE project_id=${project}`;await tx`UPDATE weave_native_jobs SET state='complete',updated_at=now() WHERE import_id IN (SELECT id FROM weave_github_imports WHERE project_id=${project})`;await tx`UPDATE weave_tokens SET revoked_at=now() WHERE id IN (SELECT j.token_id FROM weave_native_jobs j JOIN weave_github_imports i ON i.id=j.import_id WHERE i.project_id=${project})`;});return {state:'ready',head};
  }
 
- const tree=async(project:string,id:string)=>{const value=await row(project,id);if(!value||value.kind!=='tree')throw new Problem(404,'tree_missing','Source tree not found');return decodeTree(value.raw);};
- const commit=async(project:string,id:string)=>{const value=await row(project,id);return value?.kind==='commit'?decodeCommit(id,value.raw):null;};
+ const tree=async(project:string,id:string)=>{const value=await readObject(project,id);if(!value||value.type!=='tree')throw new Problem(404,'tree_missing','Source tree not found');return decodeTree(value.data);};
+ const commit=async(project:string,id:string)=>{const value=await readObject(project,id);return value?.type==='commit'?decodeCommit(id,value.data):null;};
  async function changeset(project:string,id:string){const [value]=await sql`SELECT * FROM weave_changesets WHERE project=${project} AND (id=${id} OR git_oid=${id})`;if(!value)throw new Problem(404,'changeset_missing','Changeset is not complete');return {id:value.id,gitOid:value.git_oid,parents:value.parents,files:value.files,metadata:value.metadata};}
  async function seal(project:string,id:string){await sealBatch(project,[id]);return changeset(project,id);}
  async function derive(project:string,kind:unknown,version:unknown,ids:unknown){
@@ -171,8 +191,8 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
    const rows=await sql`SELECT oid,kind,size FROM weave_source_objects WHERE project=${project} AND oid=ANY(${input.oids})`;if(rows.length!==new Set(input.oids).size)throw new Problem(404,'object_missing','Metadata is incomplete');
    return Response.json({objects:rows.map(r=>({oid:r.oid,type:r.kind,size:Number(r.size)}))});
   }
-  if(input.op!=='object')throw new Problem(400,'rpc_operation','Use head, stat or object');immutable(input.oid);const info=await row(project,input.oid);if(!info)throw new Problem(404,'object_missing','Source object is missing');
-  const data=await raw(project,input.oid);return new Response(data,{headers:{'content-type':'application/octet-stream','content-length':String(data.length),'x-squali-type':info.kind,'x-squali-oid':input.oid,'cache-control':'private, no-store'}});
+  if(input.op!=='object')throw new Problem(400,'rpc_operation','Use head, stat or object');immutable(input.oid);const info=await readObject(project,input.oid);if(!info)throw new Problem(404,'object_missing','Source object is missing');
+  const data=Buffer.from(info.data);return new Response(data,{headers:{'content-type':'application/octet-stream','content-length':String(data.length),'x-squali-type':info.type,'x-squali-oid':input.oid,'cache-control':'private, no-store'}});
  }
  async function status(project:string){const [counts]=await sql`SELECT count(*) AS objects,COALESCE(sum(size),0) AS bytes FROM weave_source_objects WHERE project=${project}`;const [{count}]=await sql`SELECT count(*) FROM weave_changesets WHERE project=${project}`;const [p]=await sql`SELECT p.git_bridge_limited,e.manifest FROM weave_projects p LEFT JOIN weave_git_exports e ON e.project=p.id WHERE p.id=${project}`;return {gitCompatibility:{state:p.git_bridge_limited?'provider_limit':p.manifest?'exported':'not_exported'},objects:Number(counts.objects),bytes:Number(counts.bytes),changesets:Number(count),refs:await sql`SELECT name,oid FROM weave_source_refs WHERE project=${project} ORDER BY name`};}
  function artifacts(fallback:Artifacts):Artifacts{

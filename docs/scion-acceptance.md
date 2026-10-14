@@ -8,7 +8,7 @@ The denominator is fixed at 20. At least 19 must pass, and items **3, 4, 5, 6, 1
 
 ## Fixed requirements and evidence
 
-The [current full report](evidence/2026-10-15-source/working-copy-watch-full-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
+The [current full report](evidence/2026-10-15-source/immutable-source-cache-full-e2e.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
 
 | # | Requirement | Completion criterion | Evidence / remaining gate |
 |---|---|---|---|
@@ -26,7 +26,7 @@ The [current full report](evidence/2026-10-15-source/working-copy-watch-full-e2e
 | 12 | Sparse client lifecycle | Select, hydrate, add/edit/delete, propose, update and recover | `sparse.test.ts`: explicit additions, native identity, process kill, protected local edits, executable modes |
 | 13 | On-demand filesystem | Ordinary filesystem reads trigger content hydration | [Real Linux FUSE evidence](evidence/2026-10-15-source/fuse-green.json): `ls`/`stat` fetch no content; `cat` fetches bodies. Immutable mount; writes use sparse client/API |
 | 14 | Shared node daemon | Multiple workspaces share a bounded cache and concurrent misses | `node-cache.test.ts`: 12 readers coalesce a miss; two real FUSE mounts share the daemon |
-| 15 | Tiered immutable protocol | Each tier serves the same object RPC; authorization precedes cache; failures cannot bypass tiers | `node-cache.test.ts`, `source.test.ts`, `storage.test.ts`; head/object/stat over HTTP and a private Unix socket |
+| 15 | Tiered immutable protocol | Each tier serves the same object RPC; authorization precedes cache; failures cannot bypass tiers | `node-cache.test.ts`, `source-cache.test.ts`, `storage.test.ts`; head/object/stat over HTTP and a private Unix socket |
 | 16 | Failure isolation | Cache outages and uncertain writes do not amplify origin load | Upload leases, identity checks, late acknowledgements, differing gzip representations and single-writer recovery; retained real interrupted import |
 | 17 | Cache snapshots | Verified refresh/restore and measured startup reuse | `node-cache.test.ts`; real FUSE 2.275 s first sample, 1.284 s repeated sample with zero new content requests |
 | 18 | Directory IAM | Reads, writes, history and cache paths honor scope | `permissions.test.ts`, `github.test.ts`: owner isolation, revocation, path credentials and blocked raw/index escape routes |

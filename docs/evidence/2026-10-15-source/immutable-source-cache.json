@@ -1,0 +1,10 @@
+{
+  "command": "node --import tsx --test tests/source-cache.test.ts",
+  "coldCommitQueries": 1,
+  "warmSourceQueries": 0,
+  "warmR2Reads": 0,
+  "cacheFailureNoOrigin": true,
+  "corruptionRejected": true,
+  "scopeAndRevocationLive": true,
+  "projectIsolation": true
+}

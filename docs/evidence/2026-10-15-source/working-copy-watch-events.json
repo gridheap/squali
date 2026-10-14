@@ -4,7 +4,7 @@
     {
       "event": "ready",
       "project": "watch",
-      "base": "25fc546deec2c1a23310540d87a0d2e02b29e1b5",
+      "base": "1d54e70a86faa4d010db5bf5c89768a6cd5e051b",
       "trackedFiles": 3,
       "watchedDirectories": 3,
       "changes": [
@@ -50,7 +50,7 @@
       "reason": "time-limit",
       "complete": true,
       "networkRequests": 0,
-      "nativeEvents": 7,
+      "nativeEvents": 8,
       "hashedBytes": 49,
       "metadataEntries": 14,
       "peakWatchedDirectories": 3,
