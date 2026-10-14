@@ -1,0 +1,9 @@
+✔ working-copy watch stops at its event limit and rejects a base changed during startup (423.174792ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 538.870625

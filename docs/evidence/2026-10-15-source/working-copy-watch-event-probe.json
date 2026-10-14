@@ -1,0 +1,35 @@
+{
+  "command": "python3 docs/evidence/2026-10-15-source/watch-event-probe.py",
+  "results": [
+    {
+      "sample": 0,
+      "exit": 0,
+      "report": "work/watch-event-probe/0.txt"
+    },
+    {
+      "sample": 1,
+      "exit": 0,
+      "report": "work/watch-event-probe/1.txt"
+    },
+    {
+      "sample": 2,
+      "exit": 0,
+      "report": "work/watch-event-probe/2.txt"
+    },
+    {
+      "sample": 3,
+      "exit": 0,
+      "report": "work/watch-event-probe/3.txt"
+    },
+    {
+      "sample": 4,
+      "exit": 0,
+      "report": "work/watch-event-probe/4.txt"
+    },
+    {
+      "sample": 5,
+      "exit": 0,
+      "report": "work/watch-event-probe/5.txt"
+    }
+  ]
+}

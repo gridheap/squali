@@ -1,0 +1,31 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (355.91125ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (265.894958ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (439.747667ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (543.375542ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (414.250542ms)
+✔ persistent operation limits stop work before the next provider call (253.386333ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (250.641125ms)
+✔ immutable source reads reuse the cache after authorization (13.040209ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (464.666583ms)
+✔ standard Git can clone through the authenticated read-only gateway (115.508625ms)
+✔ the complete HTTP workflow makes progress with a single database connection (532.667125ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (543.296875ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (554.55975ms)
+✔ concurrent publication retries converge on one Git commit and one event (454.854ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (97.091209ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","queries":33,"canonicalIdentityMatchesImport":true,"changes":4,"replayExtraBlobWrites":0}
+✔ online proposal persists its known delta with bounded SQL and exact import identity (276.232208ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","duplicatePending":true,"changedInputRejected":true,"missingDependencyNotAdmitted":true,"blobPuts":1,"proposalEvents":1}
+✔ proposal admission retains one identity across an in-flight duplicate and invalid dependencies (208.491041ms)
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","files":64,"queries":32}
+✔ one 64-file proposal stores its path index in one bounded SQL batch (204.232042ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5440.299292

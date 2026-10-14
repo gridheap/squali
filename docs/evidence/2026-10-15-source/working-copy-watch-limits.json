@@ -6,15 +6,13 @@
     "complete": true,
     "networkRequests": 0,
     "nativeEvents": 1,
-    "hashedBytes": 13,
-    "metadataEntries": 4,
+    "hashedBytes": 5,
+    "metadataEntries": 5,
     "peakWatchedDirectories": 3,
     "changes": [
       {
-        "path": "src/base.txt",
-        "status": "modified",
-        "oid": "5ea2ed416fbd4a4cbe227b75fe255dd7fa6bd4d6",
-        "mode": "100644"
+        "path": "src/limit-event.txt",
+        "status": "untracked"
       }
     ]
   },

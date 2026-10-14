@@ -51,9 +51,10 @@ export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decode
  });
  await sql.begin(async tx=>{
   if(manifests.length)await tx`INSERT INTO weave_changesets ${tx(manifests,'project','id','git_oid','parents','files','metadata')} ON CONFLICT DO NOTHING`;
-  if(commits.length)await tx`INSERT INTO weave_commit_graph ${tx(commits.map(c=>({project,version:1,oid:c.oid,tree:c.tree,parents:c.parents,message:c.message})),'project','version','oid','tree','parents','message')} ON CONFLICT DO NOTHING`;
-  await completeGraphBatch(tx,project,ids);
-  await completePathBatch(tx,project,ids);
+  const graphInputs=new Map(commits.map(c=>[c.oid,{...c,generation:null,depth:0,span:0,treeSpan:0,jumps:[]}]));
+  await completeGraphBatch(tx,project,ids,graphInputs);
+  const pathInputs=new Map(commits.map(c=>{const delta=files.get(c.oid)!;return [c.oid,{firstParent:c.parents[0]??null,paths:delta.map(f=>f.path),bytes:Buffer.byteLength(JSON.stringify(delta))}];}));
+  await completePathBatch(tx,project,ids,pathInputs);
  });
  return {completed:ids.length};
 }

@@ -3,6 +3,7 @@ import {diff3Merge} from 'node-diff3';
 import {GitSession,sha256,blobId,type BuildPatch} from './git.ts';
 import {Problem,ZERO} from './types.ts';
 import type {Config,Patch,Principal,SourceDelta} from './types.ts';
+import type {TransactionSql} from 'postgres';
 export type FileDelta={path:string;before:string|null;after:string|null;afterBytes?:number;mode:string;beforeMode:string|null};
 export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
 export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,cancellationHead:p.metrics?.cancellation?.oid??null,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
@@ -20,11 +21,15 @@ export function changeService(config:Config,p:any,principal:Principal){
   const base=existing?.base??input.base??await repo.head()??ZERO;
   if(base!==ZERO)await g.commit(base).then(c=>{if(!c)throw new Problem(404,'commit_missing','Base commit not found');});
   if(input.dependencies.includes(input.id))throw new Problem(400,'dependency_cycle','A change cannot depend on itself');
-  await sql.begin(async tx=>{
-   for(const dep of input.dependencies){const [c]=await tx`SELECT status FROM weave_changes WHERE project=${pid} AND id=${dep}`;if(!c||['rejected','preparing'].includes(c.status))throw new Problem(409,'dependency_missing','Dependencies must already be available');}
-   await tx`INSERT INTO weave_changes(project,id,request_hash,author,title,intent,context,dependencies,base,files) VALUES(${pid},${input.id},${hash},${principal.id},${input.title},${input.intent},${tx.json(JSON.parse(JSON.stringify(input.context)))},${input.dependencies},${base},'[]') ON CONFLICT DO NOTHING`;
-  });
-  const [c]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`;
+  const insert=(tx:typeof sql|TransactionSql<{}>)=>tx`INSERT INTO weave_changes(project,id,request_hash,author,title,intent,context,dependencies,base,files) VALUES(${pid},${input.id},${hash},${principal.id},${input.title},${input.intent},${tx.json(JSON.parse(JSON.stringify(input.context)))},${input.dependencies},${base},'[]') ON CONFLICT DO NOTHING RETURNING *`;
+  // An independent proposal needs one atomic insert. Only dependency admission
+  // needs a multi-statement transaction; a racing duplicate reads the winner.
+  const admitted=input.dependencies.length?await sql.begin(async tx=>{
+   const dependencies=await tx`SELECT id,status FROM weave_changes WHERE project=${pid} AND id=ANY(${input.dependencies})`;
+   if(dependencies.length!==input.dependencies.length||dependencies.some(c=>['rejected','preparing'].includes(c.status)))throw new Problem(409,'dependency_missing','Dependencies must already be available');
+   return insert(tx);
+  }):await insert(sql);
+  const c=admitted[0]??(await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`)[0];
    if(c.request_hash!==hash||c.author!==principal.id)throw new Problem(409,'idempotency_mismatch','Change ID already used with different input or author');
    if(c.status!=='preparing')return changeView(c);
    const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));

@@ -68,7 +68,7 @@ pnpm build
 BENCH_STORAGE=source BENCH_CHANGES=64 BENCH_CONCURRENCY=8 pnpm benchmark
 ```
 
-API/CLI E2E starts real PostgreSQL and HTTP services with a persistent filesystem adapter at the R2 boundary. Native Git independently checks object, tree, history and publication results. Tests retain their exact commands and reports in the evidence directory. Production measurements are labelled separately from local benchmarks.
+API/CLI E2E starts real PostgreSQL and HTTP services with a persistent filesystem adapter at the R2 boundary. Native Git independently checks object, tree, history and publication results. The full suite runs at most four test processes against shared local resources; individual concurrency tests still use eight clients. Tests retain their exact commands and reports in the evidence directory. Production measurements are labelled separately from local benchmarks.
 
 Browser tests use an isolated profile and the installed Brave browser on macOS. On Linux the default is `/usr/bin/google-chrome`; set `SQUALI_BROWSER` to another existing Chromium executable. No test installs or downloads a browser. Start `pnpm dev`, then run `pnpm test:ui`. The typography test also requires the platform’s CJK UI fonts. Tests exercise desktop/mobile flow, font fallback and Latin/CJK glyph selection.
 

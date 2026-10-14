@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/proposal-cost.test.ts","duplicatePending":true,"changedInputRejected":true,"missingDependencyNotAdmitted":true,"blobPuts":1,"proposalEvents":1}
+✔ proposal admission retains one identity across an in-flight duplicate and invalid dependencies (262.642667ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 385.302167
