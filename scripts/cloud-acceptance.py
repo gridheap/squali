@@ -2,8 +2,9 @@
 """One bounded source-storage acceptance run. A completed journal makes zero HTTP calls."""
 import argparse,concurrent.futures,fcntl,hashlib,http.client,json,math,os,pathlib,re,shlex,sys,threading,time,urllib.parse
 
-p=argparse.ArgumentParser(description=__doc__);p.add_argument('project');p.add_argument('--state',required=True);p.add_argument('--label',required=True);p.add_argument('--follow-up',action='store_true',help='Eight new changes in the existing baseline workspace');a=p.parse_args()
-count=8 if a.follow_up else 64;request_cap=40 if a.follow_up else 160;change_prefix='optimized-agent-' if a.follow_up else 'agent-';file_prefix='optimized-' if a.follow_up else '';content_prefix='optimized' if a.follow_up else 'agent'
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('project');p.add_argument('--state',required=True);p.add_argument('--label',required=True);p.add_argument('--follow-up',action='store_true',help='Eight new changes in the existing baseline workspace');p.add_argument('--series',default='optimized',help='Stable identity for one justified follow-up after a material change');a=p.parse_args()
+if not re.fullmatch('[a-z][a-z0-9]{0,19}',a.series) or (not a.follow_up and a.series!='optimized'):raise SystemExit('Use a short series identity only for a follow-up')
+count=8 if a.follow_up else 64;request_cap=40 if a.follow_up else 160;change_prefix=a.series+'-agent-' if a.follow_up else 'agent-';file_prefix=a.series+'-' if a.follow_up else '';content_prefix=a.series if a.follow_up else 'agent'
 origin=os.environ.get('SQUALI_URL','https://squa.li').rstrip('/');owner=os.environ.get('SQUALI_TOKEN');agent=os.environ.get('SQUALI_AGENT_TOKEN',owner)
 endpoint=urllib.parse.urlparse(origin)
 if not owner or not agent or not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_-]{0,62}',a.project):raise SystemExit('Use credentials in the environment and a valid project ID')
@@ -11,7 +12,7 @@ if endpoint.scheme not in ('http','https') or not endpoint.hostname or endpoint.
 os.umask(0o077);root=pathlib.Path(a.state);root.mkdir(parents=True,exist_ok=True);file_lock=open(root/'run.lock','a+')
 try:fcntl.flock(file_lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
 except BlockingIOError:raise SystemExit('Another acceptance process holds this journal')
-identity={'origin':origin,'project':a.project,'label':a.label,'changes':count,'concurrency':8,'baselineFiles':64,'version':1,**({'followUp':True} if a.follow_up else {})};fingerprint=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();journal=root/'state.json'
+identity={'origin':origin,'project':a.project,'label':a.label,'changes':count,'concurrency':8,'baselineFiles':64,'version':1,**({'followUp':True} if a.follow_up else {}),**({'series':a.series} if a.series!='optimized' else {})};fingerprint=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();journal=root/'state.json'
 s=json.loads(journal.read_text()) if journal.exists() else {'identity':identity,'fingerprint':fingerprint,'httpAttempts':0,'operations':{},'segments':0,'report':None}
 if s['fingerprint']!=fingerprint:raise SystemExit('Acceptance inputs changed; retain this journal')
 if s['report']:print(json.dumps(s['report']));raise SystemExit(0)
@@ -63,11 +64,11 @@ try:
  assert created['storage']=='source'
  parallel(lambda i:call('change-'+str(i),prefix+'/changes',{'id':change_prefix+str(i),'title':'Agent '+str(i),'intent':'Independent bounded performance fixture','context':{'fixture':True},'files':[{'path':'agents/'+file_prefix+str(i)+'.ts','content':'export const '+content_prefix+str(i)+' = '+str(i)+';\n'}]},True))
  parallel(lambda i:call('review-'+str(i),prefix+'/changes/'+change_prefix+str(i)+'/review',{'decision':'approved','note':'Bounded acceptance fixture'}))
- prepublish=call('usage-prepublish','/usage');published=call('publish',prefix+'/publish',{'id':'optimized-batch-0' if a.follow_up else 'batch-0','changes':[change_prefix+str(i) for i in range(count)],'expectedHead':created['head']})
+ prepublish=call('usage-prepublish','/usage');published=call('publish',prefix+'/publish',{'id':a.series+'-batch-0' if a.follow_up else 'batch-0','changes':[change_prefix+str(i) for i in range(count)],'expectedHead':created['head']})
  tree=call('tree',prefix+'/tree?path=agents');status=call('source',prefix+'/source')
  published_files=sum(1 for entry in tree['entries'] if entry['name'] in {file_prefix+str(i)+'.ts' for i in range(count)})
  assert published_files==count and len(status['refs'])==1 and status['changesets']==initial_count+count+1
- if a.follow_up:assert call('new-file',prefix+'/file?path=agents/optimized-0.ts')['content']=='export const optimized0 = 0;\n'
+ if a.follow_up:assert call('new-file',prefix+'/file?path=agents/'+file_prefix+'0.ts')['content']=='export const '+content_prefix+'0 = 0;\n'
  samples=[]
  for i in (() if a.follow_up else (0,15,31,63)):
   path=prefix+'/file?'+urllib.parse.urlencode({'path':'seed/file-'+str(i)+'.txt','ref':published['oid']})

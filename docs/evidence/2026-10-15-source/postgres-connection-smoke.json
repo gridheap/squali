@@ -1,0 +1,150 @@
+{
+  "cost": 90,
+  "interval": "PT5M",
+  "namespace": "Microsoft.DBforPostgreSQL/flexibleServers",
+  "resourceregion": "eastus2",
+  "timespan": "2026-10-14T22:25:00Z/2026-10-14T22:35:00Z",
+  "value": [
+    {
+      "displayDescription": "CPU percent",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/cpu_percent",
+      "name": {
+        "localizedValue": "CPU percent",
+        "value": "cpu_percent"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 14.106203907074999,
+              "maximum": 21.81389076196898,
+              "timeStamp": "2026-10-14T22:25:00Z"
+            },
+            {
+              "average": 12.876595372210092,
+              "maximum": 17.81609195402299,
+              "timeStamp": "2026-10-14T22:30:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Percent"
+    },
+    {
+      "displayDescription": "Memory percent",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/memory_percent",
+      "name": {
+        "localizedValue": "Memory percent",
+        "value": "memory_percent"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 70.52877757775005,
+              "maximum": 70.96863989726792,
+              "timeStamp": "2026-10-14T22:25:00Z"
+            },
+            {
+              "average": 69.76291973650524,
+              "maximum": 70.51146592326792,
+              "timeStamp": "2026-10-14T22:30:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Percent"
+    },
+    {
+      "displayDescription": "Number of data disk I/O read operations per second",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/read_iops",
+      "name": {
+        "localizedValue": "Read IOPS",
+        "value": "read_iops"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 0.0,
+              "maximum": 0.0,
+              "timeStamp": "2026-10-14T22:25:00Z"
+            },
+            {
+              "timeStamp": "2026-10-14T22:30:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    },
+    {
+      "displayDescription": "Number of data disk I/O write operations per second",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/write_iops",
+      "name": {
+        "localizedValue": "Write IOPS",
+        "value": "write_iops"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 5.0,
+              "maximum": 5.0,
+              "timeStamp": "2026-10-14T22:25:00Z"
+            },
+            {
+              "timeStamp": "2026-10-14T22:30:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    },
+    {
+      "displayDescription": "Active Connections",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/active_connections",
+      "name": {
+        "localizedValue": "Active Connections",
+        "value": "active_connections"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 12.6,
+              "maximum": 14.0,
+              "timeStamp": "2026-10-14T22:25:00Z"
+            },
+            {
+              "average": 13.25,
+              "maximum": 15.0,
+              "timeStamp": "2026-10-14T22:30:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    }
+  ]
+}

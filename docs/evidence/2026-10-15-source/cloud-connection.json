@@ -1,0 +1,86 @@
+{
+  "command": "python3 /var/lib/squali-cloud-acceptance/cloud-acceptance.py source-acceptance-20261015 --state /var/lib/squali-cloud-acceptance/connection-state --label 'production single-connection eight-change smoke' --follow-up --series connection",
+  "label": "production single-connection eight-change smoke",
+  "origin": "https://squa.li",
+  "timestamp": "2026-10-14T22:30:12Z",
+  "complete": true,
+  "httpAttempts": 25,
+  "segments": 1,
+  "dataset": {
+    "baselineFiles": 64,
+    "baselineBytes": 419400,
+    "changes": 8,
+    "concurrency": 8,
+    "storage": "source"
+  },
+  "results": {
+    "publishedFiles": 8,
+    "changesets": 84,
+    "writeWallMs": 5926.328,
+    "changesPerSecond": 1.35,
+    "p50Ms": 3191.322,
+    "p95Ms": 5820.876,
+    "p99Ms": 5820.876,
+    "publicationMs": 1890.81,
+    "publishedHead": "e5f405b2202e81f8a44e437426a50eb691d51813",
+    "cacheSamples": [],
+    "usageBefore": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 73,
+        "writes": 109026
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    },
+    "usageBeforePublication": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 73,
+        "writes": 109141
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    },
+    "usageAfter": {
+      "source": {
+        "readCap": 200000,
+        "writeCap": 200000,
+        "reads": 74,
+        "writes": 109162
+      },
+      "attempts": 172,
+      "cap": 2000,
+      "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+      "cache": {
+        "reservedReads": 32,
+        "reservedWrites": 20,
+        "readCap": 20000,
+        "writeCap": 2000
+      }
+    }
+  },
+  "limitations": [
+    "One origin client location and small independent text changes; no distributed-scale claim",
+    "Usage counters are shared deployment reservations; concurrent import traffic is included",
+    "First/repeat reads do not imply an empty global cache or isolate",
+    "Eight clients share the supplied agent principal; this is not an eight-user identity benchmark",
+    "No automatic retries; resumed write wall time includes pauses between segments"
+  ]
+}

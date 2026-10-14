@@ -1,0 +1,25 @@
+{"scene":0,"title":"Squali · Source control for parallel agents"}
+{"scene":1,"title":"01 / Fetch the source a task needs"}
+{"scene":2,"title":"02 / Independent changes, exact review"}
+{"success":false,"durationSeconds":4.406450708,"capturedFrames":0}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The concurrent demo uses three distinct scoped agent identities
+
+1 !== 3
+
+    at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/demo-continuous.ts:41:429)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async stage (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/demo-continuous.ts:29:302)
+    at async <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/demo-continuous.ts:41:2) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 3,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

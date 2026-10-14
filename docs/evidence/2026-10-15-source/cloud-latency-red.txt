@@ -1,0 +1,6 @@
+{"command": "python3 work/source-latency-diagnosis.py", "source": "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/docs/evidence/2026-10-15-source/cloud-connection.json", "sample": "2026-10-14T22:30:12Z", "p95Ms": 5820.876, "investigationBudgetMs": 2000, "mode": "Replay of retained production measurement; zero network requests"}
+Traceback (most recent call last):
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/work/source-latency-diagnosis.py", line 5, in <module>
+    assert value<=2000,'Current production proposal latency exceeds the investigation budget'
+           ^^^^^^^^^^^
+AssertionError: Current production proposal latency exceeds the investigation budget

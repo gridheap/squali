@@ -1,0 +1,32 @@
+✖ bounded cloud acceptance CLI publishes 64 changes and reuses its completed journal (967.203291ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1091.1865
+
+✖ failing tests:
+
+test at tests/cloud-acceptance.test.ts:1:225
+✖ bounded cloud acceptance CLI publishes 64 changes and reuses its completed journal (967.203291ms)
+  Error: Command failed: python3 scripts/cloud-acceptance.py acceptance --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-nz7qid/connection-check --label local connection validation --follow-up --series connection
+  usage: cloud-acceptance.py [-h] --state STATE --label LABEL [--follow-up]
+                             project
+  cloud-acceptance.py: error: unrecognized arguments: --series connection
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+    code: 2,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/cloud-acceptance.py acceptance --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-nz7qid/connection-check --label local connection validation --follow-up --series connection',
+    stdout: '',
+    stderr: 'usage: cloud-acceptance.py [-h] --state STATE --label LABEL [--follow-up]\n                           project\ncloud-acceptance.py: error: unrecognized arguments: --series connection\n'
+  }

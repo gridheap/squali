@@ -15,7 +15,7 @@
     "title": "02 / Independent changes, exact review",
     "caption": "Concurrent API writes preserve intent, dependencies and agent-reported evidence.",
     "seconds": 55,
-    "text": "Three agents now propose independent changes through the API, using separate requests against the same source version. No proposal branch or Git push is needed. Each changeset records first-parent file deltas and content addresses. The source writer reuses the delta it already knows, and stores path metadata in a batch. Opening a proposal shows the actual diff and the agent's original context. An attached passing command is reported evidence, not a claim that Squali executed CI. The reviewer approves this exact immutable version. Agent credentials cannot approve or publish their own changes. A later revision must earn a new approval."
+    "text": "Three agents now propose independent changes through the API, using three separate workspace-scoped credentials against the same source version. No proposal branch or Git push is needed. Each changeset records first-parent file deltas and content addresses. The source writer reuses the delta it already knows, and stores path metadata in a batch. Opening a proposal shows the actual diff and the agent's original context. An attached passing command is reported evidence, not a claim that Squali executed CI. The reviewer approves this exact immutable version. Agent credentials cannot approve or publish their own changes. A later revision must earn a new approval."
   },
   {
     "title": "03 / Publish a selected set",

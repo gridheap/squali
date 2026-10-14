@@ -1,0 +1,51 @@
+{
+  "command": "python3 work/hyperdrive-connection-metrics.py",
+  "sample": "connection-pool smoke plus ongoing private import",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){hyperdriveQueriesAdaptiveGroups(limit:200,filter:{configId:\"c5366ae0d2d54d76b2b7daf414c6333d\",datetime_geq:\"2026-10-14T22:25:00Z\",datetime_leq:\"2026-10-14T22:35:00Z\"}){count dimensions{datetimeFiveMinutes coloCode eventStatus} sum{connectionLatency queryLatency originReadLatency originWriteLatency queryBytes resultBytes}}}}}",
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "hyperdriveQueriesAdaptiveGroups": [
+              {
+                "count": 3107,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T22:25:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 54,
+                  "originReadLatency": 28429,
+                  "originWriteLatency": 567,
+                  "queryBytes": 626213,
+                  "queryLatency": 29628,
+                  "resultBytes": 5435072
+                }
+              },
+              {
+                "count": 2039,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T22:30:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 147383,
+                  "originReadLatency": 15241,
+                  "originWriteLatency": 86,
+                  "queryBytes": 219488,
+                  "queryLatency": 41025,
+                  "resultBytes": 1781655
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "note": "Provider window aggregates include other requests; these are not per-request traces."
+}
