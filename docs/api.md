@@ -78,3 +78,13 @@ Token creation accepts optional `paths:["docs","src/api"]`; omit or use `null` f
 `POST /api/github/imports/:id/reconcile` checks destination refs and finalizes a complete import without downloading or allocating another repository. An incomplete result returns 409 without changing its failure evidence or transfer count. `/run` has a three-transfer-attempt ceiling.
 
 `GET /api/usage` also returns `cache.reservedReads`, `reservedWrites`, `readCap` and `writeCap`. These are application reservations, not provider billing measurements.
+
+## Bounded commit indexing
+
+Unrestricted administrators can use:
+
+- `GET /api/projects/:id/index?ref=<commit>`: completion, pending stack and active-step state, without provider reads.
+- `POST /api/projects/:id/index` with `{ "ref": "<commit>", "limit": 64 }`: resume one step. `limit` is 1–128 new provider commit reads. Progress and immutable derived rows survive process restarts. The normal operation budget still applies.
+- `POST /api/projects/:id/index/commits` with `{ "ref": "<provider-root>", "commits": [{ "oid": "<sha1>", "body": "<base64 raw Git commit>" }] }`: accept 1–256 hash-verified commits, at most 1 MiB decoded metadata. New records must connect to already provider-anchored history. Duplicate uploads do not overwrite data or reread the root. This does not import Git objects into Artifacts.
+
+Small graph queries can derive their index on demand. Larger incomplete histories return `409 index_required`; this is not a false ancestry result. Generation ordering preserves all parents and all best merge bases. First-parent skip pointers accelerate ancestry along linear spans and first-parent bisect. A completed graph query is bounded to 50,000 visited/loaded nodes. Indexed unchanged-tree spans also accelerate history and blame; a general path index is still outstanding.

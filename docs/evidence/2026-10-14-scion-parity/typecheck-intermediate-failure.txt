@@ -1,0 +1,4 @@
+$ tsc --noEmit
+tests/sparse.test.ts(46,148): error TS18047: 'child.stderr' is possibly 'null'.
+tests/sparse.test.ts(46,185): error TS18047: 'child.stdout' is possibly 'null'.
+[ELIFECYCLE] Command failed with exit code 1.

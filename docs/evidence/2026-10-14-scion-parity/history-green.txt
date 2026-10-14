@@ -1,0 +1,14 @@
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":19,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (12613.555958ms)
+{"command":"pnpm test:metadata","mergeBase":"a1914750d5990dff8e1ae82fc7294c3514d86704","mergedHead":"ca7add93a3c444a639d260fa105d29f6d3251c10","blameCommits":["6dcc69dbf6b874f7f38a5be5a5aaf5fdf3bbf7cd","a1914750d5990dff8e1ae82fc7294c3514d86704","f8da5ffba42ee65c7100bbc0a5c47731bc06b6e6"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (801.264459ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (177.310291ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12814.223542

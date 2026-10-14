@@ -1,0 +1,40 @@
+✖ sparse clients explicitly add new files and preserve unseen remote content (463.902ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 651.012
+
+✖ failing tests:
+
+test at tests/sparse.test.ts:1:3501
+✖ sparse clients explicitly add new files and preserve unseen remote content (463.902ms)
+  Error: Command failed: node scripts/working-copy.mjs add work/sparse-add-vjV1jU/copy src/new.txt
+  file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:50
+  else throw Error('Commands: checkout, hydrate, status, propose');
+             ^
+
+  Error: Commands: checkout, hydrate, status, propose
+      at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:50:12
+      at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+      at async node:internal/modules/esm/loader:650:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+  Node.js v26.10.0
+
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: 'node scripts/working-copy.mjs add work/sparse-add-vjV1jU/copy src/new.txt',
+    stdout: '',
+    stderr: "file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:50\nelse throw Error('Commands: checkout, hydrate, status, propose');\n           ^\n\nError: Commands: checkout, hydrate, status, propose\n    at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:50:12\n    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n    at async node:internal/modules/esm/loader:650:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)\n\nNode.js v26.10.0\n"
+  }

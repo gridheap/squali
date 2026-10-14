@@ -15,7 +15,7 @@
 ## Still required
 
 1. Complete and independently verify the large private repository import. Its 85,563-commit source fixture passed fsck; three production transfers did not complete. Do not reset the attempt ceiling or label the fixture preparation a successful Squali import.
-2. Complete scalable graph/path indices, working-copy updates, richer semantic approval and archive navigation. Explicit sparse hydration is not filesystem virtualization.
+2. Complete general path/blame indices, richer semantic approval, archive navigation, changeset/storage architecture and filesystem virtualization. Generation/skip indexing, verified metadata import and journaled working-copy updates now have local E2E evidence. These improvements do not establish full Scion parity.
 3. Measure sustained mixed contention, CPU/memory, cold/warm cache behavior and cloud cost per successful workflow. The small local sample does not establish universal highest performance or best value.
 4. Replace the older edited demo with a continuous capture of current behavior and accurate limitations. Then have the eligible team member perform the competition submission.
 

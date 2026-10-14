@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/graph.test.ts","nativeIndexCLI":true,"finiteStepBudget":2,"completedIndexReused":true}
+✔ native-repository index CLI uploads verified metadata with an explicit finite step budget (464.22725ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 632.807708

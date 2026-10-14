@@ -1,0 +1,12 @@
+{
+  "execution": {
+    "endTime": "2026-10-14T09:59:09+00:00",
+    "error": "",
+    "executionMessage": "Execution completed",
+    "executionState": "Succeeded",
+    "exitCode": 0,
+    "output": "{\"database\": \"weave\", \"role\": \"weave_app\", \"tables\": 16, \"verified\": true, \"searchPath\": \"weave\"}\n",
+    "startTime": "2026-10-14T09:59:09+00:00"
+  },
+  "state": "Succeeded"
+}

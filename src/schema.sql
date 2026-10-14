@@ -73,3 +73,16 @@ CREATE TABLE IF NOT EXISTS weave_review_policy (
  project text PRIMARY KEY REFERENCES weave_projects(id), rules jsonb NOT NULL,
  updated_at timestamptz NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS weave_commit_graph (
+ project text NOT NULL REFERENCES weave_projects(id), version integer NOT NULL,
+ oid text NOT NULL, tree text NOT NULL, parents text[] NOT NULL, message text NOT NULL,
+ generation bigint, first_depth bigint NOT NULL DEFAULT 0, linear_span bigint NOT NULL DEFAULT 0,
+ jumps text[] NOT NULL DEFAULT '{}', PRIMARY KEY(project,version,oid)
+);
+CREATE TABLE IF NOT EXISTS weave_graph_builds (
+ project text NOT NULL REFERENCES weave_projects(id), version integer NOT NULL,
+ root text NOT NULL, stack text[] NOT NULL, lease text, lease_until timestamptz,
+ PRIMARY KEY(project,version,root)
+);
+ALTER TABLE weave_commit_graph ADD COLUMN IF NOT EXISTS tree_span bigint NOT NULL DEFAULT 0;
+CREATE INDEX IF NOT EXISTS weave_graph_parents ON weave_commit_graph USING gin(parents);

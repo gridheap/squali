@@ -1,0 +1,7 @@
+{
+  "command": "pnpm typecheck && pnpm build",
+  "exitCode": 0,
+  "workerUploadKiB": 265.30,
+  "workerGzipKiB": 67.22,
+  "mode": "Wrangler dry-run; no deployment"
+}

@@ -90,6 +90,8 @@ export function createApp(config:Config){
     }
     const changes=changeService(config,p,principal);
     const metadata=metadataService(sql,pid,repo);
+    if(action==='index'&&request.method==='POST'){unrestricted();requireRole(['admin']);const input=await body(request);if(parts[4]==='commits')return json(await metadata.indexCommits(input.ref,input.commits));if(parts.length===4)return json(await metadata.index(input.ref,input.limit??64));}
+    if(action==='index'&&request.method==='GET'){unrestricted();requireRole(['admin']);return json(await metadata.indexStatus(url.searchParams.get('ref')??''));}
     if(['ancestry','merge-base','diff','bisect'].includes(action)&&request.method==='POST'){
      const input=await body(request);
      if(action!=='diff')unrestricted();else if(principal.paths){if(!input.path)unrestricted();validPath(input.path);authorizePaths(principal,[input.path]);}

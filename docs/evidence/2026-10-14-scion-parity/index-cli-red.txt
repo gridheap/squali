@@ -1,0 +1,47 @@
+✖ native-repository index CLI uploads verified metadata with an explicit finite step budget (259.297708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 465.816375
+
+✖ failing tests:
+
+test at tests/graph.test.ts:8:4274
+✖ native-repository index CLI uploads verified metadata with an explicit finite step budget (259.297708ms)
+  Error: Command failed: node scripts/index-repository.mjs index-cli /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-EBnTUs/weave-index-cli.git e33ecf09042244b912e9bab30b223d37aecd7856 --max-steps 2
+  node:internal/modules/cjs/loader:1595
+    throw err;
+    ^
+
+  Error: Cannot find module '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/index-repository.mjs'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1591:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1145:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1169:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1196:12)
+      at Module._load (node:internal/modules/cjs/loader:1368:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+
+  Node.js v26.10.0
+
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: 'node scripts/index-repository.mjs index-cli /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-EBnTUs/weave-index-cli.git e33ecf09042244b912e9bab30b223d37aecd7856 --max-steps 2',
+    stdout: '',
+    stderr: "node:internal/modules/cjs/loader:1595\n  throw err;\n  ^\n\nError: Cannot find module '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/index-repository.mjs'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1591:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1145:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1169:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1196:12)\n    at Module._load (node:internal/modules/cjs/loader:1368:5)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v26.10.0\n"
+  }

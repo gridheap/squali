@@ -1,0 +1,45 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (307.970333ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (268.28325ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (645.564959ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (858.377542ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (385.284833ms)
+✔ persistent operation limits stop work before the next provider call (117.34225ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (366.135375ms)
+✔ immutable source reads reuse the cache after authorization (20.938625ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (436.005875ms)
+✔ standard Git can clone through the authenticated read-only gateway (148.3165ms)
+✔ the complete HTTP workflow makes progress with a single database connection (599.335167ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (518.1365ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (537.054833ms)
+✔ concurrent publication retries converge on one Git commit and one event (449.738208ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (135.103916ms)
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":7,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (1098.517333ms)
+{"command":"node --import tsx --test tests/graph.test.ts","nativeIndexCLI":true,"finiteStepBudget":2,"completedIndexReused":true}
+✔ native-repository index CLI uploads verified metadata with an explicit finite step budget (422.114375ms)
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["f0c5d89a3e3cf65c99e674ce8c70462d97eed128","fc472e4446fa3ca07b856fe8a8cf29b6f059a229"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (439.249ms)
+{"command":"pnpm test:metadata","mergeBase":"b3af2025b59504d44df829afc88faff9381ad054","mergedHead":"3909e987029e33ebe90cd874052d1d1b4e1ac807","blameCommits":["09bd483568b8a2a3e5e1cdf2f768f330d101d44a","b3af2025b59504d44df829afc88faff9381ad054","33aae45e5311996325099353efdc6796ffce0f0e"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (866.229042ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (161.8915ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1420.880875ms)
+{"command":"pnpm test:sparse","sourceFiles":4,"sparseFiles":2,"firstNetworkObjects":5,"secondNetworkObjects":0,"sharedCacheHits":5,"hydratedFiles":1,"gitClone":false,"proposal":"sparse-change"}
+✔ sparse CLI checks out only requested paths, reuses immutable objects, hydrates and proposes without Git clone (1546.823708ms)
+{"command":"pnpm test:sparse","update":true,"realProcessDeath":true,"editedAfterCrashProtected":true,"hydratedPathRetained":true,"executableMode":true,"untrackedPreserved":true}
+✔ working-copy update survives process death and preserves edits, hydrated paths and file modes (1649.770833ms)
+{"command":"pnpm test:sparse","explicitAdd":true,"published":true,"unseenContentPreserved":true}
+✔ sparse clients explicitly add new files and preserve unseen remote content (1511.975917ms)
+{"command":"pnpm test:sparse","binaryBytes":2097152,"firstNetworkObjects":3,"repeatedNetworkObjects":0,"exactBytes":true}
+✔ sparse checkout reads a large imported binary through an authorized bounded raw endpoint (707.190667ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5971.723791

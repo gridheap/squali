@@ -1,0 +1,33 @@
+✖ bounded resumable indexing serves deep history through HTTP without rereading Git objects (12458.879125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12678.285958
+
+✖ failing tests:
+
+test at tests/graph.test.ts:1:365
+✖ bounded resumable indexing serves deep history through HTTP without rereading Git objects (12458.879125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   '2a3db4b26120a0f3d3c65d6fe25b92b0185c1e42'
+  - ]
+
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/graph.test.ts:33:158)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ '2a3db4b26120a0f3d3c65d6fe25b92b0185c1e42' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

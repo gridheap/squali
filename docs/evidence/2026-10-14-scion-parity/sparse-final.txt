@@ -1,0 +1,16 @@
+{"command":"pnpm test:sparse","sourceFiles":4,"sparseFiles":2,"firstNetworkObjects":5,"secondNetworkObjects":0,"sharedCacheHits":5,"hydratedFiles":1,"gitClone":false,"proposal":"sparse-change"}
+✔ sparse CLI checks out only requested paths, reuses immutable objects, hydrates and proposes without Git clone (1591.100875ms)
+{"command":"pnpm test:sparse","update":true,"realProcessDeath":true,"editedAfterCrashProtected":true,"hydratedPathRetained":true,"executableMode":true,"untrackedPreserved":true}
+✔ working-copy update survives process death and preserves edits, hydrated paths and file modes (1775.259125ms)
+{"command":"pnpm test:sparse","explicitAdd":true,"published":true,"unseenContentPreserved":true}
+✔ sparse clients explicitly add new files and preserve unseen remote content (1649.0835ms)
+{"command":"pnpm test:sparse","binaryBytes":2097152,"firstNetworkObjects":3,"repeatedNetworkObjects":0,"exactBytes":true}
+✔ sparse checkout reads a large imported binary through an authorized bounded raw endpoint (786.508291ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5990.518333

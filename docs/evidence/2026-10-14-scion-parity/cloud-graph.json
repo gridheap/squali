@@ -1,0 +1,81 @@
+{
+  "command": "python3 work/scion-graph-smoke.py",
+  "steps": {
+    "before": {
+      "status": 200,
+      "body": {
+        "attempts": 150,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 16,
+          "reservedWrites": 8,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "index": {
+      "status": 200,
+      "body": {
+        "ref": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+        "complete": true,
+        "reads": 2,
+        "completed": 2,
+        "pending": 0,
+        "generation": 2
+      }
+    },
+    "status": {
+      "status": 200,
+      "body": {
+        "ref": "81ed4005b0b8b0b641b6d7eccc5110169708d409",
+        "complete": true,
+        "generation": 2,
+        "pending": 0,
+        "active": false
+      }
+    },
+    "merge-base": {
+      "status": 200,
+      "body": {
+        "bases": [
+          "81ed4005b0b8b0b641b6d7eccc5110169708d409"
+        ]
+      }
+    },
+    "reader-denied": {
+      "status": 403,
+      "body": {
+        "error": "role",
+        "message": "Your role does not allow this operation"
+      }
+    },
+    "after": {
+      "status": 200,
+      "body": {
+        "attempts": 152,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 24,
+          "reservedWrites": 12,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    }
+  },
+  "httpAttempts": 6,
+  "completed": "2026-10-14T10:06:30.830343+00:00",
+  "newArtifactReservations": 2,
+  "providerMeasuredCalls": "Unavailable; application reservations are conservative",
+  "gitSourceMutations": 0,
+  "largeImportTransfers": 0,
+  "automaticRetries": 0,
+  "target": {
+    "base": "https://squa.li",
+    "project": "demo",
+    "ref": "81ed4005b0b8b0b641b6d7eccc5110169708d409"
+  }
+}

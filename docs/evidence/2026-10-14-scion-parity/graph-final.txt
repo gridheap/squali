@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":7,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (1026.008125ms)
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["0367abd7d46a98eb03fbc054b4e185449c3c7b78","f86cdf9e8912f81124cd821e7487ccd065e633bd"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (377.91675ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1622.399

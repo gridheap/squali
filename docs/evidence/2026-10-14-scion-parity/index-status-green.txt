@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["2f1a98804fc7950e49f2cba07ffb7e80556800b7","69dd1f8789016a5786d1c39c275181806425c8e1"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (416.398333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 642.061375

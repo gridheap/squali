@@ -1,0 +1,29 @@
+✖ index progress survives a server restart and preserves criss-cross merge bases (283.42025ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 525.472541
+
+✖ failing tests:
+
+test at tests/graph.test.ts:8:2777
+✖ index progress survives a server restart and preserves criss-cross merge bases (283.42025ms)
+  AssertionError [ERR_ASSERTION]: {"error":"not_found","message":"API route not found"}
+
+  404 !== 200
+
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/graph.test.ts:50:69)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 404,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

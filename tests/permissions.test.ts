@@ -23,6 +23,11 @@ test('directory credentials cannot escape via Git, object batches, metadata or p
   assert.equal((await call('/projects/paths/git/info/refs?service=git-upload-pack',undefined,token)).status,403);
   assert.equal((await call('/projects/paths/objects',{objects:[{type:'commit',oid:p.head}]},token)).status,403);
   assert.equal((await call('/projects/paths/diff',{from:p.head,to:p.head},token)).status,403);
+  const indexUsage=(await call('/usage')).body.attempts;
+  assert.equal((await call('/projects/paths/index',{ref:p.head},token)).status,403);
+  assert.equal((await call('/projects/paths/index/commits',{ref:p.head,commits:[]},token)).status,403);
+  assert.equal((await call('/projects/paths/index?ref='+p.head,undefined,token)).status,403);
+  assert.equal((await call('/usage')).body.attempts,indexUsage,'Index scope rejection precedes provider reads');
   const hidden=(await call('/projects/paths/changes',{id:'hidden',title:'Secret edit',intent:'Private',files:[{path:'secrets/private.txt',content:'new\n'}]})).body;
   assert.equal((await call('/projects/paths/changes/'+hidden.id,undefined,token)).status,403);assert.deepEqual((await call('/projects/paths/changes',undefined,token)).body.changes,[]);
   assert.equal((await call('/projects/paths/changes',{id:'escape',title:'Escape',intent:'Escape',files:[{path:'secrets/private.txt',content:'wrong'}]},token)).status,403);

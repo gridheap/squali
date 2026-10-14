@@ -71,6 +71,7 @@ pnpm test:storage
 pnpm test:sparse
 pnpm test:metadata
 pnpm test:permissions
+node --import tsx --test tests/graph.test.ts
 pnpm build
 BENCH_CHANGES=32 BENCH_CONCURRENCY=8 pnpm benchmark
 pnpm exec tsx scripts/compare-git.ts
@@ -86,6 +87,7 @@ The included benchmark is local only. It measures 32 small independent changes a
 
 - **Incremental Git writes:** construct only new blobs, changed ancestor trees and a commit; upload a valid Git pack directly. No clone, index or full working copy in the Worker.
 - **Immutable proposals:** stable operation IDs and request hashes make retries repeatable. Source stays in Artifacts; intent, review and dependency metadata stay in PostgreSQL.
+- **Commit graph:** resumable, versioned PostgreSQL indexes preserve all parents and derive generations and first-parent jump pointers. A bounded native Git exporter uploads hash-verified commit metadata; indexed queries avoid repeated provider reads.
 - **Shared reads:** immutable object caches are keyed by repository, object type and Git hash. Authorization runs before cache access. Branch heads remain uncached.
 - **Batch publication:** a short per-workspace publication lock protects review state, and Git's expected-old-object check protects the branch against external writers. Agents can continue proposing while a batch publishes.
 - **Recoverable publication:** persist the publication intent before pushing. Termination before or after Git acceptance can be recovered with the original operation. Cancellation writes an unchanged-tree audit commit that prevents delayed publication from landing.
@@ -95,7 +97,7 @@ Read [architecture and tradeoffs](docs/architecture.md), [deployment](docs/deplo
 
 ## Explicit limits
 
-This is a competition prototype, not a replacement for GitHub's entire product. Artifacts currently caps a repository at 1 GB. The editing API handles UTF-8 regular files; symlinks, submodules and binary blobs are retained by unchanged trees but cannot be edited through the API. Text merges are bounded and cannot establish semantic correctness. One main branch per workspace is the publication boundary. No automatic CI runner, global distributed load claim, node socket daemon, OS virtual filesystem or complete large-history graph index is included. Server-side history/blame and directory IAM are implemented within documented query bounds.
+This is a competition prototype, not a replacement for GitHub's entire product. Artifacts currently caps a repository at 1 GB. The editing API handles UTF-8 regular files; symlinks, submodules and binary blobs are retained by unchanged trees but cannot be edited through the API. Text merges are bounded and cannot establish semantic correctness. One main branch per workspace is the publication boundary. No automatic CI runner, global distributed load claim, node socket daemon, OS virtual filesystem or fully validated 85,563-commit cloud index is included. Graph queries retain a 50,000-node budget; first-parent jumps accelerate indexed linear history. Server-side history/blame and directory IAM are implemented within documented query bounds.
 
 Clerk sessions isolate personal workspaces by owner. Owners can issue expiring, revocable credentials scoped to one workspace for agents, readers and reviewers. Legacy wildcard principals cover legacy workspaces only. GitHub imports preserve the source default branch. Browser application code keeps tokens in memory; Clerk manages its own login session. Apply deployment request limits appropriate to the audience.
 

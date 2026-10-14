@@ -1,0 +1,10 @@
+{"command":"pnpm test:sparse","update":true,"realProcessDeath":true,"editedAfterCrashProtected":true,"hydratedPathRetained":true,"executableMode":true,"untrackedPreserved":true}
+✔ working-copy update survives process death and preserves edits, hydrated paths and file modes (1710.089125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1888.7815

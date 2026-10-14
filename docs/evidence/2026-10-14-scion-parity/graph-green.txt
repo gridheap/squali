@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":19,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (12592.36925ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12783.620583

@@ -1,0 +1,31 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (299.98575ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (281.067166ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (698.394084ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (876.873541ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (387.816042ms)
+✔ persistent operation limits stop work before the next provider call (129.394ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (393.509ms)
+✔ immutable source reads reuse the cache after authorization (15.344833ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (454.942209ms)
+✔ standard Git can clone through the authenticated read-only gateway (150.920291ms)
+✔ the complete HTTP workflow makes progress with a single database connection (701.28825ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (868.384833ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (706.567792ms)
+✔ concurrent publication retries converge on one Git commit and one event (398.311875ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (122.397958ms)
+{"command":"pnpm test:metadata","mergeBase":"f8a0e312b1e598261e0d017a8af996171cf288ee","mergedHead":"d62f24a12fad8db38473f59fb70f9e1573b9ba18","blameCommits":["979231b801c2bbc55cb99f995460f3423b53f301","f8a0e312b1e598261e0d017a8af996171cf288ee","f102f16e1e94fe6445f5ca9657ed72ebef5f3847"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (847.313041ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (203.342417ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1434.188584ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6664.362042

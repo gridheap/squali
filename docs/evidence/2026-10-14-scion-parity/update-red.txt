@@ -1,0 +1,31 @@
+✖ working-copy update survives process death and preserves edits, hydrated paths and file modes (1155.166417ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1347.750083
+
+✖ failing tests:
+
+test at tests/sparse.test.ts:1:3559
+✖ working-copy update survives process death and preserves edits, hydrated paths and file modes (1155.166417ms)
+  Error: Update exited before replacement: file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:65
+  else throw Error('Commands: checkout, hydrate, add, status, propose');
+             ^
+
+  Error: Commands: checkout, hydrate, add, status, propose
+      at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/working-copy.mjs:65:12
+      at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async node:internal/modules/esm/loader:650:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:105:5)
+
+  Node.js v26.10.0
+
+      at ChildProcess.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/sparse.test.ts:47:261)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:20)
+      at ChildProcess._handle.onexit (node:internal/child_process:323:12)

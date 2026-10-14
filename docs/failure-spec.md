@@ -80,3 +80,30 @@ Restrict a real owner-issued credential to one directory. Verify file, tree, nat
 ### Large binary materialization
 
 A large imported Git blob must not be mistaken for an editable UTF-8 file. Raw reads must reject unauthorized paths before object access, preserve exact bytes and executable modes, validate immutable identities, cap one object at 32 MiB, and avoid unbounded cache growth. The CLI must not route binary files through base64 JSON object batches with a 1 MiB response limit. Editing remains limited to 256 KiB UTF-8 files. A warm shared cache must not widen a narrower credential.
+# Indexed commit graph
+
+The public seams are the authenticated HTTP index/metadata endpoints and native Git interoperability, continuing the existing E2E acceptance boundary.
+
+- A deep history exceeds the old 256-commit request ceiling; a bounded indexing step must resume without returning a false ancestry result.
+- An interrupted or overlapping indexing request loses progress or falsely marks an incomplete parent graph complete.
+- An indexed graph is queried for a previously unseen pair; this must not reread every commit from the provider.
+- First-parent skip pointers accidentally discard second parents or return only one merge base in a criss-cross graph.
+- Disconnected histories, identical IDs, missing commits, invalid limits and unindexed tails produce incorrect results.
+- A directory-scoped or non-administrative credential starts a bulk index or accesses hidden graph metadata.
+- Index computation or traversal runs without a finite provider, node, memory or request budget.
+- Cached graph data from another project or a prior algorithm version contaminates results.
+- Bulk metadata supplies a forged commit body, an unrelated object, or a child with an untrusted root; verify native Git object hashes and parent reachability from a provider-anchored commit before accepting it.
+- Repeating a successful metadata upload rereads the provider or duplicates stored records.
+
+# Working-copy completion
+
+Public seam: working-copy CLI connected to the real HTTP application, PostgreSQL and Git.
+
+- A newly created regular file cannot be explicitly added and proposed without a Git clone.
+- Adding an existing remote file outside the sparse view silently replaces unseen content.
+- Traversal, symlinks, out-of-scope paths, binary or oversized additions escape the client or editing limits.
+- Updating loses dirty content, changes executable modes, deletes untracked data, or fails to retain hydrated paths.
+- Remote deletion or an empty sparse directory prevents an otherwise valid update.
+- An interrupted update leaves files and manifest inconsistent; a resume overwrites edits made after interruption.
+- Network failure halfway through download mutates the working tree before all required objects are available.
+- Cache/working-copy data is reused across a revoked or narrower credential without authorization.
