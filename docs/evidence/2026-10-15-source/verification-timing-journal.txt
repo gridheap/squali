@@ -1,0 +1,10 @@
+{"command":"python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-lgVtjz/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-lgVtjz/verification --file README.md","timestamp":"2026-10-14T23:46:48Z","complete":true,"project":"verify","head":"c4ea9dff0dd13fa32bbb1f5ab4dc6c5bec0900b2","objects":8,"commits":2,"refs":2,"objectInventorySha256":"4250bdd740132923c8cb93aa87e63e41eaf7707a6926892958c4ed227fcee9cb","nativeFsck":true,"canonicalChangesetsVerified":2,"canonicalSampleOids":["c4ea9dff0dd13fa32bbb1f5ab4dc6c5bec0900b2","536a7dc99fe7781edfc7bf7f4cc2775c3c7c27f9"],"rootTreeMatches":true,"sparseFile":"README.md","sparseFileSha256":"4ade948481e0a98f43dc59468d3454e2bc347538de8a35e6ffd6313e04fc2204","historyMatchesNative":true,"blameMatchesNative":true,"firstParentDistance":1,"httpAttempts":13,"gitTransfers":1,"timings":{"apiResponses":13,"apiTotalMs":28.487,"canonicalApiMs":2.504,"historyMs":1.702,"blameMs":4.563,"ancestryMs":1.579,"mergeBaseMs":1.028,"cloneMs":174.145,"fsckMs":20.808},"limitations":["Full exported Git closure is verified; source R2 bodies are identity-checked on ingestion and sampled here","Up to eight canonical deltas are independently compared with native Git; this is a bounded sample, not all changesets","One selected file exercises history/blame; other files retain the documented query budgets","Timings are this one observed verification run; they include its network and provider state, not a load benchmark","No automatic network retry; complete replay makes zero HTTP or Git transfers"]}
+✔ import verification checks complete native identity and reuses its successful transfer (1327.565958ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1451.888042
