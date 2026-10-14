@@ -1,0 +1,17 @@
+{
+  "command": "az vm run-command show --subscription 60c9ccef-5b83-48ca-887a-bf3b7ab738a1 -g RG-GRIDHEAP-COMMENTS --vm-name comments-vm --name squali-source-progress-24044e4f --expand instanceView",
+  "checkedAt": "2026-10-14T23:31:31Z",
+  "objectsProcessed": 398592,
+  "sourceObjects": 421219,
+  "commitsProcessed": 0,
+  "httpAttempts": 8197,
+  "uploadedBytes": 3470542182,
+  "readyBlobs": 157391,
+  "uploadingBlobs": 46,
+  "sourceWriteReservations": 157649,
+  "sourceReadReservations": 77,
+  "nativeElapsedSeconds": 17392,
+  "nativeAttempt": 1,
+  "activeJobs": 1,
+  "complete": false
+}
