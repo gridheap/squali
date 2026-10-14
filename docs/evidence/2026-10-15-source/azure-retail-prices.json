@@ -1,0 +1,234 @@
+{
+  "checkedAt": "2026-10-14T23:07:06.157783+00:00",
+  "source": "https://prices.azure.com/api/retail/prices",
+  "results": {
+    "vm": {
+      "query": "serviceName eq 'Virtual Machines' and armRegionName eq 'eastus2' and armSkuName eq 'Standard_F1as_v7'",
+      "nextPageUnfetched": false,
+      "matchingItems": [
+        {
+          "productName": "Virtual Machines Fasv7 Series",
+          "skuName": "F1as v7 Spot",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7 Spot",
+          "retailPrice": 0.012622,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series Windows",
+          "skuName": "F1as v7 Spot",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7 Spot",
+          "retailPrice": 0.021067,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series Windows",
+          "skuName": "F1as v7 Spot",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7 Spot",
+          "retailPrice": 0.012622,
+          "unitOfMeasure": "1 Hour",
+          "type": "DevTestConsumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series",
+          "skuName": "F1as v7",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7",
+          "retailPrice": 0.0683,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series",
+          "skuName": "F1as v7",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7",
+          "retailPrice": 371.0,
+          "unitOfMeasure": "1 Hour",
+          "type": "Reservation",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series",
+          "skuName": "F1as v7",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7",
+          "retailPrice": 700.0,
+          "unitOfMeasure": "1 Hour",
+          "type": "Reservation",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series Windows",
+          "skuName": "F1as v7",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7",
+          "retailPrice": 0.114,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Virtual Machines Fasv7 Series Windows",
+          "skuName": "F1as v7",
+          "armSkuName": "Standard_F1as_v7",
+          "meterName": "F1as v7",
+          "retailPrice": 0.0683,
+          "unitOfMeasure": "1 Hour",
+          "type": "DevTestConsumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        }
+      ]
+    },
+    "postgres": {
+      "query": "serviceName eq 'Azure Database for PostgreSQL' and armRegionName eq 'eastus2'",
+      "nextPageUnfetched": false,
+      "matchingItems": [
+        {
+          "productName": "Azure Database for PostgreSQL Flexible Server Burstable BS Series Compute",
+          "skuName": "B1MS",
+          "armSkuName": "B1MS",
+          "meterName": "B1MS",
+          "retailPrice": 0.017,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2021-12-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flexible Server Burstable BS Series Compute",
+          "skuName": "B16ms",
+          "armSkuName": "Standard_B16ms",
+          "meterName": "B16ms vCore",
+          "retailPrice": 1.088,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2023-03-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flex Server Storage",
+          "skuName": "Premium SSD v2 Storage",
+          "armSkuName": "Premium Managed Disk",
+          "meterName": "Premium SSD v2 Storage Data Stored",
+          "retailPrice": 0.115,
+          "unitOfMeasure": "1 GiB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2023-10-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flexible Server Backup Storage",
+          "skuName": "Backup Storage LRS",
+          "armSkuName": "Backup Storage",
+          "meterName": "Backup Storage LRS Data Stored",
+          "retailPrice": 0.095,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2021-06-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flex Server Storage",
+          "skuName": "Ultra Disk Storage",
+          "armSkuName": "Ultra Disk Storage",
+          "meterName": "Ultra Disk Storage Data Stored",
+          "retailPrice": 0.135,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2026-08-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure HorizonDB Backup Storage",
+          "skuName": "HorizonDB Backup Storage",
+          "armSkuName": "Backup",
+          "meterName": "HorizonDB Backup Storage Data Stored",
+          "retailPrice": 0.1,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure HorizonDB Storage",
+          "skuName": "HorizonDB storage Free Tier",
+          "armSkuName": "HorizonDB storage - Free Tier",
+          "meterName": "HorizonDB Storage - Free Tier Data Stored",
+          "retailPrice": 0.0,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2026-07-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flex Server Storage",
+          "skuName": "Storage",
+          "armSkuName": "Storage",
+          "meterName": "Storage Data Stored",
+          "retailPrice": 0.115,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2021-06-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure HorizonDB Storage",
+          "skuName": "HorizonDB storage",
+          "armSkuName": "Storage",
+          "meterName": "HorizonDB Storage Data Stored",
+          "retailPrice": 0.28,
+          "unitOfMeasure": "1 GB/Month",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2025-11-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        },
+        {
+          "productName": "Azure Database for PostgreSQL Flexible Server Burstable BS Series Compute",
+          "skuName": "B12ms",
+          "armSkuName": "Standard_B12ms",
+          "meterName": "B12ms vCore",
+          "retailPrice": 0.816,
+          "unitOfMeasure": "1 Hour",
+          "type": "Consumption",
+          "currencyCode": "USD",
+          "effectiveStartDate": "2023-03-01T00:00:00Z",
+          "isPrimaryMeterRegion": true
+        }
+      ]
+    }
+  }
+}

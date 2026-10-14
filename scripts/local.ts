@@ -7,6 +7,7 @@ import {promisify} from 'node:util';
 import {mkdir,readFile,mkdtemp} from 'node:fs/promises';
 import {resolve,join,extname} from 'node:path';
 import postgres from 'postgres';
+import {connectDatabase} from '../src/database.ts';
 import type {Artifacts,Repository,TreeEntry} from '../src/types.ts';
 import {pushHttp,sha256} from '../src/git.ts';
 import {cachedArtifacts,memoryCache} from '../src/cache.ts';
@@ -18,7 +19,7 @@ export async function startLocal(opts:{port?:number;onQuery?:(query:string)=>voi
  const root=resolve('work');await mkdir(root,{recursive:true});const dir=opts.directory??(opts.test?await mkdtemp(join(root,'e2e-')):join(root,'local'));await mkdir(dir,{recursive:true});
  const schema=opts.test?'test_'+sha256(dir).slice(0,16):'weave_local';
  const bootstrap=postgres(localDatabase,{max:1,onnotice:()=>{}});await bootstrap.unsafe(`CREATE SCHEMA IF NOT EXISTS ${schema}`);await bootstrap.end();
- const sql=postgres(localDatabase,{max:opts.poolSize??20,prepare:false,fetch_types:true,connection:{search_path:schema},onnotice:()=>{},debug:(_connection,query)=>opts.onQuery?.(query)});await sql.unsafe(await readFile('src/schema.sql','utf8'));
+ const sql=connectDatabase(localDatabase,{max:opts.poolSize??20,connection:{search_path:schema},onnotice:()=>{},debug:(_connection,query)=>opts.onQuery?.(query)});await sql.unsafe(await readFile('src/schema.sql','utf8'));
  const gitServer=createServer(async(req,res)=>{
   const url=new URL(req.url!,'http://localhost');const m=url.pathname.match(/^\/([a-zA-Z0-9_-]+)\.git(\/.*)$/);if(!m){res.writeHead(404).end();return;}
   const child=spawn('git',['http-backend'],{env:{...process.env,GIT_PROJECT_ROOT:dir,GIT_HTTP_EXPORT_ALL:'1',PATH_INFO:`/${m[1]}.git${m[2]}`,QUERY_STRING:url.search.slice(1),REQUEST_METHOD:req.method,CONTENT_TYPE:req.headers['content-type']??'',HTTP_CONTENT_ENCODING:req.headers['content-encoding']??'',CONTENT_LENGTH:req.headers['content-length']??'',REMOTE_USER:'local-fixture'}});

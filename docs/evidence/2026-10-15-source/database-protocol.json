@@ -1,0 +1,8 @@
+{
+  "command": "node --import tsx --test tests/database-protocol.test.ts",
+  "preparedStatements": 57,
+  "reusedStatements": 35,
+  "textArraysPreserved": true,
+  "differentBoundValuesPreserved": true,
+  "publicationParents": 3
+}

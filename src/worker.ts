@@ -1,5 +1,5 @@
 /// <reference path="../worker-configuration.d.ts" />
-import postgres from 'postgres';
+import {connectDatabase} from './database.ts';
 import {sourceStore} from './source-store.ts';
 import {createApp} from './app.ts';
 import {r2ObjectCache} from './r2-cache.ts';
@@ -18,7 +18,7 @@ export default {
   if(!new URL(request.url).pathname.startsWith('/api/'))return env.ASSETS.fetch(request);
   const database=env.HYPERDRIVE?.connectionString??env.DATABASE_URL;
   if(!database||!env.PRINCIPALS_JSON)return Response.json({error:'not_configured',message:'Configure PostgreSQL and access principals before using Squali.'},{status:503});
-  const sql=postgres(database,{max:1,prepare:false,fetch_types:true,idle_timeout:5,connect_timeout:10,connection:{search_path:'weave'}});
+  const sql=connectDatabase(database,{max:1,idle_timeout:5,connect_timeout:10,connection:{search_path:'weave'}});
   try{
    const regional=edgeCache(await caches.open('squali-source-v1'));const sourceCache={async get(key:string){const hit=await isolateObjects.get(key);if(hit!==undefined)return hit;const value=await regional.get(key);if(value!==undefined)await isolateObjects.set(key,value);return value;},async set(key:string,value:unknown){await regional.set(key,value);await isolateObjects.set(key,value);}};
    const principals=JSON.parse(env.PRINCIPALS_JSON) as Record<string,Principal>;

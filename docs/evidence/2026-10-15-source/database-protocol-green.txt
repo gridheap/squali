@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/database-protocol.test.ts","preparedStatements":57,"reusedStatements":35,"textArraysPreserved":true,"differentBoundValuesPreserved":true,"publicationParents":3}
+✔ HTTP source workflows use prepared SQL and preserve array parameters across repeated queries (408.502208ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 543.726292

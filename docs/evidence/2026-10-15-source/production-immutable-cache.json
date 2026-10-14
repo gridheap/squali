@@ -1,0 +1,80 @@
+{
+  "command": "python3 work/source-cache-production-smoke.py",
+  "checkedAt": "2026-10-14T23:08:07.416230+00:00",
+  "workerVersion": "9605d929-a133-4c7a-a780-b321da835cd3",
+  "complete": true,
+  "project": "source-acceptance-20261015",
+  "immutableHead": "637f05560e690cccf9a3f965b2fda64208f9a3be",
+  "httpAttempts": 6,
+  "records": [
+    {
+      "label": "usage-before",
+      "path": "/usage",
+      "complete": true,
+      "status": 200,
+      "ms": 993.324,
+      "bytes": 239,
+      "sha256": "dd42d37c732e323a408e422d2b21eb5d41640ec1d4134fceea28357ba9ef99bf",
+      "objectType": null
+    },
+    {
+      "label": "commit-first",
+      "path": "/projects/source-acceptance-20261015/rpc",
+      "complete": true,
+      "status": 200,
+      "ms": 450.71,
+      "bytes": 746,
+      "sha256": "906d9e8326cad84ba161266657e4864827e3cc7050defe9bdade6437efc2fe26",
+      "objectType": "commit"
+    },
+    {
+      "label": "commit-repeat",
+      "path": "/projects/source-acceptance-20261015/rpc",
+      "complete": true,
+      "status": 200,
+      "ms": 428.802,
+      "bytes": 746,
+      "sha256": "906d9e8326cad84ba161266657e4864827e3cc7050defe9bdade6437efc2fe26",
+      "objectType": "commit"
+    },
+    {
+      "label": "file-first",
+      "path": "/projects/source-acceptance-20261015/file?ref=637f05560e690cccf9a3f965b2fda64208f9a3be&path=seed/file-0.txt",
+      "complete": true,
+      "status": 200,
+      "ms": 1019.098,
+      "bytes": 6753,
+      "sha256": "1860e03c0bcad16187c249b3c234b4a0cd845aa860c54a01a77260e7c65fdb12",
+      "objectType": null
+    },
+    {
+      "label": "file-repeat",
+      "path": "/projects/source-acceptance-20261015/file?ref=637f05560e690cccf9a3f965b2fda64208f9a3be&path=seed/file-0.txt",
+      "complete": true,
+      "status": 200,
+      "ms": 420.784,
+      "bytes": 6753,
+      "sha256": "1860e03c0bcad16187c249b3c234b4a0cd845aa860c54a01a77260e7c65fdb12",
+      "objectType": null
+    },
+    {
+      "label": "usage-after",
+      "path": "/usage",
+      "complete": true,
+      "status": 200,
+      "ms": 400.118,
+      "bytes": 239,
+      "sha256": "636860ef3b9bfc640450f54804e7e85e6d137191cdd36218d38c75e3d6f9beec",
+      "objectType": null
+    }
+  ],
+  "newSourceReadReservations": 1,
+  "newArtifactsReservations": 0,
+  "limits": [
+    "One existing immutable commit and file; no writes or Git transfer",
+    "First/repeat samples do not guarantee the same Worker isolate or an empty regional cache",
+    "Local client includes internet transit and connection setup; not comparable with the Azure write benchmark",
+    "Global reservation differences include concurrent import activity",
+    "No automatic retry; successful replay reuses this report"
+  ]
+}
