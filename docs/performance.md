@@ -1,4 +1,34 @@
-# Bounded local performance comparison
+# Performance and cost evidence
+
+## Current source architecture
+
+Source blobs live in R2; changesets and indexes live in PostgreSQL. The measurements below use that architecture. They are bounded samples, not evidence of Anthropic's reported traffic or a universal performance ranking.
+
+| Sample | Proposal throughput | Proposal p95 | Publication |
+|---|---:|---:|---:|
+| Local, 64 changes / 8 clients | 318.19 changes/s | 95.93 ms | See retained local report |
+| Production, 64 changes / 8 clients, before reference-only publication | 2.094 changes/s | 5317.45 ms | 26954.73 ms |
+| Production follow-up, 8 changes / 8 clients | 1.832 changes/s | 4296.56 ms | 2251.08 ms |
+
+All start from 64 baseline files totaling 419,400 bytes. Production requests originate on the existing Azure eastus2 VM and share the deployment with the large private import. The baseline retained 152 HTTP attempts across two segments, including nine initial authorization failures; the follow-up retained 25 HTTP attempts. Eight clients share one agent principal. The eight-change follow-up reuses the baseline and writes eight new blobs. **Different batch sizes cannot establish a publication speedup ratio.**
+
+Commands and results: [local source](evidence/2026-10-15-source/local-source.json), [production baseline](evidence/2026-10-15-source/cloud-baseline.json), [follow-up](evidence/2026-10-15-source/cloud-optimized.json), and the [bounded runner instructions](source-operations.md). Completed journal replay does no network work. No successful full cloud benchmark was repeated.
+
+The baseline exposed sequential blob reads during publication. Publication now reuses verified blob identities and only loads content when conflict resolution or a semantic policy requires it. A retained 64-change E2E proves zero extra source-blob reads or writes during preview/publication. The production follow-up consumed one source read for its explicit verification; Artifacts reservations stayed at 172. Global source write counters also include concurrent import traffic and cannot be attributed to this sample alone.
+
+Batch sealing 128 commits fell from 1,793 SQL queries to 18 in the retained local fixture. Hyperdrive metrics showed connection waiting during concurrent proposals while PostgreSQL CPU peaked at 28.69% and IOPS at 36 of its 120 provisioned limit. The latest deployment uses one database connection per Worker request and a lazy request-local project lookup. Its single-connection concurrent E2E passes; the cloud samples above predate that final connection change.
+
+## Cache and cost boundaries
+
+Actual Linux FUSE evidence uses two mounts through one shared node daemon: the first run took 2.275 seconds and fetched two content objects; the repeated run took 1.284 seconds with zero new objects. Directory metadata fetched no file bodies. Stopping the daemon made reads fail without direct origin bypass. These results do not establish a 99% fleet cache hit rate.
+
+Production file reads in the 64-change sample took 541–729 ms first, then 288–399 ms repeated. Existing upstream caches were not cleared, so these are first/repeat observations, not an empty-every-layer cold benchmark. See [source evidence](evidence/2026-10-15-source/README.md).
+
+The large private source import admits 166,297 unique blob writes, with a persistent total limit of 200,000 monthly source writes and 12,000 import HTTP attempts. Successful objects survive resumes. [The admission budget](source-import-budget.md) records official R2 pricing, expected and bounded costs, shared allowance uncertainty and separate Azure/Workers/Artifacts costs. [Provider R2 metrics](evidence/2026-10-15-source/provider-r2-checkpoint.json) are a lagging checkpoint, not a final invoice. Final import and provider reconciliation remain acceptance gates.
+
+## Earlier Git-adapter comparison
+
+The following preserved comparison predates the independent source store. It measures the legacy Git adapter and must not be presented as the current source-store cloud result.
 
 Command: `pnpm exec tsx scripts/compare-git.ts`. Full report: [JSON](evidence/2026-10-14-scion/native-comparison/comparison.json).
 

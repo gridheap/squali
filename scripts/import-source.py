@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Bounded native Git -> Squali source ingestion. Reuse --state after interruption."""
-import argparse,fcntl,base64,gzip,hashlib,json,os,pathlib,subprocess,sys,time,urllib.request,urllib.error
+import argparse,fcntl,base64,gzip,hashlib,json,os,pathlib,subprocess,sys,time,http.client,urllib.parse
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('project');p.add_argument('repository');p.add_argument('--state',required=True)
 p.add_argument('--max-objects',type=int,default=500000);p.add_argument('--max-bytes',type=int,default=16*1024**3)
+p.add_argument('--git-export-max-bytes',type=int,default=1000000000)
 p.add_argument('--max-requests',type=int,default=12000);p.add_argument('--max-batches',type=int,default=128);p.add_argument('--max-seconds',type=int,default=900)
 a=p.parse_args();base=os.environ.get('SQUALI_URL','https://squa.li').rstrip('/');token=os.environ.get('SQUALI_TOKEN')
 if not token:raise SystemExit('Set SQUALI_TOKEN in the environment')
-if not 1<=a.max_objects<=2000000 or not 1<=a.max_bytes<=100*1024**3 or not 1<=a.max_requests<=30000 or not 1<=a.max_batches<=10000 or not 1<=a.max_seconds<=7200:raise SystemExit('Invalid finite ingestion budgets')
+if not 1<=a.git_export_max_bytes<=1000000000 or not 1<=a.max_objects<=2000000 or not 1<=a.max_bytes<=100*1024**3 or not 1<=a.max_requests<=30000 or not 1<=a.max_batches<=10000 or not 1<=a.max_seconds<=7200:raise SystemExit('Invalid finite ingestion budgets')
 root=pathlib.Path(a.state);root.mkdir(mode=0o700,parents=True,exist_ok=True);journal=root/'state.json'
 lock_file=open(root/'import.lock','a+');os.chmod(root/'import.lock',0o600)
 try:fcntl.flock(lock_file,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -22,6 +23,7 @@ refs=[dict(zip(('name','oid'),line.split(' '))) for line in git('for-each-ref','
 if len(refs)>5000:raise SystemExit('Ref budget exceeded')
 branch=git('symbolic-ref','--short','HEAD')
 identity={'origin':base,'project':a.project,'repository':str(pathlib.Path(a.repository).resolve()),'refs':refs,'branch':branch,'maxObjects':a.max_objects,'maxBytes':a.max_bytes,'maxRequests':a.max_requests}
+if a.git_export_max_bytes!=1000000000:identity['gitExportMaxBytes']=a.git_export_max_bytes
 fingerprint=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
 state=json.loads(journal.read_text()) if journal.exists() else {'fingerprint':fingerprint,'identity':identity,'stage':'objects','objectsProcessed':0,'commitsProcessed':0,'httpAttempts':0,'uploadedBytes':0,'complete':False}
 if state['fingerprint']!=fingerprint:raise SystemExit('Source refs, destination or total budgets changed; retain this state and investigate')
@@ -49,31 +51,39 @@ if not (root/'objects.txt').exists():
  with open(root/'commits.txt','wb') as out:git('rev-list','--reverse','--topo-order','--all',stdout=out)
  state.update(sourceObjects=count,sourceBytes=size);save()
 
-class NoRedirect(urllib.request.HTTPRedirectHandler):
- def redirect_request(self,*args,**kwargs):return None
-http=urllib.request.build_opener(NoRedirect())
+endpoint=urllib.parse.urlparse(base)
+if endpoint.scheme not in ('https','http') or not endpoint.hostname or endpoint.username or endpoint.password or endpoint.query or endpoint.fragment:raise SystemExit('Invalid source endpoint')
+http=(http.client.HTTPSConnection if endpoint.scheme=='https' else http.client.HTTPConnection)(endpoint.hostname,endpoint.port,timeout=60)
+class SourceFailure(RuntimeError):
+ def __init__(self,status,code):
+  super().__init__('Source request failed: HTTP '+str(status)+' '+code);self.status=status;self.code=code
 def call(suffix,body):
  if state['httpAttempts']>=a.max_requests:raise RuntimeError('Persistent HTTP attempt ceiling reached')
  state['httpAttempts']+=1;save();raw=body if isinstance(body,bytes) else json.dumps(body,separators=(',',':')).encode()
- request=urllib.request.Request(base+'/api/projects/'+urllib.parse.quote(a.project,safe='')+'/source/'+suffix,data=raw,headers={'Authorization':'Bearer '+token,'User-Agent':'Squali-Native-Import/1','Content-Type':'application/gzip' if isinstance(body,bytes) else 'application/json'})
+ path=endpoint.path+'/api/projects/'+urllib.parse.quote(a.project,safe='')+'/source/'+suffix
+ # One connection per process. Disconnects and unknown acknowledgements stop the job;
+ # reconnecting never silently retries a counted request and redirects are not followed.
  try:
-  with http.open(request,timeout=60) as response:data=response.read(2*1024*1024+1)
- except urllib.error.HTTPError as e:
-  try:code=json.loads(e.read(65536)).get('error','unknown')
+  http.request('POST',path,body=raw,headers={'Authorization':'Bearer '+token,'User-Agent':'Squali-Native-Import/1','Content-Type':'application/gzip' if isinstance(body,bytes) else 'application/json'})
+  response=http.getresponse();data=response.read(2*1024*1024+1)
+ except Exception:
+  http.close();raise
+ if len(data)>2*1024*1024:http.close();raise RuntimeError('Source response exceeds 2 MiB')
+ if not 200<=response.status<300:
+  try:code=json.loads(data).get('error','unknown')
   except Exception:code='unknown'
-  raise RuntimeError('Source request failed: HTTP '+str(e.code)+' '+code) from None
- if len(data)>2*1024*1024:raise RuntimeError('Source response exceeds 2 MiB')
+  raise SourceFailure(response.status,code)
  return json.loads(data)
 
 def exhausted():return batches>=a.max_batches or time.monotonic()-started>=a.max_seconds
 
-def rows(path,skip):
+def rows(path,skip,count=128):
  with open(path) as f:
   for _ in range(skip):
    if not f.readline():raise RuntimeError('Saved cursor exceeds the native manifest')
   while True:
    batch=[]
-   for _ in range(128):
+   for _ in range(count):
     line=f.readline()
     if not line:break
     batch.append(line.strip().split())
@@ -106,15 +116,54 @@ try:
    upload();state['objectsProcessed']+=len(entries);batches+=1;save()
   state['stage']='changesets';save()
  if state['stage']=='changesets':
-  for entries in rows(root/'commits.txt',state['commitsProcessed']):
-   if exhausted():report();raise SystemExit(2)
-   call('changesets',{'commits':[r[0] for r in entries]});state['commitsProcessed']+=len(entries);batches+=1;save()
+  while True:
+   reduced=False
+   for entries in rows(root/'commits.txt',state['commitsProcessed'],state.get('sealBatchSize',128)):
+    if exhausted():report();raise SystemExit(2)
+    try:call('changesets',{'commits':[r[0] for r in entries]})
+    except SourceFailure as error:
+     if error.status!=413 or error.code!='source_seal_budget' or len(entries)==1:raise
+     # Validation rejected this batch before any changeset was committed.
+     # Persist the smaller admission size; all attempts share the same total ceiling.
+     state['sealBatchSize']=max(1,len(entries)//2);save();reduced=True;break
+    state['commitsProcessed']+=len(entries);batches+=1;save()
+   if not reduced:break
   state['stage']='refs';save()
  if exhausted():report();raise SystemExit(2)
- call('finish',{'refs':refs,'defaultBranch':branch});state['stage']='complete';state['complete']=True;save();report()
+ lease=os.environ.get('SQUALI_JOB_LEASE')
+ if lease and not state.get('bridgeComplete') and not state.get('bridgeLimited'):
+  sizes=dict(line.split(': ',1) for line in git('count-objects','-v').splitlines())
+  if (int(sizes.get('size-pack',0))+int(sizes.get('size',0)))*1024>a.git_export_max_bytes:
+   state['bridgeLimited']={'limitBytes':a.git_export_max_bytes,'reason':'provider_limit'};save()
+ if lease and not state.get('bridgeComplete') and not state.get('bridgeLimited'):
+  if not state.get('bridgeConfirmed'):
+   if state.get('bridgeAttempts',0)>=3:raise RuntimeError('Native Git seed attempt ceiling reached')
+   state['bridgeAttempts']=state.get('bridgeAttempts',0)+1;save()
+   offer=call('bridge-prepare',{'refs':refs,'defaultBranch':branch,'lease':lease})
+   if not offer['ready']:
+    remote=urllib.parse.urlparse(offer['remote']);testing=os.environ.get('SQUALI_ALLOW_TEST_HTTP')=='1'
+    if remote.username or remote.password or remote.query or remote.scheme not in (['http','https'] if testing else ['https']):raise RuntimeError('Unsafe native Git export destination')
+    names=[r['name']+':'+r['name'] for r in refs]
+    if sum(len(name) for name in names)>512*1024:raise RuntimeError('Native export ref arguments exceed 512 KiB')
+    environment={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_ALLOW_PROTOCOL':'http:https','GIT_CONFIG_COUNT':'2','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Bearer '+offer['token'],'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false','GIT_TRACE':'0','GIT_TRACE_CURL':'0','GIT_CURL_VERBOSE':'0'}
+    for secret in ('SQUALI_TOKEN','SQUALI_WORKER_DATABASE_URL'):environment.pop(secret,None)
+    http.close() # The native Git push can exceed a provider's HTTP idle timeout.
+    exported=subprocess.run(['git','-C',a.repository,'-c','core.hooksPath=/dev/null','push','--atomic',offer['remote'],*names],env=environment,capture_output=True,timeout=600)
+    if exported.returncode:raise RuntimeError('Native Git export stopped; resume reconciles provider refs before another transfer')
+   confirmation=call('bridge-confirm',{'refs':refs,'defaultBranch':branch,'lease':lease});state['bridgeConfirmed']=True;state['bridgeManifest']=confirmation['manifest'];save();offer=None
+  if not (root/'export-objects.txt').exists():
+   with open(root/'export-roots.txt','w') as out:out.write('\n'.join(r['oid'] for r in refs)+'\n')
+   with open(root/'export-roots.txt','rb') as source,open(root/'export-objects.tmp','wb') as out:git('rev-list','--objects','--no-object-names','--stdin',stdin=source,stdout=out)
+   os.replace(root/'export-objects.tmp',root/'export-objects.txt')
+  for entries in rows(root/'export-objects.txt',state.get('bridgeIndexed',0),2000):
+   if exhausted():report();raise SystemExit(2)
+   call('bridge-index',{'manifest':state['bridgeManifest'],'oids':[r[0] for r in entries],'lease':lease});state['bridgeIndexed']=state.get('bridgeIndexed',0)+len(entries);batches+=1;save()
+  state['bridgeComplete']=True;save()
+ call('finish',{'refs':refs,'defaultBranch':branch,'gitBridgeLimited':bool(state.get('bridgeLimited'))});state['stage']='complete';state['complete']=True;save();report()
 except Exception as e:
  print(str(e),file=sys.stderr);report();raise SystemExit(1)
 finally:
+ http.close()
  if cat:
   cat.stdin.close()
   try:cat.wait(timeout=5)

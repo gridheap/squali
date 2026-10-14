@@ -1,0 +1,29 @@
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (343.849125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 517.410708
+
+✖ failing tests:
+
+test at tests/native-jobs.test.ts:1:431
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (343.849125ms)
+  AssertionError [ERR_ASSERTION]: {"error":"import_size","message":"Repository exceeds the current 512 MiB import limit"}
+  
+  413 !== 200
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/native-jobs.test.ts:25:71)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 413,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

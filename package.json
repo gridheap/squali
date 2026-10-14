@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@clerk/backend": "3.23.2",
+    "acorn": "8.19.0",
     "node-diff3": "3.2.1",
     "postgres": "3.4.9"
   },

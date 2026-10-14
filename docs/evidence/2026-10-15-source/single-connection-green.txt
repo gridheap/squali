@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/rebase.test.ts","sourceAuthority":true,"continuousCommits":3,"nativeTree":"f18cf1bdf1d03b1182cd0222a82f4b9fcf80b537","processRestart":true,"conflictResume":true,"freshReviewRequired":true}
+✔ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (589.29025ms)
+{"command":"node --import tsx --test tests/semantic.test.ts","javascriptAst":true,"commentDirectivesRejected":true,"jsonValues":true,"duplicateKeysRejected":true,"enforcedOnReviewAndPublication":true}
+✔ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (280.660042ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 765.454375

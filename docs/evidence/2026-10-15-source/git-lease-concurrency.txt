@@ -1,0 +1,15 @@
+{"command":"node --import tsx --test tests/source-git.test.ts","nativeClone":true,"incrementalFetch":true,"unpublishedObjectsExcluded":true,"repeatedFetchNewSourceReads":0}
+✔ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (683.661458ms)
+request failed Lost export acknowledgement
+{"command":"node --import tsx --test tests/source-git.test.ts","lostAckReconciled":true,"lostAckExtraSourceReads":0,"derivedRepositoryDeleted":true,"rebuildVerifiedByGit":true}
+✔ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (562.108417ms)
+✔ source Git exports allocate separate provider repositories per workspace (506.976958ms)
+✔ one slow Git export leaves database capacity for another workspace and rejects duplicate export (368.1735ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2293.666417

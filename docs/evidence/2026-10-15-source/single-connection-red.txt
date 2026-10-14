@@ -1,0 +1,28 @@
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"0588319753f89a02a7960938df1d419a55f8359e"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (997.282542ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (731.123417ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (512.861209ms)
+request failed write CONNECTION_DESTROYED 127.0.0.1:55439
+✖ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (4176.29275ms)
+request failed write CONNECTION_DESTROYED 127.0.0.1:55439
+✖ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (4210.013417ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6601.467792
+
+✖ failing tests:
+
+test at tests/rebase.test.ts:1:10289
+✖ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (4176.29275ms)
+  [TimeoutError: The operation was aborted due to timeout]
+
+test at tests/semantic.test.ts:1:226
+✖ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (4210.013417ms)
+  [TimeoutError: The operation was aborted due to timeout]

@@ -1,0 +1,26 @@
+{
+  "command": "25-second Wrangler tail sample; only timing fields retained",
+  "events": [
+    {
+      "outcome": "ok",
+      "cpuTime": 15,
+      "wallTime": 176,
+      "eventTimestamp": 1792007059541,
+      "path": "https://squa.li/api/projects/gh-5fd5a2f4bc33a0286d6728ad/source/missing"
+    },
+    {
+      "outcome": "ok",
+      "cpuTime": 74,
+      "wallTime": 1401,
+      "eventTimestamp": 1792007058052,
+      "path": "https://squa.li/api/projects/gh-5fd5a2f4bc33a0286d6728ad/source/objects"
+    },
+    {
+      "outcome": "ok",
+      "cpuTime": 133,
+      "wallTime": 3850,
+      "eventTimestamp": 1792007059865,
+      "path": "https://squa.li/api/projects/gh-5fd5a2f4bc33a0286d6728ad/source/objects"
+    }
+  ]
+}

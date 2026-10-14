@@ -1,0 +1,29 @@
+{
+  "command": "pnpm test:ui",
+  "readyMs": 4554,
+  "totalMs": 6869,
+  "coldFont": {
+    "state": "inactive",
+    "elapsedMs": 2803
+  },
+  "fontNavigation": "warm",
+  "fonts": {
+    "latin": [
+      {
+        "familyName": "Proxima Nova",
+        "postScriptName": "ProximaNova-Regular",
+        "isCustomFont": true,
+        "glyphCount": 28
+      }
+    ],
+    "cjk": [
+      {
+        "familyName": "PingFang SC",
+        "postScriptName": "PingFangSC-Regular",
+        "isCustomFont": false,
+        "glyphCount": 9
+      }
+    ]
+  },
+  "errors": []
+}

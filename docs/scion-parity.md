@@ -1,33 +1,35 @@
-# Squali and the Scion design
+# Squali and the public Scion design
 
-Source: [Anthropic, Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control), October 13, 2026. Updated October 14.
+Source: [Anthropic, Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control), October 13, 2026. Checkpoint: October 15.
 
-The objective is an online source-control service for agents. GitHub import is one entry point. This table distinguishes implemented behavior from Scion's larger architecture and measured scale. **Full Scion parity has not been achieved; final competition submission remains premature.**
+Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the fixed 20-item checklist, with mandatory architecture gates and additional private-import, performance and cost gates. Final competition submission is still pending. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.
 
-| Article capability | Implemented in Squali | Remaining gap |
+| Article capability | Implemented and tested | Remaining boundary |
 |---|---|---|
-| Online clients; optional working copy | Authenticated source, metadata and change APIs; lightweight CLI | CLI does not replace every Git command |
-| Cheap immutable changesets | Incremental blobs, changed ancestor trees and commits; durable proposal identity and intent | Git proposal refs retain reachability; unlike Scion, changesets are not independent of Git's object/ref model |
-| Server-side reconciliation | Three-way merges, single-commit rebase with explicit conflict resolutions, immutable revisions, dependency ordering, reviewed subset publication | Continuous branch rebase and semantic compatibility still require further work/testing |
-| History, blame, ancestry, merge bases, diff, revert, bisect | Server APIs, versioned SQL-derived answers, first-parent history pagination; reviewed revert | Versioned generation/skip indexes and bounded resumable builds now support larger graphs; hash-verified bulk metadata avoids per-commit provider reads. General traversal has a 50,000-node budget; arbitrary path history/blame still need fuller indexes. Bisect does not execute tests |
-| Extensible derived data | Immutable versioned derived records; repeated blame needs no provider reads | Bounded graph indexing can resume explicitly; no general background derivation/backfill service |
-| Tiered immutable caching | Shared CLI disk cache → Worker isolate/edge → private R2 → Artifacts; quotas and R2 outage admission | No node socket daemon, regional cache fleet or refreshed cache snapshots; no measured 99% per-tier hit rate |
-| Sparse/virtualized checkout | Materialize requested paths, explicitly hydrate more; reuse cached objects; large binary reads | Explicit add, server-commit base advancement, and journaled clean-copy update are implemented and process-death tested. No OS filesystem mount; symlinks/submodules still require native Git. One writer per working copy |
-| Repository/directory IAM | Clerk owner isolation; expiring/revocable role and directory credentials; blocked escape routes | Local cache is not an OS security boundary between mutually untrusted processes sharing one user account |
-| Semantic approval constraints | Path policies require independent reviewers and agent-supplied evidence; policy changes invalidate approval | No parser-backed comment-only classification or trusted CI attestation |
-| Review, search and selected landing | Context, revisions, dependencies, conflicts, selected approved changes; path search with bounded API cursors; file history/blame UI | Recent change/publication windows; search/history UI needs pagination. No full-text code index |
-| Failure recovery | Git CAS, deterministic SQL journal, real process-death tests; independent import reconciliation | External head movement after ambiguous publication needs explicit reconciliation |
-| Large existing repository | Created a private Git mirror with 85,563 commits, 1,020 refs, 324,579,659 packed bytes; fsck passed | Production Artifacts transfer has not completed within three attempts. No claim of successful large import |
-| Independent scaling | Stateless Workers, immutable objects, per-workspace publication coordination | No demonstrated fleet-scale load, 100 GB repository, or universal performance/value result |
+| Online clients; optional working copy | Authenticated source, metadata and change APIs; HTTP CLI and sparse working copy | The CLI implements the documented workflows, rather than every Git command |
+| Immutable incremental changesets | SHA-256 changeset identity, parent identities, first-parent file deltas, compressed content-addressed blobs; no proposal refs | PostgreSQL admission counters still coordinate finite usage budgets |
+| Separate publication | Reviewed subset/dependencies, reconciliation, immutable revisions and CAS on the published ref | One authoritative main update remains serialized |
+| Server operations | Diff, commit, merge, single-commit and continuous rebase, conflicts, revert, executable bisect | Continuous rebase: 64 single-parent commits, eight steps/request; merge commits use explicit-parent rebase |
+| Commit graph and path history | Eager generation/skip index, multi-parent ancestry/merge bases, indexed path events, history and blame | General graph traversal: 50,000-node budget; history and path queries are paginated |
+| Derived data | Versioned recursive derivation, eager/lazy evaluation, rebuilding trees/commits/indexes from canonical deltas | Graph/path bulk builders retain specialized implementations; no automatic background backfill |
+| Virtualized files | Actual Linux FUSE mount: ordinary `ls`, `stat` and `cat`, metadata without file bodies, lazy content | FUSE mounts are immutable/read-only. Writable changes use the sparse working-copy client/API |
+| Node daemon and tiered cache | Private Unix socket, concurrent miss coalescing, bounded shared cache, verified snapshots, Worker memory/edge and durable R2 | No dedicated regional cache fleet or measured 99% hit rate at every tier |
+| Fault isolation | Cache errors fail closed, upload leases and late-ack reconciliation, revoked credentials, bounded snapshots, no authority bypass | Same-user local cache directories are not an OS security boundary between hostile processes |
+| IAM and review constraints | Clerk owner isolation, expiring role/path credentials, parser-backed JS comment-only and JSON value policies | Semantic scope is explicit; it is not general proof of program equivalence or trusted CI attestation |
+| Private GitHub import | Persistent background jobs, single native worker, frozen cache/journal, pause/resume, short internal credential leases, no browser pack transfer | Real production GitHub login and the private catalog pass; full 421,219-object private import remains in progress |
+| Git interoperability | Published-only Artifacts export, incremental clone/fetch, native cache seeding, exact tags, lost-ack reconciliation, rebuildable derived copy | Worker export: 8,192 new objects/16 MiB; Artifacts remains limited to a 1 GB compatibility repository |
+| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 18 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
 
-## Responsibilities and limits
+## Responsibilities
 
-- **Workers:** authentication, path policy, bounded queries, incremental writes and request admission. No full repository checkout or pack decompression in the Worker.
-- **Artifacts:** authoritative Git objects/refs, compare-and-swap publication and native Git interoperability. Current **1 GB repository / 32 MB object** limits remain hard backend constraints.
-- **R2:** private, rebuildable immutable object cache. Entries up to 1 MiB expire after seven days. Durable SQL claims deduplicate writes. Larger raw objects bypass this tier. No public bucket or credentials in cache objects.
-- **PostgreSQL through Hyperdrive:** identities, journals, review policy, derived metadata and usage reservations. No D1 or application Durable Objects.
-- **CLI:** sparse files and a shared 64 MiB disk cache. Authorizes before reuse, validates blob identity and prevents overwriting local edits. Directory credentials use authorized path traversal rather than whole-repository object access.
+- **Workers:** authentication, path policy, bounded queries/writes, source RPC and usage admission. They do not unpack a complete imported Git repository.
+- **R2 `SOURCE`:** authoritative independent gzip blobs, addressed by SHA-256. Completed source objects do not expire.
+- **PostgreSQL through Hyperdrive:** canonical changesets, derived compatibility metadata/indexes, identities, review policy, journals and usage reservations.
+- **Artifacts:** derived Git interoperability copy. Source queries, changesets and publication do not require proposal refs or Artifacts calls. Legacy workspaces retain their old adapter.
+- **R2 `OBJECTS`:** disposable compatibility cache with seven-day expiry; separate metering from authoritative source storage.
+- **Native importer:** one existing Azure VM, one active job, cached Git input, cumulative eight-hour job limit, bounded HTTP/object/byte budgets and at most three explicit recovery attempts. Successful bounded segments continue the same job; failed jobs do not restart themselves.
+- **Client/node:** sparse writable client, shared socket daemon, verified bounded cache/snapshot, Linux FUSE on-demand reads.
 
-Scion reports 100 GB history, a 25 GB working copy, 25 million daily checkouts, over 99% cache hits per tier, 200× smaller infrastructure and about 100× faster checkout. These are **Anthropic's measurements**. R2 caching cannot remove Artifacts' repository limit. Supporting that size requires an authoritative sharded object store and Git bridge, which Squali does not yet implement.
+There is no D1 or application Durable Object. Scion's 100 GB history, 25 GB working copy, 25 million daily checkouts, 99% cache hit rates and 200× infrastructure reduction are **Anthropic's measurements**, not Squali's results. Local benchmark numbers are labeled as such.
 
-See [readiness](readiness.md), [performance](performance.md), [API](api.md), [working copy](working-copy.md) and [evidence](evidence/2026-10-14-scion/).
+See [source architecture](source-architecture.md), [source budget](source-import-budget.md), [evidence](evidence/2026-10-15-source/README.md), [readiness](readiness.md), [API](api.md) and [working copy](working-copy.md).

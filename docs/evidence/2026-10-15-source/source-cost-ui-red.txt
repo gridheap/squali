@@ -1,0 +1,22 @@
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (9436.870583ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9605.293042
+
+✖ failing tests:
+
+test at tests/native-jobs.test.ts:1:431
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (9436.870583ms)
+  locator.waitFor: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for getByTestId('source-reads') to be visible[22m
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/native-jobs.test.ts:38:1387) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for getByTestId('source-reads') to be visible" ]
+  }

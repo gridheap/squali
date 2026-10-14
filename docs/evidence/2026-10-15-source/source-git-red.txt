@@ -1,0 +1,31 @@
+✖ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (199.571917ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 389.887125
+
+✖ failing tests:
+
+test at tests/source-git.test.ts:1:331
+✖ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (199.571917ms)
+  Error: Command failed: git -c http.extraHeader=Authorization: Bearer local-admin-test-token clone http://127.0.0.1:64515/api/projects/git-source/git /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-DsJoPg/native-clone
+  Cloning into '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-DsJoPg/native-clone'...
+  fatal: unable to access 'http://127.0.0.1:64515/api/projects/git-source/git/': The requested URL returned error: 501
+  
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 128,
+    killed: false,
+    signal: null,
+    cmd: 'git -c http.extraHeader=Authorization: Bearer local-admin-test-token clone http://127.0.0.1:64515/api/projects/git-source/git /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-DsJoPg/native-clone',
+    stdout: '',
+    stderr: "Cloning into '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-DsJoPg/native-clone'...\nfatal: unable to access 'http://127.0.0.1:64515/api/projects/git-source/git/': The requested URL returned error: 501\n"
+  }

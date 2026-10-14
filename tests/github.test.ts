@@ -98,7 +98,7 @@ test('GitHub catalog and resumable import preserve private Git history, branches
    assert.equal(await page.getByRole('button',{name:'Import all repositories',exact:true}).count(),0,'Login alone must not start repository discovery');
    await page.getByRole('button',{name:'Grant repository access',exact:true}).click();
    await page.getByRole('button',{name:'Import all repositories',exact:true}).waitFor();
-   revokedSecond=true;await page.getByRole('button',{name:'Import all repositories',exact:true}).click();await page.getByText('2 repositories imported. 1 pending; progress is saved.',{exact:true}).waitFor();
+   revokedSecond=true;await page.getByRole('button',{name:'Import all repositories',exact:true}).click();await page.getByText('2 repositories imported. 1 pending. Progress is saved.',{exact:true}).waitFor();
    revokedSecond=false;await page.getByRole('button',{name:'Resume pending imports',exact:true}).click();await page.getByText('3 repositories imported. No pending imports.',{exact:true}).waitFor();
    assert.equal(transferCount,2,'Import all reuses the first import and transfers only the second');
    await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await mkdir('work/github-evidence',{recursive:true});await page.screenshot({path:'work/github-evidence/import-mobile.png',fullPage:true});

@@ -1,0 +1,32 @@
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (524.985708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 702.628417
+
+✖ failing tests:
+
+test at tests/native-jobs.test.ts:1:522
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (524.985708ms)
+  Error: Command failed: python3 scripts/native-jobs.py --root /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-FpfABT/jobs --once --max-jobs 1 --max-seconds 45 --segment-seconds 1
+  usage: native-jobs.py [-h] --root ROOT [--once] [--max-jobs MAX_JOBS]
+                        [--max-seconds MAX_SECONDS]
+  native-jobs.py: error: unrecognized arguments: --segment-seconds 1
+  
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 2,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/native-jobs.py --root /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-FpfABT/jobs --once --max-jobs 1 --max-seconds 45 --segment-seconds 1',
+    stdout: '',
+    stderr: 'usage: native-jobs.py [-h] --root ROOT [--once] [--max-jobs MAX_JOBS]\n                      [--max-seconds MAX_SECONDS]\nnative-jobs.py: error: unrecognized arguments: --segment-seconds 1\n'
+  }

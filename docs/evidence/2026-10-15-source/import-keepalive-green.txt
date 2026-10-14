@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (858.915333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1001.191667

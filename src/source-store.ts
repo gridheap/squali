@@ -1,3 +1,5 @@
+import {sealSourceBatch} from './source-seal.ts';
+import {sourceExporter} from './source-export.ts';
 import {createHash} from 'node:crypto';
 import {gzipSync,gunzipSync,inflateSync} from 'node:zlib';
 import {Problem} from './types.ts';
@@ -36,6 +38,7 @@ function unpackWrittenPack(input:Uint8Array):RawObject[]{
  if(at!==data.length-20)throw new Problem(400,'source_pack','Trailing pack bytes');return result;
 }
 export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;writes:number;repositoryBytes:number},cache?:import('./cache.ts').ObjectCache){
+ let exportBridge:ReturnType<typeof sourceExporter>;
  async function reserve(kind:'reads'|'writes',n=1){const cap=caps[kind];if(!Number.isSafeInteger(cap)||cap<1)throw new Problem(503,'source_config','Source operation budget is not configured');const month=new Date().toISOString().slice(0,7);const rows=await sql`INSERT INTO weave_source_usage(month,kind,attempts) SELECT ${month},${kind},${n} WHERE ${n}::bigint<=${cap}::bigint ON CONFLICT(month,kind) DO UPDATE SET attempts=weave_source_usage.attempts+${n} WHERE weave_source_usage.attempts+${n}<=${cap} RETURNING attempts`;if(!rows.length)throw new Problem(429,'source_budget','Authoritative source operation budget exhausted');}
  async function row(project:string,id:string){immutable(id);const [value]=await sql`SELECT o.*,b.state AS blob_state FROM weave_source_objects o LEFT JOIN weave_source_blobs b ON b.hash=o.blob WHERE o.project=${project} AND o.oid=${id}`;return value;}
  async function raw(project:string,id:string){const value=await row(project,id);if(!value)throw new Problem(404,'object_missing','Source object not found');if(value.kind!=='blob')return Buffer.from(value.raw);if(value.blob_state!=='ready')throw new Problem(503,'source_pending','Source blob acceptance has not been confirmed');
@@ -66,9 +69,10 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   const unclaimed=prepared.filter(v=>v.blob&&!claimed.has(v.blob));
   if(unclaimed.length){const pending=await sql`SELECT hash,compressed_size FROM weave_source_blobs WHERE hash=ANY(${unclaimed.map(v=>v.blob!)}) AND state<>'ready'`;for(const value of pending){await reserve('reads');const found=await bucket.head('blobs/v1/'+value.hash);if(found&&found.customMetadata?.sha256===value.hash&&found.size===Number(value.compressed_size))await sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=${value.hash}`;else {
    if(found)throw new Problem(503,'source_corrupt','Stored blob metadata does not match its immutable claim');
-   const retry=await sql`UPDATE weave_source_blobs SET attempts=attempts+1,lease_until=now()+interval '5 minutes' WHERE hash=${value.hash} AND state='uploading' AND lease_until<now() AND attempts<3 RETURNING hash`;
+   const input=unclaimed.find(v=>v.blob===value.hash)!;
+   const retry=await sql`UPDATE weave_source_blobs SET attempts=attempts+1,compressed_size=${input.compressed!.length},lease_until=now()+interval '5 minutes' WHERE hash=${value.hash} AND state='uploading' AND lease_until<now() AND attempts<3 RETURNING hash`;
    if(!retry.length)throw new Problem(503,'source_pending','Upload lease is active or its three-attempt ceiling is exhausted');
-   const input=unclaimed.find(v=>v.blob===value.hash)!;await reserve('writes');
+   await reserve('writes');
    try{await bucket.put('blobs/v1/'+value.hash,input.compressed!,{customMetadata:{sha256:value.hash,size:String(input.data.length)},httpMetadata:{contentType:'application/gzip'}});}catch{throw new Problem(503,'source_upload','Bounded immutable upload retry failed');}
    await sql`UPDATE weave_source_blobs SET state='ready',compressed_size=${input.compressed!.length} WHERE hash=${value.hash}`;
   }}}
@@ -83,14 +87,23 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   const compressed=Buffer.concat(chunks);let data:Buffer;try{data=gunzipSync(compressed,{maxOutputLength:32*1024*1024});}catch{throw new Problem(400,'source_encoding','Invalid or oversized gzip blob');}
   return objects(project,[{oid:id,type:'blob',data,compressed}]);
  }
- async function sealBatch(project:string,ids:unknown){if(!Array.isArray(ids)||!ids.length||ids.length>128)throw new Problem(400,'source_batch','Seal 1–128 commits in parent order');for(const id of ids){immutable(id);await seal(project,id);}await completeGraphBatch(sql,project,ids);return {completed:ids.length};}
- async function finish(project:string,refs:unknown,branch:string){
+ async function sealBatch(project:string,ids:unknown){if(!Array.isArray(ids)||!ids.length||ids.length>128)throw new Problem(400,'source_batch','Seal 1–128 commits in parent order');ids.forEach(immutable);return sealSourceBatch(sql,project,ids,decodeCommit,decodeTree);}
+ async function finish(project:string,refs:unknown,branch:string,gitBridgeLimited=false){
   if(!Array.isArray(refs)||refs.length>5000||typeof branch!=='string')throw new Problem(400,'source_refs','Supply at most 5,000 refs and the default branch');
   const names=new Set<string>();for(const ref of refs){immutable(ref?.oid);if(typeof ref.name!=='string'||!/^refs\/(heads|tags)\/[^\x00-\x20~^:?*\[\]\\]+$/.test(ref.name)||ref.name.includes('..')||ref.name.includes('@{')||ref.name.endsWith('.lock')||ref.name.endsWith('/')||ref.name.includes('//')||names.has(ref.name))throw new Problem(400,'source_ref','Invalid or repeated ref');names.add(ref.name);}
   const ordered=[...refs].sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:0),identity=hash('sha256',JSON.stringify({refs:ordered,defaultBranch:branch})),main='refs/heads/'+branch,head=refs.find(r=>r.name===main)?.oid??null;if(refs.length&&!head)throw new Problem(409,'source_default_branch','Default branch is not present');
   const [p]=await sql`SELECT state,source_manifest FROM weave_projects WHERE id=${project}`;if(p.source_manifest===identity&&p.state==='ready')return {state:'ready',head};if(p.state!=='importing')throw new Problem(409,'source_import_state','Only an uninitialized import can install refs');
-  for(const ref of refs){let id=ref.oid,depth=0;while(true){const value=await row(project,id);if(!value)throw new Problem(409,'source_incomplete','A ref target is missing',{ref:ref.name});if(value.kind==='tag'&&!ref.name.startsWith('refs/heads/')){if(++depth>16)throw new Problem(422,'source_tag_depth','Annotated tag chain exceeds its bound');const target=Buffer.from(value.raw).toString().match(/^object ([a-f0-9]{40})$/m)?.[1];if(!target)throw new Problem(400,'source_tag','Malformed annotated tag');id=target;continue;}if(value.kind!=='commit')throw new Problem(422,'source_ref_type','Imported refs currently require commit targets');const complete=await sql`SELECT id FROM weave_changesets WHERE project=${project} AND git_oid=${id}`;if(!complete.length)throw new Problem(409,'source_incomplete','A referenced changeset is incomplete');break;}}
-  await sql.begin(async tx=>{const [current]=await tx`SELECT state,source_manifest FROM weave_projects WHERE id=${project} FOR UPDATE`;if(current.source_manifest===identity&&current.state==='ready')return;if(current.state!=='importing')throw new Problem(409,'source_import_state','Import state changed');if(ordered.length)await tx`INSERT INTO weave_source_refs ${tx(ordered.map(r=>({project,name:r.name,oid:r.oid})),'project','name','oid')}`;await tx`UPDATE weave_projects SET state='ready',head=${head},main_ref=${main},source_manifest=${identity} WHERE id=${project}`;});return {state:'ready',head};
+  const checked=new Map<string,any>();let pending:any[]=refs.map(ref=>({id:ref.oid,expected:ref.name.startsWith('refs/heads/')?'commit':null,depth:0})),treeBytes=0,treeCount=0,entries=0;const seenTrees=new Set<string>();
+  while(pending.length){const current=pending;pending=[];const missing=[...new Set<string>(current.map(v=>v.id))].filter(id=>!checked.has(id));
+   for(let i=0;i<missing.length;i+=2000){const values=await sql`SELECT o.oid,o.kind,o.size,substring(o.raw from 1 for 256) AS prefix,b.state AS blob_state,c.id AS changeset FROM weave_source_objects o LEFT JOIN weave_source_blobs b ON b.hash=o.blob LEFT JOIN weave_changesets c ON c.project=o.project AND c.git_oid=o.oid WHERE o.project=${project} AND o.oid=ANY(${missing.slice(i,i+2000)})`;for(const value of values)checked.set(value.oid,value);}
+   for(const item of current){const value=checked.get(item.id);if(!value||item.expected&&value.kind!==item.expected)throw new Problem(409,'source_incomplete','A ref target is missing or has the wrong object type');
+    if(value.kind==='tag'){if(item.depth>=16)throw new Problem(422,'source_tag_depth','Annotated tag chain exceeds its bound');const header=Buffer.from(value.prefix).toString(),target=header.match(/^object ([a-f0-9]{40})$/m)?.[1],type=header.match(/^type (commit|tree|blob|tag)$/m)?.[1];if(!target||!type)throw new Problem(400,'source_tag','Malformed annotated tag');pending.push({id:target,expected:type,depth:item.depth+1});}
+    else if(value.kind==='commit'){if(!value.changeset)throw new Problem(409,'source_incomplete','A referenced changeset is incomplete');}
+    else if(value.kind==='blob'){if(value.blob_state!=='ready')throw new Problem(409,'source_incomplete','A tagged blob has not been confirmed');}
+    else if(value.kind==='tree'&&!seenTrees.has(value.oid)){seenTrees.add(value.oid);treeBytes+=Number(value.size);if(++treeCount>8192||treeBytes>16*1024*1024)throw new Problem(422,'source_tag_tree_budget','Standalone tagged-tree validation exceeds its bounded step');const children=await tree(project,value.oid);entries+=children.length;if(entries>100000)throw new Problem(422,'source_tag_tree_budget','Standalone tagged trees exceed 100,000 entries');pending.push(...children.filter(child=>child.mode!=='160000').map(child=>({id:child.oid,expected:child.type,depth:0})));}
+   }
+  }
+  await sql.begin(async tx=>{const [current]=await tx`SELECT state,source_manifest FROM weave_projects WHERE id=${project} FOR UPDATE`;if(current.source_manifest===identity&&current.state==='ready')return;if(current.state!=='importing')throw new Problem(409,'source_import_state','Import state changed');if(ordered.length)await tx`INSERT INTO weave_source_refs ${tx(ordered.map(r=>({project,name:r.name,oid:r.oid})),'project','name','oid')}`;await tx`UPDATE weave_projects SET state='ready',head=${head},main_ref=${main},source_manifest=${identity},git_bridge_limited=${gitBridgeLimited} WHERE id=${project}`;await tx`UPDATE weave_github_imports SET state='complete',engine='source',head=${head},refs=${tx.json(ordered)},error=NULL,updated_at=now() WHERE project_id=${project}`;await tx`UPDATE weave_native_jobs SET state='complete',updated_at=now() WHERE import_id IN (SELECT id FROM weave_github_imports WHERE project_id=${project})`;await tx`UPDATE weave_tokens SET revoked_at=now() WHERE id IN (SELECT j.token_id FROM weave_native_jobs j JOIN weave_github_imports i ON i.id=j.import_id WHERE i.project_id=${project})`;});return {state:'ready',head};
  }
 
  const tree=async(project:string,id:string)=>{const value=await row(project,id);if(!value||value.kind!=='tree')throw new Problem(404,'tree_missing','Source tree not found');return decodeTree(value.raw);};
@@ -170,24 +183,27 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   if(input.op!=='object')throw new Problem(400,'rpc_operation','Use head, stat or object');immutable(input.oid);const info=await row(project,input.oid);if(!info)throw new Problem(404,'object_missing','Source object is missing');
   const data=await raw(project,input.oid);return new Response(data,{headers:{'content-type':'application/octet-stream','content-length':String(data.length),'x-squali-type':info.kind,'x-squali-oid':input.oid,'cache-control':'private, no-store'}});
  }
- async function status(project:string){const [counts]=await sql`SELECT count(*) AS objects,COALESCE(sum(size),0) AS bytes FROM weave_source_objects WHERE project=${project}`;const [{count}]=await sql`SELECT count(*) FROM weave_changesets WHERE project=${project}`;return {objects:Number(counts.objects),bytes:Number(counts.bytes),changesets:Number(count),refs:await sql`SELECT name,oid FROM weave_source_refs WHERE project=${project} ORDER BY name`};}
+ async function status(project:string){const [counts]=await sql`SELECT count(*) AS objects,COALESCE(sum(size),0) AS bytes FROM weave_source_objects WHERE project=${project}`;const [{count}]=await sql`SELECT count(*) FROM weave_changesets WHERE project=${project}`;const [p]=await sql`SELECT p.git_bridge_limited,e.manifest FROM weave_projects p LEFT JOIN weave_git_exports e ON e.project=p.id WHERE p.id=${project}`;return {gitCompatibility:{state:p.git_bridge_limited?'provider_limit':p.manifest?'exported':'not_exported'},objects:Number(counts.objects),bytes:Number(counts.bytes),changesets:Number(count),refs:await sql`SELECT name,oid FROM weave_source_refs WHERE project=${project} ORDER BY name`};}
  function artifacts(fallback:Artifacts):Artifacts{
-  async function project(name:string){const [p]=await sql`SELECT id,storage,main_ref FROM weave_projects WHERE artifact=${name}`;return p?.storage==='source'?p:null;}
+  const exporter=exportBridge=sourceExporter(sql,fallback,raw,decodeTree);
+  async function loadProject(name:string){const [p]=await sql`SELECT id,artifact,storage,main_ref,git_bridge_limited FROM weave_projects WHERE artifact=${name}`;return p?.storage==='source'?{id:p.id as string,artifact:name,storage:'source',main_ref:p.main_ref as string,git_bridge_limited:p.git_bridge_limited as boolean}:null;}
+  const projectRecords=new Map<string,ReturnType<typeof loadProject>>();
+  const project=(name:string)=>{if(!projectRecords.has(name))projectRecords.set(name,loadProject(name));return projectRecords.get(name)!;};
   function repo(name:string):Repository{
-   const original=fallback.repo(name),loaded=project(name);
+   const original=fallback.repo(name);
    return {
-    async info(){const p=await loaded;return p?{name,remote:'https://squa.li/api/projects/'+p.id+'/git'}:original.info();},
-    async head(ref?:string){const p=await loaded;if(!p)return original.head(ref);const [row]=await sql`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref??p.main_ref}`;return row?.oid??null;},
-    async commit(id){const p=await loaded;return p?commit(p.id,id):original.commit(id);},
-    async tree(id){const p=await loaded;return p?tree(p.id,id):original.tree(id);},
-    async blob(id){const p=await loaded;return p?raw(p.id,id):original.blob(id);},
-    async persist(id,values){const p=await loaded;if(!p)return false;await objects(p.id,values);await seal(p.id,id);await completeGraphBatch(sql,p.id,[id]);return true;},
-    async push(ref,old,id,pack){const p=await loaded;if(!p)return original.push(ref,old,id,pack);await objects(p.id,unpackWrittenPack(pack));await seal(p.id,id);await completeGraphBatch(sql,p.id,[id]);await sql.begin(async tx=>{const [current]=await tx`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref} FOR UPDATE`;if(current?.oid===id)return;if((current?.oid??null)!==old)throw new Problem(409,'head_moved','The source ref changed');if(current){const result=await tx`UPDATE weave_source_refs SET oid=${id} WHERE project=${p.id} AND name=${ref} AND oid=${old} RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref changed');}else {const result=await tx`INSERT INTO weave_source_refs(project,name,oid) VALUES(${p.id},${ref},${id}) ON CONFLICT DO NOTHING RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref was created concurrently');}});},
-    async receive(refs,stream){if(!await loaded)return original.receive(refs,stream);await stream.cancel();throw new Problem(409,'source_import','Use the resumable source object importer');},
-    async git(request,suffix){if(!await loaded)return original.git(request,suffix);throw new Problem(501,'source_export','Source Git export is not yet available');}
+    async info(){const p=await project(name);return p?{name,remote:'https://squa.li/api/projects/'+p.id+'/git'}:original.info();},
+    async head(ref?:string){const p=await project(name);if(!p)return original.head(ref);const [row]=await sql`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref??p.main_ref}`;return row?.oid??null;},
+    async commit(id){const p=await project(name);return p?commit(p.id,id):original.commit(id);},
+    async tree(id){const p=await project(name);return p?tree(p.id,id):original.tree(id);},
+    async blob(id){const p=await project(name);return p?raw(p.id,id):original.blob(id);},
+    async persist(id,values){const p=await project(name);if(!p)return false;await objects(p.id,values);await sealBatch(p.id,[id]);return true;},
+    async push(ref,old,id,pack){const p=await project(name);if(!p)return original.push(ref,old,id,pack);await objects(p.id,unpackWrittenPack(pack));await sealBatch(p.id,[id]);await sql.begin(async tx=>{const [current]=await tx`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref} FOR UPDATE`;if(current?.oid===id)return;if((current?.oid??null)!==old)throw new Problem(409,'head_moved','The source ref changed');if(current){const result=await tx`UPDATE weave_source_refs SET oid=${id} WHERE project=${p.id} AND name=${ref} AND oid=${old} RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref changed');}else {const result=await tx`INSERT INTO weave_source_refs(project,name,oid) VALUES(${p.id},${ref},${id}) ON CONFLICT DO NOTHING RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref was created concurrently');}});},
+    async receive(refs,stream){if(!await project(name))return original.receive(refs,stream);await stream.cancel();throw new Problem(409,'source_import','Use the resumable source object importer');},
+    async git(request,suffix){const p=await project(name);return p?exporter.git(p,request,suffix):original.git(request,suffix);}
    };
   }
   return {repo,async create(name,branch){if(!await project(name))await fallback.create(name,branch);}};
  }
- return {artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,latestPath};
+ return {caps,exportPrepare:(p:any,refs:unknown)=>exportBridge.prepareSeed(p,refs),exportConfirm:(p:any,refs:unknown)=>exportBridge.confirmSeed(p,refs),exportIndex:(p:any,manifest:unknown,ids:unknown)=>exportBridge.seedObjects(p,manifest,ids),artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,latestPath};
 }

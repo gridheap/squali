@@ -1,0 +1,12 @@
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1356.73325ms)
+{"command":"node --import tsx --test tests/semantic.test.ts","javascriptAst":true,"commentDirectivesRejected":true,"jsonValues":true,"duplicateKeysRejected":true,"enforcedOnReviewAndPublication":true}
+✔ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (279.649166ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1533.374708

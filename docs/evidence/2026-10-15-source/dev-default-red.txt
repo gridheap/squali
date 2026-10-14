@@ -1,0 +1,21 @@
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: pnpm dev must expose the production source architecture
++ actual - expected
+
++ 'artifacts'
+- 'source'
+
+    at file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/check-dev-default.mjs:7:100
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'artifacts',
+  expected: 'source',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.10.0

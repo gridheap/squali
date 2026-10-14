@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/bisect-run.test.ts","commits":16,"culprit":"c617bcf5e4336003c6db5c6a105d2ece069ad7eb","executedTests":6,"persistentResume":true,"replayNewRequests":0}
+✔ automatic sparse bisect executes a test, resumes checkpoints and avoids repeating completed tests (1232.096125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1380.839333

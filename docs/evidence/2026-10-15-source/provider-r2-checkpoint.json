@@ -1,0 +1,172 @@
+{
+  "command": "python3 work/source-provider-metrics.py",
+  "start": "2026-10-01T00:00:00Z",
+  "end": "2026-10-14T20:59:27.585115Z",
+  "scope": [
+    "squali-source",
+    "squali-objects"
+  ],
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){ops0:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-14T20:59:27.585115Z\",bucketName:\"squali-source\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage0:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-14T20:59:27.585115Z\",bucketName:\"squali-source\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}ops1:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-14T20:59:27.585115Z\",bucketName:\"squali-objects\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage1:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-14T20:59:27.585115Z\",bucketName:\"squali-objects\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}}}}",
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "ops0": [
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetBucketLifecycleConfiguration",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutObject",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 42212
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 14
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetObject",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 59
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "userError",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              }
+            ],
+            "ops1": [
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetBucketLifecycleConfiguration",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutObject",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 9
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 25
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucket",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucketLifecycleConfiguration",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "userError",
+                  "actionType": "GetObject",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 10
+                }
+              }
+            ],
+            "storage0": [
+              {
+                "dimensions": {
+                  "bucketName": "squali-source",
+                  "datetime": "2026-10-14T20:10:00Z"
+                },
+                "max": {
+                  "metadataSize": 3128284,
+                  "objectCount": 27534,
+                  "payloadSize": 307746830
+                }
+              }
+            ],
+            "storage1": [
+              {
+                "dimensions": {
+                  "bucketName": "squali-objects",
+                  "datetime": "2026-10-14T20:40:00Z"
+                },
+                "max": {
+                  "metadataSize": 366,
+                  "objectCount": 10,
+                  "payloadSize": 1638
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "note": "Cloudflare adaptive analytics may lag ingestion; these are provider observations, not an invoice."
+}

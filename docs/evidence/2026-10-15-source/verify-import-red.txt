@@ -1,0 +1,30 @@
+✖ import verification checks complete native identity and reuses its successful transfer (395.80375ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 556.092834
+
+✖ failing tests:
+
+test at tests/verify-import.test.ts:1:349
+✖ import verification checks complete native identity and reuses its successful transfer (395.80375ms)
+  Error: Command failed: python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-GCAyie/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-GCAyie/verification --file README.md
+  /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/verify-import.py': [Errno 2] No such file or directory
+  
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 2,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-GCAyie/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-GCAyie/verification --file README.md',
+    stdout: '',
+    stderr: "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/verify-import.py': [Errno 2] No such file or directory\n"
+  }

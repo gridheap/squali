@@ -1,0 +1,27 @@
+✖ automatic sparse bisect executes a test, resumes checkpoints and avoids repeating completed tests (264.787458ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 433.988709
+
+✖ failing tests:
+
+test at tests/bisect-run.test.ts:1:370
+✖ automatic sparse bisect executes a test, resumes checkpoints and avoids repeating completed tests (264.787458ms)
+  AssertionError [ERR_ASSERTION]: /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/bisect-run.py': [Errno 2] No such file or directory
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/bisect-run.test.ts:7:169)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

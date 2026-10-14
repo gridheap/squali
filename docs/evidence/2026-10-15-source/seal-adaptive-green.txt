@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test --test-name-pattern=\"parent-ordered\" tests/source.test.ts","commits":128,"queries":18,"ms":285}
+✔ a parent-ordered import seals 128 changesets in bounded database batches (677.963542ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 826.651709

@@ -1,0 +1,24 @@
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"1ce2cffd5d4d20c7491ade4a0b86cf829327cf67"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1060.108041ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (761.950833ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (534.831333ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","sourceAuthority":true,"continuousCommits":3,"nativeTree":"f18cf1bdf1d03b1182cd0222a82f4b9fcf80b537","processRestart":true,"conflictResume":true,"freshReviewRequired":true}
+✔ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (516.957792ms)
+{"command":"node --import tsx --test tests/semantic.test.ts","javascriptAst":true,"commentDirectivesRejected":true,"jsonValues":true,"duplicateKeysRejected":true,"enforcedOnReviewAndPublication":true}
+✔ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (291.184084ms)
+{"command":"node --import tsx --test tests/source-git.test.ts","nativeClone":true,"incrementalFetch":true,"unpublishedObjectsExcluded":true,"repeatedFetchNewSourceReads":0}
+✔ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (735.440041ms)
+request failed Lost export acknowledgement
+{"command":"node --import tsx --test tests/source-git.test.ts","lostAckReconciled":true,"lostAckExtraSourceReads":0,"derivedRepositoryDeleted":true,"rebuildVerifiedByGit":true}
+✔ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (538.792958ms)
+✔ source Git exports allocate separate provider repositories per workspace (503.651ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3062.322584

@@ -1,0 +1,16 @@
+request failed Lost export acknowledgement
+✖ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (418.335833ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 644.50875
+
+✖ failing tests:
+
+test at tests/source-git.test.ts:1:2558
+✖ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (418.335833ms)
+  [Error: ENOENT: no such file or directory, lstat '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-bHqAcb/weave-export-recovery.git'] { errno: -2, code: 'ENOENT', syscall: 'lstat', path: '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-bHqAcb/weave-export-recovery.git' }

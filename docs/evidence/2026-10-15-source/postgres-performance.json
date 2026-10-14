@@ -1,0 +1,163 @@
+{
+  "cost": 152,
+  "interval": "PT5M",
+  "namespace": "Microsoft.DBforPostgreSQL/flexibleServers",
+  "resourceregion": "eastus2",
+  "timespan": "2026-10-14T20:50:00Z/2026-10-14T21:10:00Z",
+  "value": [
+    {
+      "displayDescription": "CPU percent",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/cpu_percent",
+      "name": {
+        "localizedValue": "CPU percent",
+        "value": "cpu_percent"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 10.579447822524026,
+              "maximum": 13.556457065584853,
+              "timeStamp": "2026-10-14T20:50:00Z"
+            },
+            {
+              "average": 13.538064789236051,
+              "maximum": 17.038539553752535,
+              "timeStamp": "2026-10-14T20:55:00Z"
+            },
+            {
+              "average": 13.968062224365175,
+              "maximum": 28.691840863115306,
+              "timeStamp": "2026-10-14T21:00:00Z"
+            },
+            {
+              "average": 12.659405943349398,
+              "maximum": 16.57084883327697,
+              "timeStamp": "2026-10-14T21:05:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Percent"
+    },
+    {
+      "displayDescription": "Memory percent",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/memory_percent",
+      "name": {
+        "localizedValue": "Memory percent",
+        "value": "memory_percent"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 70.19099712691556,
+              "maximum": 72.02704844418616,
+              "timeStamp": "2026-10-14T20:50:00Z"
+            },
+            {
+              "average": 70.94702064800856,
+              "maximum": 71.52070286942704,
+              "timeStamp": "2026-10-14T20:55:00Z"
+            },
+            {
+              "average": 71.09809124786143,
+              "maximum": 72.10385367181817,
+              "timeStamp": "2026-10-14T21:00:00Z"
+            },
+            {
+              "average": 70.96932565822893,
+              "maximum": 71.95369741991328,
+              "timeStamp": "2026-10-14T21:05:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Percent"
+    },
+    {
+      "displayDescription": "IO Operations per second",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/iops",
+      "name": {
+        "localizedValue": "IOPS",
+        "value": "iops"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 2.1,
+              "maximum": 3.0,
+              "timeStamp": "2026-10-14T20:50:00Z"
+            },
+            {
+              "average": 9.5,
+              "maximum": 36.0,
+              "timeStamp": "2026-10-14T20:55:00Z"
+            },
+            {
+              "average": 3.9,
+              "maximum": 7.0,
+              "timeStamp": "2026-10-14T21:00:00Z"
+            },
+            {
+              "average": 6.5,
+              "maximum": 14.0,
+              "timeStamp": "2026-10-14T21:05:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    },
+    {
+      "displayDescription": "Total number of credits available to burst",
+      "errorCode": "Success",
+      "id": "/subscriptions/60c9ccef-5b83-48ca-887a-bf3b7ab738a1/resourceGroups/tidymessages-production/providers/Microsoft.DBforPostgreSQL/flexibleServers/tidywapg20476/providers/Microsoft.Insights/metrics/cpu_credits_remaining",
+      "name": {
+        "localizedValue": "CPU Credits Remaining",
+        "value": "cpu_credits_remaining"
+      },
+      "resourceGroup": "tidymessages-production",
+      "timeseries": [
+        {
+          "data": [
+            {
+              "average": 305.0,
+              "maximum": 305.0,
+              "timeStamp": "2026-10-14T20:50:00Z"
+            },
+            {
+              "average": 305.0,
+              "maximum": 305.0,
+              "timeStamp": "2026-10-14T20:55:00Z"
+            },
+            {
+              "average": 305.0,
+              "maximum": 305.0,
+              "timeStamp": "2026-10-14T21:00:00Z"
+            },
+            {
+              "timeStamp": "2026-10-14T21:05:00Z"
+            }
+          ],
+          "metadatavalues": []
+        }
+      ],
+      "type": "Microsoft.Insights/metrics",
+      "unit": "Count"
+    }
+  ]
+}

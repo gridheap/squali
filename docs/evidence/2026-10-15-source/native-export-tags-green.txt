@@ -1,0 +1,36 @@
+{"command":"node --import tsx --test tests/native-jobs.test.ts","private":true,"backgroundNativeJob":true,"nativeTransfers":1,"completedReplayTransfers":0,"branchesAndTags":4,"ownerIsolation":true,"credentialsKeptOffBrowser":true,"competingRunnerRejected":true,"pauseBeforeStart":true}
+✔ one-click private imports run outside the browser, preserve native history, and reuse completed work (3965.564459ms)
+{"command":"node --import tsx --test tests/source-git.test.ts","nativeClone":true,"incrementalFetch":true,"unpublishedObjectsExcluded":true,"repeatedFetchNewSourceReads":0}
+✔ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (730.788875ms)
+request failed Lost export acknowledgement
+{"command":"node --import tsx --test tests/source-git.test.ts","lostAckReconciled":true,"lostAckExtraSourceReads":0,"derivedRepositoryDeleted":true,"rebuildVerifiedByGit":true}
+✔ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (515.026542ms)
+✔ source Git exports allocate separate provider repositories per workspace (523.755334ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"c4ac3d8303ed892547a05575a28302dbc284c075"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (310.639666ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (867.170167ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (226.444291ms)
+{"command":"node --import tsx --test tests/source.test.ts","binaryBytes":2097152,"incompressible":true,"exactBytes":true}
+✔ native source importer transfers an incompressible binary above the JSON batch limit (411.815916ms)
+{"command":"node --import tsx --test tests/source.test.ts","expiredUploadRecovered":true,"putAttempts":2,"concurrentResumeDeduplicated":true}
+✔ an expired failed source upload can be resumed once without racing an active lease (131.997792ms)
+{"command":"node --import tsx --test tests/source.test.ts","canonicalRebuild":true,"removedAllGitMetadata":true,"nativeCommitsExact":3,"versionedRecursiveDerivation":true,"extraBlobWrites":0}
+✔ canonical changesets rebuild every Git tree and commit after all compatibility metadata is removed (528.526417ms)
+{"command":"node --import tsx --test tests/source.test.ts","rawObjectRpc":true,"metadataOnlyInspection":true,"hashVerified":true}
+✔ source RPC serves verified raw objects and file sizes without fetching file content during directory inspection (90.881083ms)
+✔ regional source object cache serves immutable hits and fails closed when its cache layer fails (79.66725ms)
+{"command":"node --import tsx --test tests/source.test.ts","nativeCommits":512,"eagerGraph":true,"pathCandidates":1,"unrelatedChurnSkipped":511,"blameMatchesNative":true}
+✔ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (1210.9845ms)
+✔ source reconstruction preserves legacy non-UTF-8 commit metadata byte for byte (239.212209ms)
+{"command":"node --import tsx --test tests/source.test.ts","originalFailingTree":"0323c14ecfac54b060a52ef54b9ea38377adede0","historicMode":"100664","displayMode":"100644","reconstructedBytesExact":true}
+✔ historic Git permission modes import without changing immutable tree identity (284.472584ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4571.248917

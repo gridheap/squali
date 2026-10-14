@@ -1,0 +1,112 @@
+✔ HTTP auth, workspace creation and sparse reads preserve a real Git repository (438.021083ms)
+✔ parallel agent changes preserve context, require review, and publish one Git commit (397.22ms)
+✔ three-way merge accepts separate lines and exposes overlapping edits for explicit revision (748.766041ms)
+✔ dependencies, malformed paths, unauthorized writes, and external Git races fail safely (936.477792ms)
+request failed Injected loss of publication acknowledgement
+✔ a lost push acknowledgement recovers the exact publication without duplicating Git history (365.507375ms)
+✔ persistent operation limits stop work before the next provider call (113.076708ms)
+✔ binary edits are rejected and an external executable-bit change survives content publication (356.901792ms)
+✔ immutable source reads reuse the cache after authorization (14.346958ms)
+request failed Injected failure before push
+✔ an unpublished failed batch can be cancelled without rewriting Git (424.483125ms)
+✔ standard Git can clone through the authenticated read-only gateway (149.23225ms)
+✔ the complete HTTP workflow makes progress with a single database connection (550.674708ms)
+✔ agents start from the real current head and replay frozen proposals without provider calls (483.706125ms)
+✔ successful cancellation fences a delayed Git push and leaves an unchanged-tree audit commit (511.220042ms)
+✔ concurrent publication retries converge on one Git commit and one event (411.97825ms)
+✔ native Git gzip negotiation succeeds and decompression is bounded before provider calls (102.144333ms)
+{"command":"node --import tsx --test tests/bisect-run.test.ts","commits":16,"culprit":"3e141b527042d7a7e2d696b42cba5a1c388a38f8","executedTests":6,"persistentResume":true,"replayNewRequests":0}
+✔ automatic sparse bisect executes a test, resumes checkpoints and avoids repeating completed tests (1586.532041ms)
+✔ a real process kill after Git accepted a batch recovers through the public HTTP API (1126.219ms)
+✔ a process killed before Git acceptance can be resumed by another reviewer with the same commit (941.360542ms)
+✔ cancellation survives SIGKILL before Git acceptance and retains one unchanged-tree audit commit (1156.806833ms)
+✔ cancellation survives SIGKILL after Git acceptance and retains one unchanged-tree audit commit (1039.164583ms)
+HTTP Clerk identity: owner isolation, expiry, signature, issuer and authorized party verified.
+✔ Clerk sessions create private owner workspaces and reject forged, expired and foreign sessions (589.734833ms)
+✖ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (13954.051542ms)
+{"command":"node --import tsx --test tests/graph.test.ts","commits":1025,"steps":7,"mergeBase":"e6404dda0e53663e11f3a51f6a440fb3ae4dbc62","newQueryProviderReads":0}
+✔ bounded resumable indexing serves deep history through HTTP without rereading Git objects (1727.3645ms)
+{"command":"node --import tsx --test tests/graph.test.ts","nativeIndexCLI":true,"finiteStepBudget":2,"completedIndexReused":true}
+✔ native-repository index CLI uploads verified metadata with an explicit finite step budget (471.848042ms)
+{"command":"node --import tsx --test tests/graph.test.ts","restartResume":true,"crissCrossBases":["8e7a949c915a29681e4c26f08b54646e90271008","cd82aa94d868c39a853caf8eddcf307a71c1f9e5"],"disconnected":true,"secondParent":true,"nonAdminIndexDenied":true}
+✔ index progress survives a server restart and preserves criss-cross merge bases (509.194125ms)
+{"command":"pnpm test:metadata","mergeBase":"fe77d889395c4a696c63210b15a7568bfdb4289c","mergedHead":"3a33ae27a572c4fb412ffe130a5e9b36b2215ba0","blameCommits":["e08ea007419b21d73ddb4da253cd87bde94511cf","fe77d889395c4a696c63210b15a7568bfdb4289c","901dc3f6645753128e600c4ad394ad70e04e7007"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (1129.685916ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (250.960916ms)
+{"command":"node --import tsx --test tests/native-jobs.test.ts","private":true,"backgroundNativeJob":true,"nativeTransfers":1,"completedReplayTransfers":0,"branchesAndTags":4,"ownerIsolation":true,"credentialsKeptOffBrowser":true,"competingRunnerRejected":true,"pauseBeforeStart":true}
+✔ one-click private imports run outside the browser, preserve native history, and reuse completed work (4486.058375ms)
+{"command":"node --import tsx --test tests/node-cache.test.ts","concurrentReaders":12,"sourceReads":1,"snapshotRestored":true,"unauthorizedWorkspaceDenied":true,"failedOriginAttempts":1,"head":"70ebcdd4d4292a79ca464db45c8e6a9efd670d18"}
+✔ node daemon coalesces misses, persists verified objects, restores a refreshed snapshot and isolates failed reads (481.005167ms)
+{"command":"pnpm test:permissions","directoryBoundary":"docs","escapeRoutesRejected":["file","tree siblings","git","objects","unscoped diff","proposal ID","write"],"independentReview":true,"evidenceRequired":true,"policyChangeInvalidatesApproval":true}
+✔ directory credentials cannot escape via Git, object batches, metadata or proposal IDs; review policies gate publication (1718.077833ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","nativeGitTree":"8a8b149a2b6d71aaaa433fc9f182d34c12bf8730","mainUnchangedByRebase":true,"freshReview":true,"repeatOid":"3ed20c9dc0bfe801ec5a56d0fe1ef8b06a5dff84"}
+✔ server rebase preserves independent changes and matches native Git without moving main or inheriting approval (1477.244792ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","conflictPaths":3,"explicitResolutions":true,"explicitMergeParent":true}
+✔ rebase returns recoverable conflicts, rejects unrelated resolutions and requires an explicit merge parent (1003.322542ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","aggregateConflictBytesBounded":true,"proposalCreated":false}
+✔ rebase bounds aggregate conflict bytes before returning large target contents (573.290917ms)
+{"command":"node --import tsx --test tests/rebase.test.ts","continuousCommits":3,"nativeTree":"f18cf1bdf1d03b1182cd0222a82f4b9fcf80b537","processRestart":true,"conflictResume":true,"freshReviewRequired":true}
+✔ continuous rebase checkpoints a branch, resumes conflicts and matches native Git (1496.232334ms)
+{"command":"node --import tsx --test tests/semantic.test.ts","javascriptAst":true,"commentDirectivesRejected":true,"jsonValues":true,"duplicateKeysRejected":true,"enforcedOnReviewAndPublication":true}
+✔ semantic review accepts comments and JSON formatting, rejects changed execution and hidden directives (663.922875ms)
+{"command":"node --import tsx --test tests/source-git.test.ts","nativeClone":true,"incrementalFetch":true,"unpublishedObjectsExcluded":true,"repeatedFetchNewSourceReads":0}
+✔ source Git bridge clones published history, hides proposals and incrementally fetches reviewed publication (1145.928958ms)
+request failed Lost export acknowledgement
+{"command":"node --import tsx --test tests/source-git.test.ts","lostAckReconciled":true,"lostAckExtraSourceReads":0,"derivedRepositoryDeleted":true,"rebuildVerifiedByGit":true}
+✔ Git bridge reconciles lost push acknowledgements and rebuilds a deleted derived repository (616.836375ms)
+✔ source Git exports allocate separate provider repositories per workspace (723.75625ms)
+{"command":"node --import tsx --test tests/source.test.ts","durableChangesets":true,"independentR2Blobs":true,"proposalRefs":0,"artifactsCalls":0,"processRestart":true,"publication":"bcef4ed7bcb4524cdd5d48d0ba14d09c1bd95e48"}
+✔ source changesets persist first-parent deltas and blobs without proposal refs, then publish through CAS (546.621792ms)
+{"command":"node --import tsx --test tests/source.test.ts","importedObjects":10,"refs":2,"sourceCommits":2,"binaryExact":true,"replayedWrites":0,"incompleteRefRejected":true}
+✔ resumable source import preserves native history, tags and binary bytes and rejects incomplete or forged objects (1069.981333ms)
+{"command":"node --import tsx --test tests/source.test.ts","ambiguousUpload":true,"putAttempts":1,"missingContentNotPublished":true,"lateAcceptanceRecovered":true}
+✔ an ambiguous source upload cannot publish missing content and resumes a late accepted blob without a second put (243.509917ms)
+{"command":"node --import tsx --test tests/source.test.ts","binaryBytes":2097152,"incompressible":true,"exactBytes":true}
+✔ native source importer transfers an incompressible binary above the JSON batch limit (467.655125ms)
+{"command":"node --import tsx --test tests/source.test.ts","expiredUploadRecovered":true,"putAttempts":2,"concurrentResumeDeduplicated":true}
+✔ an expired failed source upload can be resumed once without racing an active lease (140.355083ms)
+{"command":"node --import tsx --test tests/source.test.ts","canonicalRebuild":true,"removedAllGitMetadata":true,"nativeCommitsExact":3,"versionedRecursiveDerivation":true,"extraBlobWrites":0}
+✔ canonical changesets rebuild every Git tree and commit after all compatibility metadata is removed (551.587125ms)
+{"command":"node --import tsx --test tests/source.test.ts","rawObjectRpc":true,"metadataOnlyInspection":true,"hashVerified":true}
+✔ source RPC serves verified raw objects and file sizes without fetching file content during directory inspection (100.392917ms)
+✔ regional source object cache serves immutable hits and fails closed when its cache layer fails (102.069125ms)
+{"command":"node --import tsx --test tests/source.test.ts","nativeCommits":512,"eagerGraph":true,"pathCandidates":1,"unrelatedChurnSkipped":511,"blameMatchesNative":true}
+✔ imported deep history has eager graph jumps and indexed path history and blame despite unrelated file churn (1333.576916ms)
+✔ source reconstruction preserves legacy non-UTF-8 commit metadata byte for byte (265.467125ms)
+{"command":"node --import tsx --test tests/source.test.ts","originalFailingTree":"0323c14ecfac54b060a52ef54b9ea38377adede0","historicMode":"100664","displayMode":"100644","reconstructedBytesExact":true}
+✔ historic Git permission modes import without changing immutable tree identity (307.079333ms)
+✔ a lost retry acknowledgement recovers when the gzip representation differs from the original claim (94.85425ms)
+{"command":"pnpm test:sparse","sourceFiles":4,"sparseFiles":2,"firstNetworkObjects":5,"secondNetworkObjects":0,"sharedCacheHits":5,"hydratedFiles":1,"gitClone":false,"proposal":"sparse-change"}
+✔ sparse CLI checks out only requested paths, reuses immutable objects, hydrates and proposes without Git clone (1788.06725ms)
+{"command":"pnpm test:sparse","update":true,"realProcessDeath":true,"editedAfterCrashProtected":true,"hydratedPathRetained":true,"executableMode":true,"untrackedPreserved":true}
+✔ working-copy update survives process death and preserves edits, hydrated paths and file modes (1742.317459ms)
+{"command":"pnpm test:sparse","explicitAdd":true,"published":true,"unseenContentPreserved":true}
+✔ sparse clients explicitly add new files and preserve unseen remote content (1481.196625ms)
+{"command":"pnpm test:sparse","binaryBytes":2097152,"firstNetworkObjects":3,"repeatedNetworkObjects":0,"exactBytes":true}
+✔ sparse checkout reads a large imported binary through an authorized bounded raw endpoint (700.316541ms)
+{"command":"pnpm test:storage","persistentObjects":4,"reads":9,"writes":4,"restartedWorkers":2,"originCallsOnRestart":0,"authBeforeCache":true,"outageDoesNotFanOut":true}
+✔ HTTP immutable reads survive cache-tier restart, isolate credentials and stop on R2 outage (623.054834ms)
+{"command":"pnpm test:storage","failedUploads":1,"repeatedOriginCalls":0,"persistentAdmission":true}
+✔ an interrupted R2 upload cannot repeatedly refill from Artifacts after Worker restart (285.740084ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 55
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14815.596666
+
+✖ failing tests:
+
+test at tests/github.test.ts:1:4687
+✖ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (13954.051542ms)
+  locator.waitFor: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for getByText('2 repositories imported. 1 pending; progress is saved.', { exact: true }) to be visible[22m
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/github.test.ts:101:198) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for getByText('2 repositories imported. 1 pending; progress is saved.', { exact: true }) to be visible" ]
+  }

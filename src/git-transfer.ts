@@ -1,7 +1,7 @@
 import {pkt,readPackets} from './git.ts';
 import {Problem,ZERO} from './types.ts';
-export type GitRef={name:string;oid:string};
-const validRef=(name:string)=>/^refs\/(heads|tags)\/.+/.test(name)&&!/[\x00-\x20\x7f~^:?*\[\\]/.test(name)&&!name.includes('..')&&!name.includes('@{')&&!name.endsWith('/')&&!name.endsWith('.')&&!name.split('/').some(p=>p.startsWith('.')||p.endsWith('.lock'));
+export type GitRef={name:string;oid:string;old?:string};
+export const validRef=(name:string)=>/^refs\/(heads|tags)\/.+/.test(name)&&!/[\x00-\x20\x7f~^:?*\[\\]/.test(name)&&!name.includes('..')&&!name.includes('@{')&&!name.endsWith('/')&&!name.endsWith('.')&&!name.split('/').some(p=>p.startsWith('.')||p.endsWith('.lock'));
 export async function limitedBytes(response:Response,limit:number){
  if(!response.ok){await response.body?.cancel();throw new Problem(response.status===404?404:response.status===401||response.status===403?403:502,'upstream','Repository provider request failed. Check GitHub access and retry.');}
  const reader=response.body?.getReader();if(!reader)throw new Problem(502,'upstream','Provider returned no body');const chunks:Buffer[]=[];let n=0;
@@ -26,7 +26,7 @@ export async function receivePack(remote:string,token:string,refs:GitRef[],strea
  const capabilities=advertisement.find(line=>line.includes('\0'))?.split('\0')[1]?.trim().split(' ')??[];
  if(!capabilities.includes('report-status')){await stream.cancel();throw new Problem(502,'git_capability','Destination does not support Git receive status reports');}
  const requested='report-status'+(capabilities.includes('atomic')?' atomic':'');
- const commands=Buffer.concat([...refs.map((ref,i)=>pkt(`${ZERO} ${ref.oid} ${ref.name}${i===0?'\0'+requested:''}\n`)),Buffer.from('0000')]);
+ const commands=Buffer.concat([...refs.map((ref,i)=>pkt(`${ref.old??ZERO} ${ref.oid} ${ref.name}${i===0?'\0'+requested:''}\n`)),Buffer.from('0000')]);
  const reader=stream.getReader();let first=true;
  const body=new ReadableStream<Uint8Array>({async pull(controller){if(first){first=false;controller.enqueue(commands);return;}try{const {done,value}=await reader.read();if(done)controller.close();else controller.enqueue(value);}catch(e){controller.error(e);}},cancel:()=>reader.cancel()});
  try{

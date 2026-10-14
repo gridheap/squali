@@ -1,0 +1,15 @@
+HTTP Clerk identity: owner isolation, expiry, signature, issuer and authorized party verified.
+✔ Clerk sessions create private owner workspaces and reject forged, expired and foreign sessions (371.035167ms)
+Import SIGKILL: native Git accepted the atomic pack; restart reconciled all frozen refs; zero duplicate transfers.
+GitHub E2E: paginated catalog cached; private full history + two branches + annotated tag; default trunk; native clone/fsck; proposal/review/publication; replay avoided duplicate transfer.
+✔ GitHub catalog and resumable import preserve private Git history, branches and tags without duplicate transfer (5749.102ms)
+{"command":"node --import tsx --test tests/native-jobs.test.ts","private":true,"backgroundNativeJob":true,"nativeTransfers":1,"completedReplayTransfers":0,"branchesAndTags":2,"ownerIsolation":true,"credentialsKeptOffBrowser":true,"competingRunnerRejected":true,"pauseBeforeStart":true}
+✔ one-click private imports run outside the browser, preserve native history, and reuse completed work (1121.022083ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6298.151375

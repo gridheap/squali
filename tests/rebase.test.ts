@@ -74,3 +74,25 @@ test('rebase bounds aggregate conflict bytes before returning large target conte
   console.log(JSON.stringify({command:'node --import tsx --test tests/rebase.test.ts',aggregateConflictBytesBounded:true,proposalCreated:false}));
  }finally{await server.close();}
 });
+
+test('continuous rebase checkpoints a branch, resumes conflicts and matches native Git',async()=>{
+ let server=await startLocal({port:0,test:true,source:true,poolSize:1});
+ const call=async(path:string,body?:unknown)=>{const r=await fetch(server.url+'/api'+path,{signal:AbortSignal.timeout(3000),method:body?'POST':'GET',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:body?JSON.stringify(body):undefined});return {status:r.status,body:await r.json() as any};};
+ try{
+  const project=(await call('/projects',{id:'series',name:'Continuous rebase',files:[{path:'a',content:'root\n'},{path:'b',content:'root\n'}]})).body;
+  let base=project.head;const commits=[];for(const [i,path] of ['a','b','new'].entries()){const c=await call('/projects/series/changes',{id:'original-'+i,title:'Commit '+i,intent:'Branch fixture',base,files:[{path,content:'branch-'+i+'\n'}]});assert.equal(c.status,201);commits.push(c.body.oid);base=c.body.oid;}
+  const onto=(await call('/projects/series/changes',{id:'upstream',title:'Upstream',intent:'Independent target',base:project.head,files:[{path:'extra',content:'upstream\n'}]})).body.oid;
+  const request={id:'continuous',commits,onto,limit:1};const first=await call('/projects/series/rebase-series',request);assert.equal(first.status,200,JSON.stringify(first.body));assert.equal(first.body.state,'running');assert.equal(first.body.completed,1);
+  const dir=server.dir;await server.close();server=await startLocal({port:0,test:true,source:true,poolSize:1,directory:dir});
+  const second=await call('/projects/series/rebase-series',request);assert.equal(second.body.completed,2);assert.equal(second.body.changes[0].oid,first.body.changes[0].oid);
+  const done=await call('/projects/series/rebase-series',request);assert.equal(done.body.state,'complete');assert.equal(done.body.completed,3);assert.equal((await call('/projects/series')).body.head,project.head);
+  for(const change of done.body.changes){assert.equal((await call('/projects/series/changes/'+change.id)).body.status,'proposed');}
+  const {writeFile}=await import('node:fs/promises');const copy=server.dir+'/native-series';await exec('git',['init','--initial-branch=main',copy]);const git=async(...args:string[])=>(await exec('git',['-C',copy,'-c','user.name=Verifier','-c','user.email=v@example.invalid',...args])).stdout.trim();await writeFile(copy+'/a','root\n');await writeFile(copy+'/b','root\n');await git('add','.');await git('commit','-m','Root');const nativeRoot=await git('rev-parse','HEAD'),nativeCommits=[];for(const [i,path] of ['a','b','new'].entries()){await writeFile(copy+'/'+path,'branch-'+i+'\n');await git('add','.');await git('commit','-m','Step '+i);nativeCommits.push(await git('rev-parse','HEAD'));}await git('checkout','--detach',nativeRoot);await writeFile(copy+'/extra','upstream\n');await git('add','.');await git('commit','-m','Upstream');await git('cherry-pick',...nativeCommits);const tree=(await exec('git',['-C',copy,'rev-parse','HEAD^{tree}'])).stdout.trim();assert.equal((await call('/projects/series/commit?ref='+done.body.head)).body.tree,tree);
+  assert.deepEqual((await call('/projects/series/rebase-series',request)).body,done.body);assert.equal((await call('/projects/series/rebase-series',{...request,onto:project.head})).status,409);
+  const conflictOnto=(await call('/projects/series/changes',{id:'conflict-upstream',title:'Conflict',intent:'Conflict',base:project.head,files:[{path:'a',content:'target\n'}]})).body.oid;
+  const blockedRequest={id:'blocked',commits,onto:conflictOnto};const blocked=await call('/projects/series/rebase-series',blockedRequest);assert.equal(blocked.body.state,'blocked');assert.equal(blocked.body.completed,0);assert.equal(blocked.body.conflicts[0].path,'a');
+  const resolved=await call('/projects/series/rebase-series',{...blockedRequest,resolutions:{[commits[0]]:[{path:'a',content:'resolved\n'}]}});assert.equal(resolved.body.state,'complete',JSON.stringify(resolved.body));assert.equal((await call('/projects/series/file?path=a&ref='+resolved.body.head)).body.content,'resolved\n');
+  assert.equal((await call('/projects/series/rebase-series',{id:'nonlinear',commits:[commits[1],commits[0]],onto})).status,400);
+  console.log(JSON.stringify({command:'node --import tsx --test tests/rebase.test.ts',sourceAuthority:true,continuousCommits:3,nativeTree:tree,processRestart:true,conflictResume:true,freshReviewRequired:true}));
+ }finally{await server.close();}
+});

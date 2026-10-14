@@ -1,0 +1,1 @@
+{"command":"PORT=8797 pnpm dev; SQUALI_URL=http://127.0.0.1:8797 node scripts/check-dev-default.mjs","project":"dev-source-1792012415067","storage":"source","state":"ready","head":"f888a56e51b3354e91aa2af96a8ea0e39bc423fd"}

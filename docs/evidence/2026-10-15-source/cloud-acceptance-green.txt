@@ -1,0 +1,10 @@
+{"command":"python3 scripts/cloud-acceptance.py acceptance --state <retained-state> --label local validation","label":"local validation","origin":"http://127.0.0.1:57849","timestamp":"2026-10-14T20:53:19Z","complete":true,"httpAttempts":143,"segments":1,"dataset":{"baselineFiles":64,"baselineBytes":419400,"changes":64,"concurrency":8,"storage":"source"},"results":{"publishedFiles":64,"changesets":66,"writeWallMs":171.909,"changesPerSecond":372.29,"p50Ms":16.405,"p95Ms":54.835,"p99Ms":58.235,"publicationMs":41.635,"publishedHead":"e3021372477e024230ce6af1adbdaca697a444e8","cacheSamples":[{"file":"seed/file-0.txt","firstMs":1.422,"repeatMs":1.325},{"file":"seed/file-15.txt","firstMs":1.274,"repeatMs":1.218},{"file":"seed/file-31.txt","firstMs":1.203,"repeatMs":1.138},{"file":"seed/file-63.txt","firstMs":1.183,"repeatMs":1.205}],"usageBefore":{"source":{"readCap":1000000,"writeCap":1000000,"reads":0,"writes":0},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}},"usageBeforePublication":{"source":{"readCap":1000000,"writeCap":1000000,"reads":0,"writes":128},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}},"usageAfter":{"source":{"readCap":1000000,"writeCap":1000000,"reads":72,"writes":128},"attempts":0,"cap":1000000,"mode":"local Git + PostgreSQL","cache":{"reservedReads":0,"reservedWrites":0,"readCap":null,"writeCap":null}}},"limitations":["One origin client location and small independent text changes; no distributed-scale claim","Usage counters are shared deployment reservations; concurrent import traffic is included","First/repeat reads do not imply an empty global cache or isolate","Eight clients share the supplied agent principal; this is not an eight-user identity benchmark","No automatic retries; resumed write wall time includes pauses between segments"]}
+✔ bounded cloud acceptance CLI publishes 64 changes and reuses its completed journal (614.084042ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 765.251833

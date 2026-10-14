@@ -1,0 +1,83 @@
+{
+  "command": "Cloudflare GraphQL hyperdriveQueriesAdaptiveGroups",
+  "start": "2026-10-14T20:50:00Z",
+  "end": "2026-10-14T21:10:00Z",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){hyperdriveQueriesAdaptiveGroups(limit:200,filter:{configId:\"c5366ae0d2d54d76b2b7daf414c6333d\",datetime_geq:\"2026-10-14T20:50:00Z\",datetime_leq:\"2026-10-14T21:10:00Z\"}){count dimensions{datetimeFiveMinutes coloCode eventStatus} sum{connectionLatency queryLatency originReadLatency originWriteLatency queryBytes resultBytes}}}}}",
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "hyperdriveQueriesAdaptiveGroups": [
+              {
+                "count": 2761,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T21:05:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 115633,
+                  "originReadLatency": 22441,
+                  "originWriteLatency": 205,
+                  "queryBytes": 320120,
+                  "queryLatency": 71154,
+                  "resultBytes": 2506676
+                }
+              },
+              {
+                "count": 10091,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T20:55:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 408007,
+                  "originReadLatency": 78759,
+                  "originWriteLatency": 347,
+                  "queryBytes": 939387,
+                  "queryLatency": 268079,
+                  "resultBytes": 5619522
+                }
+              },
+              {
+                "count": 1854,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T20:50:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 207,
+                  "originReadLatency": 16487,
+                  "originWriteLatency": 274,
+                  "queryBytes": 349705,
+                  "queryLatency": 17263,
+                  "resultBytes": 1907220
+                }
+              },
+              {
+                "count": 2353,
+                "dimensions": {
+                  "coloCode": "IAD",
+                  "datetimeFiveMinutes": "2026-10-14T21:00:00Z",
+                  "eventStatus": "complete"
+                },
+                "sum": {
+                  "connectionLatency": 710,
+                  "originReadLatency": 23445,
+                  "originWriteLatency": 265,
+                  "queryBytes": 551239,
+                  "queryLatency": 24839,
+                  "resultBytes": 2512108
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  }
+}

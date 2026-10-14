@@ -120,3 +120,29 @@ CREATE TABLE IF NOT EXISTS weave_source_paths (
  project text NOT NULL REFERENCES weave_projects(id), version integer NOT NULL,
  path text NOT NULL, git_oid text NOT NULL, PRIMARY KEY(project,version,path,git_oid)
 );
+ALTER TABLE weave_github_imports ADD COLUMN IF NOT EXISTS engine text NOT NULL DEFAULT 'artifacts';
+ALTER TABLE weave_github_imports ADD COLUMN IF NOT EXISTS native_attempts integer NOT NULL DEFAULT 0;
+CREATE TABLE IF NOT EXISTS weave_native_jobs (
+ import_id text PRIMARY KEY REFERENCES weave_github_imports(id),
+ state text NOT NULL DEFAULT 'queued', lease text, lease_until timestamptz, token_id text,
+ pause_requested boolean NOT NULL DEFAULT false, elapsed_seconds integer NOT NULL DEFAULT 0,
+ progress jsonb NOT NULL DEFAULT '{}', updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS weave_native_jobs_queue ON weave_native_jobs(state,updated_at);
+CREATE TABLE IF NOT EXISTS weave_rebases (
+ project text NOT NULL REFERENCES weave_projects(id),id text NOT NULL,author text NOT NULL,
+ request_hash text NOT NULL,input jsonb NOT NULL,result jsonb NOT NULL,
+ created_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(project,id)
+);
+CREATE TABLE IF NOT EXISTS weave_git_exports (
+ project text PRIMARY KEY REFERENCES weave_projects(id),manifest text NOT NULL,refs jsonb NOT NULL,
+ updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS weave_git_objects (
+ project text NOT NULL REFERENCES weave_projects(id),oid text NOT NULL,PRIMARY KEY(project,oid)
+);
+
+ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS git_bridge_limited boolean NOT NULL DEFAULT false;
+ALTER TABLE weave_git_exports ADD COLUMN IF NOT EXISTS lease text;
+ALTER TABLE weave_git_exports ADD COLUMN IF NOT EXISTS lease_until timestamptz;

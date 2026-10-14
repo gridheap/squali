@@ -1,0 +1,9 @@
+{
+  "endTime": "2026-10-14T20:54:02+00:00",
+  "error": "",
+  "executionMessage": "Execution failed: failed to execute command: command terminated with exit status=1",
+  "executionState": "Failed",
+  "exitCode": 1,
+  "output": "{\"command\": [\"python3\", \"/var/lib/squali-cloud-acceptance/cloud-acceptance.py\", \"source-acceptance-20261015\", \"--state\", \"/var/lib/squali-cloud-acceptance/state\", \"--label\", \"production Azure eastus2 to Cloudflare\"], \"exit\": 1, \"finishedAt\": \"2026-10-14T20:54:02Z\", \"stdout\": \"\", \"stderr\": \"Acceptance stopped at change-7: HTTP 403 scope\\n\"}\n",
+  "startTime": "2026-10-14T20:53:53+00:00"
+}

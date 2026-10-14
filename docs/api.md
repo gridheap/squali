@@ -88,7 +88,7 @@ Unrestricted administrators can use:
 - `POST /api/projects/:id/index` with `{ "ref": "<commit>", "limit": 64 }`: resume one step. `limit` is 1–128 new provider commit reads. Progress and immutable derived rows survive process restarts. The normal operation budget still applies.
 - `POST /api/projects/:id/index/commits` with `{ "ref": "<provider-root>", "commits": [{ "oid": "<sha1>", "body": "<base64 raw Git commit>" }] }`: accept 1–256 hash-verified commits, at most 1 MiB decoded metadata. New records must connect to already provider-anchored history. Duplicate uploads do not overwrite data or reread the root. This does not import Git objects into Artifacts.
 
-Small graph queries can derive their index on demand. Larger incomplete histories return `409 index_required`; this is not a false ancestry result. Generation ordering preserves all parents and all best merge bases. First-parent skip pointers accelerate ancestry along linear spans and first-parent bisect. A completed graph query is bounded to 50,000 visited/loaded nodes. Indexed unchanged-tree spans also accelerate history and blame; a general path index is still outstanding.
+Small graph queries can derive their index on demand. Larger incomplete histories return `409 index_required`; this is not a false ancestry result. Generation ordering preserves all parents and all best merge bases. First-parent skip pointers accelerate ancestry along linear spans and first-parent bisect. A completed graph query is bounded to 50,000 visited/loaded nodes. Indexed unchanged-tree spans also accelerate history and blame; source workspaces also use a versioned path-event index to skip unrelated file changes.
 
 ## Rebase a commit
 
@@ -97,3 +97,52 @@ Small graph queries can derive their index on demand. Larger incomplete historie
 Text and executable modes use a three-way reconciliation. A `409 rebase_conflict` response includes the base, target and incoming text for each unresolved path. Repeat with `resolutions:[{path,content,mode?}]` for those paths only; content may be null to delete. No proposal is created until every conflict is resolved. Unknown resolution paths are rejected. The resulting proposal requires new approval and does not supersede the original proposal automatically.
 
 Bounds: 64 changed files, 256 KiB per editable file, 1 MiB source diff/output, 2 MiB aggregate comparison/conflict text, 2,000 lines per compared file and 12,000 aggregate merge lines. Unsupported binary/symlink/submodule and file/directory transitions require native tooling. Merge commits require an explicit existing parent number. This is a single-commit rebase, not an interactive branch rewrite.
+
+## Canonical source storage
+
+New production workspaces use `storage:"source"` by default. Creation accepts an explicit storage choice; `{storage:"source",import:true,files:[]}` creates an unavailable importing workspace until the importer verifies its closure. Source-backed proposal creation never creates a Git ref or calls Artifacts. Publication separately updates the authoritative main ref with compare-and-swap. Existing Artifacts workspaces keep the legacy adapter described above.
+
+| Method | Workspace-relative route | Access and behavior |
+|---|---|---|
+| GET | `/source` | Unrestricted admin; object/byte/changeset counts, refs, `gitCompatibility.state` |
+| GET | `/changesets/:id` | Unrestricted credential; canonical delta by Git SHA-1 or changeset SHA-256 |
+| POST | `/source/missing` | Admin; `{oids:[...]}` returns only missing object identities |
+| POST | `/source/objects` | Admin; bounded `{objects:[{oid,type,encoding:"gzip",body:"<base64>"}]}` |
+| POST | `/source/blob/:oid` | Admin; binary gzip body for a large individual blob |
+| POST | `/source/changesets` | Admin; `{commits:["<git-oid>"]}` in parent order; derives graph/path metadata |
+| POST | `/source/finish` | Admin; `{refs:[{name,oid}],defaultBranch,gitBridgeLimited?}`; verifies closure and completes the durable job |
+| POST | `/source/derive` | Admin; `{kind:"tree" or "generation",version:1,changesets:[...]}`; bounded reusable derivation |
+| POST | `/rpc` | Unrestricted credential; `head`, `object`, `stat` under the node-cache protocol |
+
+Import preflight rejects changed refs/budgets, oversized objects and invalid identities. Gzip blobs admit at most 32 MiB expanded content. Metadata batches have separate byte/tree/entry/path bounds. `413 source_seal_budget` can be continued with a smaller parent-ordered batch. Other errors require diagnosis; there is no automatic paid retry.
+
+The internal `/source/credentials` and `/source/bridge-*` endpoints additionally require the current native job lease and matching internal token. Ordinary browser owners and project tokens cannot obtain provider secrets through these endpoints.
+
+Source Git clone/fetch exports only published ref closure into a derived Artifacts repository. Worker export is bounded to 8,192 new objects and 16 MiB expanded data; native jobs seed larger compatible repositories. `gitCompatibility.state` is `not_exported`, `exported` or `provider_limit`. A limited compatibility copy yields `413 git_compatibility_limit`; source APIs continue working.
+
+`GET /api/usage` includes `source:{reads,writes,readCap,writeCap}` independently from cache and Artifacts counters. All are application reservations. Provider analytics and invoices are separate.
+
+## Durable native GitHub jobs
+
+When `/api/auth/config` returns `nativeImports:true`, enqueueing through `POST /api/github/imports` wakes the PostgreSQL native runner. `/run` explicitly resumes a paused/failed job within its cumulative limits. `POST /api/github/imports/:id/pause` requests a stop and preserves its cache/journal. Closing the browser does not stop the runner. Import listings report native progress, attempts and state. Catalog and import routes require the authenticated owner and appropriate GitHub grant.
+
+## Continuous branch rebase
+
+`POST /api/projects/:id/rebase-series` requires whole-workspace agent/admin access:
+
+```json
+{
+  "id": "rebase-task-42",
+  "commits": ["<oldest-git-commit>", "<next-git-commit>"],
+  "onto": "<immutable-target-commit>",
+  "limit": 8,
+  "note": "Move the reviewed branch onto the new baseline",
+  "resolutions": {"<conflicted-git-commit>":[{"path":"src/file.ts","content":"resolved text\n"}]}
+}
+```
+
+Supply 1–64 ordered continuous single-parent commits. Reuse ID, input commits, target, note and author across calls. Each call advances 1–8 steps and returns `state`, `completed`, current `head` and generated proposal `changes`. A conflict returns `state:"blocked"`, `blockedCommit` and `conflicts`; repeat with explicit resolutions. Previously accepted resolutions cannot change. Main does not move; the generated dependency chain needs fresh approval before publication. Competing advances can return `409 rebase_busy`; resume from the saved cursor. Individual merge commits use the explicit-parent `/rebase` operation.
+
+## Semantic policy
+
+Directory review rules accept optional `semantic:"javascript-comments"` or `semantic:"json-values"` alongside explicit `independentReview` and `requireEvidence` booleans. JavaScript rules compare parsed ASTs and retain selected tool directives and hashbangs; JSON rules compare values while rejecting ambiguous duplicate keys and unsafe integers. Existing content and modes must be preserved under these policies. Review and publication both enforce the current policy. A policy change that needs additional immutable content stops for a fresh review; it does not hold a database transaction while fetching that content.

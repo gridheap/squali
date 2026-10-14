@@ -1,9 +1,9 @@
-import {enforceReviewPolicy} from './permissions.ts';
+import {enforceReviewPolicy,prepareReviewContent} from './permissions.ts';
 import {diff3Merge} from 'node-diff3';
-import {GitSession,sha256,blobId} from './git.ts';
+import {GitSession,sha256,blobId,type BuildPatch} from './git.ts';
 import {Problem,ZERO} from './types.ts';
 import type {Config,Patch,Principal} from './types.ts';
-export type FileDelta={path:string;before:string|null;after:string|null;mode:string;beforeMode:string|null};
+export type FileDelta={path:string;before:string|null;after:string|null;afterBytes?:number;mode:string;beforeMode:string|null};
 export function changeView(c:any){return {id:c.id,project:c.project,title:c.title,intent:c.intent,context:c.context,dependencies:c.dependencies,base:c.base,oid:c.oid,author:c.author,status:c.status,reviewer:c.reviewer,reviewNote:c.review_note,publication:c.publication,createdAt:c.created_at,files:c.files};}
 export function publicationView(p:any){return {id:p.id,base:p.base,oid:p.oid,changes:p.changes,state:p.state,cancellationHead:p.metrics?.cancellation?.oid??null,metrics:p.metrics?{objects:p.metrics.objects,bytes:p.metrics.bytes,changes:p.metrics.changes}:null};}
 export function changeService(config:Config,p:any,principal:Principal){
@@ -29,7 +29,7 @@ export function changeService(config:Config,p:any,principal:Principal){
    if(c.status!=='preparing')return changeView(c);
    const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
    if(!await repo.persist?.(built.oid,built.rawObjects)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
-   const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
+   const files:FileDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,afterBytes:Buffer.byteLength(f.content??''),mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});}
    return sql.begin(async tx=>{
    const [current]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id} FOR UPDATE`;
    if(current.status!=='preparing')return changeView(current);
@@ -40,10 +40,11 @@ export function changeService(config:Config,p:any,principal:Principal){
  }
  async function details(cid:string){const c=await get(cid);const diff=[];for(const f of c.files as FileDelta[])diff.push({path:f.path,before:await g.file(c.base,f.path),after:await g.file(c.oid,f.path)});return {...changeView(c),diff};}
  async function review(cid:string,decision:string,note:string){
+  const content=decision==='approved'?await prepareReviewContent(sql,pid,[await get(cid)],oid=>g.blob(oid)):undefined;
   return sql.begin(async tx=>{await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;const [c]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${cid} FOR UPDATE`;
    if(!c)throw new Problem(404,'change_missing','Change not found');if(!['proposed','approved','rejected'].includes(c.status))throw new Problem(409,'review_state','This change cannot be reviewed');
    const [pending]=await tx`SELECT id FROM weave_publications WHERE project=${pid} AND state='preparing' LIMIT 1`;if(pending)throw new Problem(409,'publication_pending','Recover the pending publication before changing approvals');
-   if(decision==='approved')await enforceReviewPolicy(tx,pid,[c],principal.id);
+   if(decision==='approved')await enforceReviewPolicy(tx,pid,[c],principal.id,content);
    const [r]=await tx`UPDATE weave_changes SET status=${decision},reviewer=${principal.id},review_note=${note},reviewed_at=now() WHERE project=${pid} AND id=${cid} RETURNING *`;await event(tx,'change.'+decision,{id:cid,note,oid:c.oid});return changeView(r);
   });
  }
@@ -53,13 +54,15 @@ export function changeService(config:Config,p:any,principal:Principal){
   if(rows.length!==ids.length)throw new Problem(404,'change_missing','One or more changes do not exist');
   const ordered:any[]=[];const visited=new Set<string>();const visiting=new Set<string>();
   const visit=async(cid:string)=>{if(visited.has(cid))return;if(visiting.has(cid))throw new Problem(409,'dependency_cycle','Dependency cycle');visiting.add(cid);const c=byId.get(cid)!;for(const dep of c.dependencies){if(byId.has(dep))await visit(dep);else {const [d]=await database`SELECT status FROM weave_changes WHERE project=${pid} AND id=${dep}`;if(d?.status!=='landed')throw new Problem(409,'dependency_unlanded',`Dependency ${dep} must land first`);}}visited.add(cid);visiting.delete(cid);ordered.push(c);};for(const cid of ids)await visit(cid);
-  const conflicts:any[]=[];const files=new Map<string,Patch>();const applied=new Map<string,string|null>();let mergedLines=0;let sourceBytes=0;let touchedFiles=0;
+  const conflicts:any[]=[];const files=new Map<string,BuildPatch>();const applied=new Map<string,string|null>();let mergedLines=0;let sourceBytes=0;let touchedFiles=0;
+  const text=async(file:BuildPatch)=>'oid' in file?Buffer.from(await g.blob(file.oid)).toString('utf8'):file.content;
   for(const c of ordered){for(const f of c.files as FileDelta[]){const currentEntry=await g.entry(head,f.path);const current=applied.has(f.path)?applied.get(f.path)!:currentEntry?.oid??null;const currentMode=files.has(f.path)?files.get(f.path)!.mode:currentEntry?.mode;
    if(++touchedFiles>256)throw new Problem(413,'batch_file_limit','A batch may touch at most 256 file revisions');
    if(currentEntry&&(currentEntry.type!=='blob'||!['100644','100755'].includes(currentEntry.mode))){conflicts.push({change:c.id,path:f.path,reason:'Target is no longer a regular file'});continue;}
-   let content=f.after===null?null:Buffer.from(await g.blob(f.after)).toString('utf8');
+   let patch:BuildPatch=f.after!==null&&Number.isSafeInteger(f.afterBytes)&&f.afterBytes!>=0?{path:f.path,oid:f.after,bytes:f.afterBytes!}:{path:f.path,content:f.after===null?null:Buffer.from(await g.blob(f.after)).toString('utf8')};
    if(current!==f.before&&current!==f.after){
-    const ours=files.has(f.path)?files.get(f.path)!.content:current?Buffer.from(await g.blob(current)).toString('utf8'):null;
+    const content=await text(patch);
+    const ours=files.has(f.path)?await text(files.get(f.path)!):current?Buffer.from(await g.blob(current)).toString('utf8'):null;
     const base=f.before?Buffer.from(await g.blob(f.before)).toString('utf8'):null;
     let merged:string|null=null;
     if(ours!==null&&base!==null&&content!==null&&![ours,base,content].some(s=>s.includes('\0'))){
@@ -74,14 +77,14 @@ export function changeService(config:Config,p:any,principal:Principal){
      }
     }
     if(merged===null){conflicts.push({change:c.id,path:f.path,base:f.before,current,incoming:f.after,reason:'Overlapping edits, deletion, or text merge limit; create a reviewed revision'});continue;}
-    content=merged;
+    patch={path:f.path,content:merged};
    }
-   sourceBytes+=Buffer.byteLength(content??'');if(sourceBytes>2*1024*1024)throw new Problem(413,'batch_size','A publication may contain at most 2 MiB of changed text');
+   sourceBytes+='oid' in patch?patch.bytes:Buffer.byteLength(patch.content??'');if(sourceBytes>2*1024*1024)throw new Problem(413,'batch_size','A publication may contain at most 2 MiB of changed text');
    const mode=f.mode===f.beforeMode&&currentMode?currentMode:f.mode;
-   if(content===null&&currentMode&&f.beforeMode&&currentMode!==f.beforeMode){conflicts.push({change:c.id,path:f.path,reason:'Deletion conflicts with a file mode change'});continue;}
-   files.set(f.path,{path:f.path,content,mode:mode as '100644'|'100755'});
+   if('content' in patch&&patch.content===null&&currentMode&&f.beforeMode&&currentMode!==f.beforeMode){conflicts.push({change:c.id,path:f.path,reason:'Deletion conflicts with a file mode change'});continue;}
+   files.set(f.path,{...patch,mode:mode as '100644'|'100755'});
    // A merged buffer can differ from every stored object; subsequent changes use files above.
-   applied.set(f.path,content===null?null:blobId(content));
+   applied.set(f.path,'oid' in patch?patch.oid:patch.content===null?null:blobId(patch.content));
 
   }}
   const unapproved=ordered.filter(c=>c.status!=='approved').map(c=>c.id);
@@ -104,12 +107,13 @@ export function changeService(config:Config,p:any,principal:Principal){
   const plan=await preview(input.changes);
   if(input.expectedHead&&input.expectedHead!==plan.head)throw new Problem(409,'head_moved','Main changed since preview; refresh before publishing');
   if(!plan.ready)throw new Problem(409,'not_ready','Batch requires approval or conflict resolution',{conflicts:plan.conflicts,unapproved:plan.unapproved});
+  const content=await prepareReviewContent(sql,pid,await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=ANY(${plan.changes})`,oid=>g.blob(oid));
   const active=crypto.randomUUID();
   const saved=await sql.begin(async tx=>{
    await tx`SELECT pg_advisory_xact_lock(hashtextextended(${`weave-publish:${pid}`},0))`;
    const [other]=await tx`SELECT id FROM weave_publications WHERE project=${pid} AND state='preparing' AND id<>${input.id} LIMIT 1`;if(other)throw new Problem(409,'publication_pending','Retry the pending publication first',{id:other.id});
    const [current]=await tx`SELECT * FROM weave_publications WHERE project=${pid} AND id=${input.id}`;validate(current);if(current?.state==='published')return current;
-   const rows=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=ANY(${plan.changes})`;await enforceReviewPolicy(tx,pid,rows);if(rows.length!==plan.changes.length||rows.some(c=>c.status!=='approved'))throw new Problem(409,'review_changed','Approval changed since preview; refresh the batch');
+   const rows=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=ANY(${plan.changes})`;await enforceReviewPolicy(tx,pid,rows,undefined,content);if(rows.length!==plan.changes.length||rows.some(c=>c.status!=='approved'))throw new Problem(409,'review_changed','Approval changed since preview; refresh the batch');
    if(current&&current.base!==plan.head)throw new Problem(409,'recovery_required','Main moved while a publication was pending. Inspect Git before recovering.',{publication:input.id,base:current.base,head:plan.head});
    if(current){const [claimed]=await tx`UPDATE weave_publications SET metrics=COALESCE(metrics,'{}'::jsonb)||${tx.json({active})} WHERE project=${pid} AND id=${input.id} RETURNING *`;return claimed;}
    const [created]=await tx`INSERT INTO weave_publications(project,id,request_hash,base,changes,actor,metrics) VALUES(${pid},${input.id},${hash},${plan.head},${plan.changes},${principal.id},${tx.json({active,parents:plan.parents})}) RETURNING *`;return created;

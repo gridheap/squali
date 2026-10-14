@@ -2,61 +2,60 @@
 
 ## Status
 
-Production Clerk keys and GitHub OAuth are configured; real sign-in and repository discovery work. Identity sign-in requests `read:user` and `user:email`. Repository discovery/import requires a separate explicit `repo` grant. Local private-import acceptance passes. The large live fixture (85,563 commits, 1,020 refs, about 310 MiB packed) has used three interrupted transfer attempts and is not yet imported successfully.
+Clerk production keys, domains and GitHub OAuth are configured. The current production browser flow passes: GitHub login returns to Squali, lists 97 authorized repositories and shows the retained private import running. A cropped screenshot excludes unrelated private repository names. The large private fixture is being imported through the native source pipeline with its retained cache and journal.
 
 ## User workflow
 
-1. Continue with GitHub through Clerk's hosted account portal.
-2. Open **GitHub repositories**, then explicitly **Grant repository access**. Squali lists repositories GitHub authorizes, including private, collaborator and organization repositories. Organization restrictions and SSO authorization still apply.
-3. Select repositories, or use **Import all repositories**. The latter walks all catalog pages before enqueueing a deduplicated batch.
-4. The deployment admits one active import at a time to preserve capacity in the five-connection origin pool. The browser processes one durable import at a time. Pause stops after the current repository. Closing the browser stops further dispatch; reopen and choose **Resume pending**. There is no unattended queue consumer or schedule.
-5. Completed repositories become private workspaces. Create proposals, review, and publish against the original default branch. An empty repository can receive its first commit through the same review workflow.
-6. Open **Agent access** to issue a role-specific credential for one workspace. Keep it in a secret manager as `SQUALI_TOKEN`. Tokens expire in 1–30 days, can be revoked, and are revealed once. Only SHA-256 digests are stored. Existing deployment wildcard credentials have access to legacy workspaces only; they do not gain access to personal imports.
+1. Continue with GitHub through Clerk's hosted account portal. Identity sign-in requests `read:user` and `user:email`.
+2. Open **GitHub repositories**, then explicitly **Grant repository access**. Import requires GitHub's `repo` scope. GitHub describes it as read/write access; Squali only reads the source repository. Organization restrictions and SSO authorization still apply.
+3. Select repositories or choose **Import all repositories**. The latter walks catalog pages and enqueues deduplicated identities under the deployment caps.
+4. With native imports enabled, one existing native runner consumes the durable PostgreSQL queue. Closing the browser does not cancel the job. Pause requests stop the active child and preserve the cache/journal; resume is explicit. Visible progress refreshes every 15 seconds with a finite per-document polling budget.
+5. Completed repositories become private workspaces against the original default branch. Propose, review and publish changes. An empty repository can receive its first commit through the same workflow.
+6. **Agent access** issues a role-specific credential for one workspace. Tokens expire in 1–30 days, are revocable and are revealed once. Only digests are stored. Optional directory prefixes narrow access. Legacy wildcard credentials do not gain access to personal workspaces.
 
 ## What is copied
 
-All advertised heads and tags and their reachable Git history, including executable modes, symlinks and binary Git objects, are streamed into Artifacts. The source GitHub repository is never modified. This is a one-time independent copy, not continuous bidirectional synchronization. LFS file payloads and submodule repositories are **not** transferred; their pointers and links remain in Git. Issues, pull requests, releases, actions and GitHub settings are outside this Git import.
+Advertised branches, tags and their reachable Git history, executable modes, symlinks and binary Git objects are ingested into the canonical source store. PostgreSQL stores changesets and derivable metadata; R2 stores independent content-addressed blobs. A bounded native Git seed creates a derived Artifacts copy for clone/fetch. Import preserves nested and blob tags and historical commit encodings.
 
-Private source credentials are fetched from Clerk on the server, used only in request headers, and never placed in clone URLs, durable jobs or browser responses. Source URLs are constructed from a fixed GitHub origin and a validated repository identity; clients cannot supply arbitrary import URLs.
+This is an independent copy; no continuous bidirectional synchronization is implemented. GitHub source refs are never modified. LFS payloads and submodule repositories are not transferred; their pointers remain. Issues, pull requests, releases, Actions and GitHub settings are outside the Git import.
+
+Clerk supplies private repository credentials on the backend. Only a short-lived internal job token matching the current database lease can fetch them. Browser responses, clone URLs and persistent Git configuration never contain those credentials. GitHub URLs are constructed from a fixed provider origin and verified repository identity.
 
 ## Recovery and limits
 
-- Stable identity: Clerk owner + numeric GitHub repository ID; renames do not create a second job.
-- Fresh catalogs are cached for 15 minutes. Authorization is rechecked before a new transfer.
-- Immutable source refs are saved before transfer. Retries inspect destination refs first. A completed copy never downloads again.
-- PostgreSQL advisory locks prevent parallel dispatch of the same job and release on process death. Expected-empty ref writes protect against late duplicate writers. Atomic receive is requested only when the destination advertises support; otherwise the workspace remains unavailable until every ref is present.
-- A real SIGKILL test proves recovery after Git accepted the import. It does not prove every network/provider failure condition.
-- Limit: 100 pages / 10,000 discovered repositories; 1,000 queued records per account; 5,000 refs and 512 MiB per transfer; three explicitly dispatched import attempts. Jobs remain visible when limits stop them. Stream size is bounded even when metadata underestimates it.
-- At most 32 active automation credentials per workspace; optional directory prefixes narrow read/write scope.
-- GitHub catalog/import provider dispatch is capped at 500 requests per account per database day; there are no automatic retries.
-- Existing deployment caps remain 10 workspaces and 2,000 conservative Artifacts reservations/month. **Import all does not bypass these caps.** Large accounts can therefore have pending jobs rather than all repositories completing.
-- Artifacts source storage is metered separately from call reservations. A transfer ceiling bounds work but is not a storage invoice. An acknowledgement recovered after a crash may report unknown transferred bytes (`null`).
+- Identity is Clerk owner plus numeric GitHub repository ID. Renames do not allocate a second job. Catalog pages are cached for 15 minutes; new transfers recheck authorization.
+- One native runner holds a fleet advisory lock and admits one active job. Its cache marker, frozen refs, object inventory and journal survive restart. A confirmed completed input is not uploaded again.
+- Each native job has a cumulative eight-hour budget and at most three explicit attempts. Healthy process checkpoints continue the same attempt. Failed jobs never automatically retry.
+- Default source limits are 500,000 objects, 16 GiB raw bytes, 12,000 HTTP attempts and 5,000 refs. Reported GitHub repository size is capped at 2 GiB for native admission. The actual object inventory is checked before source upload.
+- Individual source blobs are limited to 32 MiB. Metadata sealing uses bounded batches; validated oversize errors reduce batch size. Other errors stop. Ambiguous R2 acknowledgements are reconciled by immutable key, with a maximum of three writes to a missing blob.
+- Catalog: at most 100 pages / 10,000 repositories. Per owner: at most 1,000 queue records and 500 provider dispatch reservations per database day. Tokens: at most 32 active automation credentials per workspace.
+- Current deployment caps: 100 workspaces, 2,000 Artifacts reservations/month, and 200,000 source R2 read/write reservations each. Import all respects these caps; pending jobs remain visible when admission stops them.
+- Artifacts limits a compatibility repository to 1 GB. Larger source data can complete independently with a specific compatibility-limit status. Storage charges are separate from request reservations.
+
+The retained legacy Worker streaming importer has a 512 MiB transfer ceiling and three explicit attempts. Its old failed attempts are not reset when a cache is adopted into the source pipeline. Legacy `/reconcile` checks destination refs without downloading again. The native runner uses its own durable lease and cumulative budgets.
 
 ## Production configuration
 
-Clerk application: `app_3KexbCz21GVysghwY84Y7MOniwV` (Squali).
-Production instance: `ins_3KexhIQI8xE85ENLgecfyc89Nwu`.
-Frontend API: `https://clerk.squa.li`; hosted account portal: `https://accounts.squa.li`.
-GitHub OAuth callback: `https://clerk.squa.li/v1/oauth_callback`.
+Clerk application: `app_3KexbCz21GVysghwY84Y7MOniwV` (Squali). Production instance: `ins_3KexhIQI8xE85ENLgecfyc89Nwu`.
 
-1. The **Squali** OAuth app is registered in `gridheap` (application `3930566`, Client ID `Ov23liNk8xGWYFISCUjn`) and configured in Clerk. The callback uses exact matching. Forks must create their own app and credentials.
-2. Keep the default sign-in scopes at `read:user` and `user:email`; the import screen uses Clerk external-account reauthorization with the additional `repo` scope. GitHub defines this scope as repository read/write access; Squali's integration implements reads from GitHub only. Each user must consent in GitHub, and organizations may need to approve access.
-3. Save `CLERK_SECRET_KEY` outside the repository in a mode-0600 file. Set `CLERK_PUBLISHABLE_KEY` to this production instance's public key. `CLERK_JWT_KEY` is optional; absent that, Clerk's SDK uses its cached verification keys. The backend checks issuer, signature, expiry, session identity and `azp=https://squa.li`.
-4. Supply keys using Wrangler secrets/configuration and deploy. Never paste secret values into command arguments or source files. The domain's static CSP already allows the specific `clerk.squa.li` origin; forks must replace this with their own Clerk domain.
-5. Run one bounded live sign-in/import smoke, then reconcile reservations. Use a single small owned test repository, not **Import all**, for deployment verification. Real login has been verified; the selected large private import remains incomplete. Check received refs without starting a transfer using the per-job button or `/reconcile`.
+Frontend API: `https://clerk.squa.li`; account portal: `https://accounts.squa.li`; GitHub callback: `https://clerk.squa.li/v1/oauth_callback`.
+
+1. Register an OAuth application for your deployment. Squali's Grid Heap app is `3930566`, public Client ID `Ov23liNk8xGWYFISCUjn`. Callback matching is exact.
+2. Default login uses `read:user` and `user:email`. The import screen requests external-account reauthorization for the additional `repo` grant. Users consent through GitHub; organizations may separately approve access.
+3. Inject `CLERK_SECRET_KEY` as a Worker secret and configure `CLERK_PUBLISHABLE_KEY`. Optional `CLERK_JWT_KEY` avoids a verification-key fetch; otherwise Clerk's SDK caches verification keys. The backend verifies issuer, signature, expiry, session identity and `azp=https://squa.li`.
+4. Apply the additive schema, source R2 binding and native runner configuration before setting `NATIVE_IMPORTS=true`. The [source operations guide](source-operations.md) describes the bounded service. Forks must replace Clerk origins in CSP as well as their own Cloudflare identities.
+5. Complete one bounded live login/import verification, then reconcile application and provider counters. Reuse retained successful fixtures. Keep API secrets in protected files/environment, never command arguments or source control.
 
 ## Repeatable acceptance
 
 ```sh
 pnpm typecheck
-pnpm test:github
-pnpm test:e2e
-pnpm test:crash
+node --import tsx --test tests/github.test.ts tests/native-jobs.test.ts tests/source.test.ts tests/source-git.test.ts
 # With the local server running:
-SQUALI_URL=http://127.0.0.1:8793 pnpm test:ui
+pnpm test:ui
 pnpm build
 ```
 
-`test:github` uses the official Clerk backend signature verifier with signed fixture sessions, a local Clerk/GitHub HTTP boundary, real PostgreSQL and Git, and installed Brave in an isolated profile. The frontend SDK boundary is simulated for deterministic sign-in tests; this is **not evidence of a completed live OAuth consent flow**. The suite verifies owner isolation, expiring/forged/foreign sessions, private history/branches/annotated tags, source permissions lost and restored, failed allocation, empty repositories, deduplication, browser Import all/resume/sign-out, scoped agent credentials, bounded concurrent import admission, and SIGKILL recovery.
+Tests use the official Clerk signature verifier with signed fixture sessions, local Clerk/GitHub boundaries, real PostgreSQL/Git and installed Brave in an isolated profile. They cover private history/tags, owner isolation, unauthorized scopes, allocation failures, pause/resume, cache reuse, healthy checkpoints, expired leases and process restart. Local boundaries are explicitly labelled; a live OAuth grant is a separate gate.
 
-Sources: [Clerk OAuth access tokens](https://clerk.com/docs/reference/backend/user/get-user-oauth-access-token), [GitHub repository API](https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user), [Artifacts Git compatibility](https://developers.cloudflare.com/artifacts/).
+Sources: [Clerk OAuth access tokens](https://clerk.com/docs/reference/backend/user/get-user-oauth-access-token), [GitHub repository API](https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user), [Artifacts](https://developers.cloudflare.com/artifacts/).

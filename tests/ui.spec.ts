@@ -19,13 +19,14 @@ test('reviewer completes the browser workflow and Adobe resolves Latin and CJK g
  await expect(page.getByText('Preserve existing exports',{exact:false})).toBeVisible();await page.getByRole('button',{name:'Approve change',exact:true}).click();
  await page.getByRole('button',{name:'Close details',exact:true}).click();await page.getByRole('button',{name:'Add retry-aware client',exact:true}).click();await page.getByRole('button',{name:'Approve change',exact:true}).click();await page.getByRole('button',{name:'Close details',exact:true}).click();
  await page.getByRole('button',{name:'Preview batch',exact:true}).click();await expect(page.getByText('Ready to publish')).toBeVisible();await page.getByRole('button',{name:'Publish batch',exact:true}).click();await expect(page.getByText('Published 2 changes')).toBeVisible();
+ const coldFont=await page.evaluate(()=>(window as any).weaveFontTiming);let fontNavigation='cold';if(coldFont?.state!=='active'){fontNavigation='warm';await page.reload();await page.getByLabel('Access token').fill('local-admin-test-token');await page.getByRole('button',{name:'Connect',exact:true}).click();await page.getByText('Connected as reviewer').waitFor();await page.getByLabel('Current workspace').selectOption(id);}
  await expect(page.locator('html')).toHaveClass(/wf-active/);await expect(page.locator('link[data-adobe-fonts]')).toHaveCount(1);
  const client=await page.context().newCDPSession(page);await client.send('DOM.enable');await client.send('CSS.enable');const {root}=await client.send('DOM.getDocument');
  const fonts:Record<string,unknown>={};for(const [name,selector]of [['latin','#font-latin'],['cjk','#font-cjk']]){const {nodeId}=await client.send('DOM.querySelector',{nodeId:root.nodeId,selector});fonts[name]=(await client.send('CSS.getPlatformFontsForNode',{nodeId})).fonts;}
  expect(JSON.stringify(fonts.latin)).toContain('Proxima');expect(JSON.stringify(fonts.cjk)).toContain('PingFang');
  await page.getByLabel('Filter changes').selectOption('all');await mkdir(evidence,{recursive:true});await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:evidence+'/desktop.png',fullPage:true});await page.setViewportSize({width:390,height:844});await page.screenshot({path:evidence+'/mobile.png',fullPage:true});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
- await writeFile(evidence+'/runtime.json',JSON.stringify({command:'pnpm test:ui',readyMs:ready,totalMs:Date.now()-started,fonts,errors},null,2));
+ await writeFile(evidence+'/runtime.json',JSON.stringify({command:'pnpm test:ui',readyMs:ready,totalMs:Date.now()-started,coldFont,fontNavigation,fonts,errors},null,2));
 });
 
 test('font CSS timeout preserves usable inputs and locks the fallback across navigation',async({page})=>{

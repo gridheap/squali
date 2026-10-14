@@ -1,0 +1,29 @@
+✖ source publication reuses admitted blobs and batches metadata for 64 independent changes (713.353042ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 880.23725
+
+✖ failing tests:
+
+test at tests/publication-cost.test.ts:1:226
+✖ source publication reuses admitted blobs and batches metadata for 64 independent changes (713.353042ms)
+  AssertionError [ERR_ASSERTION]: Independent selection must not download its already admitted blobs
+  
+  128 !== 0
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/publication-cost.test.ts:17:52)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 128,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

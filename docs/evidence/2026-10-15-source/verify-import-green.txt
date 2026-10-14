@@ -1,0 +1,29 @@
+✖ import verification checks complete native identity and reuses its successful transfer (847.944917ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1003.128417
+
+✖ failing tests:
+
+test at tests/verify-import.test.ts:1:349
+✖ import verification checks complete native identity and reuses its successful transfer (847.944917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  8 !== 9
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/verify-import.test.ts:22:296)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 8,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

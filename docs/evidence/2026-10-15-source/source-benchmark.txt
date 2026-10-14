@@ -1,0 +1,62 @@
+$ tsx scripts/benchmark.ts
+{
+  "command": "BENCH_STORAGE=source BENCH_CHANGES=64 BENCH_CONCURRENCY=8 pnpm benchmark",
+  "scope": "LOCAL ONLY: PostgreSQL and persistent filesystem R2 adapter; excludes Cloudflare and network latency",
+  "timestamp": "2026-10-14T19:58:18.717Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Max",
+    "logicalCpus": 16,
+    "memoryGiB": 128,
+    "node": "v26.10.0"
+  },
+  "dataset": {
+    "storage": "source",
+    "baselineFiles": 64,
+    "baselineBytes": 419400,
+    "changes": 64,
+    "concurrency": 8
+  },
+  "results": {
+    "failures": 0,
+    "publishedFiles": 64,
+    "sourcePublicationExtraWrites": 0,
+    "writeWallMs": 201,
+    "changesPerSecond": 318.19,
+    "p50Ms": 14.4,
+    "p95Ms": 95.93,
+    "p99Ms": 96.95,
+    "publicationMs": [
+      42
+    ],
+    "publicationMetrics": [
+      {
+        "objects": 67,
+        "bytes": 5972,
+        "changes": 64
+      }
+    ],
+    "usage": {
+      "source": {
+        "reads": 64,
+        "writes": 128
+      },
+      "attempts": 0,
+      "cap": 1000000,
+      "mode": "local Git + PostgreSQL",
+      "cache": {
+        "reservedReads": 0,
+        "reservedWrites": 0,
+        "readCap": null,
+        "writeCap": null
+      }
+    }
+  },
+  "limitations": [
+    "No comparison against another forge under identical conditions",
+    "One machine; not a distributed or 100,000-agent test",
+    "R2 adapter is local disk; production latency is not inferred",
+    "Source changes are independent and small; conflict-heavy results will differ"
+  ]
+}

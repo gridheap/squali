@@ -1,3 +1,4 @@
+import type {TransactionSql} from 'postgres';
 import {createHash,randomUUID} from 'node:crypto';
 import {Problem} from './types.ts';
 import type {Commit,Repository,Sql} from './types.ts';
@@ -125,7 +126,7 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
 /** Complete imported, already hash-verified metadata in parent-order batches.
  * Jump dependencies are fetched a level at a time, avoiding one SQL round trip per jump per commit.
  */
-export async function completeGraphBatch(sql:Sql,project:string,ids:string[]){
+export async function completeGraphBatch(sql:Sql|TransactionSql<{}>,project:string,ids:string[]){
  if(!ids.length||ids.length>256)throw new Problem(400,'index_batch','Complete 1–256 imported commits');
  const rows=await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=1 AND oid=ANY(${ids})`;
  if(rows.length!==new Set(ids).size)throw new Problem(409,'index_required','Commit metadata is missing');

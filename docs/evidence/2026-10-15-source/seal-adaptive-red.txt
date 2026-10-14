@@ -1,0 +1,30 @@
+✖ a parent-ordered import seals 128 changesets in bounded database batches (710.417333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 887.545458
+
+✖ failing tests:
+
+test at tests/source.test.ts:24:3752
+✖ a parent-ordered import seals 128 changesets in bounded database batches (710.417333ms)
+  Error: Command failed: python3 scripts/import-source.py adaptive /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0tvhgy/batch.git --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0tvhgy/adaptive
+  Source request failed: HTTP 413 source_seal_budget
+  
+      at genericNodeError (node:internal/errors:999:15)
+      at wrappedFn (node:internal/errors:544:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:20)
+      at maybeClose (node:internal/child_process:1156:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:334:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/import-source.py adaptive /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0tvhgy/batch.git --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0tvhgy/adaptive',
+    stdout: '{"stage": "changesets", "objectsProcessed": 512, "commitsProcessed": 0, "httpAttempts": 9, "uploadedBytes": 37670, "complete": false, "reused": false}\n',
+    stderr: 'Source request failed: HTTP 413 source_seal_budget\n'
+  }
