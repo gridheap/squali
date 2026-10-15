@@ -1,0 +1,23 @@
+{
+  "status": 200,
+  "result": {
+    "checkedAt": "2026-10-15T00:42:17.430Z",
+    "project": "gh-5fd5a2f4bc33a0286d6728ad",
+    "repo": "weave-gh-5fd5a2f4bc33a0286d6728ad",
+    "providerReservations": 8,
+    "packTransfers": 0,
+    "receiveCapabilities": [
+      "report-status",
+      "delete-refs",
+      "ofs-delta",
+      "side-band-64k",
+      "symref=HEAD:refs/heads/master"
+    ],
+    "advertisedRefs": 0,
+    "git-receive-packStatus": 200,
+    "git-upload-packStatus": 200,
+    "supportsAtomic": false,
+    "diagnosticTokenRevoked": true,
+    "complete": true
+  }
+}

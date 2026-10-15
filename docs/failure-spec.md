@@ -134,3 +134,7 @@ The optional import verifier write smoke uses the public change, source and revi
 ## Disconnected changeset response
 
 The real native importer must stop after a connection closes without an HTTP response, whether the sealing transaction was accepted or never reached the service. It must not silently retry or advance its acknowledged cursor. An explicit invocation with the same input and journal must reconcile the immutable batch, finish with one canonical row per commit, and perform no additional blob upload. The failed request remains in the total attempt count. Exercise both disconnect positions through an HTTP proxy and compare the persisted source inventory with native Git.
+
+## Git bootstrap without atomic push support
+
+Artifacts advertises `report-status`, `delete-refs`, `ofs-delta` and `side-band-64k`, but no `atomic` capability. Native bootstrap must work with that protocol. A rejected individual ref may leave other expected refs accepted; the workspace must remain importing until every frozen ref matches. Explicit resume must reuse the GitHub clone and source objects, reconcile the accepted subset, and finish the missing ref without overwriting unexpected history. Preserve a bounded, token-redacted Git failure diagnostic in the private import journal. Exercise a real receive-pack server with atomic advertisement disabled and an update hook rejecting one tag once.

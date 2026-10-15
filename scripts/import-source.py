@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Bounded native Git -> Squali source ingestion. Reuse --state after interruption."""
-import argparse,fcntl,base64,gzip,hashlib,json,os,pathlib,subprocess,sys,time,http.client,urllib.parse
+import argparse,fcntl,base64,gzip,hashlib,json,os,pathlib,re,subprocess,sys,time,http.client,urllib.parse
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('project');p.add_argument('repository');p.add_argument('--state',required=True)
 p.add_argument('--max-objects',type=int,default=500000);p.add_argument('--max-bytes',type=int,default=16*1024**3)
@@ -148,8 +148,22 @@ try:
     environment={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_ALLOW_PROTOCOL':'http:https','GIT_CONFIG_COUNT':'2','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Bearer '+offer['token'],'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false','GIT_TRACE':'0','GIT_TRACE_CURL':'0','GIT_CURL_VERBOSE':'0'}
     for secret in ('SQUALI_TOKEN','SQUALI_WORKER_DATABASE_URL'):environment.pop(secret,None)
     http.close() # The native Git push can exceed a provider's HTTP idle timeout.
-    exported=subprocess.run(['git','-C',a.repository,'-c','core.hooksPath=/dev/null','push','--atomic',offer['remote'],*names],env=environment,capture_output=True,timeout=600)
-    if exported.returncode:raise RuntimeError('Native Git export stopped; resume reconciles provider refs before another transfer')
+    def bridge_error(code,stderr):
+     detail=(stderr or b'').decode('utf-8',errors='replace')
+     for credential in (offer['token'],token):
+      if credential:detail=detail.replace(credential,'[redacted]')
+     detail=re.sub(r'(?i)(authorization\s*:\s*)[^\r\n]*',r'\1[redacted]',detail)
+     diagnostic={'operation':'native Git bootstrap','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'exitCode':code,'stderr':detail[-65536:]}
+     temporary=root/'bridge-error.tmp'
+     with open(temporary,'w') as out:os.chmod(temporary,0o600);json.dump(diagnostic,out);out.flush();os.fsync(out.fileno())
+     os.replace(temporary,root/'bridge-error.json')
+    # Bootstrap may accept a subset of frozen refs. prepare/confirm reconcile it;
+    # the project stays importing until every ref matches. Artifacts has no atomic capability.
+    try:exported=subprocess.run(['git','-C',a.repository,'-c','core.hooksPath=/dev/null','push',offer['remote'],*names],env=environment,capture_output=True,timeout=600)
+    except subprocess.TimeoutExpired as error:
+     bridge_error('timeout',error.stderr);raise RuntimeError('Native Git export timed out; resume reconciles provider refs before another transfer')
+    if exported.returncode:
+     bridge_error(exported.returncode,exported.stderr);raise RuntimeError('Native Git export stopped; resume reconciles provider refs before another transfer')
    confirmation=call('bridge-confirm',{'refs':refs,'defaultBranch':branch,'lease':lease});state['bridgeConfirmed']=True;state['bridgeManifest']=confirmation['manifest'];save();offer=None
   if not (root/'export-objects.txt').exists():
    with open(root/'export-roots.txt','w') as out:out.write('\n'.join(r['oid'] for r in refs)+'\n')

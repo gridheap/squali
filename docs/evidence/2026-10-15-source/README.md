@@ -8,8 +8,8 @@ The fixed release requirements are in [the Scion checklist](../../scion-acceptan
 
 | Check | Exact command | Retained result |
 |---|---|---|
-| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [74/74 passed](disconnect-full-e2e.txt) |
-| Types | `pnpm typecheck` | [Passed](disconnect-typecheck.txt) |
+| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [74/74 passed](native-nonatomic-full-e2e.txt) |
+| Types | `pnpm typecheck` | [Passed](native-nonatomic-typecheck.txt) |
 | Worker build | `pnpm build` | [Dry run passed](mainline-graph-build.txt) |
 | Deployment | `pnpm deploy` | [Worker 4a36bd39-edf7-4689-9b67-84bc7646f4f4](mainline-graph-deploy.txt) |
 | Rendered UI and typography | `SQUALI_URL=http://127.0.0.1:8799 WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/final-copy-ui pnpm test:ui` | [Four passed](final-copy-ui.txt); [screens and glyph evidence](final-copy-ui/) |
@@ -40,7 +40,7 @@ The frozen fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8,33
 
 The final verifier is `python3 scripts/verify-import.py PROJECT RETAINED_NATIVE_REPOSITORY --state PRIVATE_STATE --file README.md --write-smoke`. It uses at most 48 API attempts and one retained verification clone, compares every exported object/ref, runs native fsck, and independently checks source inventory, graph, root tree, selected history/blame and up to eight canonical deltas. It then creates and rejects one unpublished proposal, checking its canonical delta, content, root tree and unchanged published refs. [Write acceptance](private-write-verification-green.txt) exercises this complete workflow locally, including unchanged replay and detection of a corrupted imported delta. Completed replay makes no network transfer. [Timing acceptance](verification-timing-journal.txt) verifies retained per-attempt measurements: API, history/blame, ancestry, merge-base, clone and fsck times come from the same run.
 
-The production Clerk/GitHub login and repository catalog have [retained browser evidence](production-github-login.png). The completed private workspace still needs its final browser check. A [connection closed without an HTTP response](private-connection-stop.json) stopped the retained native job at 76,800 acknowledged commits. The [real HTTP disconnect fixture](changeset-disconnect-recovery.txt) proves explicit same-journal recovery before and after transaction acceptance, without another blob upload. The production owner resumed the one pending job through the UI; native attempt two continues the original input and budgets.
+The production Clerk/GitHub login and repository catalog have [retained browser evidence](production-github-login.png). The completed private workspace still needs its final browser check. A [connection closed without an HTTP response](private-connection-stop.json) stopped the retained native job at 76,800 acknowledged commits. The [real HTTP disconnect fixture](changeset-disconnect-recovery.txt) proves explicit same-journal recovery before and after transaction acceptance, without another blob upload. Explicit UI recovery reused the original input and budgets and completed all 85,563 canonical commits. Git bootstrap then stopped because Artifacts does not advertise atomic push support. The [bounded protocol probe](artifacts-bridge-capabilities.json) performed no pack transfer and revoked its diagnostic token. The [failing native fixture](native-nonatomic-red.txt) and [passing recovery](native-nonatomic-green.txt) disable atomic support, reject one tag after three refs succeed, retain a redacted private diagnostic, and finish on explicit resume with no extra GitHub clone or source writes. The source project remains importing until every frozen ref matches.
 
 ## Cost and release gates
 
