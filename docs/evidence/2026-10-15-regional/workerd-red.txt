@@ -1,0 +1,11 @@
+/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/regional-worker.e2e.ts:21
+ await new Promise<void>((yes,no)=>{const timer=setTimeout(()=>no(Error('Workerd readiness timeout')),20000);const receive=(b:Buffer)=>{transcript+=b.toString();if(transcript.includes('Ready on')){clearTimeout(timer);yes();}};child!.stdout!.on('data',receive);child!.stderr!.on('data',receive);child!.once('exit',code=>{clearTimeout(timer);no(Error('Workerd exited '+code));});});
+                                                                                                                                                                                                                                                                                                                                                       ^
+
+Error: Workerd exited 1
+    at ChildProcess.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/regional-worker.e2e.ts:21:344)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+
+Node.js v24.21.0

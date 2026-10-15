@@ -1,0 +1,13 @@
+{
+  "command": "python3 scripts/verify-regional.py --access ../../work/private/weave-access.json --fixture ../../work/private/source-pilot.json --output docs/evidence/2026-10-15-regional/production-smoke.json",
+  "timestamp": "2026-10-15T10:49:33Z",
+  "httpAttempts": 1,
+  "maxAttempts": 4,
+  "automaticRetries": 0,
+  "steps": [],
+  "complete": false,
+  "failure": {
+    "type": "HTTPError",
+    "status": 403
+  }
+}

@@ -42,4 +42,4 @@ On the development Mac with the existing Colima VM, local PostgreSQL and pinned 
 node --import tsx tests/virtual-workspace.e2e.ts
 ```
 
-The test starts the real local source API, then uses actual Linux mounts and ordinary filesystem commands. It also drops an accepted HTTP response to verify recovery. [Stored result](evidence/2026-10-15-scion-next/virtual-workspace-result.json). This is a local integration result, not a fleet-scale performance claim.
+The test starts the real local source API and regional RPC tier, then uses actual Linux mounts and ordinary filesystem commands. It also drops an accepted HTTP response to verify recovery. [Stored result](evidence/2026-10-15-regional/virtual-workspace-result.json). This is a local integration result, not a fleet-scale performance claim.

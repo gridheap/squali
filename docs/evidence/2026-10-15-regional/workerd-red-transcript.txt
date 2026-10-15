@@ -1,0 +1,12 @@
+
+ ⛅️ wrangler 4.150.0
+────────────────────
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe entry-point file at "../../../src/regional-worker.ts" was not found.[0m
+
+
+  This might mean that your entry-point file needs to be generated (which is the general case when a framework is being used).
+  If that's the case please run your project's build command and try again.
+
+
+🪵  Logs were written to "/Users/binbinsh/Library/Preferences/.wrangler/logs/wrangler-2026-10-15_10-37-58_821.log"

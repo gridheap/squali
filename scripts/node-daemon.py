@@ -55,7 +55,13 @@ def authorize(project):
   if lease and lease[0]>now:
    if lease[1]:raise lease[1]
    return
-  try:upstream(project);leases[project]=(now+30,None)
+  try:
+   _,body=upstream(project,{'op':'authorize'});lease=json.loads(body)
+   if lease.get('project')!=project or not isinstance(lease.get('expiresAt'),(int,float)):raise Fault(502,b'Invalid authorization lease')
+   remaining=min(30,lease['expiresAt']/1000-time.time())
+   if remaining<=0:raise Fault(401,b'Authorization lease expired')
+   # Preserve the authority's deadline across tiers; do not add another 30s.
+   leases[project]=(time.monotonic()+remaining,None)
   except Fault as error:leases[project]=(now+10,error);raise
 
 def fetch(project,query):

@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/node-cache.test.ts","concurrentReaders":12,"sourceReads":1,"snapshotRestored":true,"unauthorizedWorkspaceDenied":true,"failedOriginAttempts":1,"head":"2219c75462b719d268ff52c25c6701a045a3e83a"}
+✔ node daemon coalesces misses, persists verified objects, restores a refreshed snapshot and isolates failed reads (590.943291ms)
+{"command":"node --import tsx --test tests/node-regional.test.ts","nodeProcesses":2,"sourceObjectRequests":1,"bypassRequests":0,"expiryRespectedAtBothTiers":true,"externalProviderCalls":0}
+✔ two real node daemons share the regional tier and never extend credential expiry (2704.50075ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2837.417667

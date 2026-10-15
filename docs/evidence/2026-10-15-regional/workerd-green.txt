@@ -1,0 +1,1 @@
+{"command":"node --import tsx tests/regional-worker.e2e.ts","realWorkerd":true,"serviceBinding":true,"cacheApiWarmHit":true,"concurrentSourceRpcs":8,"projectApiPreserved":true,"unauthenticatedDenied":true,"externalProviderCalls":0,"passed":true}

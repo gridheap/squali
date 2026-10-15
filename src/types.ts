@@ -20,7 +20,7 @@ export interface Artifacts {
   create(name:string,defaultBranch?:string):Promise<void>;
   repo(name:string):Repository;
 }
-export type Principal={id:string;role:'admin'|'reviewer'|'agent'|'reader';projects:string[];owner?:string;paths?:string[]};
+export type Principal={id:string;role:'admin'|'reviewer'|'agent'|'reader';projects:string[];owner?:string;paths?:string[];expiresAt?:number};
 export type Patch={path:string;content:string|null;mode?:'100644'|'100755'};
 export type Config={nativeImports?:boolean;source?:import('./source-store.ts').SourceStore;sql:Sql;artifacts:Artifacts;principals:Record<string,Principal>;mode:string;maxProjects:number;monthlyOps:number;cacheBudget?:{reads:number;writes:number};assets?:(request:Request)=>Promise<Response>;adobeKit?:string;clerk?:{publishableKey:string;secretKey:string;jwtKey?:string;appOrigin?:string;apiOrigin?:string};github?:{apiOrigin:string;gitOrigin:string}};
 export class Problem extends Error {

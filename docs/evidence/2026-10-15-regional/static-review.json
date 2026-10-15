@@ -1,0 +1,11 @@
+{
+  "command": "git diff --check; changed-file secret-pattern/link scan; Python AST parse",
+  "files": 42,
+  "secretPatternFiles": [],
+  "missingRelativeLinks": [],
+  "pythonParsed": [
+    "scripts/node-daemon.py",
+    "scripts/verify-regional.py"
+  ],
+  "passed": true
+}

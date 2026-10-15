@@ -1,0 +1,19 @@
+{
+  "command": "node --import tsx --test tests/regional-cache.test.ts",
+  "concurrentReaders": 16,
+  "sourceObjectCalls": 1,
+  "crossPrincipalReuse": true,
+  "canonicalStatBatch": true,
+  "headAlwaysFresh": true,
+  "scopeAndProjectIsolation": true,
+  "leaseMaxSeconds": 30,
+  "expiryClamped": true,
+  "revocationAfterLease": true,
+  "cacheFailureOriginCalls": 0,
+  "originCircuitAttempts": 1,
+  "automaticRetries": 0,
+  "corruptObjectRejected": true,
+  "processRestartReusesRegionalCache": true,
+  "externalProviderCalls": 0,
+  "passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "squali-regional",
+  "account_id": "52f8a24263418828b635c91b6eb06a83",
+  "main": "src/regional-worker.ts",
+  "compatibility_date": "2026-10-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{"pattern":"squa.li/api/projects/*","zone_id":"a9e767db975bf6b80cfdad9df81e972b"}],
+  "services": [{"binding":"SOURCE","service":"gridheap-weave"}],
+  "ratelimits": [{"name":"SOURCE_LIMIT","namespace_id":"202610151","simple":{"limit":600,"period":60}}],
+  "limits": {"cpu_ms":30000},
+  "observability": {"enabled":false}
+}

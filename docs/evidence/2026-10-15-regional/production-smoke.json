@@ -1,0 +1,44 @@
+{
+  "command": "python3 scripts/verify-regional.py --access ../../work/private/weave-access.json --fixture ../../work/private/source-pilot.json --principal owner --prior-report docs/evidence/2026-10-15-regional/production-reader-denied.json --output docs/evidence/2026-10-15-regional/production-smoke.json",
+  "timestamp": "2026-10-15T10:51:27Z",
+  "httpAttempts": 5,
+  "priorDeniedAttempts": 1,
+  "maxAttempts": 5,
+  "automaticRetries": 0,
+  "steps": [
+    {
+      "name": "authorization",
+      "status": 200,
+      "elapsedMs": 1078.14,
+      "tier": "regional",
+      "cache": "lease"
+    },
+    {
+      "name": "first-object-read",
+      "status": 200,
+      "elapsedMs": 1410.26,
+      "tier": "regional",
+      "cache": "miss",
+      "identityMatchesRetainedFixture": true,
+      "bytes": 50
+    },
+    {
+      "name": "warm-object-read",
+      "status": 200,
+      "elapsedMs": 968.26,
+      "tier": "regional",
+      "cache": "hit",
+      "identityMatchesRetainedFixture": true,
+      "bytes": 50
+    },
+    {
+      "name": "project-api",
+      "status": 200,
+      "elapsedMs": 815.91,
+      "tier": null,
+      "cache": null,
+      "projectApiPreserved": true
+    }
+  ],
+  "complete": true
+}

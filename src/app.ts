@@ -78,7 +78,7 @@ export function createApp(config:Config){
       return json({...tokenView(made),token},201);
      }
     }
-    if(action==='rpc'&&request.method==='POST'){unrestricted();if(!config.source||p.storage!=='source')throw new Problem(409,'source_storage','Raw RPC requires source storage');return await config.source.rpc(pid,await body(request));}
+    if(action==='rpc'&&request.method==='POST'){unrestricted();if(!config.source||p.storage!=='source')throw new Problem(409,'source_storage','Raw RPC requires source storage');const input=await body(request);if(input.op==='authorize')return json({project:pid,expiresAt:Math.min(Date.now()+30000,principal.expiresAt??Infinity)});return await config.source.rpc(pid,input);}
     if(action==='objects'&&request.method==='POST'){unrestricted();
      const input=await body(request);const objects=input.objects;
      if(!Array.isArray(objects)||!objects.length||objects.length>32||objects.some(o=>!['commit','tree','blob'].includes(o?.type)||typeof o.oid!=='string'||!/^[a-f0-9]{40}$/.test(o.oid)))throw new Problem(400,'object_batch','Request 1–32 immutable Git objects');

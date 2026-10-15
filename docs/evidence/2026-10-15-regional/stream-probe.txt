@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/regional-cache.test.ts","concurrentReaders":16,"sourceObjectCalls":1,"crossPrincipalReuse":true,"canonicalStatBatch":true,"headAlwaysFresh":true,"scopeAndProjectIsolation":true,"leaseMaxSeconds":30,"expiryClamped":true,"revocationAfterLease":true,"cacheFailureOriginCalls":0,"originCircuitAttempts":1,"automaticRetries":0,"corruptObjectRejected":true,"processRestartReusesRegionalCache":true,"externalProviderCalls":0,"passed":true}
+✔ regional RPC isolates failures and shares immutable reads behind bounded authorization (476.660584ms)
+{"command":"node --import tsx --test tests/regional-cache.test.ts","largeBytes":2097152,"exactStream":true,"cancelReleasesSlot":true,"truncationRejected":true,"smallCacheWrites":0,"timeoutAttempts":1,"externalProviderCalls":0}
+✔ large streams retain admission until consumed or cancelled, and timeout never retries (477.678042ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1115.140625

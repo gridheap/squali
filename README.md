@@ -8,6 +8,8 @@ Squali implements the public Scion design as an online source service. Agents cr
 
 Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyperdrive**. R2 holds independently compressed content-addressed blobs. PostgreSQL holds canonical changesets and workflow state. Artifacts provides a derived Git compatibility copy. No D1 or application Durable Objects are used.
 
+Clients read through a shared node daemon and an [independent regional RPC Worker](docs/regional-cache.md). A [writable Linux virtual workspace](docs/virtual-workspaces.md) hydrates files on demand and preserves edits in a bounded durable overlay.
+
 **Development continues; competition submission is paused.** The [current Scion implementation report](docs/scion-next.md) records measured progress and remaining gaps. The v0.2.0 [20-item checklist](docs/scion-acceptance.md) is a historical feature inventory; it does not establish 95% equivalence to Scion. The independently verified 421,219-object private import remains valid. Anthropic's production scale and cost reductions have not been reproduced.
 
 ## Run locally
