@@ -1,0 +1,34 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:58742 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 82c28e44cb30ef0b608ecd777e436f6d99d1d579
+Traceback (most recent call last):
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py", line 52, in <module>
+    assert invalid.returncode!=0 and not (root/'workspace'/'pending-invalid-title.json').exists(),'Invalid input must be rejected before recording or sending a proposal'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Invalid input must be rejected before recording or sending a proposal
+time="2026-10-15T16:43:37+08:00" level=fatal msg="exit status 1"
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at Socket.<anonymous> (node:internal/child_process:498:11)
+    at Socket.emit (node:events:514:28)
+    at Pipe.<anonymous> (node:net:362:12) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: 'colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:58742 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 82c28e44cb30ef0b608ecd777e436f6d99d1d579',
+  stdout: '',
+  stderr: 'Traceback (most recent call last):\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py", line 52, in <module>\n' +
+    "    assert invalid.returncode!=0 and not (root/'workspace'/'pending-invalid-title.json').exists(),'Invalid input must be rejected before recording or sending a proposal'\n" +
+    '           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n' +
+    'AssertionError: Invalid input must be rejected before recording or sending a proposal\n' +
+    'time="2026-10-15T16:43:37+08:00" level=fatal msg="exit status 1"\n'
+}
+
+Node.js v24.21.0

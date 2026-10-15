@@ -27,7 +27,7 @@ const command='node --import tsx tests/virtual-workspace.e2e.ts';
 const headers={authorization:'Bearer local-admin-test-token','content-type':'application/json'};
 const call=async(path:string,input?:unknown)=>{const r=await fetch(server.url+'/api'+path,{method:input?'POST':'GET',headers,body:input?JSON.stringify(input):undefined});const v=await r.json() as any;assert.ok(r.ok,JSON.stringify(v));return v;};
 try{
- const p=await call('/projects',{id:'virtual-fs',name:'Virtual filesystem',storage:'source',files:[{path:'README.md',content:'original\n'},{path:'src/keep.txt',content:'untouched\n'},{path:'src/remove.txt',content:'remove\n'},{path:'tool.sh',content:'#!/bin/sh\necho old\n',mode:'100755'}]});
+ const p=await call('/projects',{id:'virtual-fs',name:'Virtual filesystem',storage:'source',files:[{path:'README.md',content:'original\n'},{path:'src/keep.txt',content:'untouched\n'},{path:'src/remove.txt',content:'remove\n'},{path:'reset/keep.txt',content:'keep same content\n'},{path:'reset/remove.txt',content:'removed by directory replacement\n'},{path:'tool.sh',content:'#!/bin/sh\necho old\n',mode:'100755'}]});
  const base='http://host.lima.internal:'+(proxy.address() as {port:number}).port;
  const result=await exec('colima',['ssh','--','sudo','env','SQUALI_URL='+base,'SQUALI_TOKEN=local-admin-test-token','python3',resolve('tests/virtual-workspace-linux.py'),'--repo',resolve('.'),'--ref',p.head],{timeout:120000,maxBuffer:1024*1024});
  const linux=JSON.parse(result.stdout.trim().split('\n').at(-1)!);assert.equal(linux.passed,true);
@@ -39,6 +39,8 @@ try{
  assert.equal((await call('/projects/virtual-fs/file?ref='+change.oid+'&path=tool.sh')).mode,'100644');
  assert.equal((await fetch(server.url+'/api/projects/virtual-fs/file?ref='+change.oid+'&path=src/remove.txt',{headers})).status,404);
  assert.equal((await call('/projects/virtual-fs/file?ref='+change.oid+'&path=src/keep.txt')).content,'untouched\n');
+ assert.equal((await call('/projects/virtual-fs/file?ref='+change.oid+'&path=reset/keep.txt')).content,'keep same content\n','Recreating an opaque directory must retain identical replacement files');
+ assert.equal((await fetch(server.url+'/api/projects/virtual-fs/file?ref='+change.oid+'&path=reset/remove.txt',{headers})).status,404);
  const native=server.dir+'/native.git';await exec('git',['-c','http.extraHeader=Authorization: Bearer local-admin-test-token','clone','--mirror',server.url+'/api/projects/virtual-fs/git',native]);
  // Unpublished changes are intentionally absent from the published Git bridge.
  assert.equal((await exec('git',['--git-dir',native,'rev-parse','HEAD'])).stdout.trim(),p.head);

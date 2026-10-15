@@ -29,6 +29,7 @@ The command runs with the virtual root as its working directory. Its process gro
 - Default command lifetime is 900 seconds; allowed range 1–3,600 seconds.
 - Proposals allow 64 changed regular UTF-8 files, 256 KiB per file and 1 MiB total content. Binary writes may exist locally but cannot yet be submitted. Symlinks, submodules and file/directory replacements require explicit native handling.
 - Change inspection visits at most 10,000 upper-layer paths and 4,096 source trees. It compares upper-file hashes with immutable source metadata, so untouched file bodies are not fetched for status/proposal.
+- Deleting and recreating a directory removes absent children while preserving any recreated identical files. Invalid proposal titles are rejected before creating a pending journal.
 - Before sending a proposal, the exact payload is fsynced into a private pending journal. After a lost response, retry the same ID and title; the saved payload is reused even if local edits have changed. There are no automatic retries. A confirmed receipt is saved atomically and a repeated accepted operation makes no network call.
 - Receipt replay does not mean that later local edits were included. The immutable base and current upper layer remain explicit; status shows current changes relative to that base.
 - Credentials are not saved in the manifest or journals. Payload journals contain private source text and require the same protection as the working copy.

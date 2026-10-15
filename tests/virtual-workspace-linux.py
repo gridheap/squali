@@ -21,12 +21,13 @@ try:
  assert select.select([daemon.stdout],[],[],10)[0], 'Daemon startup timeout'
  assert json.loads(daemon.stdout.readline())['ready']
  base=['python3','scripts/virtual-workspace.py','run','--socket',str(root/'node.sock'),'--project','virtual-fs','--ref',a.ref,'--state',str(root/'workspace'),'--max-bytes','67108864']
- edits="""import os,pathlib
+ edits="""import os,pathlib,shutil
 p=pathlib.Path('.')
 assert (p/'README.md').read_text()=='original\\n'
 (p/'README.tmp').write_text('changed\\n');os.replace(p/'README.tmp',p/'README.md')
 (p/'src/new.txt').write_text('new file\\n');(p/'src/remove.txt').unlink()
 (p/'tool.sh').write_text('#!/bin/sh\\necho new\\n');(p/'tool.sh').chmod(0o644)
+shutil.rmtree(p/'reset');(p/'reset').mkdir();(p/'reset/keep.txt').write_text('keep same content\\n')
 """
  first=run(*base,'--','python3','-c',edits);assert first.returncode==0,first.stderr
  cold=stats();assert 1<=cold['originBlobs']<=2,cold
@@ -47,6 +48,8 @@ except OSError as e: assert e.errno==errno.ENOSPC,e
 finally: p.unlink(missing_ok=True)
 """
  full=run(*base,'--','python3','-c',quota);assert full.returncode==0,full.stderr
+ invalid=run('python3','scripts/virtual-workspace.py','propose','--state',str(root/'workspace'),'--socket',str(root/'node.sock'),'--id','invalid-title','--title','x'*201)
+ assert invalid.returncode!=0 and not (root/'workspace'/'pending-invalid-title.json').exists(),'Invalid input must be rejected before recording or sending a proposal'
  proposal=run('python3','scripts/virtual-workspace.py','propose','--state',str(root/'workspace'),'--socket',str(root/'node.sock'),'--id','virtual-edit','--title','Virtual filesystem edits')
  assert proposal.returncode!=0,'The first response should be lost after server acceptance'
  assert (root/'workspace'/'pending-virtual-edit.json').exists()

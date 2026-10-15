@@ -36,7 +36,7 @@ def main():
    checked(['mkfs.ext4','-q','-F',str(image)]);atomic_json(manifest_path,manifest)
   if manifest['version']!=1 or a.ref and a.ref!=manifest['ref'] or a.project and a.project!=manifest['project']:raise ValueError('The workspace is pinned to its original project and commit; choose a new state directory')
   if a.action=='propose':
-   if not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_-]{0,62}',a.id or '') or not a.title or len(a.title)>240:raise ValueError('Supply --id and --title for this explicit proposal')
+   if not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_-]{0,62}',a.id or '') or not a.title or not a.title.strip() or len(a.title)>200:raise ValueError('Supply --id and a nonblank --title of at most 200 characters')
    receipt=state/('receipt-'+a.id+'.json')
    if receipt.exists():
     saved=json.loads(receipt.read_text())
@@ -177,7 +177,10 @@ def changes(upper,manifest,sock):
     if before and not stat.S_ISREG(before[0]):raise ValueError('Unsupported source type replacement')
     if info.st_size>256*1024:raise ValueError('Edited files are limited to 256 KiB')
     body=path.read_bytes();mode='100755' if info.st_mode&0o111 else '100644';oid=hashlib.sha1(('blob '+str(len(body))+'\0').encode()+body).hexdigest()
-    if before and before[1]==oid and mode==('100755' if before[0]&0o111 else '100644'):continue
+    if before and before[1]==oid and mode==('100755' if before[0]&0o111 else '100644'):
+     # An opaque replacement directory first marks old descendants deleted.
+     # A recreated identical file cancels that deletion without sending a blob.
+     result.pop(relative,None);continue
     if b'\0' in body:raise ValueError('Only UTF-8 text edits are supported')
     put(relative,body.decode('utf-8'),mode)
    else:raise ValueError('Only regular source-file edits are supported')
