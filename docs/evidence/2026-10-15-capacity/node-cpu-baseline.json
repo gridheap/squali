@@ -1,0 +1,17 @@
+{
+  "command": "NODE_CPU_OUTPUT=docs/evidence/2026-10-15-capacity/node-cpu-baseline.json node --import tsx tests/node-cpu.e2e.ts",
+  "cpu": "Apple M4 Max",
+  "requests": 32768,
+  "concurrency": 64,
+  "bodyBytes": 16384,
+  "errors": 0,
+  "wallMs": 4899.1932910000005,
+  "requestsPerSecond": 6688.448088014006,
+  "p95Ms": 11.390416999999616,
+  "nodeCpuMs": 7060.277,
+  "nodePeakRssBytes": 37765120,
+  "originObjectRequests": 1,
+  "authorizationRequests": 1,
+  "externalProviderCalls": 0,
+  "comparison": null
+}

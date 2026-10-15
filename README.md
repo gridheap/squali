@@ -8,7 +8,7 @@ Squali implements the public Scion design as an online source service. Agents cr
 
 Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyperdrive**. R2 holds independently compressed content-addressed blobs. PostgreSQL holds canonical changesets and workflow state. Artifacts provides a derived Git compatibility copy. No D1 or application Durable Objects are used.
 
-Clients read through a shared node daemon and an [independent regional RPC Worker](docs/regional-cache.md). A [writable Linux virtual workspace](docs/virtual-workspaces.md) hydrates files on demand and preserves edits in a bounded durable overlay.
+Clients read through a shared node daemon and an [independent regional RPC Worker](docs/regional-cache.md). A [writable Linux virtual workspace](docs/virtual-workspaces.md) hydrates files on demand, preserves edits in a bounded durable overlay and rebases the same workspace with recoverable server-side merges. [Capacity and cost measurements](docs/capacity.md) cover 128 concurrent clients, CPU, memory and storage calls.
 
 **Development continues; competition submission is paused.** The [current Scion implementation report](docs/scion-next.md) records measured progress and remaining gaps. The v0.2.0 [20-item checklist](docs/scion-acceptance.md) is a historical feature inventory; it does not establish 95% equivalence to Scion. The independently verified 421,219-object private import remains valid. Anthropic's production scale and cost reductions have not been reproduced.
 
@@ -56,7 +56,7 @@ Evidence is supplied by the agent. Squali does not execute or certify it. Review
 - [HTTP API](docs/api.md): proposals, review, publication, diff, history, blame, ancestry, bisect, revert and single/continuous rebase.
 - [Working copies](docs/working-copy.md): sparse materialization, native change monitoring, edits, update and crash recovery.
 - [Node daemon and Linux FUSE](docs/node-cache.md): shared object reads, checked snapshots and lazy source mounts.
-- [Writable virtual workspaces](docs/virtual-workspaces.md): Linux FUSE + bounded OverlayFS, ordinary edits, restart recovery and explicit proposals.
+- [Writable virtual workspaces](docs/virtual-workspaces.md): Linux FUSE + bounded OverlayFS, ordinary edits, recoverable in-place rebase and explicit proposals.
 - [Source administration](docs/source-operations.md): native ingestion, derivation, automatic bisect and a bounded cloud acceptance command.
 - [Clerk and GitHub import](docs/github-import.md): owner isolation, repository consent, durable jobs and pause/resume.
 
@@ -71,7 +71,7 @@ pnpm build
 BENCH_STORAGE=source BENCH_CHANGES=64 BENCH_CONCURRENCY=8 pnpm benchmark
 ```
 
-API/CLI E2E starts real PostgreSQL and HTTP services with a persistent filesystem adapter at the R2 boundary. Native Git independently checks object, tree, history and publication results. The full suite runs at most four test processes against shared local resources; individual concurrency tests still use eight clients. Tests retain their exact commands and reports in the evidence directory. Production measurements are labelled separately from local benchmarks.
+API/CLI E2E starts real PostgreSQL and HTTP services with a persistent filesystem adapter at the R2 boundary. Native Git independently checks object, tree, history and publication results. The full suite runs at most four test processes against shared local resources. The separate bounded capacity runner exercises up to 128 clients. Tests retain their exact commands and reports in the evidence directory. Production measurements are labelled separately from local benchmarks.
 
 Browser tests use an isolated profile and the installed Brave browser on macOS. On Linux the default is `/usr/bin/google-chrome`; set `SQUALI_BROWSER` to another existing Chromium executable. No test installs or downloads a browser. Start `pnpm dev`, then run `pnpm test:ui`. The typography test also requires the platform’s CJK UI fonts. Tests exercise desktop/mobile flow, font fallback and Latin/CJK glyph selection.
 
@@ -88,7 +88,7 @@ Read [architecture](docs/architecture.md), [deployment](docs/deployment.md), [fa
 
 ## Explicit limits
 
-Artifacts currently limits a repository to 1 GB. When that limit is explicitly returned, admitted imports use a verified R2 compatibility snapshot (at most 500,000 objects, a 512 MiB pack and a 16 MiB index). Source APIs stay independent of the Git compatibility copy. Inputs outside those snapshot bounds remain explicitly limited. Native ingestion defaults to 500,000 objects, 16 GiB raw data and 12,000 HTTP attempts across restarts. These are admission limits, not measured scale claims. Editable files are UTF-8 regular files, at most 256 KiB each; binary objects, symlinks and submodules are preserved during import but are not edited through the text API. FUSE mounts are read-only; edits use the sparse client/API. One main branch is the publication boundary.
+Artifacts currently limits a repository to 1 GB. When that limit is explicitly returned, admitted imports use a verified R2 compatibility snapshot (at most 500,000 objects, a 512 MiB pack and a 16 MiB index). Source APIs stay independent of the Git compatibility copy. Inputs outside those snapshot bounds remain explicitly limited. Native ingestion defaults to 500,000 objects, 16 GiB raw data and 12,000 HTTP attempts across restarts. These are admission limits, not measured scale claims. Editable files are UTF-8 regular files, at most 256 KiB each; binary objects, symlinks and submodules are preserved during import but are not edited through the text API. The FUSE lower layer is read-only; the virtual workspace adds a bounded writable overlay, or edits can use the sparse client/API. One main branch is the publication boundary.
 
 Continuous rebase handles up to 64 single-parent commits. Individual merge-commit rebase needs an explicit parent. Graph queries retain a 50,000-node budget. Derived reconstruction admits 1,024 missing results per invocation; larger histories use parent-order batches. Automatic CI, full-text code search and an Anthropic-scale distributed load test are outside the current implementation. See [readiness](docs/readiness.md) for the completed private-import and login evidence, and [cost reconciliation](docs/cost-final.md) for measured usage.
 

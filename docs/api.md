@@ -68,6 +68,7 @@ All immutable refs are full 40-character commit IDs. Authorization runs before c
 | GET | `/blame?ref=&path=` | Original commit and line per line; 2,000 lines, 4 million comparison budget |
 | POST | `/bisect` | `{good,bad}` → first-parent candidate or culprit; no test execution |
 | POST | `/rebase` | `{id,commit,onto,parent?,resolutions?,note?}` → one commit rebased as a fresh proposal; `parent` is one-based and mandatory for merges |
+| POST | `/rebase-plan` | Whole-workspace agent/admin; `{base,onto,files,resolutions?}` → deterministic `{base,onto,files}` for dirty workspace edits; no new proposal/blob/ref. Overlapping edits return `409 rebase_conflict` with base, target and incoming text/modes. Existing file/edit limits and a 2 MiB comparison bound apply. |
 | POST | `/revert` | `{id,commit,note?}` → an inverse proposal requiring review; conflicting later edits stop |
 | GET | `/search?ref=&query=&path=&cursor=` | Path-name search; 50 matches, 2,000 entries / 64 trees per page; query-bound cursor |
 | GET/POST | `/policy` | Owner/admin; `{rules:[{prefix,independentReview,requireEvidence}]}`; up to 32 rules |

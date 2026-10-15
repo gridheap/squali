@@ -116,6 +116,7 @@ export function createApp(config:Config){
      if(action==='blame')return json(await metadata.blame(ref,path));const history=p.storage==='source'&&config.source?await config.source.history(pid,ref,path,Number(url.searchParams.get('limit')??20),url.searchParams.get('cursor')??undefined):await metadata.history(ref,path,Number(url.searchParams.get('limit')??20));return json(principal.paths?{...history,commits:history.commits.map(({oid,parents})=>({oid,parents}))}:history);
     }
     if(action==='rebase-series'&&request.method==='POST'){unrestricted();requireRole(['admin','agent']);const input=await body(request);if(input.resolutions&&typeof input.resolutions==='object')for(const value of Object.values(input.resolutions))patches(value);return json(await rebaseSeries(config,pid,principal,input,changes,metadata));}
+    if(action==='rebase-plan'&&request.method==='POST'){unrestricted();requireRole(['admin','agent']);const input=await body(request);return json(await metadata.rebaseWorkspace(input.base,input.onto,patches(input.files),patches(input.resolutions??[])));}
     if(action==='rebase'&&request.method==='POST'){unrestricted();requireRole(['admin','agent']);
      const input=await body(request),changeId=id(input.id),note=input.note===undefined?'Reapply this commit onto an explicit immutable base':text(input.note,4000),resolutions=patches(input.resolutions??[]);
      const plan=await metadata.rebase(input.commit,input.onto,input.parent,resolutions);

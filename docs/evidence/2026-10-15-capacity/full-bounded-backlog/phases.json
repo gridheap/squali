@@ -1,0 +1,226 @@
+[
+  {
+    "name": "cold-node-cold-region",
+    "concurrency": 8,
+    "attempts": 512,
+    "succeeded": 512,
+    "errors": [],
+    "wallMs": 1264.0994999999998,
+    "successfulPerSecond": 405.0314077333312,
+    "latencyMs": {
+      "p50": 19.273083000000042,
+      "p95": 23.907208000000537,
+      "p99": 42.14945799999987
+    },
+    "nodeCpuMs": {
+      "user": 636.835,
+      "system": 118.484
+    },
+    "nodeMaxRssKiB": 198864,
+    "sqlQueries": 2056,
+    "sourceObjectCalls": 512,
+    "storage": {
+      "get": 512,
+      "put": 0,
+      "head": 0,
+      "readBytes": 108706,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "new-nodes-warm-region",
+    "concurrency": 8,
+    "attempts": 3584,
+    "succeeded": 3584,
+    "errors": [],
+    "wallMs": 2963.663291,
+    "successfulPerSecond": 1209.3141656421726,
+    "latencyMs": {
+      "p50": 6.079499999999825,
+      "p95": 10.58904099999927,
+      "p99": 13.784749999999804
+    },
+    "nodeCpuMs": {
+      "user": 609.194,
+      "system": 249.385
+    },
+    "nodeMaxRssKiB": 256624,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "warm-nodes",
+    "concurrency": 128,
+    "attempts": 8192,
+    "succeeded": 8192,
+    "errors": [],
+    "wallMs": 409.40999999999985,
+    "successfulPerSecond": 20009.28164920252,
+    "latencyMs": {
+      "p50": 6.148791999999958,
+      "p95": 10.693083000000115,
+      "p99": 16.323167000000467
+    },
+    "nodeCpuMs": {
+      "user": 425.059,
+      "system": 167.948
+    },
+    "nodeMaxRssKiB": 299312,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "proposals-8",
+    "concurrency": 8,
+    "attempts": 256,
+    "succeeded": 256,
+    "errors": [],
+    "wallMs": 470.9045420000002,
+    "successfulPerSecond": 543.6345950555726,
+    "latencyMs": {
+      "p50": 13.103583000000071,
+      "p95": 24.85449999999946,
+      "p99": 29.99958300000071
+    },
+    "nodeCpuMs": {
+      "user": 468.82,
+      "system": 197.736
+    },
+    "nodeMaxRssKiB": 332976,
+    "sqlQueries": 9729,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 256,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 9618
+    }
+  },
+  {
+    "name": "proposals-32",
+    "concurrency": 32,
+    "attempts": 256,
+    "succeeded": 256,
+    "errors": [],
+    "wallMs": 355.5462499999994,
+    "successfulPerSecond": 720.0188442431903,
+    "latencyMs": {
+      "p50": 42.99933400000009,
+      "p95": 51.87962499999958,
+      "p99": 54.95775000000049
+    },
+    "nodeCpuMs": {
+      "user": 404.841,
+      "system": 174.312
+    },
+    "nodeMaxRssKiB": 355600,
+    "sqlQueries": 9728,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 256,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 9874
+    }
+  },
+  {
+    "name": "proposals-128",
+    "concurrency": 128,
+    "attempts": 256,
+    "succeeded": 256,
+    "errors": [],
+    "wallMs": 340.2363750000004,
+    "successfulPerSecond": 752.4180799304592,
+    "latencyMs": {
+      "p50": 156.95266699999956,
+      "p95": 193.2626249999994,
+      "p99": 205.338667
+    },
+    "nodeCpuMs": {
+      "user": 367.987,
+      "system": 180.966
+    },
+    "nodeMaxRssKiB": 384896,
+    "sqlQueries": 9728,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 256,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 10130
+    }
+  },
+  {
+    "name": "review",
+    "concurrency": 8,
+    "attempts": 768,
+    "succeeded": 768,
+    "errors": [],
+    "wallMs": 566.7732080000005,
+    "successfulPerSecond": 1355.0393511190798,
+    "latencyMs": {
+      "p50": 5.724082999999155,
+      "p95": 8.22899999999936,
+      "p99": 9.154292000001078
+    },
+    "nodeCpuMs": {
+      "user": 491.914,
+      "system": 94.298
+    },
+    "nodeMaxRssKiB": 400784,
+    "sqlQueries": 9216,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "publication",
+    "concurrency": 1,
+    "attempts": 12,
+    "succeeded": 12,
+    "errors": [],
+    "wallMs": 150.65158399999927,
+    "successfulPerSecond": 79.6539915571021,
+    "latencyMs": {
+      "p50": 12.12750000000051,
+      "p95": 15.21533400000044,
+      "p99": 15.21533400000044
+    },
+    "nodeCpuMs": {
+      "user": 88.538,
+      "system": 12.057
+    },
+    "nodeMaxRssKiB": 411472,
+    "sqlQueries": 755,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  }
+]

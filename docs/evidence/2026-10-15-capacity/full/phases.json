@@ -1,0 +1,163 @@
+[
+  {
+    "name": "cold-node-cold-region",
+    "concurrency": 8,
+    "attempts": 512,
+    "succeeded": 512,
+    "errors": [],
+    "wallMs": 1593.590209,
+    "successfulPerSecond": 321.2871145344744,
+    "latencyMs": {
+      "p50": 23.791708000000654,
+      "p95": 32.8550409999998,
+      "p99": 43.59141600000021
+    },
+    "nodeCpuMs": {
+      "user": 763.86,
+      "system": 137.613
+    },
+    "nodeMaxRssKiB": 213056,
+    "sqlQueries": 2056,
+    "sourceObjectCalls": 512,
+    "storage": {
+      "get": 512,
+      "put": 0,
+      "head": 0,
+      "readBytes": 108706,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "new-nodes-warm-region",
+    "concurrency": 8,
+    "attempts": 3584,
+    "succeeded": 3584,
+    "errors": [],
+    "wallMs": 3263.5985,
+    "successfulPerSecond": 1098.1743005458545,
+    "latencyMs": {
+      "p50": 6.708083999999872,
+      "p95": 11.97729199999958,
+      "p99": 15.595707999999831
+    },
+    "nodeCpuMs": {
+      "user": 675.148,
+      "system": 276.051
+    },
+    "nodeMaxRssKiB": 267824,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "warm-nodes",
+    "concurrency": 128,
+    "attempts": 8192,
+    "succeeded": 8173,
+    "errors": [
+      {
+        "i": 3084,
+        "error": "RangeError [ERR_BUFFER_OUT_OF_BOUNDS]: Attempt to access memory outside buffer bounds"
+      },
+      {
+        "i": 3284,
+        "error": "Error: write EPIPE"
+      },
+      {
+        "i": 6923,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6939,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6947,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6955,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6963,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6971,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 6995,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7003,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7011,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7019,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7027,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7035,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7043,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7051,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7059,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7067,
+        "error": "Error: connect ECONNREFUSED /var/folders/mw/l_0h71z93hb5rbnbt4htp53m0000gn/T/sq-cap-70f4eb60-ce4.sock"
+      },
+      {
+        "i": 7923,
+        "error": "Error: write EPIPE"
+      }
+    ],
+    "wallMs": 634.8433339999992,
+    "successfulPerSecond": 12874.04240114461,
+    "latencyMs": {
+      "p50": 6.915875000000597,
+      "p95": 13.924291999999696,
+      "p99": 179.97062499999993
+    },
+    "nodeCpuMs": {
+      "user": 495.663,
+      "system": 173.384
+    },
+    "nodeMaxRssKiB": 329120,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  }
+]

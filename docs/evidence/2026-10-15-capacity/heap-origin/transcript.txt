@@ -1,0 +1,24 @@
+node:internal/modules/cjs/loader:1564
+  const err = new Error(message);
+              ^
+
+Error: Cannot find module 'ws'
+Require stack:
+- /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/node_modules/wrangler/package.json
+    at node:internal/modules/cjs/loader:1564:15
+    at nextResolveSimple (/Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-B1c7OH6V.cjs:23:1010)
+    at /Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-B1c7OH6V.cjs:22:4512
+    at /Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-B1c7OH6V.cjs:22:2830
+    at resolveTsPaths (/Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-B1c7OH6V.cjs:23:762)
+    at /Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-B1c7OH6V.cjs:23:1203
+    at j._resolveFilename (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:18825)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+    at defaultResolve (node:internal/modules/cjs/loader:1199:20) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/node_modules/wrangler/package.json'
+  ]
+}
+
+Node.js v24.21.0

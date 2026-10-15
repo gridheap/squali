@@ -1,0 +1,272 @@
+{
+  "command": "python3 scripts/measure-provider.py --prior-report docs/evidence/2026-10-15-capacity/provider-denied.json --output docs/evidence/2026-10-15-capacity/provider-current.json",
+  "start": "2026-10-01T00:00:00Z",
+  "end": "2026-10-15T11:39:46.084107Z",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){ops0:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",bucketName:\"squali-source\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage0:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",bucketName:\"squali-source\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}ops1:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",bucketName:\"squali-objects\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage1:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",bucketName:\"squali-objects\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}source:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",scriptName:\"gridheap-weave\"}){sum{requests errors cpuTimeUs subrequests} dimensions{status}}regional:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",scriptName:\"squali-regional\"}){sum{requests errors cpuTimeUs subrequests} dimensions{status}}artifactsEventsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T11:39:46.084107Z\",repositoryNamespace:\"weave\"}){count dimensions{eventKind eventType}}}}}",
+  "attempts": 2,
+  "priorDeniedAttempts": 1,
+  "maxAttempts": 2,
+  "automaticRetries": 0,
+  "result": {
+    "data": {
+      "viewer": {
+        "accounts": [
+          {
+            "artifactsEventsAdaptiveGroups": [
+              {
+                "count": 2,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "pull"
+                }
+              },
+              {
+                "count": 1,
+                "dimensions": {
+                  "eventKind": "error",
+                  "eventType": "serverError"
+                }
+              },
+              {
+                "count": 13,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "push"
+                }
+              },
+              {
+                "count": 1,
+                "dimensions": {
+                  "eventKind": "error",
+                  "eventType": "clientError"
+                }
+              },
+              {
+                "count": 44,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "read"
+                }
+              },
+              {
+                "count": 2,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "create"
+                }
+              },
+              {
+                "count": 48,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "token_create"
+                }
+              },
+              {
+                "count": 2,
+                "dimensions": {
+                  "eventKind": "action",
+                  "eventType": "token_revoke"
+                }
+              }
+            ],
+            "ops0": [
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetBucketLifecycleConfiguration",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutObject",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 166179
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 56
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetObject",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 213
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "userError",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucket",
+                  "bucketName": "squali-source"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              }
+            ],
+            "ops1": [
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "GetBucketLifecycleConfiguration",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutObject",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 9
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "HeadBucket",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 67
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucket",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "success",
+                  "actionType": "PutBucketLifecycleConfiguration",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 1
+                }
+              },
+              {
+                "dimensions": {
+                  "actionStatus": "userError",
+                  "actionType": "GetObject",
+                  "bucketName": "squali-objects"
+                },
+                "sum": {
+                  "requests": 10
+                }
+              }
+            ],
+            "regional": [
+              {
+                "dimensions": {
+                  "status": "success"
+                },
+                "sum": {
+                  "cpuTimeUs": 18545,
+                  "errors": 0,
+                  "requests": 9,
+                  "subrequests": 9
+                }
+              }
+            ],
+            "source": [
+              {
+                "dimensions": {
+                  "status": "exceededResources"
+                },
+                "sum": {
+                  "cpuTimeUs": 6000000,
+                  "errors": 2,
+                  "requests": 2,
+                  "subrequests": 26
+                }
+              },
+              {
+                "dimensions": {
+                  "status": "success"
+                },
+                "sum": {
+                  "cpuTimeUs": 1458637903,
+                  "errors": 0,
+                  "requests": 12168,
+                  "subrequests": 1721
+                }
+              }
+            ],
+            "storage0": [
+              {
+                "dimensions": {
+                  "bucketName": "squali-source",
+                  "datetime": "2026-10-15T11:00:00Z"
+                },
+                "max": {
+                  "metadataSize": 18917087,
+                  "objectCount": 166502,
+                  "payloadSize": 2192995260
+                }
+              }
+            ],
+            "storage1": [
+              {
+                "dimensions": {
+                  "bucketName": "squali-objects",
+                  "datetime": "2026-10-15T11:10:00Z"
+                },
+                "max": {
+                  "metadataSize": 366,
+                  "objectCount": 10,
+                  "payloadSize": 1638
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "limitations": [
+    "Adaptive provider analytics may lag and may sample.",
+    "Month-to-date totals include unrelated Squali requests, prior failures and the existing large import.",
+    "R2 data are operation observations and latest storage, not an invoice; account allowances and billing rounding are unknown.",
+    "Service-binding requests are not separately billable requests; source and regional invocation counts must not be blindly added for request-price estimates."
+  ]
+}

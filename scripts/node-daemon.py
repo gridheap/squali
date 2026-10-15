@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Private Unix-socket relay for Squali's source RPC; bounded verified SQLite cache."""
-import argparse,hashlib,json,os,pathlib,re,signal,socketserver,sqlite3,struct,threading,time,urllib.request,urllib.error
+import argparse,hashlib,json,os,pathlib,queue,re,resource,signal,socketserver,sqlite3,struct,sys,threading,time,urllib.request,urllib.error
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--socket',required=True);p.add_argument('--cache',required=True);p.add_argument('--max-bytes',type=int,default=1024**3);p.add_argument('--restore');a=p.parse_args()
 if not 1024**2<=a.max_bytes<=16*1024**3:raise SystemExit('Cache cap must be 1 MiB–16 GiB')
 base=os.environ.get('SQUALI_URL','https://squa.li').rstrip('/');token=os.environ.get('SQUALI_TOKEN')
@@ -130,7 +130,8 @@ class Handler(socketserver.StreamRequestHandler):
    if n>128*1024:raise Fault(413,b'Node request is too large')
    query=json.loads(exact(self.rfile,n));op=query.get('op');headers={'content-type':'application/json'}
    if op=='stats':
-    with lock:body=json.dumps(stats|{'cachedBytes':db.execute('SELECT COALESCE(sum(length(body)),0) FROM entries').fetchone()[0]}).encode()
+    usage=resource.getrusage(resource.RUSAGE_SELF)
+    with lock:body=json.dumps(stats|{'cachedBytes':db.execute('SELECT COALESCE(sum(length(body)),0) FROM entries').fetchone()[0],'cpuSeconds':usage.ru_utime+usage.ru_stime,'maxRssBytes':usage.ru_maxrss*(1 if sys.platform=='darwin' else 1024)}).encode()
    elif op=='snapshot':body=json.dumps(snapshot(query.get('name'))).encode()
    else:
     project=query.pop('project',None)
@@ -146,11 +147,26 @@ class Handler(socketserver.StreamRequestHandler):
   try:self.wfile.write(struct.pack('!I',len(meta))+meta+body)
   except (BrokenPipeError,ConnectionResetError):pass
 class Server(socketserver.ThreadingMixIn,socketserver.UnixStreamServer):
- daemon_threads=True;request_queue_size=32
- def __init__(self,*args):self.slots=threading.BoundedSemaphore(32);super().__init__(*args)
+ daemon_threads=True;request_queue_size=128
+ def __init__(self,*args):
+  self.slots=threading.BoundedSemaphore(32);self.jobs=queue.Queue(maxsize=32);super().__init__(*args)
+  for _ in range(32):threading.Thread(target=self.consume,daemon=True).start()
+ def consume(self):
+  while True:
+   request,address=self.jobs.get()
+   try:self.process_request_thread(request,address)
+   finally:self.jobs.task_done()
  def process_request(self,request,address):
-  if not self.slots.acquire(False):request.close();return
-  try:super().process_request(request,address)
+  # The accept loop may wait for one slot; it never creates an unbounded queue
+  # of threads. Short warm-cache bursts can drain the existing 32 workers.
+  # Persistent overload gets a framed response rather than an unexplained EOF.
+  if not self.slots.acquire(timeout=1):
+   body=b'Node concurrency is full; no authority bypass';meta=json.dumps({'status':503,'headers':{'retry-after':'1'},'length':len(body)}).encode()
+   try:request.settimeout(1);request.sendall(struct.pack('!I',len(meta))+meta+body)
+   except OSError:pass
+   finally:request.close()
+   return
+  try:self.jobs.put_nowait((request,address))
   except Exception:self.slots.release();raise
  def process_request_thread(self,request,address):
   try:super().process_request_thread(request,address)

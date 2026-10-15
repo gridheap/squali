@@ -1,0 +1,86 @@
+[
+  {
+    "name": "cold-node-cold-region",
+    "concurrency": 8,
+    "attempts": 512,
+    "succeeded": 512,
+    "errors": [],
+    "wallMs": 1372.3204590000005,
+    "successfulPerSecond": 373.0906995098583,
+    "latencyMs": {
+      "p50": 20.504957999999988,
+      "p95": 24.55666599999995,
+      "p99": 54.030874999999924
+    },
+    "nodeCpuMs": {
+      "user": 666.372,
+      "system": 113.471
+    },
+    "nodeMaxRssKiB": 209040,
+    "sqlQueries": 2056,
+    "sourceObjectCalls": 512,
+    "storage": {
+      "get": 512,
+      "put": 0,
+      "head": 0,
+      "readBytes": 108706,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "new-nodes-warm-region",
+    "concurrency": 8,
+    "attempts": 3584,
+    "succeeded": 3584,
+    "errors": [],
+    "wallMs": 2702.8861660000002,
+    "successfulPerSecond": 1325.9899899165785,
+    "latencyMs": {
+      "p50": 5.633874999999534,
+      "p95": 9.64404100000047,
+      "p99": 12.102791000000252
+    },
+    "nodeCpuMs": {
+      "user": 552.255,
+      "system": 237.559
+    },
+    "nodeMaxRssKiB": 269376,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  },
+  {
+    "name": "warm-nodes",
+    "concurrency": 128,
+    "attempts": 8192,
+    "succeeded": 8192,
+    "errors": [],
+    "wallMs": 392.8917499999998,
+    "successfulPerSecond": 20850.526894494487,
+    "latencyMs": {
+      "p50": 5.918042000000241,
+      "p95": 9.638082999999824,
+      "p99": 11.411708000000544
+    },
+    "nodeCpuMs": {
+      "user": 386.025,
+      "system": 172.558
+    },
+    "nodeMaxRssKiB": 335600,
+    "sqlQueries": 0,
+    "sourceObjectCalls": 0,
+    "storage": {
+      "get": 0,
+      "put": 0,
+      "head": 0,
+      "readBytes": 0,
+      "writeBytes": 0
+    }
+  }
+]

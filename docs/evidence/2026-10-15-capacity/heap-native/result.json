@@ -1,0 +1,331 @@
+{
+  "command": "python3 scripts/capacity-run.py --output /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/docs/evidence/2026-10-15-capacity/heap-native --quick --sustained",
+  "passed": true,
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Max",
+    "logicalCpus": 16,
+    "memoryGiB": 128,
+    "node": "v24.21.0"
+  },
+  "dataset": {
+    "files": 65,
+    "baselineBytes": 1048320,
+    "commits": 5,
+    "uniqueHotBlobs": 16,
+    "hotBytes": 262080,
+    "nodeProcesses": 2,
+    "nodeCacheBytesEach": 33554432,
+    "poolSize": 8
+  },
+  "ingestion": {
+    "stage": "complete",
+    "objectsProcessed": 83,
+    "commitsProcessed": 5,
+    "httpAttempts": 4,
+    "uploadedBytes": 16618,
+    "complete": true,
+    "reused": false
+  },
+  "results": [
+    {
+      "name": "cold-node-cold-region",
+      "concurrency": 8,
+      "attempts": 16,
+      "succeeded": 16,
+      "errors": [],
+      "wallMs": 66.6550830000001,
+      "successfulPerSecond": 240.04170844705084,
+      "latencyMs": {
+        "p50": 20.928416999999854,
+        "p95": 48.847125000000005,
+        "p99": 48.847125000000005
+      },
+      "nodeCpuMs": {
+        "user": 45.746,
+        "system": 6.421
+      },
+      "nodeMaxRssKiB": 146528,
+      "sqlQueries": 71,
+      "sourceObjectCalls": 16,
+      "storage": {
+        "get": 16,
+        "put": 0,
+        "head": 0,
+        "readBytes": 3404,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "new-nodes-warm-region",
+      "concurrency": 8,
+      "attempts": 16,
+      "succeeded": 16,
+      "errors": [],
+      "wallMs": 21.654624999999896,
+      "successfulPerSecond": 738.8721808851493,
+      "latencyMs": {
+        "p50": 7.917541000000028,
+        "p95": 15.79362500000002,
+        "p99": 15.79362500000002
+      },
+      "nodeCpuMs": {
+        "user": 2.337,
+        "system": 0.613
+      },
+      "nodeMaxRssKiB": 146688,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "warm-nodes",
+      "concurrency": 32,
+      "attempts": 128,
+      "succeeded": 128,
+      "errors": [],
+      "wallMs": 14.393208999999842,
+      "successfulPerSecond": 8893.082842054291,
+      "latencyMs": {
+        "p50": 3.3502920000000813,
+        "p95": 4.586375000000089,
+        "p99": 5.533542000000125
+      },
+      "nodeCpuMs": {
+        "user": 15.178,
+        "system": 3.445
+      },
+      "nodeMaxRssKiB": 148880,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "sustained-regional-hits",
+      "concurrency": 8,
+      "attempts": 128,
+      "succeeded": 128,
+      "errors": [],
+      "wallMs": 100.91662499999984,
+      "successfulPerSecond": 1268.3737689404516,
+      "latencyMs": {
+        "p50": 5.9992919999999685,
+        "p95": 7.9753749999999854,
+        "p99": 10.029874999999947
+      },
+      "nodeCpuMs": {
+        "user": 41.363,
+        "system": 3.903
+      },
+      "nodeMaxRssKiB": 152400,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "sustained-node-hits",
+      "concurrency": 128,
+      "attempts": 256,
+      "succeeded": 256,
+      "errors": [],
+      "wallMs": 27.88754199999994,
+      "successfulPerSecond": 9179.726201757063,
+      "latencyMs": {
+        "p50": 11.918042000000014,
+        "p95": 14.07162500000004,
+        "p99": 14.926292000000103
+      },
+      "nodeCpuMs": {
+        "user": 40.147,
+        "system": 5.569
+      },
+      "nodeMaxRssKiB": 155680,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "proposals-32",
+      "concurrency": 32,
+      "attempts": 16,
+      "succeeded": 16,
+      "errors": [],
+      "wallMs": 34.71516699999984,
+      "successfulPerSecond": 460.89364916493344,
+      "latencyMs": {
+        "p50": 28.869207999999844,
+        "p95": 34.32187500000009,
+        "p99": 34.32187500000009
+      },
+      "nodeCpuMs": {
+        "user": 41.071,
+        "system": 14.276
+      },
+      "nodeMaxRssKiB": 163616,
+      "sqlQueries": 530,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 16,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 598
+      }
+    },
+    {
+      "name": "review",
+      "concurrency": 8,
+      "attempts": 16,
+      "succeeded": 16,
+      "errors": [],
+      "wallMs": 18.191708999999946,
+      "successfulPerSecond": 879.5215446773059,
+      "latencyMs": {
+        "p50": 7.689916999999923,
+        "p95": 12.757084000000077,
+        "p99": 12.757084000000077
+      },
+      "nodeCpuMs": {
+        "user": 16.77,
+        "system": 2.607
+      },
+      "nodeMaxRssKiB": 166064,
+      "sqlQueries": 192,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "publication",
+      "concurrency": 1,
+      "attempts": 1,
+      "succeeded": 1,
+      "errors": [],
+      "wallMs": 9.825584000000163,
+      "successfulPerSecond": 101.77512094955205,
+      "latencyMs": {
+        "p50": 9.817207999999937,
+        "p95": 9.817207999999937,
+        "p99": 9.817207999999937
+      },
+      "nodeCpuMs": {
+        "user": 4.85,
+        "system": 1.124
+      },
+      "nodeMaxRssKiB": 167504,
+      "sqlQueries": 57,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    }
+  ],
+  "heapObservations": [
+    {
+      "label": "before-sustained",
+      "title": "Cloudflare Worker",
+      "heap": {
+        "usedSize": 824364,
+        "totalSize": 2359296,
+        "embedderHeapUsedSize": 515872,
+        "backingStorageSize": 226692
+      }
+    },
+    {
+      "label": "after-regional",
+      "title": "Cloudflare Worker",
+      "heap": {
+        "usedSize": 824364,
+        "totalSize": 2359296,
+        "embedderHeapUsedSize": 515872,
+        "backingStorageSize": 226692
+      }
+    },
+    {
+      "label": "after-node",
+      "title": "Cloudflare Worker",
+      "heap": {
+        "usedSize": 824364,
+        "totalSize": 2359296,
+        "embedderHeapUsedSize": 515872,
+        "backingStorageSize": 226692
+      }
+    }
+  ],
+  "nodeStats": [
+    {
+      "originObjects": 16,
+      "originBlobs": 16,
+      "hits": 192,
+      "coalesced": 0,
+      "networkBytes": 262080,
+      "failures": 0,
+      "cachedBytes": 262080
+    },
+    {
+      "originObjects": 16,
+      "originBlobs": 16,
+      "hits": 192,
+      "coalesced": 0,
+      "networkBytes": 262080,
+      "failures": 0,
+      "cachedBytes": 262080
+    }
+  ],
+  "sourceRpc": {
+    "objects": 16,
+    "authorization": 1
+  },
+  "storage": {
+    "get": 16,
+    "put": 84,
+    "head": 0,
+    "readBytes": 3404,
+    "writeBytes": 14273
+  },
+  "httpAttempts": 36,
+  "maxHttpAttempts": 1000,
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Single Mac and loopback, no WAN or distributed placement.",
+    "R2 uses the persistent local disk adapter; operation counts are real adapter calls, not provider billing.",
+    "The regional tier is actual workerd with its Cache API. Cold means new node and regional stores, not flushed OS caches.",
+    "Eight node daemons share one authorized project; these are clients, not 128 distinct users.",
+    "The finite warm working set is 512 immutable blobs; its hit rate is workload-specific, not a fleet claim.",
+    "No Git throughput speedup or Scion equivalence percentage is inferred."
+  ]
+}

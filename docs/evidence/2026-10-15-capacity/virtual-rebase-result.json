@@ -1,0 +1,27 @@
+{
+  "command": "node --import tsx tests/virtual-rebase.e2e.ts",
+  "passed": true,
+  "linux": {
+    "passed": true,
+    "inPlaceRebase": true,
+    "dirtyContentAndModesPreserved": true,
+    "serverMerge": true,
+    "rebaseClientBlobReads": 0,
+    "lostPlanResponse": true,
+    "frozenMutationBlocked": true,
+    "offlineReceipt": true,
+    "changedResolutionRejected": true,
+    "conflictsPreserveOriginal": true,
+    "explicitResolution": true,
+    "abort": true,
+    "retiredImagesRemoved": true,
+    "crashBeforeSwitchRecovered": true,
+    "crashAfterSwitchRecovered": true,
+    "interruptedAbortRecovered": true
+  },
+  "nativeTree": "871a37b137b9c548df924ce9fbcf562a084fe837",
+  "mainUnchanged": true,
+  "planRequests": 8,
+  "sourceWritesIncludingExplicitProposal": 2,
+  "externalProviderCalls": 0
+}

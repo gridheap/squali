@@ -1,0 +1,32 @@
+[
+  {
+    "label": "before-sustained",
+    "title": "Cloudflare Worker",
+    "heap": {
+      "usedSize": 824364,
+      "totalSize": 2359296,
+      "embedderHeapUsedSize": 515872,
+      "backingStorageSize": 226692
+    }
+  },
+  {
+    "label": "after-regional",
+    "title": "Cloudflare Worker",
+    "heap": {
+      "usedSize": 824364,
+      "totalSize": 2359296,
+      "embedderHeapUsedSize": 515872,
+      "backingStorageSize": 226692
+    }
+  },
+  {
+    "label": "after-node",
+    "title": "Cloudflare Worker",
+    "heap": {
+      "usedSize": 824364,
+      "totalSize": 2359296,
+      "embedderHeapUsedSize": 515872,
+      "backingStorageSize": 226692
+    }
+  }
+]

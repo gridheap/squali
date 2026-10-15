@@ -1,0 +1,40 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:52539 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 751daac0eed3f82281c4c89a872b854b331961c2 --onto 108ae6e96a8df958b2fbb1c76f80ab30878d2c87 --conflict 0e106bbc9bd56f6d799128c6c2364db261ddfd54
+Traceback (most recent call last):
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 36, in <module>
+    changed_receipt=cli('rebase','--id','resolved','--onto',a.conflict,'--resolutions',str(resolutions),env=offline,ok=False)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 13, in cli
+    else:assert r.returncode!=0,r.stdout
+                ^^^^^^^^^^^^^^^
+AssertionError: {"id": "resolved", "status": "rebased", "previousBase": "108ae6e96a8df958b2fbb1c76f80ab30878d2c87", "base": "0e106bbc9bd56f6d799128c6c2364db261ddfd54", "changedPaths": 4}
+
+time="2026-10-15T19:25:51+08:00" level=fatal msg="exit status 1"
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: 'colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:52539 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 751daac0eed3f82281c4c89a872b854b331961c2 --onto 108ae6e96a8df958b2fbb1c76f80ab30878d2c87 --conflict 0e106bbc9bd56f6d799128c6c2364db261ddfd54',
+  stdout: '',
+  stderr: 'Traceback (most recent call last):\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 36, in <module>\n' +
+    "    changed_receipt=cli('rebase','--id','resolved','--onto',a.conflict,'--resolutions',str(resolutions),env=offline,ok=False)\n" +
+    '                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 13, in cli\n' +
+    '    else:assert r.returncode!=0,r.stdout\n' +
+    '                ^^^^^^^^^^^^^^^\n' +
+    'AssertionError: {"id": "resolved", "status": "rebased", "previousBase": "108ae6e96a8df958b2fbb1c76f80ab30878d2c87", "base": "0e106bbc9bd56f6d799128c6c2364db261ddfd54", "changedPaths": 4}\n' +
+    '\n' +
+    'time="2026-10-15T19:25:51+08:00" level=fatal msg="exit status 1"\n'
+}
+
+Node.js v24.21.0

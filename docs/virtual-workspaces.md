@@ -24,7 +24,7 @@ The command runs with the virtual root as its working directory. Its process gro
 ## Limits and recovery
 
 - One active command or proposal per state directory, enforced by an exclusive lock.
-- State stays pinned to the original project, immutable base and service origin. Reopening it with a different base is rejected. After a proposal, use a new state directory with its returned commit for the next layer of work; the shared node cache avoids fetching unchanged objects again.
+- State stays pinned to its project, current immutable base and service origin. Reopening with an arbitrary different `--ref` is rejected. Use the explicit rebase operation below to advance the same workspace while preserving dirty edits.
 - Default overlay capacity is 256 MiB; choose 32 MiB–1 GiB at initialization. This is the fixed filesystem-image capacity, including filesystem metadata. Kernel ENOSPC enforces it. Changing the flag later does not resize it.
 - Default command lifetime is 900 seconds; allowed range 1–3,600 seconds.
 - Proposals allow 64 changed regular UTF-8 files, 256 KiB per file and 1 MiB total content. Binary writes may exist locally but cannot yet be submitted. Symlinks, submodules and file/directory replacements require explicit native handling.
@@ -43,3 +43,37 @@ node --import tsx tests/virtual-workspace.e2e.ts
 ```
 
 The test starts the real local source API and regional RPC tier, then uses actual Linux mounts and ordinary filesystem commands. It also drops an accepted HTTP response to verify recovery. [Stored result](evidence/2026-10-15-regional/virtual-workspace-result.json). This is a local integration result, not a fleet-scale performance claim.
+
+## Rebase the same workspace
+
+Stop the running workspace command, then use an immutable target commit:
+
+```sh
+sudo --preserve-env=SQUALI_URL,SQUALI_TOKEN python3 scripts/virtual-workspace.py rebase \
+  --socket /run/squali/node.sock --state /var/lib/squali/workspaces/task-one \
+  --id advance-task-one --onto TARGET_COMMIT
+```
+
+The server performs the three-way merge of the old base, target and local changed files. Planning creates no proposal, source blob or published ref. The client writes only the returned changed files into a new overlay; the target remains an on-demand FUSE lower layer. It does not fetch untouched working-tree bodies. Reopen with `run` and the same state directory; omit `--ref` or supply the new target. `status` and `propose` now use that target as the base. An explicit proposal still requires review before publication.
+
+The exact input is saved before HTTP. A pending rebase blocks `run` and `propose`; `status` can still inspect the preserved original state. Retry the same ID and target after a lost response. There are at most **eight explicit plan requests per operation**, with no automatic retries. Once a plan is saved, staging recovery does not recompute it. An accepted receipt can be replayed offline; changed targets or explicit resolutions are rejected for that ID.
+
+Conflicts return `rebase_conflict` and retain all three versions in the private `rebase.json` journal. Supply a JSON array of `{path,content,mode?}` to resolve the conflicted paths:
+
+```sh
+sudo --preserve-env=SQUALI_URL,SQUALI_TOKEN python3 scripts/virtual-workspace.py rebase \
+  --socket /run/squali/node.sock --state /var/lib/squali/workspaces/task-one \
+  --id advance-task-one --onto TARGET_COMMIT --resolutions /private/resolutions.json
+
+sudo python3 scripts/virtual-workspace.py abort-rebase \
+  --socket /run/squali/node.sock --state /var/lib/squali/workspaces/task-one \
+  --id advance-task-one
+```
+
+Cancellation preserves the original image and edits. IDs remain reserved after cancellation. If the atomic switch already completed, recovery finishes that operation and returns its receipt; it does not roll back later edits.
+
+Both images are unmounted and the staged image is fsynced before the manifest is atomically replaced. Recovery therefore selects a complete old or new generation. The old image is removed only after the new manifest and receipt are durable. Staging needs up to **twice the configured image capacity**, plus bounded text journals; at most one staging generation exists. Interrupted staging is rebuilt from its saved plan. Retired images do not accumulate. This handles process interruption; storage hardware must honor fsync for power-loss durability.
+
+Rebase retains the existing editing limits: 64 regular UTF-8 files, 256 KiB per file, 1 MiB of edits and 2 MiB of three-way comparison data. Binary files, symlinks and file/directory replacements are rejected before changing the active generation. Empty directories are not source objects and are not preserved by rebase. Resolve uncertain pending proposals before starting a rebase.
+
+`node --import tsx tests/virtual-rebase.e2e.ts` verifies the complete resulting tree against native Git, conflict/abort/resolution, lost response, frozen inputs, zero client blob fetches during rebase, changed receipt input, and process exit immediately before/after the atomic switch and during cancellation. [Current result](evidence/2026-10-15-capacity/virtual-rebase-result.json).

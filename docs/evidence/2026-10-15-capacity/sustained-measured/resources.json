@@ -1,0 +1,282 @@
+{
+  "command": "scripts/capacity-run.py --output docs/evidence/2026-10-15-capacity/sustained-measured --sustained",
+  "exitCode": 0,
+  "wallSeconds": 25.92564749997109,
+  "childCpuSeconds": {
+    "user": 29.726746,
+    "system": 37.620242
+  },
+  "peakSummedRssBytes": 3263021056,
+  "phases": {
+    "setup": {
+      "sampleCount": 18,
+      "peakSummedRssBytes": 1037139968,
+      "groups": {
+        "node-and-runner": {
+          "peakRssBytes": 600276992,
+          "sampledCpuSeconds": 2.8000000000000003
+        },
+        "postgres": {
+          "peakRssBytes": 69779456,
+          "sampledCpuSeconds": 0.14
+        },
+        "git": {
+          "peakRssBytes": 6062080,
+          "sampledCpuSeconds": 0.34
+        },
+        "python": {
+          "peakRssBytes": 192151552,
+          "sampledCpuSeconds": 0.22999999999999998
+        },
+        "workerd": {
+          "peakRssBytes": 174931968,
+          "sampledCpuSeconds": 0
+        }
+      }
+    },
+    "cold-node-cold-region": {
+      "sampleCount": 8,
+      "peakSummedRssBytes": 1389674496,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 154664960,
+          "sampledCpuSeconds": 0.12000000000000002
+        },
+        "node-and-runner": {
+          "peakRssBytes": 628211712,
+          "sampledCpuSeconds": 0.9600000000000003
+        },
+        "workerd": {
+          "peakRssBytes": 331153408,
+          "sampledCpuSeconds": 1.37
+        },
+        "python": {
+          "peakRssBytes": 279363584,
+          "sampledCpuSeconds": 0.37
+        }
+      }
+    },
+    "new-nodes-warm-region": {
+      "sampleCount": 18,
+      "peakSummedRssBytes": 1911046144,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 155516928,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 683933696,
+          "sampledCpuSeconds": 1.6500000000000001
+        },
+        "workerd": {
+          "peakRssBytes": 787054592,
+          "sampledCpuSeconds": 4.5200000000000005
+        },
+        "python": {
+          "peakRssBytes": 308674560,
+          "sampledCpuSeconds": 2.1300000000000003
+        }
+      }
+    },
+    "warm-nodes": {
+      "sampleCount": 3,
+      "peakSummedRssBytes": 2029780992,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 155516928,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 754663424,
+          "sampledCpuSeconds": 0.6599999999999995
+        },
+        "workerd": {
+          "peakRssBytes": 802947072,
+          "sampledCpuSeconds": 0.18999999999999995
+        },
+        "python": {
+          "peakRssBytes": 317292544,
+          "sampledCpuSeconds": 3.6399999999999997
+        }
+      }
+    },
+    "sustained-regional-hits": {
+      "sampleCount": 79,
+      "peakSummedRssBytes": 3152478208,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 155811840,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 999817216,
+          "sampledCpuSeconds": 7.790000000000001
+        },
+        "workerd": {
+          "peakRssBytes": 1712898048,
+          "sampledCpuSeconds": 19.47999999999999
+        },
+        "python": {
+          "peakRssBytes": 313999360,
+          "sampledCpuSeconds": 0.32999999999999996
+        }
+      }
+    },
+    "sustained-node-hits": {
+      "sampleCount": 22,
+      "peakSummedRssBytes": 3100934144,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 155828224,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 908525568,
+          "sampledCpuSeconds": 4.07
+        },
+        "workerd": {
+          "peakRssBytes": 1715847168,
+          "sampledCpuSeconds": 0.06999999999999851
+        },
+        "python": {
+          "peakRssBytes": 320798720,
+          "sampledCpuSeconds": 30.860000000000003
+        }
+      }
+    },
+    "proposals-8": {
+      "sampleCount": 2,
+      "peakSummedRssBytes": 3186589696,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 209895424,
+          "sampledCpuSeconds": 0.16999999999999998
+        },
+        "node-and-runner": {
+          "peakRssBytes": 941539328,
+          "sampledCpuSeconds": 0.5000000000000013
+        },
+        "workerd": {
+          "peakRssBytes": 1717796864,
+          "sampledCpuSeconds": 0.010000000000001563
+        },
+        "python": {
+          "peakRssBytes": 317358080,
+          "sampledCpuSeconds": 0.41999999999999815
+        }
+      }
+    },
+    "proposals-32": {
+      "sampleCount": 2,
+      "peakSummedRssBytes": 3211264000,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 226738176,
+          "sampledCpuSeconds": 0.26
+        },
+        "node-and-runner": {
+          "peakRssBytes": 949370880,
+          "sampledCpuSeconds": 0.54
+        },
+        "workerd": {
+          "peakRssBytes": 1717796864,
+          "sampledCpuSeconds": 0
+        },
+        "python": {
+          "peakRssBytes": 317358080,
+          "sampledCpuSeconds": 0
+        }
+      }
+    },
+    "proposals-128": {
+      "sampleCount": 3,
+      "peakSummedRssBytes": 3234955264,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 245874688,
+          "sampledCpuSeconds": 0.4
+        },
+        "node-and-runner": {
+          "peakRssBytes": 953925632,
+          "sampledCpuSeconds": 0.859999999999999
+        },
+        "workerd": {
+          "peakRssBytes": 1717796864,
+          "sampledCpuSeconds": 0
+        },
+        "python": {
+          "peakRssBytes": 317358080,
+          "sampledCpuSeconds": 0
+        }
+      }
+    },
+    "review": {
+      "sampleCount": 2,
+      "peakSummedRssBytes": 3243786240,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 251510784,
+          "sampledCpuSeconds": 0.24
+        },
+        "node-and-runner": {
+          "peakRssBytes": 957120512,
+          "sampledCpuSeconds": 0.3500000000000001
+        },
+        "workerd": {
+          "peakRssBytes": 1717796864,
+          "sampledCpuSeconds": 0
+        },
+        "python": {
+          "peakRssBytes": 317358080,
+          "sampledCpuSeconds": 0
+        }
+      }
+    },
+    "publication": {
+      "sampleCount": 2,
+      "peakSummedRssBytes": 3263021056,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 263897088,
+          "sampledCpuSeconds": 0.18000000000000002
+        },
+        "node-and-runner": {
+          "peakRssBytes": 963969024,
+          "sampledCpuSeconds": 0.3200000000000012
+        },
+        "workerd": {
+          "peakRssBytes": 1717796864,
+          "sampledCpuSeconds": 0
+        },
+        "python": {
+          "peakRssBytes": 317358080,
+          "sampledCpuSeconds": 0
+        }
+      }
+    },
+    "shutdown": {
+      "sampleCount": 1,
+      "peakSummedRssBytes": 30670848,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 30670848,
+          "sampledCpuSeconds": 0
+        }
+      }
+    }
+  },
+  "sampleIntervalMs": 100,
+  "postgres": {
+    "version": "17.11",
+    "maxConnections": 24,
+    "sharedBuffersMiB": 64,
+    "isolated": true
+  },
+  "fixtureDirectory": "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/capacity-au1ydgo2",
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Sampled RSS sums resident pages across processes and can double-count shared PostgreSQL pages; it is not unique physical memory.",
+    "Per-phase CPU from ps has 10 ms precision and can miss short-lived processes. Whole-run wait accounting includes child processes plus the ps sampler and setup.",
+    "Node CPU includes the HTTP load generator in the source process; Worker/isolate CPU billing is not inferred from these local counters."
+  ]
+}

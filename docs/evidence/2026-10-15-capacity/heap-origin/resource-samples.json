@@ -1,0 +1,1 @@
+[{"seconds": 0.4139035001862794, "phase": "setup", "groups": {"postgres": {"rssBytes": 27820032, "sampledCpuSeconds": 0, "processes": 6}, "node-and-runner": {"rssBytes": 983040, "sampledCpuSeconds": 0, "processes": 1}}}, {"seconds": 0.5688935001380742, "phase": "setup", "groups": {}}]

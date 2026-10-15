@@ -1,0 +1,12 @@
+[
+  {
+    "id": "51dc6351-eb2e-4e1d-bb1a-c329509fcd43",
+    "type": "node",
+    "description": "workers",
+    "webSocketDebuggerUrl": "ws://127.0.0.1:59851/ws",
+    "devtoolsFrontendUrl": "https://devtools.devprod.cloudflare.dev/js_app?theme=systemPreferred&debugger=true&ws=127.0.0.1:59851/ws",
+    "devtoolsFrontendUrlCompat": "https://devtools.devprod.cloudflare.dev/js_app?theme=systemPreferred&debugger=true&ws=127.0.0.1:59851/ws",
+    "title": "Cloudflare Worker",
+    "faviconUrl": "https://workers.cloudflare.com/favicon.ico"
+  }
+]

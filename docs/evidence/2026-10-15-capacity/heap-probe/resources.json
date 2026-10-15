@@ -1,0 +1,70 @@
+{
+  "command": "scripts/capacity-run.py --output docs/evidence/2026-10-15-capacity/heap-probe --quick --sustained",
+  "exitCode": 1,
+  "wallSeconds": 1.885890332981944,
+  "childCpuSeconds": {
+    "user": 1.549712,
+    "system": 1.046821
+  },
+  "peakSummedRssBytes": 928743424,
+  "phases": {
+    "setup": {
+      "sampleCount": 8,
+      "peakSummedRssBytes": 792952832,
+      "groups": {
+        "postgres": {
+          "peakRssBytes": 45121536,
+          "sampledCpuSeconds": 0.03
+        },
+        "node-and-runner": {
+          "peakRssBytes": 545193984,
+          "sampledCpuSeconds": 0.8900000000000001
+        },
+        "python": {
+          "peakRssBytes": 24920064,
+          "sampledCpuSeconds": 0
+        },
+        "workerd": {
+          "peakRssBytes": 177717248,
+          "sampledCpuSeconds": 0.030000000000000002
+        }
+      }
+    },
+    "warm-nodes": {
+      "sampleCount": 1,
+      "peakSummedRssBytes": 928743424,
+      "groups": {
+        "node-and-runner": {
+          "peakRssBytes": 548012032,
+          "sampledCpuSeconds": 0.06999999999999999
+        },
+        "workerd": {
+          "peakRssBytes": 198918144,
+          "sampledCpuSeconds": 0.07000000000000002
+        },
+        "python": {
+          "peakRssBytes": 70615040,
+          "sampledCpuSeconds": 0.04
+        },
+        "postgres": {
+          "peakRssBytes": 111198208,
+          "sampledCpuSeconds": 0
+        }
+      }
+    }
+  },
+  "sampleIntervalMs": 100,
+  "postgres": {
+    "version": "17.11",
+    "maxConnections": 24,
+    "sharedBuffersMiB": 64,
+    "isolated": true
+  },
+  "fixtureDirectory": "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/capacity-abn6pc14",
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Sampled RSS sums resident pages across processes and can double-count shared PostgreSQL pages; it is not unique physical memory.",
+    "Per-phase CPU from ps has 10 ms precision and can miss short-lived processes. Whole-run wait accounting includes child processes plus the ps sampler and setup.",
+    "Node CPU includes the HTTP load generator in the source process; Worker/isolate CPU billing is not inferred from these local counters."
+  ]
+}

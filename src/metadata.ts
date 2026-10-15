@@ -100,9 +100,26 @@ export function metadataService(sql:Sql,project:string,repo:Repository,source?:{
   const c=await commit(ref(source));await commit(ref(onto));
   if(parent!==undefined&&(!Number.isInteger(parent)||parent<1||parent>c.parents.length)||c.parents.length>1&&parent===undefined)throw new Problem(400,'rebase_parent','Select an existing parent number for a merge commit');
   const parentNumber=c.parents.length?(parent??1):0,base=c.parents[parentNumber-1]??ZERO;
-  const delta=await diff(base,source),resolved=new Map(resolutions.map(f=>[f.path,f])),conflictPaths=new Set<string>(),conflicts:any[]=[],files:Patch[]=[];let work=0,bytes=0,comparedBytes=0;
+  const delta=await diff(base,source);
+  return {files:await rebaseDelta(delta.files,onto,resolutions,{commit:source,onto,base}),parent:parentNumber,base};
+ }
+ async function rebaseWorkspace(base:string,onto:string,patches:Patch[],resolutions:Patch[]=[]){
+  await commit(ref(base));await commit(ref(onto));const delta=[];let bytes=0;
+  for(const f of patches){
+   const entry=await g.entry(base,f.path);
+   if(entry&&(entry.type!=='blob'||!['100644','100755'].includes(entry.mode)))throw new Problem(422,'rebase_object','The base path is not a regular file',{path:f.path});
+   const before=await g.file(base,f.path),mode=f.content===null?null:f.mode??entry?.mode??'100644';
+   bytes+=Buffer.byteLength(before??'')+Buffer.byteLength(f.content??'');if(bytes>2*1024*1024)throw new Problem(413,'rebase_size','Workspace comparison input exceeds 2 MiB');
+   if(before===f.content&&(entry?.mode??null)===mode)continue;
+   delta.push({path:f.path,before,after:f.content,beforeMode:entry?.mode??null,mode,binary:false});
+  }
+  const files=await rebaseDelta(delta,onto,resolutions,{base,onto},true);
+  return {base,onto,files:files.map(f=>({path:f.path,content:f.content,...(f.content!==null?{mode:f.mode}:{})}))};
+ }
+ async function rebaseDelta(delta:any[],onto:string,resolutions:Patch[],identity:Record<string,string>,omitUnchanged=false){
+  const resolved=new Map(resolutions.map(f=>[f.path,f])),conflictPaths=new Set<string>(),conflicts:any[]=[],files:Patch[]=[];let work=0,bytes=0,comparedBytes=0;
   const choose=<T>(before:T,target:T,incoming:T):{value:T;conflict:boolean}=>target===before?{value:incoming,conflict:false}:incoming===before||target===incoming?{value:target,conflict:false}:{value:incoming,conflict:true};
-  for(const f of delta.files){
+  for(const f of delta){
    if(f.binary)throw new Problem(422,'binary_file','Rebase supports regular UTF-8 files within the editing limits');
    const entry=await g.entry(onto,f.path);
    if(entry&&(entry.type!=='blob'||!['100644','100755'].includes(entry.mode)))throw new Problem(422,'rebase_object','The target path is not a regular file',{path:f.path});
@@ -123,11 +140,12 @@ export function metadataService(sql:Sql,project:string,repo:Repository,source?:{
     if(!resolution){conflicts.push({path:f.path,base:f.before,target,incoming:f.after,baseMode:f.beforeMode,targetMode:entry?.mode??null,incomingMode:f.mode,reason:'Resolve overlapping content, deletion or mode changes'});continue;}
     patch={...resolution,...(resolution.content!==null?{mode:resolution.mode??entry?.mode as Patch['mode']??f.mode??'100644'}:{})};
    }else patch={path:f.path,content:text.value,...(text.value!==null?{mode:mode.value as Patch['mode']}:{})};
-   bytes+=Buffer.byteLength(patch.content??'');if(Buffer.byteLength(patch.content??'')>256*1024||bytes>1024*1024)throw new Problem(413,'rebase_size','Rebased text exceeds the editing limits');files.push(patch);
+   bytes+=Buffer.byteLength(patch.content??'');if(Buffer.byteLength(patch.content??'')>256*1024||bytes>1024*1024)throw new Problem(413,'rebase_size','Rebased text exceeds the editing limits');
+   if(!omitUnchanged||patch.content!==target||(patch.content!==null&&patch.mode!==entry?.mode))files.push(patch);
   }
   if(resolutions.some(f=>!conflictPaths.has(f.path)))throw new Problem(400,'rebase_resolution','Resolutions may only name conflicted paths');
-  if(conflicts.length)throw new Problem(409,'rebase_conflict','Resolve these paths and repeat with the same immutable source and target',{commit:source,onto,base,conflicts});
-  return {files,parent:parentNumber,base};
+  if(conflicts.length)throw new Problem(409,'rebase_conflict','Resolve these paths and repeat with the same immutable source and target',{...identity,conflicts});
+  return files;
  }
  async function search(oid:string,query:string,path='',cursor?:string){ref(oid);if(path)validPath(path);if(typeof query!=='string'||query.length>128)throw new Problem(400,'search','Search text is limited to 128 characters');
   const identity={ref:oid,query,path};let stack:{oid:string;path:string;offset:number}[];
@@ -137,5 +155,5 @@ export function metadataService(sql:Sql,project:string,repo:Repository,source?:{
   let next:string|null=null;if(stack.length){const value={identity,stack};next=sha256(JSON.stringify(value));await sql`INSERT INTO weave_derived(project,kind,key,value) VALUES(${project},'search-cursor-v1',${next},${sql.json(value)}) ON CONFLICT DO NOTHING`;}
   return {ref:oid,matches,next,visited};
  }
- return {commit,ancestry:graph.ancestry,mergeBase:graph.mergeBase,diff,history,blame,bisect:graph.bisect,revert,rebase,search,index:graph.build,indexStatus:graph.status,indexCommits:graph.ingest};
+ return {commit,ancestry:graph.ancestry,mergeBase:graph.mergeBase,diff,history,blame,bisect:graph.bisect,revert,rebase,rebaseWorkspace,search,index:graph.build,indexStatus:graph.status,indexCommits:graph.ingest};
 }

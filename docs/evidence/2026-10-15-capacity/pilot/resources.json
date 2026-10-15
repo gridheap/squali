@@ -1,0 +1,25 @@
+{
+  "command": "scripts/capacity-run.py --output docs/evidence/2026-10-15-capacity/pilot --quick",
+  "exitCode": 1,
+  "wallSeconds": 6.658090125070885,
+  "childCpuSeconds": {
+    "user": 0.270496,
+    "system": 0.439229
+  },
+  "peakSummedRssBytes": 0,
+  "phases": {},
+  "sampleIntervalMs": 100,
+  "postgres": {
+    "version": "17.11",
+    "maxConnections": 24,
+    "sharedBuffersMiB": 64,
+    "isolated": true
+  },
+  "fixtureDirectory": "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/capacity-x2xnid1l",
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Sampled RSS sums resident pages across processes and can double-count shared PostgreSQL pages; it is not unique physical memory.",
+    "Per-phase CPU from ps has 10 ms precision and can miss short-lived processes. Whole-run wait accounting includes child processes plus the ps sampler and setup.",
+    "Node CPU includes the HTTP load generator in the source process; Worker/isolate CPU billing is not inferred from these local counters."
+  ]
+}

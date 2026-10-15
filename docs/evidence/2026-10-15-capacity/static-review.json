@@ -1,0 +1,12 @@
+{
+  "command": "Python AST, changed-file secret-pattern and Markdown-link audit; git diff --check",
+  "pythonFilesParsed": 6,
+  "filesScanned": 135,
+  "secretPatternFiles": [],
+  "missingLinks": [],
+  "nodeImplementationsSha256": {
+    "scripts/node-daemon.py": "69befb4351d20ea4ce8cf7986f8173afb32b7290c364d6f0847320c726862148",
+    "docs/evidence/2026-10-15-capacity/node-daemon-per-request.py": "7be9ba0f19af27ad208beb1e21f534c57e28607c8defee6ad204af3140a79890"
+  },
+  "note": "Implementation hashes were computed at final review; benchmark observations retain their original invocations."
+}

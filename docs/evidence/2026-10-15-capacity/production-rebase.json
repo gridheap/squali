@@ -1,0 +1,60 @@
+{
+  "command": "python3 scripts/verify-rebase.py --access ../../work/private/weave-access.json --fixture ../../work/private/source-pilot.json --output docs/evidence/2026-10-15-capacity/production-rebase.json",
+  "timestamp": "2026-10-15T11:30:14Z",
+  "httpAttempts": 5,
+  "maxAttempts": 5,
+  "automaticRetries": 0,
+  "complete": true,
+  "steps": [
+    {
+      "name": "usage-before",
+      "status": 200,
+      "elapsedMs": 1232.84
+    },
+    {
+      "name": "head-before",
+      "status": 200,
+      "elapsedMs": 1434.56
+    },
+    {
+      "name": "rebase-plan",
+      "status": 200,
+      "elapsedMs": 1306.08
+    },
+    {
+      "name": "head-after",
+      "status": 200,
+      "elapsedMs": 1231.65
+    },
+    {
+      "name": "usage-after",
+      "status": 200,
+      "elapsedMs": 975.06
+    }
+  ],
+  "exactPlanContent": true,
+  "mainUnchanged": true,
+  "sourceWritesDelta": 0,
+  "sourceReadReservationsDelta": 0,
+  "usageAfter": {
+    "source": {
+      "readCap": 200000,
+      "writeCap": 200000,
+      "reads": 220,
+      "writes": 166503
+    },
+    "attempts": 345,
+    "cap": 2000,
+    "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+    "cache": {
+      "reservedReads": 32,
+      "reservedWrites": 20,
+      "readCap": 20000,
+      "writeCap": 2000
+    }
+  },
+  "limitations": [
+    "Single production plan observation, not a concurrent or cold-cache benchmark.",
+    "Usage reservations can include other callers; provider billing is reconciled separately."
+  ]
+}

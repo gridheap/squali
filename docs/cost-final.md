@@ -41,3 +41,7 @@ No SKU, provider quota, monthly operation cap or source budget was enlarged for 
 ## Work after the accounting checkpoint
 
 The brand and Apache comparator deployments, targeted production file/blame reads and the final v4 response occurred after 03:54 UTC. One upstream GraphQL blame read and two successful GitHub connector reads supplied the pinned regression inputs; subsequent comparisons run offline. Failed local GitHub/Azure HTTPS connections are retained as failures. One existing Azure diagnostic command was updated with a 180-second ceiling and a read-only cached-metadata query; its result was unavailable and is not counted as a passing verification. No source import, clone, quota increase or recurring probe was added. The provider totals above were not refreshed, so they do not include this small validation/publication supplement.
+
+## October 15 rebase/capacity checkpoint
+
+The later [capacity and cost report](capacity.md#storage-calls-and-cost) refreshes product-scoped provider observations through 11:39:46 UTC and preserves this earlier checkpoint for comparison. The new local load tests have zero provider calls; five production rebase-verification requests add no source read/write reservations. No cloud resource, quota increase, new import or recurring load job was created. Current source read/write reservations are 220 / 166,503 against the unchanged 200,000 limits. The report separates measured provider CPU, local process CPU/RSS, actual adapter calls and price projections.

@@ -1,0 +1,576 @@
+{
+  "command": "python3 scripts/capacity-run.py --output /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/docs/evidence/2026-10-15-capacity/sustained-measured --sustained",
+  "passed": true,
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Max",
+    "logicalCpus": 16,
+    "memoryGiB": 128,
+    "node": "v24.21.0"
+  },
+  "dataset": {
+    "files": 4097,
+    "baselineBytes": 67092480,
+    "commits": 129,
+    "uniqueHotBlobs": 512,
+    "hotBytes": 8386560,
+    "nodeProcesses": 8,
+    "nodeCacheBytesEach": 33554432,
+    "poolSize": 8
+  },
+  "ingestion": {
+    "stage": "complete",
+    "objectsProcessed": 4674,
+    "commitsProcessed": 129,
+    "httpAttempts": 77,
+    "uploadedBytes": 1211474,
+    "complete": true,
+    "reused": false
+  },
+  "results": [
+    {
+      "name": "cold-node-cold-region",
+      "concurrency": 8,
+      "attempts": 512,
+      "succeeded": 512,
+      "errors": [],
+      "wallMs": 1215.8981249999997,
+      "successfulPerSecond": 421.08790981152316,
+      "latencyMs": {
+        "p50": 18.47808299999997,
+        "p95": 22.147084000000177,
+        "p99": 40.17262500000015
+      },
+      "nodeCpuMs": {
+        "user": 607.61,
+        "system": 107.232
+      },
+      "nodeMaxRssKiB": 211456,
+      "sqlQueries": 2056,
+      "sourceObjectCalls": 512,
+      "storage": {
+        "get": 512,
+        "put": 0,
+        "head": 0,
+        "readBytes": 108706,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "new-nodes-warm-region",
+      "concurrency": 8,
+      "attempts": 3584,
+      "succeeded": 3584,
+      "errors": [],
+      "wallMs": 2852.424,
+      "successfulPerSecond": 1256.4751944311224,
+      "latencyMs": {
+        "p50": 5.9505410000001575,
+        "p95": 10.225499999999556,
+        "p99": 12.823207999999795
+      },
+      "nodeCpuMs": {
+        "user": 548.612,
+        "system": 236.659
+      },
+      "nodeMaxRssKiB": 272976,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "warm-nodes",
+      "concurrency": 128,
+      "attempts": 8192,
+      "succeeded": 8192,
+      "errors": [],
+      "wallMs": 397.23412499999995,
+      "successfulPerSecond": 20622.598826321886,
+      "latencyMs": {
+        "p50": 5.968042000000423,
+        "p95": 12.184417000000394,
+        "p99": 14.90558400000009
+      },
+      "nodeCpuMs": {
+        "user": 405.715,
+        "system": 164.717
+      },
+      "nodeMaxRssKiB": 334640,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "sustained-regional-hits",
+      "concurrency": 8,
+      "attempts": 16384,
+      "succeeded": 16384,
+      "errors": [],
+      "wallMs": 12553.489125,
+      "successfulPerSecond": 1305.1351569956453,
+      "latencyMs": {
+        "p50": 5.321541999999681,
+        "p95": 12.184291000001394,
+        "p99": 19.150165999999444
+      },
+      "nodeCpuMs": {
+        "user": 3473.352,
+        "system": 1164.135
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "sustained-node-hits",
+      "concurrency": 128,
+      "attempts": 65536,
+      "succeeded": 65536,
+      "errors": [],
+      "wallMs": 3669.9231249999975,
+      "successfulPerSecond": 17857.59476910025,
+      "latencyMs": {
+        "p50": 5.115874999999505,
+        "p95": 17.841541000001598,
+        "p99": 23.58833400000003
+      },
+      "nodeCpuMs": {
+        "user": 2310.327,
+        "system": 1293.324
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 0,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "proposals-8",
+      "concurrency": 8,
+      "attempts": 256,
+      "succeeded": 256,
+      "errors": [],
+      "wallMs": 434.04683300000033,
+      "successfulPerSecond": 589.7981059569206,
+      "latencyMs": {
+        "p50": 12.978917000000365,
+        "p95": 18.394374999999854,
+        "p99": 21.469750000000204
+      },
+      "nodeCpuMs": {
+        "user": 459.39,
+        "system": 194.027
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 9729,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 256,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 9618
+      }
+    },
+    {
+      "name": "proposals-32",
+      "concurrency": 32,
+      "attempts": 256,
+      "succeeded": 256,
+      "errors": [],
+      "wallMs": 346.049500000001,
+      "successfulPerSecond": 739.7785576918888,
+      "latencyMs": {
+        "p50": 42.197542000001704,
+        "p95": 50.042874999999185,
+        "p99": 53.48387500000172
+      },
+      "nodeCpuMs": {
+        "user": 379.512,
+        "system": 171.109
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 9728,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 256,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 9874
+      }
+    },
+    {
+      "name": "proposals-128",
+      "concurrency": 128,
+      "attempts": 256,
+      "succeeded": 256,
+      "errors": [],
+      "wallMs": 324.08258399999977,
+      "successfulPerSecond": 789.9221144200707,
+      "latencyMs": {
+        "p50": 148.242291999999,
+        "p95": 183.2106249999997,
+        "p99": 192.2245409999996
+      },
+      "nodeCpuMs": {
+        "user": 360.522,
+        "system": 158.688
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 9728,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 256,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 10130
+      }
+    },
+    {
+      "name": "review",
+      "concurrency": 8,
+      "attempts": 768,
+      "succeeded": 768,
+      "errors": [],
+      "wallMs": 454.7520000000004,
+      "successfulPerSecond": 1688.8325944690716,
+      "latencyMs": {
+        "p50": 4.430874999998196,
+        "p95": 6.888124999997672,
+        "p99": 7.718082999999751
+      },
+      "nodeCpuMs": {
+        "user": 375.775,
+        "system": 81.861
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 9216,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    },
+    {
+      "name": "publication",
+      "concurrency": 1,
+      "attempts": 12,
+      "succeeded": 12,
+      "errors": [],
+      "wallMs": 137.2001249999994,
+      "successfulPerSecond": 87.46347716519976,
+      "latencyMs": {
+        "p50": 11.248333999999886,
+        "p95": 12.875707999999577,
+        "p99": 12.875707999999577
+      },
+      "nodeCpuMs": {
+        "user": 80.463,
+        "system": 10.889
+      },
+      "nodeMaxRssKiB": 522624,
+      "sqlQueries": 755,
+      "sourceObjectCalls": 0,
+      "storage": {
+        "get": 0,
+        "put": 0,
+        "head": 0,
+        "readBytes": 0,
+        "writeBytes": 0
+      }
+    }
+  ],
+  "heapObservations": [
+    {
+      "label": "before-sustained",
+      "title": "Cloudflare Worker",
+      "scripts": [
+        "file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-b9zXpr/worker/.wrangler/tmp/dev-GjTSDE/regional-worker.js",
+        "file:///Users/binbinsh/Library/pnpm/store/v11/links/@/miniflare/5.20261006.2-beta/7b56e985b3d3fce8f2b906d740e63a4d57239c02778df3980d46b17bcd1072f3/node_modules/miniflare/dist/src/workers/ratelimit/ratelimit.worker.js",
+        "node-internal:internal_timers_global_override",
+        "node-internal:internal_timers",
+        "node-internal:validators",
+        "node-internal:internal_types",
+        "node-internal:internal_utils",
+        "node-internal:internal_errors",
+        "node-internal:crypto_util",
+        "node-internal:internal_buffer",
+        "node-internal:internal_inspect",
+        "node:crypto",
+        "node-internal:crypto_dh",
+        "node-internal:crypto_random",
+        "node-internal:crypto_hash",
+        "node-internal:crypto_sign",
+        "node-internal:crypto_cipher",
+        "node-internal:crypto_hkdf",
+        "node-internal:crypto_pbkdf2",
+        "node-internal:crypto_scrypt",
+        "node-internal:crypto_keys",
+        "node-internal:crypto_spkac",
+        "node-internal:crypto_x509",
+        "node-internal:streams_transform",
+        "node-internal:internal_process",
+        "node-internal:streams_duplex",
+        "node-internal:streams_state",
+        "node-internal:streams_readable",
+        "node-internal:streams_writable",
+        "node-internal:internal_assert",
+        "node-internal:streams_legacy",
+        "node-internal:streams_add_abort_signal",
+        "node-internal:streams_util",
+        "node-internal:streams_destroy",
+        "node-internal:streams_end_of_stream",
+        "node-internal:events",
+        "node-internal:internal_stringdecoder",
+        "node-internal:internal_zlib_constants",
+        "node-internal:internal_http_util",
+        "node-internal:internal_assertionerror",
+        "node-internal:internal_diffs",
+        "node-internal:internal_comparisons",
+        "node:buffer"
+      ],
+      "heap": {
+        "usedSize": 38838948,
+        "totalSize": 47448064,
+        "embedderHeapUsedSize": 19086464,
+        "backingStorageSize": 10345878
+      }
+    },
+    {
+      "label": "after-regional",
+      "title": "Cloudflare Worker",
+      "scripts": [
+        "file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-b9zXpr/worker/.wrangler/tmp/dev-GjTSDE/regional-worker.js",
+        "file:///Users/binbinsh/Library/pnpm/store/v11/links/@/miniflare/5.20261006.2-beta/7b56e985b3d3fce8f2b906d740e63a4d57239c02778df3980d46b17bcd1072f3/node_modules/miniflare/dist/src/workers/ratelimit/ratelimit.worker.js",
+        "node-internal:internal_timers_global_override",
+        "node-internal:internal_timers",
+        "node-internal:validators",
+        "node-internal:internal_types",
+        "node-internal:internal_utils",
+        "node-internal:internal_errors",
+        "node-internal:crypto_util",
+        "node-internal:internal_buffer",
+        "node-internal:internal_inspect",
+        "node:crypto",
+        "node-internal:crypto_dh",
+        "node-internal:crypto_random",
+        "node-internal:crypto_hash",
+        "node-internal:crypto_sign",
+        "node-internal:crypto_cipher",
+        "node-internal:crypto_hkdf",
+        "node-internal:crypto_pbkdf2",
+        "node-internal:crypto_scrypt",
+        "node-internal:crypto_keys",
+        "node-internal:crypto_spkac",
+        "node-internal:crypto_x509",
+        "node-internal:streams_transform",
+        "node-internal:internal_process",
+        "node-internal:streams_duplex",
+        "node-internal:streams_state",
+        "node-internal:streams_readable",
+        "node-internal:streams_writable",
+        "node-internal:internal_assert",
+        "node-internal:streams_legacy",
+        "node-internal:streams_add_abort_signal",
+        "node-internal:streams_util",
+        "node-internal:streams_destroy",
+        "node-internal:streams_end_of_stream",
+        "node-internal:events",
+        "node-internal:internal_stringdecoder",
+        "node-internal:internal_zlib_constants",
+        "node-internal:internal_http_util",
+        "node-internal:internal_assertionerror",
+        "node-internal:internal_diffs",
+        "node-internal:internal_comparisons",
+        "node:buffer"
+      ],
+      "heap": {
+        "usedSize": 17399632,
+        "totalSize": 56360960,
+        "embedderHeapUsedSize": 2912480,
+        "backingStorageSize": 24023873
+      }
+    },
+    {
+      "label": "after-node",
+      "title": "Cloudflare Worker",
+      "scripts": [
+        "file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-b9zXpr/worker/.wrangler/tmp/dev-GjTSDE/regional-worker.js",
+        "file:///Users/binbinsh/Library/pnpm/store/v11/links/@/miniflare/5.20261006.2-beta/7b56e985b3d3fce8f2b906d740e63a4d57239c02778df3980d46b17bcd1072f3/node_modules/miniflare/dist/src/workers/ratelimit/ratelimit.worker.js",
+        "node-internal:internal_timers_global_override",
+        "node-internal:internal_timers",
+        "node-internal:validators",
+        "node-internal:internal_types",
+        "node-internal:internal_utils",
+        "node-internal:internal_errors",
+        "node-internal:crypto_util",
+        "node-internal:internal_buffer",
+        "node-internal:internal_inspect",
+        "node:crypto",
+        "node-internal:crypto_dh",
+        "node-internal:crypto_random",
+        "node-internal:crypto_hash",
+        "node-internal:crypto_sign",
+        "node-internal:crypto_cipher",
+        "node-internal:crypto_hkdf",
+        "node-internal:crypto_pbkdf2",
+        "node-internal:crypto_scrypt",
+        "node-internal:crypto_keys",
+        "node-internal:crypto_spkac",
+        "node-internal:crypto_x509",
+        "node-internal:streams_transform",
+        "node-internal:internal_process",
+        "node-internal:streams_duplex",
+        "node-internal:streams_state",
+        "node-internal:streams_readable",
+        "node-internal:streams_writable",
+        "node-internal:internal_assert",
+        "node-internal:streams_legacy",
+        "node-internal:streams_add_abort_signal",
+        "node-internal:streams_util",
+        "node-internal:streams_destroy",
+        "node-internal:streams_end_of_stream",
+        "node-internal:events",
+        "node-internal:internal_stringdecoder",
+        "node-internal:internal_zlib_constants",
+        "node-internal:internal_http_util",
+        "node-internal:internal_assertionerror",
+        "node-internal:internal_diffs",
+        "node-internal:internal_comparisons",
+        "node:buffer"
+      ],
+      "heap": {
+        "usedSize": 17399632,
+        "totalSize": 56360960,
+        "embedderHeapUsedSize": 2912480,
+        "backingStorageSize": 24023873
+      }
+    }
+  ],
+  "nodeStats": [
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    },
+    {
+      "originObjects": 512,
+      "originBlobs": 512,
+      "hits": 9216,
+      "coalesced": 0,
+      "networkBytes": 8386560,
+      "failures": 0,
+      "cachedBytes": 8386560
+    }
+  ],
+  "sourceRpc": {
+    "objects": 512,
+    "authorization": 1
+  },
+  "storage": {
+    "get": 512,
+    "put": 4992,
+    "head": 0,
+    "readBytes": 108706,
+    "writeBytes": 902124
+  },
+  "httpAttempts": 1551,
+  "maxHttpAttempts": 6000,
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Single Mac and loopback, no WAN or distributed placement.",
+    "R2 uses the persistent local disk adapter; operation counts are real adapter calls, not provider billing.",
+    "The regional tier is actual workerd with its Cache API. Cold means new node and regional stores, not flushed OS caches.",
+    "Eight node daemons share one authorized project; these are clients, not 128 distinct users.",
+    "The finite warm working set is 512 immutable blobs; its hit rate is workload-specific, not a fleet claim.",
+    "No Git throughput speedup or Scion equivalence percentage is inferred."
+  ]
+}

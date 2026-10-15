@@ -4,6 +4,8 @@ The source RPC is an authenticated POST to `/api/projects/:id/rpc`, with `author
 
 The node daemon has one bounded cache, merges simultaneous misses, verifies object hashes before caching, checks workspace authorization with a short lease, and applies an error cooldown. It retains the source's authorization deadline, clamped to credential expiry and at most 30 seconds; stacking cache tiers does not extend it. Snapshots contain bounded, checksum-verified cache data and are refreshed explicitly. No recurring job is installed.
 
+The node reuses 32 fixed worker threads and admits at most 32 active/queued tasks and a kernel socket backlog of 128. Its single accept loop waits at most one second for an active slot; persistent overload returns a framed 503 without bypassing the regional tier. A full kernel backlog can still refuse a connection. These bounds avoid an unbounded thread or retry queue. [128-client measurements and retained overload failures](capacity.md) cover eight node processes; they are not a promise of unlimited per-node concurrency.
+
 Failure specification before implementation: corrupt or truncated objects; shared-cache tenant escape; revoked credentials; duplicate concurrent misses; authority or daemon outage causing a bypass; inode size/mode/content differing from native Git; stat/readdir fetching file contents; interrupted reads; cache size growth; forged/truncated snapshots; snapshot restore making new origin reads for retained objects. Acceptance uses real HTTP, Unix sockets and native filesystem commands on Linux FUSE. A CLI hydration command is insufficient evidence of a virtual filesystem.
 
 ## Run the node and mount
@@ -25,7 +27,7 @@ python3 scripts/squali-fuse.py --socket /tmp/squali-node.sock \
 
 Ordinary `ls` and `stat` read tree/size metadata; `cat` and compilers opening a file hydrate its verified body. The mount pins one immutable commit. It admits 100,000 inodes by default, 128 open handles and 64 MiB resident file bodies. Submodule links appear as empty directories; fetching another repository is explicit. Unmount with `fusermount3 -u /path/to/empty-mount`. Use the [sparse working-copy client](working-copy.md) to edit and propose changes.
 
-The framed Unix protocol uses a four-byte big-endian JSON request length, then a request such as `{ "project":"PROJECT", "op":"object", "oid":"..." }`. Responses contain a length-prefixed metadata object followed by the declared body length. `stats` exposes local counters. `snapshot` with a safe `name` creates a checked SQLite snapshot and JSON manifest under the cache directory. Restore into a new empty cache with `--restore /path/to/snapshot.sqlite`; both its namespace and content checksums must match. Do not copy snapshots across credentials.
+The framed Unix protocol uses a four-byte big-endian JSON request length, then a request such as `{ "project":"PROJECT", "op":"object", "oid":"..." }`. Responses contain a length-prefixed metadata object followed by the declared body length. `stats` exposes local counters plus OS process CPU seconds and high-water RSS bytes. `snapshot` with a safe `name` creates a checked SQLite snapshot and JSON manifest under the cache directory. Restore into a new empty cache with `--restore /path/to/snapshot.sqlite`; both its namespace and content checksums must match. Do not copy snapshots across credentials.
 
 ## Writable virtual workspaces
 

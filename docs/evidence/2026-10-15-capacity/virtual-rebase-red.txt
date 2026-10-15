@@ -1,0 +1,40 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:58904 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 9d1bdbf31e9a0cbb8c7e17e22d5b850dd43e16ae --onto bdff2ef63c37e56b550c7e0714966664a08943d4 --conflict 4d365902f48eef9dbd00b5468743e8c20b42d3d8
+Traceback (most recent call last):
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 20, in <module>
+    blocked=cli('run','--','true',ok=False);assert 'pending' in blocked.stderr
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 13, in cli
+    else:assert r.returncode!=0,r.stdout
+                ^^^^^^^^^^^^^^^
+AssertionError
+time="2026-10-15T19:08:21+08:00" level=fatal msg="exit status 1"
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at Socket.<anonymous> (node:internal/child_process:498:11)
+    at Socket.emit (node:events:514:28)
+    at Pipe.<anonymous> (node:net:362:12) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: 'colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:58904 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref 9d1bdbf31e9a0cbb8c7e17e22d5b850dd43e16ae --onto bdff2ef63c37e56b550c7e0714966664a08943d4 --conflict 4d365902f48eef9dbd00b5468743e8c20b42d3d8',
+  stdout: '',
+  stderr: 'Traceback (most recent call last):\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 20, in <module>\n' +
+    "    blocked=cli('run','--','true',ok=False);assert 'pending' in blocked.stderr\n" +
+    '            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-rebase-linux.py", line 13, in cli\n' +
+    '    else:assert r.returncode!=0,r.stdout\n' +
+    '                ^^^^^^^^^^^^^^^\n' +
+    'AssertionError\n' +
+    'time="2026-10-15T19:08:21+08:00" level=fatal msg="exit status 1"\n'
+}
+
+Node.js v24.21.0

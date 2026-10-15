@@ -1,0 +1,16 @@
+{"command":"NODE_CPU_OUTPUT=docs/evidence/2026-10-15-capacity/node-cpu-red.json NODE_CPU_BASELINE=docs/evidence/2026-10-15-capacity/node-cpu-baseline.json node --import tsx tests/node-cpu.e2e.ts","cpu":"Apple M4 Max","requests":32768,"concurrency":64,"bodyBytes":16384,"errors":0,"wallMs":5089.385875,"requestsPerSecond":6438.4978472476305,"p95Ms":11.391750000000002,"nodeCpuMs":7323.83,"nodePeakRssBytes":38027264,"originObjectRequests":1,"authorizationRequests":1,"externalProviderCalls":0,"comparison":{"baseline":"docs/evidence/2026-10-15-capacity/node-cpu-baseline.json","cpuReduction":-0.03732898865016199,"throughputRatio":0.9626295610764629}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Fixed workers should use at least 20% less CPU than the retained identical per-request-thread workload
+    at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/node-cpu.e2e.ts:22:170) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

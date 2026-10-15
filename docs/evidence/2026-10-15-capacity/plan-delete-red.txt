@@ -1,0 +1,36 @@
+✖ dirty workspace rebase is a deterministic server plan with no source writes (692.061958ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 850.652708
+
+✖ failing tests:
+
+test at tests/workspace-rebase.test.ts:1:226
+✖ dirty workspace rebase is a deterministic server plan with no source writes (692.061958ms)
+  AssertionError [ERR_ASSERTION]: Deleted files have no mode in the staged plan
+  + actual - expected
+
+    [
+      {
+        content: null,
+  +     mode: '100644',
+        path: 'text'
+      }
+    ]
+
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/workspace-rebase.test.ts:26:175)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { path: 'text', content: null, mode: '100644' } ],
+    expected: [ { path: 'text', content: null } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

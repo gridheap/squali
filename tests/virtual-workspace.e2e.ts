@@ -49,5 +49,5 @@ try{
  assert.equal((await exec('git',['--git-dir',native,'rev-parse','HEAD'])).stdout.trim(),p.head);
  assert.ok(regionalReads>0,'Linux workspace reads must pass through the independent regional tier');
  const report={command,linux,proposal:change.oid,mainUnchanged:true,sourceContentExact:true,regionalTier:true,regionalUpstreamCalls:regionalReads,externalProviderCalls:0,passed:true};
- await writeFile('docs/evidence/2026-10-15-regional/virtual-workspace-result.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
+ await writeFile((process.env.SQUALI_EVIDENCE??'docs/evidence/2026-10-15-regional')+'/virtual-workspace-result.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
 }finally{await new Promise<void>(done=>proxy.close(()=>done()));await server.close();}

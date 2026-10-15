@@ -1,0 +1,118 @@
+{
+  "command": "scripts/capacity-run.py --output docs/evidence/2026-10-15-capacity/full",
+  "exitCode": 1,
+  "wallSeconds": 9.345174625050277,
+  "childCpuSeconds": {
+    "user": 9.405893,
+    "system": 9.731375
+  },
+  "peakSummedRssBytes": 2038218752,
+  "phases": {
+    "setup": {
+      "sampleCount": 20,
+      "peakSummedRssBytes": 1057865728,
+      "groups": {
+        "node-and-runner": {
+          "peakRssBytes": 608468992,
+          "sampledCpuSeconds": 3.3899999999999997
+        },
+        "postgres": {
+          "peakRssBytes": 72138752,
+          "sampledCpuSeconds": 0.16999999999999998
+        },
+        "git": {
+          "peakRssBytes": 6029312,
+          "sampledCpuSeconds": 0.37
+        },
+        "python": {
+          "peakRssBytes": 202162176,
+          "sampledCpuSeconds": 0.24000000000000002
+        },
+        "workerd": {
+          "peakRssBytes": 175095808,
+          "sampledCpuSeconds": 0.09999999999999999
+        }
+      }
+    },
+    "cold-node-cold-region": {
+      "sampleCount": 10,
+      "peakSummedRssBytes": 1404026880,
+      "groups": {
+        "workerd": {
+          "peakRssBytes": 338001920,
+          "sampledCpuSeconds": 1.8900000000000001
+        },
+        "python": {
+          "peakRssBytes": 281001984,
+          "sampledCpuSeconds": 0.46
+        },
+        "postgres": {
+          "peakRssBytes": 157417472,
+          "sampledCpuSeconds": 0.09000000000000002
+        },
+        "node-and-runner": {
+          "peakRssBytes": 630521856,
+          "sampledCpuSeconds": 1.3100000000000003
+        }
+      }
+    },
+    "new-nodes-warm-region": {
+      "sampleCount": 19,
+      "peakSummedRssBytes": 1942011904,
+      "groups": {
+        "workerd": {
+          "peakRssBytes": 792412160,
+          "sampledCpuSeconds": 5.109999999999999
+        },
+        "python": {
+          "peakRssBytes": 310263808,
+          "sampledCpuSeconds": 2.53
+        },
+        "postgres": {
+          "peakRssBytes": 157712384,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 683048960,
+          "sampledCpuSeconds": 1.9699999999999995
+        }
+      }
+    },
+    "warm-nodes": {
+      "sampleCount": 5,
+      "peakSummedRssBytes": 2038218752,
+      "groups": {
+        "workerd": {
+          "peakRssBytes": 811892736,
+          "sampledCpuSeconds": 0.29000000000000004
+        },
+        "python": {
+          "peakRssBytes": 319127552,
+          "sampledCpuSeconds": 3.9699999999999998
+        },
+        "postgres": {
+          "peakRssBytes": 157712384,
+          "sampledCpuSeconds": 0
+        },
+        "node-and-runner": {
+          "peakRssBytes": 750026752,
+          "sampledCpuSeconds": 0.8700000000000003
+        }
+      }
+    }
+  },
+  "sampleIntervalMs": 100,
+  "postgres": {
+    "version": "17.11",
+    "maxConnections": 24,
+    "sharedBuffersMiB": 64,
+    "isolated": true
+  },
+  "fixtureDirectory": "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/capacity-9pc0sit8",
+  "externalProviderCalls": 0,
+  "limitations": [
+    "Sampled RSS sums resident pages across processes and can double-count shared PostgreSQL pages; it is not unique physical memory.",
+    "Per-phase CPU from ps has 10 ms precision and can miss short-lived processes. Whole-run wait accounting includes child processes plus the ps sampler and setup.",
+    "Node CPU includes the HTTP load generator in the source process; Worker/isolate CPU billing is not inferred from these local counters."
+  ]
+}
