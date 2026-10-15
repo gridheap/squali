@@ -32,6 +32,8 @@ Use one service with a 1 GiB memory bound, a writable private state directory, p
 
 Keep the native Git cache, `cache.json` identity marker and `state/state.json` together. Do not move a live job, replace its token, change frozen refs or reset attempt counters. The deployment recovery guide applies to ambiguous provider outcomes.
 
+The native Git bridge does not require atomic push support. A provider can accept some frozen refs before rejecting another; the project remains importing until all expected refs match. Explicit recovery reconciles that subset and preserves unexpected refs rather than overwriting them. Failed Git transfers retain a bounded, token-redacted `state/bridge-error.json` in the private journal. Inspect it before consuming another attempt.
+
 ## Inspect and reconstruct source data
 
 Whole-workspace credentials can read `GET /api/projects/:id/changesets/:gitOidOrChangesetId`. Administrators can inspect `GET /api/projects/:id/source`, including object counts, changesets, refs and Git compatibility status.

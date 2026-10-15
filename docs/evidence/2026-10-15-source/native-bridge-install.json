@@ -1,0 +1,13 @@
+{
+  "installed": true,
+  "previousSha256": "e3634014037dbfd8dbed92bf488065006450692ebad64e3c7ea0e2a2cc929946",
+  "sha256": "a73f866295f81755d343e3e888502ede44ac0db77c374265a93f481439c14aff",
+  "serviceRestarted": false,
+  "journalPreserved": true,
+  "stage": "refs",
+  "objectsProcessed": 421219,
+  "commitsProcessed": 85563,
+  "httpAttempts": 9334,
+  "bridgeAttempts": 1,
+  "command": "python3 work/patch-native-bridge.py"
+}
