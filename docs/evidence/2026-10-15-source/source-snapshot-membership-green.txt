@@ -1,0 +1,13 @@
+{"command":"node --import tsx --test tests/source-snapshot.test.ts","nativeFsck":true,"fullObjectAndRefEquality":true,"lostAckExtraPuts":0,"completedReplayExtraCalls":0,"incrementalFetchExtraPackReads":0,"sourceObjectsExcludeSnapshot":true,"artifactCalls":0,"parts":6}
+✔ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (1125.931583ms)
+{"command":"node --import tsx --test tests/source-snapshot.test.ts","nativeUploader":true,"originalSourceBytesUnchanged":true,"httpAttemptsRetained":true,"completedReplayExtraCalls":0}
+✔ native snapshot uploader retains the original import budget and makes completed replay free (1263.491791ms)
+✔ snapshot activation rejects a different valid pack with the same object count (693.799167ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3237.809083

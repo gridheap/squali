@@ -1,0 +1,30 @@
+✖ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (755.30525ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 974.357208
+
+✖ failing tests:
+
+test at tests/source-snapshot.test.ts:1:554
+✖ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (755.30525ms)
+  AssertionError [ERR_ASSERTION]: {"identity":"c95287964f2c4d3ee9b9f886d061d62a54914037608cc9c1dbcd265d0c2bfe6d","state":"preparing","missing":["d019449c5bbd3a792aca03530fc478f87d6e7dd90d15ef5f696753b307df999c","99b6b542da341a663d296dc3ca741bae92ac083d3638ea042724c5ce38afa8b9","d1f2d21f318a87fb76edac35fc679476c7ed6263c8a0703acfcb0626699de433","c22b47f571c52ddba0d808c699b9fd0e6cd410c61dc77377e4bf64194daac6d6","52fd01438a63b16408df90f6662a97232626fc11b547b73d67446a8cc61eb1c7","5fdc138285fab539b5945fd2706c31aaa83c011e375605c63216980fbbf7eecd"]}
+  
+  200 !== 409
+  
+      at call (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-snapshot.test.ts:11:246)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-snapshot.test.ts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

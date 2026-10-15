@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/source-snapshot.test.ts","nativeFsck":true,"fullObjectAndRefEquality":true,"lostAckExtraPuts":0,"completedReplayExtraCalls":0,"incrementalFetchExtraPackReads":0,"sourceObjectsExcludeSnapshot":true,"artifactCalls":0,"parts":6}
+✔ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (1078.7195ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1306.367209

@@ -79,19 +79,27 @@ def execute(row,token,lease):
   if repo.exists():shutil.rmtree(repo) # Only this explicitly retried, unmarked partial clone.
   environment={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_ALLOW_PROTOCOL':'http:https','GIT_CONFIG_COUNT':'2','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Basic '+base64.b64encode(('x-access-token:'+auth['token']).encode()).decode(),'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false'}
   # Do not pass the database credential to Git or hooks.
-  environment.pop('SQUALI_WORKER_DATABASE_URL',None)
-  result=run(['git','-c','core.hooksPath=/dev/null','clone','--mirror',auth['remote'],str(repo)],environment,2*1024**3)
+  for key in ('SQUALI_WORKER_DATABASE_URL','GIT_CURL_VERBOSE','GIT_TRACE_CURL','GIT_TRACE_PACKET','GIT_TRACE_PACKFILE'):environment.pop(key,None)
+  result=run(['git','-c','core.hooksPath=/dev/null','-c','fetch.unpackLimit=1','clone','--mirror',auth['remote'],str(repo)],environment,2*1024**3)
   if result=='paused':return 'paused'
   if result!=0:raise RuntimeError('Native Git clone failed; inspect the private runner log')
   if usage(repo)>2*1024**3:raise RuntimeError('Native clone exceeded the 2 GiB disk budget')
   marker.write_text(json.dumps({'repository':row['repository_id'],'project':row['project_id']}));auth=None;environment=None
  elif json.loads(marker.read_text())!={'repository':row['repository_id'],'project':row['project_id']}:raise RuntimeError('Native cache identity mismatch')
  stage='objects';environment={**os.environ,'SQUALI_TOKEN':token,'SQUALI_URL':origin,'SQUALI_JOB_LEASE':lease};environment.pop('SQUALI_WORKER_DATABASE_URL',None)
+ def provider_capacity():
+  diagnostic=journal/'bridge-error.json'
+  if not diagnostic.exists() or diagnostic.stat().st_size>100000:return False
+  detail=json.loads(diagnostic.read_text())
+  return bool(re.search(r'(?m)^remote: artifacts_git_receive_pack_storage_limit\s*$',detail.get('stderr','')))
  for segment in range(32):
   if progress()=='paused':return 'paused'
   remaining=max(1,min(a.segment_seconds,a.max_seconds-int(time.monotonic()-start),28800-previous-int(time.monotonic()-job_start)))
   checkpoint=journal/'state.json';before=checkpoint.read_bytes() if checkpoint.exists() else None
-  result=run([sys.executable,str(pathlib.Path(__file__).with_name('import-source.py')),row['project_id'],str(repo),'--state',str(journal),'--max-batches','10000','--max-seconds',str(remaining)],environment)
+  snapshot=provider_capacity();program='import-snapshot.py' if snapshot else 'import-source.py'
+  arguments=['--max-seconds',str(min(remaining,3600) if snapshot else remaining)]
+  if not snapshot:arguments+=['--max-batches','10000']
+  result=run([sys.executable,str(pathlib.Path(__file__).with_name(program)),row['project_id'],str(repo),'--state',str(journal),*arguments],environment)
   status=progress()
   if status=='complete':return 'complete'
   if result=='paused' or status=='paused':return 'paused'
@@ -100,7 +108,11 @@ def execute(row,token,lease):
    # Errors, exhausted budgets and stalled cursors never trigger an automatic retry.
    if not checkpoint.exists() or checkpoint.read_bytes()==before:return 'paused'
    continue
-  if result!=0:raise RuntimeError('Source ingestion stopped; retain the journal and inspect the private runner log')
+  if result!=0:
+   # A recognized hard capacity limit switches provider once, within this job's
+   # original journal/time budget. Snapshot failures never automatically retry.
+   if not snapshot and provider_capacity():continue
+   raise RuntimeError('Source ingestion stopped; retain the journal and inspect the private runner log')
   raise RuntimeError('Source finish did not confirm all refs')
  return 'paused'
 

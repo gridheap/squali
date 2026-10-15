@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-15T02:39:36Z",
+  "installed": {
+    "native-jobs.py": "912815a4729a2aa059e1803b8d65b81abec6a86a5f0a1a1080bf04e74bf9159b",
+    "import-snapshot.py": "5821ba8b0e49d0ea3f7a4f9cd0e9fd8bdc26e500f6cb51fc220a4c88e8654365"
+  },
+  "schema": "snapshot additive tables",
+  "sourceJournalUnchanged": true,
+  "queued": false,
+  "nativeAttempts": 4,
+  "attemptLimit": 4
+}

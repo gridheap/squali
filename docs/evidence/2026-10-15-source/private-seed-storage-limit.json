@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-15T02:06:17Z",
+  "job": [
+    [
+      "failed",
+      20698,
+      4,
+      "Source ingestion stopped; retain the journal and inspect the private runner log"
+    ]
+  ],
+  "canonicalCount": 85563,
+  "progress": {
+    "stage": "refs",
+    "objectsProcessed": 421219,
+    "commitsProcessed": 85563,
+    "httpAttempts": 9347,
+    "uploadedBytes": 3667925603,
+    "complete": false,
+    "bridgeAttempts": 3,
+    "bridgePushAttempts": 14,
+    "bridgeSeedBatchesDone": 11
+  },
+  "logTail": "dBytes\": 3667925603, \"complete\": false, \"reused\": false}\nNative Git export stopped; resume reconciles provider refs before another transfer\n{\"stage\": \"refs\", \"objectsProcessed\": 421219, \"commitsProcessed\": 85563, \"httpAttempts\": 9347, \"uploadedBytes\": 3667925603, \"complete\": false, \"reused\": false}\n",
+  "bridgeError": {
+    "operation": "native Git bootstrap",
+    "at": "2026-10-15T01:59:02Z",
+    "exitCode": 1
+  },
+  "bridgeSignal": [
+    "remote: artifacts_git_receive_pack_storage_limit",
+    "fatal: the remote end hung up unexpectedly",
+    "fatal: the remote end hung up unexpectedly",
+    "error: failed to push some refs to 'https://52f8a24263418828b635c91b6eb06a83.artifacts.cloudflare.net/git/weave/weave-gh-5fd5a2f4bc33a0286d6728ad.git'"
+  ]
+}

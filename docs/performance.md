@@ -16,7 +16,7 @@ All samples use the same workspace, originally containing 64 files and 419,400 b
 
 The baseline retains 152 HTTP attempts across two segments, including nine initial authorization failures. Every follow-up uses 25 attempts without a retry. Reports and exact commands: [baseline](evidence/2026-10-15-source/cloud-baseline.json), [blob reuse](evidence/2026-10-15-source/cloud-optimized.json), [one connection](evidence/2026-10-15-source/cloud-connection.json), [pool configuration](evidence/2026-10-15-source/cloud-pool8.json), [prepared protocol](evidence/2026-10-15-source/cloud-prepared.json). The [bounded runner](source-operations.md) retains its journal and makes no network calls on completed replay.
 
-The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, after commit `6e73423`. Artifacts reservations stayed at 172. Its explicit file verification added one source read; shared source-write counters also contain import traffic and cannot be attributed to this sample. Later deployment `4a36bd39-edf7-4689-9b67-84bc7646f4f4` adds the mainline graph shortcuts described below, without changing the proposal path. No further cloud load sample is scheduled.
+The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, after commit `6e73423`. Artifacts reservations stayed at 172. Its explicit file verification added one source read; shared source-write counters also contain import traffic and cannot be attributed to this sample. Later deployment `4a36bd39-edf7-4689-9b67-84bc7646f4f4` adds the mainline graph shortcuts described below, without changing the proposal path. The current deployment `7c16dd9b-d8bc-4d36-a133-967938277a0f` also adds the bounded R2 Git snapshot fallback. No further cloud load sample is scheduled.
 
 ## Changes supported by local measurements
 
@@ -31,7 +31,7 @@ The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, aft
 
 The writer passes its known delta to the shared versioned derivation engine. Independent admission uses one atomic insert, while dependency admission retains its transaction. Graph shortcuts return only after proving a first-parent relationship; other cases keep all-parent traversal and native criss-cross comparisons. The graph fixture contains a 1,024-commit mainline with 128 merge commits. Cache authorization, revocation and workspace-state checks remain live.
 
-The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [74 passing tests](evidence/2026-10-15-source/disconnect-full-e2e.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
+The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [78 passing tests](evidence/2026-10-15-source/source-snapshot-final-suite.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
 
 ## Database and cache interpretation
 

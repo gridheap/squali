@@ -36,6 +36,17 @@ The native Git bridge plans parent-ordered steps using only original branches an
 
 The native Git bridge does not require atomic push support. A provider can accept some frozen refs before rejecting another; the project remains importing until all expected refs match. Explicit recovery reconciles that subset and preserves unexpected refs rather than overwriting them. Failed Git transfers retain a bounded, token-redacted `state/bridge-error.json` in the private journal. Inspect it before consuming another attempt.
 
+The runner recognizes the exact Artifacts storage-limit response and selects `import-snapshot.py` within the same job. Deploy that script beside `native-jobs.py`, `import-source.py` and `git_seed.py`, and migrate the additive snapshot tables before enabling it. The snapshot reuses one complete native pack and its index, capped at 512 MiB and 16 MiB. It preserves the original HTTP journal and eight-hour job budget; its own ceiling is two explicit attempts and one hour cumulatively. A failure stops the job. Source objects are not uploaded again and the Artifacts transfer is not retried.
+
+For a diagnosed operator recovery, use the same repository, endpoint and journal:
+
+```sh
+python3 scripts/import-snapshot.py PROJECT /path/to/retained-native.git \
+  --state /path/to/original-import-journal --max-seconds 1800
+```
+
+Use a short-lived whole-workspace administrator credential. Keep the existing fleet/journal lock, account operator elapsed time in the original job, and preserve all previous attempt counters. Do not start a second runner or invent a fresh journal. A completed snapshot serves authenticated clone/fetch through the existing Git URL. New reviewed publications reuse that frozen pack. Directory-scoped credentials cannot download it. A completed replay makes no network calls.
+
 ## Inspect and reconstruct source data
 
 Whole-workspace credentials can read `GET /api/projects/:id/changesets/:gitOidOrChangesetId`. Administrators can inspect `GET /api/projects/:id/source`, including object counts, changesets, refs and Git compatibility status.

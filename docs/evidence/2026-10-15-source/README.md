@@ -8,10 +8,10 @@ The fixed release requirements are in [the Scion checklist](../../scion-acceptan
 
 | Check | Exact command | Retained result |
 |---|---|---|
-| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [75/75 passed](native-seed-final-e2e.txt) |
-| Types | `pnpm typecheck` | [Passed](native-seed-final-typecheck.txt) |
-| Worker build | `pnpm build` | [Dry run passed](native-seed-final-build.txt) |
-| Deployment | `pnpm deploy` | [Worker 4a36bd39-edf7-4689-9b67-84bc7646f4f4](mainline-graph-deploy.txt) |
+| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [78/78 passed](source-snapshot-final-suite.txt) |
+| Types | `pnpm typecheck` | [Passed](source-snapshot-typecheck.txt) |
+| Worker build | `pnpm build` | [Dry run passed](source-snapshot-build.txt) |
+| Deployment | `pnpm deploy` | [Worker 7c16dd9b-d8bc-4d36-a133-967938277a0f](source-snapshot-deploy.txt) |
 | Rendered UI and typography | `SQUALI_URL=http://127.0.0.1:8799 WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/final-copy-ui pnpm test:ui` | [Four passed](final-copy-ui.txt); [screens and glyph evidence](final-copy-ui/) |
 | Actual Linux FUSE | See the exact command in the retained JSON | [First content reads](fuse-green-attempt.json), [shared-cache run](fuse-green.json) |
 
@@ -57,3 +57,12 @@ The production Clerk/GitHub login and repository catalog have [retained browser 
 The affected browser UI has [four passing checks](native-seed-ui.txt), including Adobe timeout fallback, navigation reuse, actual Proxima Nova Latin and PingFang SC CJK glyphs. The latest cold font activation was 3.747 seconds and reviewer action readiness 3.873 seconds; earlier samples remain retained.
 
 The final verification clone strips inherited Git HTTP, packet and pack tracing. [Red evidence](verification-tracing-red.txt) demonstrates that `GIT_CURL_VERBOSE=0` remains present and packet tracing can leak through; [the focused E2E](verification-tracing-green.txt) verifies the real clone environment, native identity, write/rejection flow and zero-transfer replay after the fix. Command: `node --import tsx --test tests/verify-import.test.ts`. Typecheck: [report](verification-tracing-typecheck.txt).
+
+
+## R2 compatibility snapshot after the capacity limit
+
+[The retained provider failure](private-seed-storage-limit.json) records eleven accepted batches and the explicit storage-limit response. No further Artifacts transfer follows that response. [The bounded migration budget](snapshot-budget.md) reuses the existing pack, original source journal and monthly caps.
+
+[Snapshot E2E](source-snapshot-final-e2e.txt) covers native clone/fsck, complete object/ref equality, source writes and rejection through the independent verifier, incremental fetch, range reads, authorization, concurrency, corrupt chunks and lost acknowledgements. [The membership/replay failure](source-snapshot-membership-red.txt) is retained: server activation now rejects a different valid same-count pack, and an accepted manifest stays reusable after publication. [Native one-click fallback](native-snapshot-fallback-green.txt) tests a real receive-pack storage rejection followed by snapshot completion in the same job, one failed push and no second GitHub clone. Small clones retain their pack with `fetch.unpackLimit=1`; the failed zero-limit assumption is retained in [its report](native-snapshot-zero-limit-failure.txt).
+
+The [additive schema/native installation](source-snapshot-install.json) preserves the source journal and 4/4 historical attempts. The initial clone also removes inherited HTTP/packet tracing; [red](native-clone-tracing-red.txt) and [green](native-clone-tracing-green.txt) evidence use only fixture credentials.

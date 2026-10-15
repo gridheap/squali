@@ -4,7 +4,7 @@ import {randomUUID} from 'node:crypto';
 import type {SourceBucket} from '../src/source-store.ts';
 /** Persistent local adapter for the public R2 binding boundary. */
 export function fileBucket(root:string):SourceBucket{
- const path=(key:string)=>{if(!/^blobs\/v1\/[a-f0-9]{64}$/.test(key))throw Error('Invalid source key');return join(root,key);};
+ const path=(key:string)=>{if(!/^(?:blobs|git-snapshots)\/v1\/[a-f0-9]{64}$/.test(key))throw Error('Invalid source key');return join(root,key);};
  return {
   async get(key){try{const data=await readFile(path(key));return {arrayBuffer:async()=>Uint8Array.from(data).buffer};}catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')return null;throw error;}},
   async head(key){try{return {size:(await stat(path(key))).size,customMetadata:JSON.parse(await readFile(path(key)+'.json','utf8'))};}catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')return null;throw error;}},

@@ -1,0 +1,34 @@
+{"command":"node --import tsx --test tests/source-snapshot.test.ts","nativeFsck":true,"fullObjectAndRefEquality":true,"lostAckExtraPuts":0,"completedReplayExtraCalls":0,"incrementalFetchExtraPackReads":0,"sourceObjectsExcludeSnapshot":true,"artifactCalls":0,"parts":6}
+✔ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (1245.644625ms)
+✖ native snapshot uploader retains the original import budget and makes completed replay free (763.2165ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2206.003084
+
+✖ failing tests:
+
+test at tests/source-snapshot.test.ts:1:8663
+✖ native snapshot uploader retains the original import budget and makes completed replay free (763.2165ms)
+  Error: Command failed: python3 scripts/import-snapshot.py uploader /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0Ffjb8/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0Ffjb8/import-state
+  Snapshot stopped: HTTP 409 snapshot_refs
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at Socket.<anonymous> (node:internal/child_process:498:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/import-snapshot.py uploader /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0Ffjb8/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-0Ffjb8/import-state',
+    stdout: '',
+    stderr: 'Snapshot stopped: HTTP 409 snapshot_refs\n'
+  }

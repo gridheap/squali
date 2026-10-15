@@ -147,3 +147,15 @@ CREATE TABLE IF NOT EXISTS weave_git_objects (
 ALTER TABLE weave_projects ADD COLUMN IF NOT EXISTS git_bridge_limited boolean NOT NULL DEFAULT false;
 ALTER TABLE weave_git_exports ADD COLUMN IF NOT EXISTS lease text;
 ALTER TABLE weave_git_exports ADD COLUMN IF NOT EXISTS lease_until timestamptz;
+
+CREATE TABLE IF NOT EXISTS weave_git_snapshots (
+ project text PRIMARY KEY REFERENCES weave_projects(id), identity text NOT NULL,
+ manifest jsonb NOT NULL, state text NOT NULL DEFAULT 'preparing' CHECK(state IN ('preparing','ready')),
+ checks integer NOT NULL DEFAULT 0 CHECK(checks BETWEEN 0 AND 2), lease_until timestamptz
+);
+CREATE TABLE IF NOT EXISTS weave_git_snapshot_parts (
+ hash text PRIMARY KEY, size bigint NOT NULL CHECK(size>0 AND size<=8388608),
+ state text NOT NULL DEFAULT 'uploading' CHECK(state IN ('uploading','ready')),
+ attempts integer NOT NULL DEFAULT 1 CHECK(attempts BETWEEN 1 AND 2),
+ lease_until timestamptz NOT NULL DEFAULT now()+interval '5 minutes'
+);

@@ -1,0 +1,32 @@
+✖ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (1124.432375ms)
+{"command":"node --import tsx --test tests/source-snapshot.test.ts","nativeUploader":true,"originalSourceBytesUnchanged":true,"httpAttemptsRetained":true,"completedReplayExtraCalls":0}
+✔ native snapshot uploader retains the original import budget and makes completed replay free (815.708792ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2183.615542
+
+✖ failing tests:
+
+test at tests/source-snapshot.test.ts:1:554
+✖ bounded R2 snapshot resumes lost acknowledgements and supports native clone and incremental fetch (1124.432375ms)
+  AssertionError [ERR_ASSERTION]: {"error":"snapshot_refs","message":"Snapshot must describe the frozen published refs"}
+  
+  409 !== 200
+  
+      at call (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-snapshot.test.ts:11:246)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-snapshot.test.ts:38:302)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

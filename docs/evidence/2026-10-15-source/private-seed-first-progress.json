@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-15T01:55:53Z",
+  "checkpointAgeSeconds": 14.7,
+  "progress": {
+    "stage": "refs",
+    "objectsProcessed": 421219,
+    "commitsProcessed": 85563,
+    "httpAttempts": 9340,
+    "uploadedBytes": 3667925603,
+    "complete": false,
+    "sourceObjects": 421219,
+    "sourceBytes": 8332097572,
+    "bridgePushAttempts": 7,
+    "bridgeSeedBatchesDone": 4
+  },
+  "nativeJobs": [
+    [
+      "running",
+      20518,
+      {
+        "stage": "refs",
+        "complete": false,
+        "sourceBytes": 8332097572,
+        "httpAttempts": 9340,
+        "sourceObjects": 421219,
+        "uploadedBytes": 3667925603,
+        "commitsProcessed": 85563,
+        "objectsProcessed": 421219
+      },
+      4,
+      null
+    ]
+  ],
+  "queueStates": [
+    [
+      "running",
+      1
+    ]
+  ],
+  "blobStates": [
+    [
+      "ready",
+      166297,
+      2,
+      "2026-10-14 23:48:29.356143+00"
+    ]
+  ],
+  "sourceReservations": [
+    [
+      "reads",
+      77
+    ],
+    [
+      "writes",
+      166461
+    ]
+  ],
+  "artifactsReservations": [
+    [
+      268
+    ]
+  ],
+  "nativeService": "MemoryCurrent=44494848\nTasksCurrent=7\nActiveState=active"
+}
