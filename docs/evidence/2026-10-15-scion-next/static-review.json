@@ -1,0 +1,7 @@
+{
+  "command": "local changed-file secret/link scan and Python AST parse",
+  "files": 35,
+  "secretPatternFiles": [],
+  "missingRelativeLinks": [],
+  "pythonSyntax": true
+}

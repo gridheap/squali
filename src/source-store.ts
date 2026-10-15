@@ -168,20 +168,35 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
    return {tree:rootTree,gitOid:c.gitOid};
   }},canonical)};
  }
- async function history(project:string,start:string,path:string,limit=20,cursor?:string){
+ function pathReader(project:string){
+  const graph=commitGraph(sql,project,{commit:id=>commit(project,id)});
+  // One reader belongs to one HTTP query. Reuse immutable path candidates and
+  // graph jumps while walking blame parents, without keeping cross-user state.
+  const pages=new Map<string,{depth:number;rows:any[]}>();
+  const knownCommits=new Map<string,Commit>(),completeHeads:string[]=[],latestPaths=new Map<string,string>();
+  async function history(start:string,path:string,limit=20,cursor?:string){
   immutable(start);if(!Number.isInteger(limit)||limit<1||limit>50)throw new Problem(400,'limit','History limit is 1–50');
-  const graph=commitGraph(sql,project,{commit:id=>commit(project,id)}),root=await graph.get(start);if(!root||root.generation===null)throw new Problem(409,'index_required','Complete the source commit index first');
-  await completePathBatch(sql,project,[start]);
+  const root=await graph.get(start);if(!root||root.generation===null)throw new Problem(409,'index_required','Complete the source commit index first');
+  let covered=false;
+  for(const head of completeHeads)if(await graph.firstAncestry(start,head)){covered=true;break;}
+  if(!covered){await completePathBatch(sql,project,[start]);if(completeHeads.length<16)completeHeads.push(start);}
   let offset=0;
   if(cursor){const [saved]=await sql`SELECT value FROM weave_derived WHERE project=${project} AND kind='source-path-cursor:v1' AND key=${cursor}`;if(!saved||saved.value.start!==start||saved.value.path!==path||!Number.isSafeInteger(saved.value.offset))throw new Problem(400,'history_cursor','Cursor does not match this immutable path query');offset=saved.value.offset;}
-  const rows=await sql`SELECT g.* FROM weave_source_paths p JOIN weave_commit_graph g ON g.project=p.project AND g.version=p.version AND g.oid=p.git_oid WHERE p.project=${project} AND p.version=1 AND p.path=${path} AND g.generation IS NOT NULL AND g.first_depth<=${root.depth} ORDER BY g.first_depth DESC,g.oid DESC LIMIT 256 OFFSET ${offset}`;
+  const page=pages.get(path),reusable=offset===0&&page&&page.depth>=root.depth&&page.rows.length<256;
+  const rows=reusable?page.rows.filter(r=>Number(r.first_depth)<=root.depth):await sql`SELECT g.* FROM weave_source_paths p JOIN weave_commit_graph g ON g.project=p.project AND g.version=p.version AND g.oid=p.git_oid WHERE p.project=${project} AND p.version=1 AND p.path=${path} AND g.generation IS NOT NULL AND g.first_depth<=${root.depth} ORDER BY g.first_depth DESC,g.oid DESC LIMIT 256 OFFSET ${offset}`;
+  if(!reusable&&offset===0&&pages.size<16)pages.set(path,{depth:root.depth,rows});
+  for(const r of rows)if(knownCommits.size<4096)knownCommits.set(r.oid,{oid:r.oid,tree:r.tree,parents:r.parents,message:r.message});
+  const ancestors=await graph.firstAncestors(start,rows.map(r=>Number(r.first_depth)));
   const commits:Commit[]=[];let scanned=0;
-  for(const r of rows){scanned++;if(await graph.firstAncestry(r.oid,start)){commits.push({oid:r.oid,tree:r.tree,parents:r.parents,message:r.message});if(commits.length===limit)return {commits,next:r.parents[0]??null,cursor:null,scanned,order:'first-parent'};}}
+  for(const r of rows){scanned++;if(ancestors.get(Number(r.first_depth))===r.oid){commits.push({oid:r.oid,tree:r.tree,parents:r.parents,message:r.message});if(commits.length===limit)return {commits,next:r.parents[0]??null,cursor:null,scanned,order:'first-parent'};}}
   let nextCursor:string|null=null;
   if(rows.length===256){const value={start,path,offset:offset+scanned};nextCursor=hash('sha256',JSON.stringify(value));await sql`INSERT INTO weave_derived(project,kind,key,value) VALUES(${project},'source-path-cursor:v1',${nextCursor},${sql.json(value)}) ON CONFLICT DO NOTHING`;}
   return {commits,next:nextCursor?start:null,cursor:nextCursor,scanned,order:'first-parent'};
  }
- async function latestPath(project:string,start:string,path:string){const result=await history(project,start,path,1);if(!result.commits.length&&result.cursor)throw new Problem(422,'path_query_budget','Path candidates require another bounded history page');return result.commits[0]?.oid??start;}
+  async function latest(start:string,path:string){const key=start+':'+path;if(latestPaths.has(key))return latestPaths.get(key)!;const result=await history(start,path,1);if(!result.commits.length&&result.cursor)throw new Problem(422,'path_query_budget','Path candidates require another bounded history page');const value=result.commits[0]?.oid??start;if(latestPaths.size<4096)latestPaths.set(key,value);return value;}
+  return {history,latest,commit:(id:string)=>knownCommits.has(id)?Promise.resolve(knownCommits.get(id)!):commit(project,id)};
+ }
+ const history=(project:string,start:string,path:string,limit=20,cursor?:string)=>pathReader(project).history(start,path,limit,cursor);
  async function renameCandidates(project:string,id:string,parent:string,path:string){
   const current=await commit(project,id);if(!current?.parents.includes(parent))return [];
   if(current.parents[0]!==parent){
@@ -228,5 +243,5 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   }
   return {repo,async create(name,branch){if(!await project(name))await fallback.create(name,branch);}};
  }
- return {caps,snapshots,exportPrepare:(p:any,refs:unknown)=>exportBridge.prepareSeed(p,refs),exportConfirm:(p:any,refs:unknown)=>exportBridge.confirmSeed(p,refs),exportIndex:(p:any,manifest:unknown,ids:unknown)=>exportBridge.seedObjects(p,manifest,ids),artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,latestPath,renameCandidates};
+ return {caps,snapshots,exportPrepare:(p:any,refs:unknown)=>exportBridge.prepareSeed(p,refs),exportConfirm:(p:any,refs:unknown)=>exportBridge.confirmSeed(p,refs),exportIndex:(p:any,manifest:unknown,ids:unknown)=>exportBridge.seedObjects(p,manifest,ids),artifacts,objects,seal,changeset,status,raw,tree,commit,missing,upload,uploadBlob,sealBatch,finish,derive,rpc,history,pathReader,renameCandidates};
 }

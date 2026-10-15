@@ -8,7 +8,7 @@ Squali implements the public Scion design as an online source service. Agents cr
 
 Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyperdrive**. R2 holds independently compressed content-addressed blobs. PostgreSQL holds canonical changesets and workflow state. Artifacts provides a derived Git compatibility copy. No D1 or application Durable Objects are used.
 
-**Core acceptance passed; entry not submitted.** The fixed [20-item Scion checklist](docs/scion-acceptance.md), [source design](docs/source-architecture.md) and [retained evidence](docs/evidence/2026-10-15-source/) record all 20 fixed capability criteria, an independently verified 421,219-object private import and explicit operating limits. Do not infer Anthropic's reported scale or speedups from this implementation. The current release package replaces the earlier architecture video.
+**Development continues; competition submission is paused.** The [current Scion implementation report](docs/scion-next.md) records measured progress and remaining gaps. The v0.2.0 [20-item checklist](docs/scion-acceptance.md) is a historical feature inventory; it does not establish 95% equivalence to Scion. The independently verified 421,219-object private import remains valid. Anthropic's production scale and cost reductions have not been reproduced.
 
 ## Run locally
 
@@ -53,7 +53,8 @@ Evidence is supplied by the agent. Squali does not execute or certify it. Review
 
 - [HTTP API](docs/api.md): proposals, review, publication, diff, history, blame, ancestry, bisect, revert and single/continuous rebase.
 - [Working copies](docs/working-copy.md): sparse materialization, native change monitoring, edits, update and crash recovery.
-- [Node daemon and Linux FUSE](docs/node-cache.md): shared object reads, checked snapshots and lazy read-only mounts.
+- [Node daemon and Linux FUSE](docs/node-cache.md): shared object reads, checked snapshots and lazy source mounts.
+- [Writable virtual workspaces](docs/virtual-workspaces.md): Linux FUSE + bounded OverlayFS, ordinary edits, restart recovery and explicit proposals.
 - [Source administration](docs/source-operations.md): native ingestion, derivation, automatic bisect and a bounded cloud acceptance command.
 - [Clerk and GitHub import](docs/github-import.md): owner isolation, repository consent, durable jobs and pause/resume.
 

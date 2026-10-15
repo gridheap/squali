@@ -96,7 +96,8 @@ export function createApp(config:Config){
     if(action==='source'&&request.method==='GET'){unrestricted();requireRole(['admin']);if(!config.source||p.storage!=='source')throw new Problem(409,'source_storage','Workspace does not use source storage');return json(await config.source.status(pid));}
     if(action==='changesets'&&request.method==='GET'){unrestricted();if(!config.source||p.storage!=='source')throw new Problem(409,'source_storage','Workspace does not use source storage');return json(await config.source.changeset(pid,parts[4]??''));}
     const changes=changeService(config,p,principal);
-    const metadata=metadataService(sql,pid,repo,p.storage==='source'&&config.source?(oid,path)=>config.source!.latestPath(pid,oid,path):undefined,p.storage==='source'&&config.source?(oid,parent,path)=>config.source!.renameCandidates(pid,oid,parent,path):undefined);
+    const sourcePaths=p.storage==='source'&&config.source?config.source.pathReader(pid):undefined;
+    const metadata=metadataService(sql,pid,repo,sourcePaths?{latestPath:sourcePaths.latest,commit:sourcePaths.commit,renameCandidates:(oid,parent,path)=>config.source!.renameCandidates(pid,oid,parent,path)}:undefined);
     if(action==='index'&&request.method==='POST'){unrestricted();requireRole(['admin']);const input=await body(request);if(parts[4]==='commits')return json(await metadata.indexCommits(input.ref,input.commits));if(parts.length===4)return json(await metadata.index(input.ref,input.limit??64));}
     if(action==='index'&&request.method==='GET'){unrestricted();requireRole(['admin']);return json(await metadata.indexStatus(url.searchParams.get('ref')??''));}
     if(['ancestry','merge-base','diff','bisect'].includes(action)&&request.method==='POST'){

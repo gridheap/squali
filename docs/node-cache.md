@@ -26,3 +26,7 @@ python3 scripts/squali-fuse.py --socket /tmp/squali-node.sock \
 Ordinary `ls` and `stat` read tree/size metadata; `cat` and compilers opening a file hydrate its verified body. The mount pins one immutable commit. It admits 100,000 inodes by default, 128 open handles and 64 MiB resident file bodies. Submodule links appear as empty directories; fetching another repository is explicit. Unmount with `fusermount3 -u /path/to/empty-mount`. Use the [sparse working-copy client](working-copy.md) to edit and propose changes.
 
 The framed Unix protocol uses a four-byte big-endian JSON request length, then a request such as `{ "project":"PROJECT", "op":"object", "oid":"..." }`. Responses contain a length-prefixed metadata object followed by the declared body length. `stats` exposes local counters. `snapshot` with a safe `name` creates a checked SQLite snapshot and JSON manifest under the cache directory. Restore into a new empty cache with `--restore /path/to/snapshot.sqlite`; both its namespace and content checksums must match. Do not copy snapshots across credentials.
+
+## Writable virtual workspaces
+
+The immutable FUSE source mount can now be combined with a bounded durable OverlayFS upper layer. See [virtual workspaces](virtual-workspaces.md) for real filesystem edits, explicit proposals, recovery, Linux requirements and acceptance evidence.

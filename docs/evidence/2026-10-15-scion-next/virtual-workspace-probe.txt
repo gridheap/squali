@@ -1,0 +1,1 @@
+{"command":"node --import tsx tests/virtual-workspace.e2e.ts","linux":{"passed":true,"ordinaryWrites":true,"atomicRename":true,"delete":true,"restartPreservesEdits":true,"receiptReplayOffline":true,"maxOverlayBytes":67108864},"proposal":"93a9f5820ba72decbd9dee31ea339c3ee743ca8d","mainUnchanged":true,"sourceContentExact":true,"externalProviderCalls":0,"passed":true}

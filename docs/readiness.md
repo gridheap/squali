@@ -1,5 +1,7 @@
 # Acceptance and entry readiness
 
+> **Superseded status, October 15:** competition submission is paused at the user's request. No entry has been submitted. The release checklist below describes v0.2.0 within its original bounds; it does not establish 95% Scion equivalence or overall goal completion. See [continued implementation and open gaps](scion-next.md).
+
 **Implementation acceptance passed; the project package is ready for the eligible team member. No competition entry has been submitted.** The Apache-2.0 comparator replacement passes the final local suite and the live private-file regression. The eligible team member must personally submit under the official rules.
 
 ## What passed

@@ -1,5 +1,7 @@
 # Entry form text
 
+> **Superseded status, October 15:** competition submission is paused at the user's request. No entry has been submitted. The release checklist below describes v0.2.0 within its original bounds; it does not establish 95% Scion equivalence or overall goal completion. See [continued implementation and open gaps](scion-next.md).
+
 **Accepted package; ready for the eligible team member to review and personally submit. No entry has been submitted.** [Acceptance and limits](readiness.md).
 
 [Official form](https://www.cloudflare.com/git-competition/submit/)

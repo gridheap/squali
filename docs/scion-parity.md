@@ -1,5 +1,7 @@
 # Squali and the public Scion design
 
+> **Superseded status, October 15:** competition submission is paused at the user's request. No entry has been submitted. The release checklist below describes v0.2.0 within its original bounds; it does not establish 95% Scion equivalence or overall goal completion. See [continued implementation and open gaps](scion-next.md).
+
 Source: [Anthropic, Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control), October 13, 2026. Checkpoint: October 15.
 
 Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the [fixed 20-item checklist](scion-acceptance.md), with mandatory architecture gates and additional private-import, performance and cost gates. All 20 fixed capability criteria pass within the stated limits. Final competition submission remains a human action. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.

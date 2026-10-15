@@ -76,3 +76,7 @@ Native clone preparation takes 360.55 ms; Squali review takes 51.87 ms. Both are
 ## Final comparator observation
 
 After replacing the experimental LGPL comparator, one live private README v4 blame request returned HTTP 200 in **20.995 seconds**, excluding a preceding Clerk token refresh. All 75 commit origins and seven native original-line regression points match. This is one request over the current client network; the earlier 17.378-second native-verification sample used a different implementation and is retained separately. It is not a controlled performance comparison. [Network timestamps](evidence/2026-10-15-source/imara-production-network.json) · [comparison](evidence/2026-10-15-source/imara-production-verification.json).
+
+## Post-release local query reduction
+
+The Scion continuation reduces cold blame on a 128-commit, 16-file-revision fixture from 306 to 79 SQL statements (74.2%). Full native line origins remain equal. This is a local statement-count comparison; it does not replace the retained production latency observations above. [Design and evidence](scion-next.md).

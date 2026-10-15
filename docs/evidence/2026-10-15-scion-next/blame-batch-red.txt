@@ -1,0 +1,27 @@
+{"command":"node --import tsx --test tests/blame-scaling.test.ts","commits":128,"fileChanges":16,"coldSql":150,"elapsedMs":40,"families":{"weave_commit_graph":65,"weave_derived":34,"weave_source_paths":1,"weave_changesets":0,"weave_source_objects":32},"status":200}
+✖ cold blame batches metadata for a changing file across unrelated history (754.198375ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 904.61025
+
+✖ failing tests:
+
+test at tests/blame-scaling.test.ts:1:306
+✖ cold blame batches metadata for a changing file across unrelated history (754.198375ms)
+  AssertionError [ERR_ASSERTION]: Sixteen file revisions in 128 commits must stay within 100 SQL statements; observed 150
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-scaling.test.ts:33:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

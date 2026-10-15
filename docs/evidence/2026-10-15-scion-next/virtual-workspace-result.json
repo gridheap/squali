@@ -1,0 +1,26 @@
+{
+  "command": "node --import tsx tests/virtual-workspace.e2e.ts",
+  "linux": {
+    "passed": true,
+    "ordinaryWrites": true,
+    "atomicRename": true,
+    "delete": true,
+    "restartPreservesEdits": true,
+    "receiptReplayOffline": true,
+    "lostAcknowledgementRecovered": true,
+    "retryPayloadFrozen": true,
+    "maxOverlayBytes": 67108864,
+    "diskFullRejected": true,
+    "exclusiveMount": true,
+    "baseMismatchRejected": true,
+    "backgroundChildrenStopped": true,
+    "forcedProcessDeathRecovered": true,
+    "daemonFailureIsolated": true,
+    "bodyReads": 1
+  },
+  "proposal": "73bf5d2febf82fb8e5fc17ef1db2ab3231f0fd18",
+  "mainUnchanged": true,
+  "sourceContentExact": true,
+  "externalProviderCalls": 0,
+  "passed": true
+}

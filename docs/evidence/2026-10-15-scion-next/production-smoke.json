@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-10-15T08:32:46.348504+00:00",
+  "workerVersion": "ba605dad-e0af-419d-afda-be13e901303f",
+  "deploymentConfirmed": true,
+  "attempts": [
+    {
+      "command": "curl --fail --silent --show-error --max-time 20 --retry 0 https://squa.li/api/health",
+      "httpStatus": 401,
+      "interpretation": "Unauthenticated request rejected; this is not a configured health endpoint."
+    },
+    {
+      "command": "Python urllib GET https://squa.li/api/auth/config, timeout 20, no retry",
+      "httpStatus": 403,
+      "interpretation": "CLI request forbidden. Public configuration and authenticated cold blame are not accepted by this smoke test."
+    }
+  ],
+  "newColdBlameMeasured": false,
+  "automaticRetry": false
+}

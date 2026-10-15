@@ -36,3 +36,7 @@ node scripts/index-repository.mjs my-project /path/to/existing/repo <immutable-c
 ```
 
 Use an unrestricted administrator credential. The CLI exports raw Git commit metadata in bounded batches; the server verifies object hashes and links to provider-confirmed repository history. It does not upload blobs, transfer the repository, or complete a failed Git import. An already completed index is reused. Defaults: 10,000 source commits and one index step; hard ceilings: 100,000 commits, 1,000 steps, 128 MiB of metadata and 15 minutes. An incomplete run exits with code 2 and retains server progress. Continue derivation through `POST /api/projects/:id/index`; re-exporting metadata is unnecessary after a successful upload. No automatic retries run.
+
+## Writable virtual workspaces
+
+The immutable FUSE source mount can now be combined with a bounded durable OverlayFS upper layer. See [virtual workspaces](virtual-workspaces.md) for real filesystem edits, explicit proposals, recovery, Linux requirements and acceptance evidence.

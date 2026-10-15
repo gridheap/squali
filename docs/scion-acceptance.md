@@ -1,5 +1,7 @@
 # Fixed Scion acceptance checklist
 
+> **Superseded status, October 15:** competition submission is paused at the user's request. No entry has been submitted. The release checklist below describes v0.2.0 within its original bounds; it does not establish 95% Scion equivalence or overall goal completion. See [continued implementation and open gaps](scion-next.md).
+
 This checklist measures implementation coverage of [Anthropic's public Scion design](https://www.anthropic.com/engineering/redesigning-source-control). Anthropic has not released a complete implementation or conformance suite. The percentage is this project's engineering criterion, not an Anthropic certification or a predicted competition score.
 
 The denominator is fixed at 20. At least 19 must pass, and items **3, 4, 5, 6, 13 and 15** are mandatory. Partial implementations receive no fractional credit. Complete private-import validation, cost reconciliation and the final video are additional release gates.

@@ -7,9 +7,14 @@ import {Problem,ZERO} from './types.ts';
 import type {Commit,Repository,Sql,TreeEntry,Patch} from './types.ts';
 
 /** Versioned derived answers. No client depends on the representation in this table. */
-export function metadataService(sql:Sql,project:string,repo:Repository,pathLatest?:(oid:string,path:string)=>Promise<string>,renameCandidates?:(oid:string,parent:string,path:string)=>Promise<string[]>){
+export function metadataService(sql:Sql,project:string,repo:Repository,source?:{
+ latestPath(oid:string,path:string):Promise<string>;
+ renameCandidates(oid:string,parent:string,path:string):Promise<string[]>;
+ commit(oid:string):Promise<Commit|null>;
+}){
+ const pathLatest=source?.latestPath,renameCandidates=source?.renameCandidates;
  const graph=commitGraph(sql,project,repo);
- const g=new GitSession(repo);const commits=new Map<string,Commit>();let trees=0,lineWork=0;
+ const g=new GitSession(source?{...repo,commit:source.commit}:repo);const commits=new Map<string,Commit>();let trees=0,lineWork=0;
  const ref=(oid:unknown)=>{if(typeof oid!=='string'||!/^[a-f0-9]{40}$/.test(oid))throw new Problem(400,'invalid_ref','Use an immutable commit ID');return oid;};
  async function cached<T,I>(kind:string,keys:string[],definition:Pick<DerivedBatch<T,I>,'load'|'compute'>){
   // Preserve unrelated cache identities. Version 4 isolates the Apache comparator
@@ -23,7 +28,7 @@ export function metadataService(sql:Sql,project:string,repo:Repository,pathLates
  async function derive(kind:string,key:string,compute:()=>Promise<any>):Promise<any>{
   return (await cached<any,null>(kind,[key],{async load(keys){return new Map(keys.map(key=>[key,{key,parents:[],input:null}]));},async compute(){return new Map([[key,await compute()]]);}})).values[0];
  }
- async function commit(oid:string){ref(oid);if(commits.has(oid))return commits.get(oid)!;if(commits.size>=256)throw new Problem(422,'query_budget','This query exceeds 256 commits; narrow the range or page through history');const value:Commit=await derive('commit',oid,async()=>{const c=await g.commit(oid);if(!c)throw new Problem(404,'commit_missing','Commit not found');return c;});commits.set(oid,value);return value;}
+ async function commit(oid:string){ref(oid);if(commits.has(oid))return commits.get(oid)!;if(commits.size>=256)throw new Problem(422,'query_budget','This query exceeds 256 commits; narrow the range or page through history');const load=async()=>{const c=await g.commit(oid);if(!c)throw new Problem(404,'commit_missing','Commit not found');return c;};const value:Commit=source?await load():await derive('commit',oid,load);commits.set(oid,value);return value;}
  async function tree(oid:string|null){if(!oid)return [];if(++trees>256)throw new Problem(422,'query_budget','This diff exceeds 256 changed trees; select a narrower path');return g.tree(oid);}
  async function diff(from:string,to:string,path?:string){ref(from);ref(to);if(path)validPath(path);return derive('diff',from+':'+to+':'+sha256(path??''),async()=>{
   const files:any[]=[];let bytes=0;
@@ -68,13 +73,13 @@ export function metadataService(sql:Sql,project:string,repo:Repository,pathLates
     const stable=pathLatest?await pathLatest(query.oid,query.path):await graph.unchanged(query.oid);
     if(stable!==query.oid){inputs.set(key,{key,parents:[keyFor(stable,query.path)],input:{...query,alias:true}});continue;}
     const c=await commit(query.oid),content=await g.file(query.oid,query.path);if(content===null)throw new Problem(404,'file_missing','File not found');const text=gitLines(content);if(text.length>2000)throw new Problem(413,'blame_limit','Blame accepts at most 2,000 lines');
-    const current=await g.entry(query.oid,query.path),origins=new Map<string,{path:string;oid:string}>();let identical:string|undefined;
+    const current=await g.entry(query.oid,query.path),origins=new Map<string,{path:string;oid:string;ref:string}>();let identical:string|undefined;
     // Git checks all same-path parents before looking for renames. Any identical
     // parent blob receives the entire file, before line-level attribution.
-    for(const parent of c.parents){const entry=await g.entry(parent,query.path);if(entry?.type==='blob'){origins.set(parent,{path:query.path,oid:entry.oid});if(entry.oid===current?.oid){identical=keyFor(parent,query.path);break;}}}
-    if(!identical)for(const parent of c.parents){if(origins.has(parent))continue;const previousPath=await renamed(query.oid,parent,query.path,text);if(previousPath){const entry=await g.entry(parent,previousPath);if(entry){origins.set(parent,{path:previousPath,oid:entry.oid});if(entry.oid===current?.oid){identical=keyFor(parent,previousPath);break;}}}}
+    for(const parent of c.parents){const fileRef=pathLatest?await pathLatest(parent,query.path):parent;const entry=await g.entry(fileRef,query.path);if(entry?.type==='blob'){origins.set(parent,{path:query.path,oid:entry.oid,ref:fileRef});if(entry.oid===current?.oid){identical=keyFor(fileRef,query.path);break;}}}
+    if(!identical)for(const parent of c.parents){if(origins.has(parent))continue;const previousPath=await renamed(query.oid,parent,query.path,text);if(previousPath){const entry=await g.entry(parent,previousPath);if(entry){origins.set(parent,{path:previousPath,oid:entry.oid,ref:parent});if(entry.oid===current?.oid){identical=keyFor(parent,previousPath);break;}}}}
     if(identical){inputs.set(key,{key,parents:[identical],input:{...query,alias:true}});continue;}
-    const seen=new Set<string>(),parents:string[]=[];for(const parent of c.parents){const origin=origins.get(parent);if(origin&&!seen.has(origin.oid)){seen.add(origin.oid);parents.push(keyFor(parent,origin.path));}}
+    const seen=new Set<string>(),parents:string[]=[];for(const parent of c.parents){const origin=origins.get(parent);if(origin&&!seen.has(origin.oid)){seen.add(origin.oid);parents.push(keyFor(origin.ref,origin.path));}}
     inputs.set(key,{key,parents,input:{...query,text}});
    }return inputs;},
    async compute(inputs,resolved){const values=new Map<string,Result>();for(const node of inputs){

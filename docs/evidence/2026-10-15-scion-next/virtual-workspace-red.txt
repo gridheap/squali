@@ -1,0 +1,34 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:56231 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref eb345c3aea21fd8588b58f487837a7a5935f0dad
+Traceback (most recent call last):
+  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py", line 21, in <module>
+    first=run(*base,'--','python3','-c',edits);assert first.returncode==0,first.stderr
+                                                      ^^^^^^^^^^^^^^^^^^^
+AssertionError: python3: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/virtual-workspace.py': [Errno 2] No such file or directory
+
+time="2026-10-15T15:42:12+08:00" level=fatal msg="exit status 1"
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: 'colima ssh -- sudo env SQUALI_URL=http://host.lima.internal:56231 SQUALI_TOKEN=local-admin-test-token python3 /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py --repo /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave --ref eb345c3aea21fd8588b58f487837a7a5935f0dad',
+  stdout: '',
+  stderr: 'Traceback (most recent call last):\n' +
+    '  File "/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/virtual-workspace-linux.py", line 21, in <module>\n' +
+    "    first=run(*base,'--','python3','-c',edits);assert first.returncode==0,first.stderr\n" +
+    '                                                      ^^^^^^^^^^^^^^^^^^^\n' +
+    "AssertionError: python3: can't open file '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/virtual-workspace.py': [Errno 2] No such file or directory\n" +
+    '\n' +
+    'time="2026-10-15T15:42:12+08:00" level=fatal msg="exit status 1"\n'
+}
+
+Node.js v24.21.0

@@ -1,0 +1,24 @@
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"newline","lines":1,"nativeOriginsEqual":true}
+✔ native blame origins: newline (766.793417ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"identical-parent","lines":2,"nativeOriginsEqual":true}
+✔ native blame origins: identical-parent (765.952333ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"rename-parent","lines":4,"nativeOriginsEqual":true}
+✔ native blame origins: rename-parent (775.150667ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"blank-lines","lines":24,"nativeOriginsEqual":true}
+✔ native blame origins: blank-lines (1376.879834ms)
+{"command":"node --import tsx --test tests/blame-scaling.test.ts","commits":128,"fileChanges":16,"coldSql":79,"elapsedMs":24,"families":{"weave_commit_graph":9,"weave_derived":19,"weave_source_paths":1,"weave_changesets":0,"weave_source_objects":32},"status":200}
+✔ cold blame batches metadata for a changing file across unrelated history (761.281959ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (849.819292ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (435.922459ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","recursiveBlame":true,"editedRenameMatchesGit":true,"parentCacheReused":true,"currentCacheVersionReused":true}
+✔ blame dependency rebuilding preserves native line origins and existing versioned cache entries (627.17975ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3854.401166

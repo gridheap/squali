@@ -18,6 +18,25 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
   const node=decode(row);nodes.set(oid,node);return node;
  }
  async function complete(oid:string){const node=await get(oid);if(!node||node.generation===null)throw new Problem(409,'index_required','Complete the bounded commit index before querying this history',{ref:oid});return node;}
+ async function getMany(ids:string[]){
+  const missing=[...new Set(ids)].filter(id=>!nodes.has(id));missing.forEach(valid);
+  if(nodes.size+missing.length>QUERY_NODES)throw new Problem(422,'query_budget','Graph query exceeds its node budget');
+  for(let at=0;at<missing.length;at+=256)for(const row of await sql`SELECT * FROM weave_commit_graph WHERE project=${project} AND version=${VERSION} AND oid=ANY(${missing.slice(at,at+256)})`)nodes.set(row.oid,decode(row));
+ }
+ // Resolve many first-parent depths with one SQL batch per jump round. Path
+ // candidates can share the proof without 256 independent graph traversals.
+ async function firstAncestors(start:string,depths:number[]){
+  const root=await complete(start),wanted=[...new Set(depths)];
+  if(wanted.length>256||wanted.some(d=>!Number.isSafeInteger(d)||d<0||d>root.depth))throw new Problem(422,'query_budget','Request at most 256 valid ancestor depths');
+  const current=new Map(wanted.map(depth=>[depth,root]));
+  while(true){
+   const next=new Map<number,string>();
+   for(const [depth,node]of current)if(node.depth>depth){const id=node.jumps[Math.floor(Math.log2(node.depth-depth))];if(!id)throw new Problem(503,'index_invalid','Commit index needs rebuilding');next.set(depth,id);}
+   if(!next.size)break;await getMany([...next.values()]);
+   for(const [depth,id]of next){const node=await complete(id);if(node.depth>=current.get(depth)!.depth||node.depth<depth)throw new Problem(503,'index_invalid','Invalid first-parent jump');current.set(depth,node);}
+  }
+  return new Map([...current].map(([depth,node])=>[depth,node.oid]));
+ }
 
  async function ingest(root:string,records:unknown){
   valid(root);if(!Array.isArray(records)||!records.length||records.length>256)throw new Problem(400,'index_batch','Supply 1–256 raw Git commits');
@@ -124,7 +143,7 @@ export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'
   valid(root);const node=await get(root);const [job]=await sql`SELECT cardinality(stack) AS pending,lease IS NOT NULL AND lease_until>now() AS active FROM weave_graph_builds WHERE project=${project} AND version=${VERSION} AND root=${root}`;
   return {ref:root,complete:!!node&&node.generation!==null,generation:node?.generation??null,pending:Number(job?.pending??0),active:job?.active??false};
  }
- return {build,ancestry,mergeBase,bisect,get,unchanged,status,ingest,firstAncestry};
+ return {build,ancestry,mergeBase,bisect,get,unchanged,status,ingest,firstAncestry,firstAncestors};
 }
 
 /** Complete imported, already hash-verified metadata in parent-order batches.
