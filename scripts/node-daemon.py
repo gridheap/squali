@@ -37,7 +37,7 @@ if a.restore:
 db=sqlite3.connect(path,check_same_thread=False);os.chmod(path,0o600);db.execute('PRAGMA journal_mode=WAL');db.execute('PRAGMA journal_size_limit=1048576');db.execute('CREATE TABLE IF NOT EXISTS entries(key TEXT PRIMARY KEY,namespace TEXT,query TEXT,headers TEXT,body BLOB,digest TEXT,used REAL)');db.execute('CREATE INDEX IF NOT EXISTS cache_used ON entries(used)');db.commit()
 cached_bytes=db.execute('SELECT COALESCE(sum(length(body)),0) FROM entries').fetchone()[0]
 def upstream(project,query=None):
- url=base+'/api/projects/'+project+('/rpc' if query is not None else '')
+ url=base+('/api/regional/projects/'+project+'/rpc' if query is not None else '/api/projects/'+project)
  request=urllib.request.Request(url,data=json.dumps(query,separators=(',',':')).encode() if query is not None else None,headers={'Authorization':'Bearer '+token,'Content-Type':'application/json','User-Agent':'Squali-Node/1'})
  try:
   with http.open(request,timeout=20) as response:

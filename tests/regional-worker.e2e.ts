@@ -26,6 +26,10 @@ try{
  const concurrent=await Promise.all(Array.from({length:8},()=>rpc({op:'head'})));for(const response of concurrent){assert.equal(response.status,200);await response.arrayBuffer();}
  const passthrough=await fetch(url,{headers});assert.equal(passthrough.status,200);assert.equal((await passthrough.json() as any).id,'workerd-region');
  assert.equal((await fetch(url+'/rpc',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({op:'object',oid:file.oid})})).status,401);
- const report={command:'node --import tsx tests/regional-worker.e2e.ts',realWorkerd:true,serviceBinding:true,cacheApiWarmHit:true,concurrentSourceRpcs:8,projectApiPreserved:true,unauthenticatedDenied:true,externalProviderCalls:0,passed:true};
+ // Forwarded submissions retain source timings and expose the full binding wait.
+ const proposal=await fetch(url+'/changes',{method:'POST',headers:{...headers,'x-squali-timing':'1'},body:JSON.stringify({id:'timing',title:'Timing',intent:'Measure forwarding',files:[{path:'new.txt',content:'timed write\n'}]})});assert.equal(proposal.status,201,await proposal.clone().text());
+ const timing=proposal.headers.get('server-timing')??'';assert.match(timing,/regional;dur=[0-9.]+/);assert.match(timing,/db_connect;dur=[0-9.]+/);assert.match(timing,/app;dur=[0-9.]+/);
+ const denied=await fetch(url+'/changes',{method:'POST',headers:{'content-type':'application/json','x-squali-timing':'1'},body:'{}'});assert.equal(denied.status,401);assert.equal(denied.headers.get('server-timing'),null);
+ const report={command:'node --import tsx tests/regional-worker.e2e.ts',realWorkerd:true,serviceBinding:true,forwardedTiming:true,timing,cacheApiWarmHit:true,concurrentSourceRpcs:8,projectApiPreserved:true,unauthenticatedDenied:true,externalProviderCalls:0,passed:true};
  await writeFile('docs/evidence/2026-10-15-regional/workerd-result.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
 }finally{if(child&&child.exitCode===null){child.kill('SIGTERM');await once(child,'exit');}await writeFile('docs/evidence/2026-10-15-regional/workerd-transcript.txt',transcript);await source.close();}

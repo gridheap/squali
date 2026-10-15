@@ -9,6 +9,7 @@
   "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
   "placement": {"region":"azure:eastus2"},
+  "services": [{"binding":"REGIONAL","service":"squali-regional"}],
   "r2_buckets": [{"binding":"OBJECTS","bucket_name":"squali-objects"},{"binding":"SOURCE","bucket_name":"squali-source"}],
   "artifacts": [{"binding":"ARTIFACTS","namespace":"weave"}],
   "hyperdrive": [{"binding":"HYPERDRIVE","id":"c5366ae0d2d54d76b2b7daf414c6333d"}],

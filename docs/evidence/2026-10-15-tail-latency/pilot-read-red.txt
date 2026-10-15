@@ -1,0 +1,18 @@
+✖ bounded tail runner extends its pilot without repeating writes and verifies publication over HTTP (1112.63875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1271.112334
+
+✖ failing tests:
+
+test at tests/tail-runner.test.ts:1:398
+✖ bounded tail runner extends its pilot without repeating writes and verifies publication over HTTP (1112.63875ms)
+  TypeError: Cannot read properties of undefined (reading 'complete')
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/tail-runner.test.ts:22:144)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

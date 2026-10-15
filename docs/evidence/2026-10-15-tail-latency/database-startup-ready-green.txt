@@ -1,0 +1,30 @@
+request failed admission.claimed.map is not a function
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (182.873833ms)
+{"command":"node --import tsx --test tests/request-timing.test.ts","slow":{"auth":0.05,"db_connect":0,"scope":1.39,"project":0.31,"lookup":0.77,"base":0.88,"journal":0.97,"build":0.38,"delta":0.04,"admission":2.82,"r2_put":181.95,"blob_ready":0.52,"seal_read":0.8,"graph":0.05,"paths":0.03,"seal_write":0.72,"seal":1.66,"persist":187.11,"finalize":0.66,"app":193.15},"fast":{"auth":0.02,"db_connect":0,"scope":82.69,"project":0.25,"lookup":0.44,"base":0.21,"journal":0.76,"build":0.32,"delta":0.01,"admission":1.57,"r2_put":0.9,"blob_ready":0.29,"seal_read":1.08,"graph":0.08,"paths":0.05,"seal_write":0.63,"seal":2.03,"persist":4.88,"finalize":1.31,"app":91.21},"replay":{"auth":0.02,"db_connect":0,"scope":0.19,"project":0.27,"lookup":0.19,"app":0.84},"failure":{"auth":0.01,"db_connect":0,"scope":0.19,"project":0.13,"lookup":0.13,"base":0.22,"journal":0.95,"build":0.45,"delta":0.01,"admission":1.1,"r2_put":61.19,"persist":62.41,"app":64.75},"externalProviderCalls":0}
+✔ proposal timing measures request-local stages including failure and replay without extra I/O (833.725875ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 983.27475
+
+✖ failing tests:
+
+test at tests/database-startup.test.ts:1:576
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (182.873833ms)
+  AssertionError [ERR_ASSERTION]: {"error":"internal_error","message":"Request failed; retry with the same operation ID."}
+      at call (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:35:303)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:37:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

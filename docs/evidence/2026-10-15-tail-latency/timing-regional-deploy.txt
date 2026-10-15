@@ -1,0 +1,14 @@
+
+ ⛅️ wrangler 4.150.0 (update available 4.151.0)
+───────────────────────────────────────────────
+Total Upload: 15.43 KiB / gzip: 4.44 KiB
+Worker Startup Time: 7 ms
+Your Worker has access to the following bindings:
+Binding                                  Resource        
+env.SOURCE (gridheap-weave)              Worker          
+env.SOURCE_LIMIT (600 requests/60s)      Rate Limit      
+
+Uploaded squali-regional (4.62 sec)
+Deployed squali-regional triggers (3.35 sec)
+  squa.li/api/projects/* (zone id: a9e767db975bf6b80cfdad9df81e972b)
+Current Version ID: 0e8fad09-be63-498c-b6cf-ec1e183f953c

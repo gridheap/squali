@@ -1,0 +1,19 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /regional;dur=[0-9.]+/. Input:
+
+'auth;dur=0.03, scope;dur=0.23, project;dur=0.15, lookup;dur=0.62, base;dur=0.92, journal;dur=0.72, build;dur=0.40, delta;dur=0.02, admission;dur=1.55, r2_put;dur=0.53, blob_ready;dur=0.53, seal_read;dur=1.15, graph;dur=0.08, paths;dur=0.05, seal_write;dur=0.95, seal;dur=2.42, persist;dur=5.13, finalize;dur=1.28, app;dur=9.85'
+
+    at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/regional-worker.e2e.ts:31:64)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'auth;dur=0.03, scope;dur=0.23, project;dur=0.15, lookup;dur=0.62, base;dur=0.92, journal;dur=0.72, build;dur=0.40, delta;dur=0.02, admission;dur=1.55, r2_put;dur=0.53, blob_ready;dur=0.53, seal_read;dur=1.15, graph;dur=0.08, paths;dur=0.05, seal_write;dur=0.95, seal;dur=2.42, persist;dur=5.13, finalize;dur=1.28, app;dur=9.85',
+  expected: /regional;dur=[0-9.]+/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

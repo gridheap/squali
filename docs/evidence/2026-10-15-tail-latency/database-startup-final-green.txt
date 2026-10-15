@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/database-startup.test.ts","freshSessions":27,"catalogQueries":1,"arrayEscaping":true,"publicationParents":9,"externalProviderCalls":0}
+✔ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (458.14275ms)
+{"command":"node --import tsx --test tests/request-timing.test.ts","slow":{"auth":0.03,"db_connect":0,"scope":0.52,"project":0.28,"lookup":0.56,"base":0.58,"journal":0.6,"build":0.43,"delta":0.05,"admission":2.05,"r2_put":181.86,"blob_ready":0.53,"seal_read":1.04,"graph":0.06,"paths":0.03,"seal_write":0.72,"seal":1.96,"persist":186.57,"finalize":0.55,"app":190.84},"fast":{"auth":0.01,"db_connect":0,"scope":67.68,"project":0.23,"lookup":0.46,"base":0.21,"journal":1.39,"build":0.45,"delta":0.02,"admission":1.77,"r2_put":1.09,"blob_ready":0.43,"seal_read":1.24,"graph":0.11,"paths":0.06,"seal_write":1.27,"seal":2.92,"persist":6.33,"finalize":2.21,"app":79.36},"replay":{"auth":0.02,"db_connect":0,"scope":0.23,"project":0.32,"lookup":0.22,"app":0.95},"failure":{"auth":0.01,"db_connect":0,"scope":0.19,"project":0.24,"lookup":0.32,"base":0.34,"journal":0.41,"build":0.44,"delta":0.01,"admission":1.15,"r2_put":61.21,"persist":62.49,"app":64.72},"externalProviderCalls":0}
+✔ proposal timing measures request-local stages including failure and replay without extra I/O (857.062958ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1035.553375

@@ -1,6 +1,6 @@
 import {AsyncLocalStorage} from 'node:async_hooks';
 
-type Stage='auth'|'scope'|'project'|'lookup'|'base'|'journal'|'build'|'delta'|'persist'|'admission'|'r2_put'|'blob_ready'|'seal'|'seal_read'|'seal_write'|'graph'|'paths'|'finalize'|'app';
+type Stage='db_connect'|'auth'|'scope'|'project'|'lookup'|'base'|'journal'|'build'|'delta'|'persist'|'admission'|'r2_put'|'blob_ready'|'seal'|'seal_read'|'seal_write'|'graph'|'paths'|'finalize'|'app';
 type Trace={authorized:boolean;durations:Map<Stage,number>};
 const traces=new AsyncLocalStorage<Trace>();
 const noop=()=>{};

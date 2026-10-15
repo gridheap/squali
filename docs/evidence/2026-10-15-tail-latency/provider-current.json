@@ -1,0 +1,30 @@
+{
+  "command": "python3 scripts/measure-provider.py --output docs/evidence/2026-10-15-tail-latency/provider-current.json",
+  "start": "2026-10-01T00:00:00Z",
+  "end": "2026-10-15T15:05:42.219558Z",
+  "query": "{viewer{accounts(filter:{accountTag:\"52f8a24263418828b635c91b6eb06a83\"}){ops0:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",bucketName:\"squali-source\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage0:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",bucketName:\"squali-source\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}ops1:r2OperationsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",bucketName:\"squali-objects\"}){sum{requests} dimensions{actionType actionStatus bucketName}}storage1:r2StorageAdaptiveGroups(limit:1,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",bucketName:\"squali-objects\"},orderBy:[datetime_DESC]){max{objectCount payloadSize metadataSize} dimensions{datetime bucketName}}source:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",scriptName:\"gridheap-weave\"}){sum{requests errors cpuTimeUs subrequests} dimensions{status}}regional:workersInvocationsAdaptive(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",scriptName:\"squali-regional\"}){sum{requests errors cpuTimeUs subrequests} dimensions{status}}artifactsEventsAdaptiveGroups(limit:100,filter:{datetime_geq:\"2026-10-01T00:00:00Z\",datetime_leq:\"2026-10-15T15:05:42.219558Z\",repositoryNamespace:\"weave\"}){count dimensions{eventKind eventType}}}}}",
+  "attempts": 1,
+  "priorDeniedAttempts": 0,
+  "maxAttempts": 2,
+  "automaticRetries": 0,
+  "result": {
+    "data": null,
+    "errors": [
+      {
+        "message": "Rate limiter budget depleted. Please try again after 5 minutes. Refer to this page for more details about rate limits: https://developers.cloudflare.com/analytics/graphql-api/limits/",
+        "path": null,
+        "extensions": {
+          "code": "budget",
+          "timestamp": "2026-10-15T15:05:47.239964747Z",
+          "ray_id": "a4afb94fa9f55a75-SEA"
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Adaptive provider analytics may lag and may sample.",
+    "Month-to-date totals include unrelated Squali requests, prior failures and the existing large import.",
+    "R2 data are operation observations and latest storage, not an invoice; account allowances and billing rounding are unknown.",
+    "Service-binding requests are not separately billable requests; source and regional invocation counts must not be blindly added for request-price estimates."
+  ]
+}

@@ -31,7 +31,7 @@ test('proposal timing measures request-local stages including failure and replay
   const [slow,fast]=await Promise.all([call(route,slowInput),call(route,fastInput)]);
   for(const result of [slow,fast]){
    assert.equal(result.status,201,JSON.stringify(result.body));
-   for(const stage of ['auth','scope','project','lookup','base','journal','build','delta','admission','r2_put','blob_ready','seal','graph','paths','finalize','app'])assert.ok(Number.isFinite(result.stages[stage])&&result.stages[stage]>=0,stage+' missing: '+result.header);
+   for(const stage of ['auth','db_connect','scope','project','lookup','base','journal','build','delta','admission','r2_put','blob_ready','seal','graph','paths','finalize','app'])assert.ok(Number.isFinite(result.stages[stage])&&result.stages[stage]>=0,stage+' missing: '+result.header);
    assert.ok(result.stages.app>=result.stages.r2_put);assert.ok(!result.header!.includes('private-content'));
   }
   assert.ok(slow.stages.r2_put>=170);assert.ok(slow.stages.r2_put-fast.stages.r2_put>=100,'Concurrent traces must be isolated');

@@ -1,0 +1,1 @@
+{"deployment": "30ffa419-b45a-48ac-9922-50c957a28f17", "commands": ["python3 scripts/measure-tail.py source-acceptance-20261015 --state work/tail-profile --phase verify --deployment 30ffa419-b45a-48ac-9922-50c957a28f17"], "complete": true, "verifiedFiles": 8, "publishedHead": "e1a3ffee5de10a1a33463bdf5acb0f73ebcc41bc"}

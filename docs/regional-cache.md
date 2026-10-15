@@ -11,9 +11,9 @@ flowchart LR
   S --> R[R2 source blobs]
 ```
 
-The RPC URL and raw object format are unchanged: `POST /api/projects/:project/rpc`. `object` reads immutable bytes, `stat` reads canonical batches of immutable sizes/types, `head` always reads current source state, and `authorize` returns a short authorization deadline. The daemon uses this RPC for authorization as well as data. It has no alternate origin address or fallback path.
+The node daemon uses `POST /api/regional/projects/:project/rpc`. The legacy `/api/projects/:project/rpc` endpoint remains supported through a source-to-regional service binding. The raw object format is unchanged. `object` reads immutable bytes, `stat` reads canonical batches of immutable sizes/types, `head` always reads current source state, and `authorize` returns a short authorization deadline. The daemon uses this RPC for authorization as well as data. It has no alternate origin address or fallback path.
 
-Cloudflare does not support an infix wildcard in a route. The regional Worker therefore owns `squa.li/api/projects/*`, handles RPCs, and forwards other project operations through the source service binding. Existing project operations retain source authentication and behavior. The source custom domain continues to serve the rest of the application. Workers.dev and preview URLs remain disabled on both Workers.
+The regional Worker owns `squa.li/api/regional/*`. Project writes reach the source custom domain directly, preserving their existing URLs and authentication. The regional Worker calls the source through its named `SourceRpc` entrypoint, which accepts only RPC requests and runs normal source authorization. This prevents recursive forwarding when an older client uses the compatibility gateway. Updated node clients reach the edge cache directly; older clients retain compatibility but take an extra source hop. Workers.dev and preview URLs remain disabled on both Workers.
 
 ## Authorization and isolation
 
@@ -39,7 +39,7 @@ Cloudflare does not support an infix wildcard in a route. The regional Worker th
 | Cache lifetime | 24 hours, immutable; Cloudflare may evict earlier |
 | Larger object response | Stream through the same tier, up to 32 MiB; never buffer or cache the whole large response here |
 
-The Cloudflare rate-limit binding is permissive and eventually consistent. It protects upstream load; it is **not a global billing hard cap**. Existing PostgreSQL admission counters remain the hard source-R2 and Artifacts operation caps. The Worker CPU setting remains 30 seconds, matching the source application because this route also forwards metadata/project operations; RPC work is separately bounded by object size, concurrency and deadline.
+The Cloudflare rate-limit binding is permissive and eventually consistent. It protects upstream load; it is **not a global billing hard cap**. Existing PostgreSQL admission counters remain the hard source-R2 and Artifacts operation caps. The existing Worker CPU ceiling remains 30 seconds; RPC work is separately bounded by object size, concurrency and deadline.
 
 Concurrent small-object misses share one source request within an isolate. Coalescing is not global across locations or isolates. A large stream retains its admission slot until completion, cancellation or timeout. A second request for that in-flight large object receives 503; the client can retry explicitly. The stream verifies its hash at EOF, so corrupted or truncated streams abort and the node does not cache them. No automatic cache purge, origin bypass, retries, backfill, D1 or application Durable Object is added.
 
@@ -57,11 +57,16 @@ Source Worker `c81e2b62-86d2-403a-92b0-e83056b77c02` and regional Worker `c71c1c
 
 The smoke used five HTTP attempts in total, including one correctly denied reader credential that did not have access to this fixture. The subsequent four read-only checks used an existing authorized credential. No credential or grant was created. All failures remain recorded, automatic retries were zero, and completed verification replays offline. No import, provider quota increase or recurring job was added. Production source-R2 operations were not separately queried for this small smoke; the `miss`/`hit` evidence must not be relabeled as a measured R2 bill.
 
-## Deployment order
+## Current deployment order
 
 1. Run the recorded local checks.
-2. Deploy the source Worker first. Its added `authorize` RPC is backward compatible with existing clients.
-3. Deploy `wrangler.regional.jsonc`, which binds to the existing source Worker.
-4. Update node clients from this repository. Their authorization follows the same RPC path and preserves the server deadline.
+2. For a migration from the broad project route, first deploy the source with the named `SourceRpc` export and without the `REGIONAL` binding. The old regional binding remains usable.
+3. Deploy the regional Worker with its dedicated `/api/regional/*` route and its `SOURCE` binding pointed at `SourceRpc`.
+4. Deploy the source with the `REGIONAL` binding for old RPC compatibility. Never point the regional return binding at the default entrypoint after enabling the compatibility gateway.
+5. Update node clients from this repository. Their authorization and data requests both use the dedicated regional route and preserve the server deadline.
 
 No scheduled work is installed. Cache warming occurs only through normal requests, using the existing immutable source data.
+
+## Submission-routing optimization
+
+The October 15 tail-latency experiment replaces the broad route with the dedicated RPC prefix. It retains Scion's strict read tiers while removing the regional Worker from ordinary writes. The measured binding interval included necessary cross-region transport, so its full duration is not claimed as a latency saving. [Measurements, deployments and limits](tail-latency.md).

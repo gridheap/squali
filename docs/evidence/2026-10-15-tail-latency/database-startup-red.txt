@@ -1,0 +1,27 @@
+{"command":"node --import tsx --test tests/database-startup.test.ts","freshSessions":27,"catalogQueries":27,"arrayEscaping":true,"publicationParents":9,"externalProviderCalls":0}
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (8156.726125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8389.954916
+
+✖ failing tests:
+
+test at tests/database-startup.test.ts:1:509
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (8156.726125ms)
+  AssertionError [ERR_ASSERTION]: Stable codecs should not require a catalog query for each request: 27
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:39:34)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

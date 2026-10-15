@@ -1,0 +1,36 @@
+{
+  "time": "2026-10-15T13:59:40.180275+00:00",
+  "account": "52f8a24263418828b635c91b6eb06a83",
+  "bucket": "squali-source",
+  "priorWranglerInfoFailure": "fetch failed; no mutation attempted",
+  "operations": [
+    {
+      "suffix": "",
+      "attempts": 1,
+      "status": 200,
+      "result": {
+        "success": true,
+        "errors": [],
+        "messages": [],
+        "result": {
+          "name": "squali-source",
+          "creation_date": "2026-10-14T18:56:04.200Z",
+          "location": "WNAM",
+          "storage_class": "Standard",
+          "jurisdiction": "default"
+        }
+      }
+    },
+    {
+      "suffix": "/local-uploads",
+      "attempts": 1,
+      "status": 200,
+      "result": {
+        "success": true,
+        "result": {
+          "enabled": false
+        }
+      }
+    }
+  ]
+}

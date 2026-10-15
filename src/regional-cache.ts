@@ -82,7 +82,7 @@ export function regionalRpc(options:RegionalOptions){
  return async(request:Request):Promise<Response>=>{
   if(active>=16)return fault(503,'Regional request concurrency is full');active++;
   try{
-   const url=new URL(request.url),match=url.pathname.match(/^\/api\/projects\/([a-zA-Z0-9][a-zA-Z0-9_-]{0,62})\/rpc$/);
+   const url=new URL(request.url),match=url.pathname.match(/^\/api\/(?:regional\/)?projects\/([a-zA-Z0-9][a-zA-Z0-9_-]{0,62})\/rpc$/);
    if(request.method!=='POST'||!match||url.search)throw new Fault(404,'Use the source RPC endpoint');
    if(request.headers.has('origin')&&request.headers.get('origin')!==url.origin)throw new Fault(403,'Cross-origin RPC is forbidden');
    const authorization=request.headers.get('authorization')??'';if(!/^Bearer \S{1,8192}$/.test(authorization))throw new Fault(401,'Supply a workspace credential');

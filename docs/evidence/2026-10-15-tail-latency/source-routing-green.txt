@@ -1,0 +1,19 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"id":"publish","base":"d3856923e81f71bff955207e562d92d5b9d1f726","oid":"43f35c4a425faee3639dbd54a275e0ce63149202","changes":["c0","c1","c2","c3"],"state":"published","cancellationHead":null,"metrics":{"objects":2,"bytes":449,"changes":4}}
+
+201 !== 200
+
+    at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/source-routing.e2e.ts:33:131)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 201,
+  expected: 200,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

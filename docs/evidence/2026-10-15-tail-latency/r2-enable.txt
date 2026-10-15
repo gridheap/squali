@@ -1,0 +1,7 @@
+
+ ⛅️ wrangler 4.150.0 (update available 4.151.0)
+───────────────────────────────────────────────
+? Are you sure you want to enable local uploads for bucket 'squali-source'? Object data will be written to the nearest region first, then asynchronously replicated to the bucket's primary region.
+🤖 Using fallback value in non-interactive context: yes
+Enabling local uploads for bucket 'squali-source'...
+✨ Local uploads enabled for bucket 'squali-source'.

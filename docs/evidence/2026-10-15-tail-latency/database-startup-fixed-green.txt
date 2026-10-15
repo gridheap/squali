@@ -1,0 +1,44 @@
+request failed admission.claimed.map is not a function
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (166.438583ms)
+✖ proposal timing measures request-local stages including failure and replay without extra I/O (773.487875ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 933.655292
+
+✖ failing tests:
+
+test at tests/database-startup.test.ts:1:576
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (166.438583ms)
+  AssertionError [ERR_ASSERTION]: {"error":"internal_error","message":"Request failed; retry with the same operation ID."}
+      at call (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:35:303)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:37:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/request-timing.test.ts:1:406
+✖ proposal timing measures request-local stages including failure and replay without extra I/O (773.487875ms)
+  AssertionError [ERR_ASSERTION]: db_connect missing: auth;dur=0.03, scope;dur=0.54, project;dur=0.37, lookup;dur=1.40, base;dur=1.47, journal;dur=3.07, build;dur=0.62, delta;dur=0.05, admission;dur=3.30, r2_put;dur=182.10, blob_ready;dur=0.69, seal_read;dur=0.91, graph;dur=0.05, paths;dur=0.03, seal_write;dur=0.82, seal;dur=1.88, persist;dur=188.11, finalize;dur=0.86, app;dur=197.03
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/request-timing.test.ts:34:186)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

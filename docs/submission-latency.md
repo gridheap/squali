@@ -1,3 +1,7 @@
+# Latest checkpoint
+
+The subsequent [256-per-version tail experiment](tail-latency.md) supersedes this four-sample checkpoint for current routing, connection setup and measured p95/p99. The measurements below remain historical evidence.
+
 # Production submission latency
 
 October 15, 2026. Source version `7218bc81-1798-4158-95fa-06243110b4a8` is deployed

@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/node-regional.test.ts","nodeProcesses":2,"sourceObjectRequests":1,"bypassRequests":0,"expiryRespectedAtBothTiers":true,"externalProviderCalls":0}
+✔ two real node daemons share the regional tier and never extend credential expiry (2891.383708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3042.492333

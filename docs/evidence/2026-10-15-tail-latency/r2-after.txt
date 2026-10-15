@@ -1,0 +1,4 @@
+
+ ⛅️ wrangler 4.150.0 (update available 4.151.0)
+───────────────────────────────────────────────
+Local uploads are enabled for bucket 'squali-source'. Object data is written to the nearest region first, then asynchronously replicated to the bucket's primary region.

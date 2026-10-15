@@ -1,0 +1,28 @@
+request failed relation "weave_projects" does not exist
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (760.281208ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 985.6095
+
+✖ failing tests:
+
+test at tests/database-startup.test.ts:1:576
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (760.281208ms)
+  AssertionError [ERR_ASSERTION]: {"error":"internal_error","message":"Request failed; retry with the same operation ID."}
+      at call (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:35:303)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:37:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

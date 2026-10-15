@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/request-timing.test.ts","slow":{"auth":0.04,"db_connect":0,"scope":0.57,"project":0.28,"lookup":1.11,"base":1.22,"journal":1.12,"build":0.61,"delta":0.05,"admission":2.8,"r2_put":181.28,"blob_ready":0.81,"seal_read":2.08,"graph":0.05,"paths":0.04,"seal_write":1.27,"seal":3.54,"persist":188.6,"finalize":1.11,"app":195.31},"fast":{"auth":0.01,"db_connect":0,"scope":78.59,"project":0.24,"lookup":0.45,"base":0.2,"journal":0.52,"build":0.31,"delta":0.01,"admission":1.42,"r2_put":0.94,"blob_ready":0.35,"seal_read":1.07,"graph":0.08,"paths":0.05,"seal_write":0.74,"seal":2.12,"persist":4.93,"finalize":1.04,"app":86.65},"replay":{"auth":0.02,"db_connect":0,"scope":0.25,"project":0.36,"lookup":0.23,"app":1.06},"failure":{"auth":0.02,"db_connect":0,"scope":0.24,"project":0.2,"lookup":0.28,"base":0.82,"journal":0.7,"build":0.44,"delta":0.02,"admission":1.33,"r2_put":61.31,"persist":62.85,"app":65.95},"externalProviderCalls":0}
+✔ proposal timing measures request-local stages including failure and replay without extra I/O (889.204541ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1040.603209

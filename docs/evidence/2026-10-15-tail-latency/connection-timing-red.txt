@@ -1,0 +1,26 @@
+✖ proposal timing measures request-local stages including failure and replay without extra I/O (839.818334ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1070.264125
+
+✖ failing tests:
+
+test at tests/request-timing.test.ts:1:406
+✖ proposal timing measures request-local stages including failure and replay without extra I/O (839.818334ms)
+  AssertionError [ERR_ASSERTION]: db_connect missing: auth;dur=0.05, scope;dur=0.96, project;dur=0.21, lookup;dur=0.88, base;dur=2.40, journal;dur=2.01, build;dur=1.05, delta;dur=0.07, admission;dur=2.70, r2_put;dur=181.87, blob_ready;dur=0.56, seal_read;dur=0.78, graph;dur=0.06, paths;dur=0.03, seal_write;dur=0.79, seal;dur=1.75, persist;dur=187.03, finalize;dur=0.73, app;dur=196.10
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/request-timing.test.ts:34:186)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

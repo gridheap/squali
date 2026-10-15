@@ -1,0 +1,31 @@
+{"command":"node --import tsx --test tests/database-protocol.test.ts","preparedStatements":54,"reusedStatements":32,"textArraysPreserved":true,"differentBoundValuesPreserved":true,"publicationParents":3}
+✔ HTTP source workflows use prepared SQL and preserve array parameters across repeated queries (708.539042ms)
+{"command":"node --import tsx --test tests/database-startup.test.ts","freshSessions":27,"catalogQueries":27,"arrayEscaping":true,"publicationParents":9,"externalProviderCalls":0}
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (8207.912292ms)
+{"command":"node --import tsx --test tests/request-timing.test.ts","slow":{"auth":0.04,"db_connect":0,"scope":0.73,"project":0.39,"lookup":0.65,"base":0.81,"journal":0.64,"build":0.67,"delta":0.06,"admission":1.62,"r2_put":182.12,"blob_ready":0.52,"seal_read":0.74,"graph":0.05,"paths":0.03,"seal_write":0.55,"seal":1.44,"persist":185.89,"finalize":0.5,"app":191.09},"fast":{"auth":0.02,"db_connect":0,"scope":72.16,"project":0.16,"lookup":0.42,"base":0.19,"journal":0.49,"build":0.35,"delta":0.02,"admission":1.62,"r2_put":17.05,"blob_ready":0.39,"seal_read":1.38,"graph":0.13,"paths":0.06,"seal_write":1.08,"seal":2.91,"persist":22.1,"finalize":1.24,"app":97.5},"replay":{"auth":0.02,"db_connect":0,"scope":0.21,"project":0.28,"lookup":0.15,"app":0.84},"failure":{"auth":0.02,"db_connect":0,"scope":0.21,"project":0.14,"lookup":0.14,"base":0.35,"journal":0.42,"build":0.36,"delta":0.02,"admission":1.15,"r2_put":60.35,"persist":61.6,"app":63.5},"externalProviderCalls":0}
+✔ proposal timing measures request-local stages including failure and replay without extra I/O (904.277875ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8362.730583
+
+✖ failing tests:
+
+test at tests/database-startup.test.ts:1:509
+✖ fresh HTTP database sessions reuse codecs while preserving arrays, transactions and publication (8207.912292ms)
+  AssertionError [ERR_ASSERTION]: Stable codecs should not require a catalog query for each request: 27
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/database-startup.test.ts:39:34)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

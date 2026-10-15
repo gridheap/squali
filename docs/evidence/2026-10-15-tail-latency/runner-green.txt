@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/tail-runner.test.ts","httpAttempts":41,"pilotReused":true,"verifiedFiles":8,"externalProviderCalls":0}
+✔ bounded tail runner extends its pilot without repeating writes and verifies publication over HTTP (1267.7505ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1402.698625
