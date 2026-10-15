@@ -1,0 +1,13 @@
+{
+  "request": "GET /api/projects/gh-5fd5a2f4bc33a0286d6728ad/blame?ref=6de20f6092dcf9bdb1c8efe03db4b70c82b423dd&path=README.md",
+  "workerVersion": "79cc8779-a322-4f22-9219-4e563007e799",
+  "cacheVersion": 4,
+  "httpStatus": 200,
+  "requestTimestamp": 1147572.274688,
+  "responseTimestamp": 1147593.26114,
+  "finishedTimestamp": 1147593.270006,
+  "durationSeconds": 20.99531799997203,
+  "notes": [
+    "One observed network request, no retry. Excludes preceding Clerk token refresh. Not a latency distribution."
+  ]
+}

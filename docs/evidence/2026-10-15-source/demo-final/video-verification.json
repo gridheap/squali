@@ -1,0 +1,13 @@
+{
+  "videoTracks" : 1,
+  "rawFrames" : 2046,
+  "captureDurationSeconds" : 410.14037841700002,
+  "quick" : false,
+  "encodedFrames" : 2051,
+  "success" : true,
+  "bytes" : 25416963,
+  "audioTracks" : 1,
+  "durationSeconds" : 410.19999999999999,
+  "command" : "swift scripts\/render-continuous.swift work\/continuous-demo-final work\/continuous-demo-final\/squali-source-demo.mp4",
+  "format" : "Continuous CDP capture, five fps, H.264\/AAC; no cuts or scene retiming"
+}

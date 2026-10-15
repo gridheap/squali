@@ -1,0 +1,1 @@
+{"command":"node --import tsx scripts/compare-lines-native.ts work/imara-a.txt work/imara-b.txt","beforeSha256":"57cd029ced8c60e1215da2629f56eea65a328181aeec5bf6a9876add4ca5885d","afterSha256":"7638b5d1017593805dbc36459440b80571e3f244b222aeddce49f0181af16048","hunks":5,"work":1761,"nativeEqual":true}

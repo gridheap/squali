@@ -1,0 +1,143 @@
+{
+  "command": "python3 work/final-native-audit.py",
+  "checkedAt": "2026-10-15T03:50:04Z",
+  "project": "gh-5fd5a2f4bc33a0286d6728ad",
+  "job": [
+    [
+      "complete",
+      20882,
+      4,
+      4
+    ]
+  ],
+  "sourceObjects": [
+    [
+      "blob",
+      166298,
+      "5680908276"
+    ],
+    [
+      "commit",
+      85564,
+      "62154407"
+    ],
+    [
+      "tag",
+      1010,
+      "764975"
+    ],
+    [
+      "tree",
+      168350,
+      "2588292376"
+    ]
+  ],
+  "sourceBlobs": [
+    [
+      "ready",
+      166298,
+      "5680908276",
+      "1856605100",
+      1
+    ]
+  ],
+  "canonicalCount": 85564,
+  "completeGraphCount": 85564,
+  "pathMarkerCount": 85564,
+  "importJournal": {
+    "stage": "complete",
+    "objectsProcessed": 421219,
+    "commitsProcessed": 85563,
+    "httpAttempts": 9602,
+    "uploadedBytes": 3667925603,
+    "complete": true,
+    "sourceObjects": 421219,
+    "sourceBytes": 8332097572,
+    "bridgeAttempts": 3,
+    "bridgePushAttempts": 14,
+    "bridgeSeedBatchesDone": 11,
+    "snapshot": {
+      "attempts": 1,
+      "elapsedSeconds": 183.089,
+      "uploadedBytes": 336374863,
+      "indexed": 421219,
+      "complete": true,
+      "fingerprint": "5df7a5f2c84e82ab26ba95240336ddba1f25840c33fb5d6fa2c6e2d569df11bf",
+      "packBytes": 324579659,
+      "indexBytes": 11795204,
+      "ready": true
+    },
+    "bridgeLimited": {
+      "reason": "provider_storage_limit",
+      "compatibility": "r2_snapshot"
+    }
+  },
+  "usage": {
+    "source": [
+      [
+        "writes",
+        166503
+      ],
+      [
+        "reads",
+        215
+      ]
+    ],
+    "cache": [
+      [
+        "reads",
+        32
+      ],
+      [
+        "writes",
+        20
+      ]
+    ],
+    "artifacts": [
+      [
+        345
+      ]
+    ]
+  },
+  "queue": [
+    [
+      "complete",
+      1
+    ]
+  ],
+  "schemaStorageBytes": "2911854592",
+  "gitSnapshot": [
+    [
+      "ready",
+      1,
+      "62bd7e99759a783d53ae07977f45bf606819b344",
+      "421219",
+      "324579659",
+      "11795204"
+    ]
+  ],
+  "gitSnapshotParts": [
+    [
+      "ready",
+      41,
+      "336374863",
+      0
+    ]
+  ],
+  "retiredAcceptanceCredentials": [
+    [
+      "acceptance-20261015",
+      true
+    ],
+    [
+      "snapshot-20261015",
+      true
+    ],
+    [
+      "private-verification-20261015",
+      true
+    ]
+  ],
+  "nativeService": "MemoryCurrent=18722816\nTasksCurrent=1\nActiveState=active",
+  "nativeCacheDiskBytes": 381100338
+}

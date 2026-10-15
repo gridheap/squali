@@ -8,14 +8,14 @@ Squali implements the public Scion design as an online source service. Agents cr
 
 Cloud deployment: **Cloudflare Workers + R2 + Artifacts + PostgreSQL through Hyperdrive**. R2 holds independently compressed content-addressed blobs. PostgreSQL holds canonical changesets and workflow state. Artifacts provides a derived Git compatibility copy. No D1 or application Durable Objects are used.
 
-**Under acceptance; not submitted.** The fixed [20-item Scion checklist](docs/scion-acceptance.md), [source design](docs/source-architecture.md) and [retained evidence](docs/evidence/2026-10-15-source/) distinguish implemented features from outstanding production gates. Do not infer Anthropic's reported scale or speedups from this implementation. The earlier release video predates this architecture.
+**Core acceptance passed; entry not submitted.** The fixed [20-item Scion checklist](docs/scion-acceptance.md), [source design](docs/source-architecture.md) and [retained evidence](docs/evidence/2026-10-15-source/) record all 20 fixed capability criteria, an independently verified 421,219-object private import and explicit operating limits. Do not infer Anthropic's reported scale or speedups from this implementation. The current release package replaces the earlier architecture video.
 
 ## Run locally
 
 Prerequisites: Node.js 24+, pnpm, Git and PostgreSQL 17+. The repository pins Node 24.21.0 and pnpm 11.25.0 with mise. Python 3 is needed for native import, bisect and filesystem clients. The API-only suite (`pnpm test:api`) does not need a browser. The complete E2E suite includes the GitHub/native-import browser flow and needs an installed browser.
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 bash scripts/setup-local.sh
 pnpm dev
 ```
@@ -85,12 +85,16 @@ Read [architecture](docs/architecture.md), [deployment](docs/deployment.md), [fa
 
 ## Explicit limits
 
-Artifacts currently limits a repository to 1 GB; a larger source import remains usable through source APIs and explicitly reports Git compatibility unavailable. Native ingestion defaults to 500,000 objects, 16 GiB raw data and 12,000 HTTP attempts across restarts. These are admission limits, not measured scale claims. Editable files are UTF-8 regular files, at most 256 KiB each; binary objects, symlinks and submodules are preserved during import but are not edited through the text API. FUSE mounts are read-only; edits use the sparse client/API. One main branch is the publication boundary.
+Artifacts currently limits a repository to 1 GB. When that limit is explicitly returned, admitted imports use a verified R2 compatibility snapshot (at most 500,000 objects, a 512 MiB pack and a 16 MiB index). Source APIs stay independent of the Git compatibility copy. Inputs outside those snapshot bounds remain explicitly limited. Native ingestion defaults to 500,000 objects, 16 GiB raw data and 12,000 HTTP attempts across restarts. These are admission limits, not measured scale claims. Editable files are UTF-8 regular files, at most 256 KiB each; binary objects, symlinks and submodules are preserved during import but are not edited through the text API. FUSE mounts are read-only; edits use the sparse client/API. One main branch is the publication boundary.
 
-Continuous rebase handles up to 64 single-parent commits. Individual merge-commit rebase needs an explicit parent. Graph queries retain a 50,000-node budget. Derived reconstruction admits 1,024 missing results per invocation; larger histories use parent-order batches. Automatic CI, full-text code search and an Anthropic-scale distributed load test are outside the current implementation. See the readiness page for the live private-import and login gates.
+Continuous rebase handles up to 64 single-parent commits. Individual merge-commit rebase needs an explicit parent. Graph queries retain a 50,000-node budget. Derived reconstruction admits 1,024 missing results per invocation; larger histories use parent-order batches. Automatic CI, full-text code search and an Anthropic-scale distributed load test are outside the current implementation. See [readiness](docs/readiness.md) for the completed private-import and login evidence, and [cost reconciliation](docs/cost-final.md) for measured usage.
 
 ## Fonts and license
 
 The UI uses Adobe Proxima Nova and system CJK fonts. The configured Adobe project is authorized by the owner; other deployments need their own licensed kit or an explicit empty-kit native fallback. No font files are bundled.
 
 Source: [MIT](LICENSE). Dependencies retain their licenses. Squali is independent of Anthropic and Cloudflare.
+
+### Third-party license
+
+The bounded line comparator is adapted from Apache-2.0 imara-diff; Squali’s original code is MIT. See [attribution and modifications](licenses/imara-diff.md).

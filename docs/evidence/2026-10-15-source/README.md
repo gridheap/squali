@@ -1,68 +1,56 @@
 # Source-service acceptance evidence
 
-**Status: private production verification, final provider reconciliation and the current continuous video are pending. No final percentage or submitted entry is claimed.**
+**Implementation acceptance passed; competition entry not submitted.** The fixed [20-item capability checklist](../../scion-acceptance.md) passes within its stated bounds, including all mandatory architecture items. This is not a percentage of Anthropic's unpublished implementation. [Readiness and explicit limits](../../readiness.md).
 
-The fixed release requirements are in [the Scion checklist](../../scion-acceptance.md). The previous progress notes and failure history are preserved in [chronology](chronology.md); individual reports remain unchanged.
+## Final checks
 
-## Current executable checks
-
-| Check | Exact command | Retained result |
+| Check | Exact command | Result |
 |---|---|---|
-| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [78/78 passed](source-snapshot-final-suite.txt) |
-| Types | `pnpm typecheck` | [Passed](source-snapshot-typecheck.txt) |
-| Worker build | `pnpm build` | [Dry run passed](source-snapshot-build.txt) |
-| Deployment | `pnpm deploy` | [Worker 7c16dd9b-d8bc-4d36-a133-967938277a0f](source-snapshot-deploy.txt) |
-| Rendered UI and typography | `SQUALI_URL=http://127.0.0.1:8799 WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/final-copy-ui pnpm test:ui` | [Four passed](final-copy-ui.txt); [screens and glyph evidence](final-copy-ui/) |
-| Actual Linux FUSE | See the exact command in the retained JSON | [First content reads](fuse-green-attempt.json), [shared-cache run](fuse-green.json) |
+| HTTP/CLI/native suite | `node --import tsx --test --test-concurrency=4 tests/*.test.ts` | [84/84 passed](imara-final-suite.txt) |
+| Types | `pnpm typecheck` | [Passed](imara-final-typecheck.txt) |
+| Worker build | `pnpm build` | [Passed](imara-final-build.txt) |
+| Deployment | `pnpm deploy` | [79cc8779-a322-4f22-9219-4e563007e799](imara-final-deploy.txt), squa.li; previews disabled |
+| UI/Adobe/brand | `WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/brand-ui pnpm test:ui` with `pnpm dev` | [5 passed](brand-ui-suite.txt), [runtime/screens](brand-ui/), [initial failure](brand-red.txt) |
+| Linux FUSE | Exact commands in the retained JSON | [First read](fuse-green-attempt.json), [shared cache](fuse-green.json) |
+| Private native verification | Exact command in the retained JSON; reusable script is `scripts/verify-import.py` | [Complete](private-verification.json), one clone, 40/48 HTTP attempts |
+| Production browser | Repeatable UI sequence | [Steps and screenshots](private-browser-acceptance.md), [final brand](brand-production.png) |
+| Native and provider accounting | Exact commands/query in retained JSON | [Native audit](native-final-audit.json), [provider response](provider-final.json), [reconciliation](../../cost-final.md) |
+| Continuous recording | `SQUALI_DEMO_DIR=work/continuous-demo-final node --import tsx scripts/demo-continuous.ts` | [Capture log](continuous-final-recording.txt), [manifest and verification](demo-final/) |
+| Capture validation | `node --import tsx scripts/check-demo-capture.ts work/continuous-demo-final` | 2,046 timed frames, all eight resulting views retained; [report](demo-final/capture-verification.json) |
+| Encode / decode | `swift scripts/render-continuous.swift work/continuous-demo-final work/continuous-demo-final/squali-source-demo.mp4` | 410.2 s, 25,416,963 bytes; [report](demo-final/video-verification.json), five decoded frames |
+| Audio decode | `swift scripts/inspect-demo-audio.swift work/continuous-demo-final work/continuous-demo-final/squali-source-demo.mp4` | [Audible in all eight scenes](demo-final/audio-verification.json) |
+| Independent review | Read-only Standards and Spec axes | [Review record](review-snapshot.md), all earlier blockers corrected; final axes 0 new findings |
 
-The suite uses real PostgreSQL, HTTP entry points, native Git and a persistent filesystem adapter at the R2 boundary. Four test processes share local resources; concurrency tests still run eight clients. UI checks include failure fallback, navigation reuse, Proxima Nova Latin and platform PingFang SC CJK. Historical cold Adobe timeout evidence remains retained.
+The API/CLI suite uses real PostgreSQL, HTTP and native Git with a persistent local adapter at the R2 boundary. Browser tests use installed Brave and isolated profiles. Provider acceptance is separately labeled. The latest cold Adobe activation took 5,375.5 ms; reviewer workflow readiness was 5,503 ms. CDP confirms Proxima Nova Latin and native PingFang SC CJK. Failure fallback/navigation reuse pass. Earlier slow and failed runs remain retained.
 
-## Architecture and performance evidence
+## Private import and honest scope
 
-| Subject | Evidence | What it establishes |
-|---|---|---|
-| Canonical authority | [Source tests in the full report](mainline-graph-full-e2e.txt) | Rebuild identical native trees/commits after removing compatibility metadata; preserve historic modes and non-UTF-8 commit bytes |
-| Unified derived data | [Generic index checks](derived-full-e2e.txt), [recursive blame](derived-blame-full-e2e.txt) | Versioned parent dependencies, eager/lazy rebuilding, explicit resource bounds |
-| Mainline graph queries | [Original merge-base failure](mainline-merge-base-red.txt), [merge-heavy ancestry failure](mainline-ancestry-red.txt), [native comparison passed](mainline-ancestry-green.txt) | 1,024-commit mainline queries use 13 SQL statements; criss-cross and second-parent behavior remains correct |
-| Prepared PostgreSQL protocol | [Before](database-protocol-red.txt), [after](database-protocol-green.txt) | Real HTTP workflows reuse prepared statements and decode array fields correctly |
-| Immutable object cache | [Cache acceptance](immutable-source-cache-green.txt), [production read sample](production-immutable-cache.json) | Repeated source-row queries fall from 11 to zero; authentication and scope remain live; failures do not bypass cache tiers |
-| Incremental proposal/publication cost | [Proposal admission](proposal-admission-green.txt), [publication](publication-cost-green.txt) | Independent proposal admission, bounded SQL, no new blob I/O for the independent selected publication fixture |
-| Native file monitor | [Watcher](working-copy-watch-green.txt), [base-change race](working-copy-watch-race-red.txt), [full suite](mainline-graph-full-e2e.txt) | Real filesystem observation, finite budgets, final reconciliation and no implicit tracking |
-| Local throughput | [Source sample](local-source.json) | 64 changes/eight clients, 318.19 changes/s, p95 95.93 ms; local only |
-| Production throughput | [Baseline](cloud-baseline.json), [reference-only](cloud-optimized.json), [single connection](cloud-connection.json), [pool adjustment](cloud-pool8.json), [prepared protocol](cloud-prepared.json) | Retains all bounded samples and unfavorable results; latest eight-change p95 is 3,368.85 ms |
-| Provider diagnosis | [Connection metrics](hyperdrive-performance.json), [direct pool contention](hyperdrive-pool-contention.json) | Connection-establishment latency is distinct from pool waiting; concurrent import limits causal conclusions |
+The frozen fixture contains **421,219 objects, 85,563 commits, 1,020 refs and 8,332,097,572 raw bytes**. All source objects and canonical deltas are durable. After eleven accepted seed batches, Artifacts returned its repository storage limit. The same cached pack became a [completed R2 compatibility snapshot](private-snapshot-complete.json); no fifth native attempt or second GitHub input clone was used.
 
-[Performance notes](../../performance.md) explain sample sizes and operating limits. The two-second proposal investigation target remains unmet. No claim of Anthropic-scale throughput, a 99% fleet cache hit rate or a universal speedup is made.
+Independent native fsck, full exported object/ref equality and inventory equality pass. Eight canonical changesets, root tree, README content/history/blame and graph relations independently match. A new proposal's canonical delta, file and tree pass, then the proposal is rejected; the published head stays unchanged. This is full exported-closure validation plus bounded source-semantic samples, not an exhaustive semantic test of all 85,563 commits.
 
-## Production private import
+The first verifier stopped on blame's resource estimate. A bounded comparator then exposed six incorrect blank-line origins. [Failure](private-verification-blame-failure.json), [native diagnostic](private-blame-v1-diagnostic.json) and intermediate reports remain retained. A later license check replaced the experimental LGPL module with the separately Apache-2.0 licensed imara-diff adaptation; the earlier LGPL source is not shipped. One additional blank-separator regression was recorded before correction.
 
-The frozen fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8,332,097,572 raw bytes. Its native Git pack is 324,579,659 bytes. It reuses one retained Git input and journal. The [23:31 UTC checkpoint](private-progress-2331.json) has 398,592 admitted object positions and remains incomplete.
+The final module passes [135 native diff pairs and focused HTTP cases](imara-separator-green.txt) plus the complete 84-test suite. Only blame caches advance to v4. The [final live response projection](imara-production-blame.json) matches all 75 full commit origins and seven native original-line regression points; the exact offline command is in [the comparison report](imara-production-verification.json). [Screenshot](imara-production-blame.png), [single-request timing](imara-production-network.json), [provenance and complete validation](imara-validation.md). The original full native verification remains unchanged; this is supplemental validation of the replacement.
 
-The final verifier is `python3 scripts/verify-import.py PROJECT RETAINED_NATIVE_REPOSITORY --state PRIVATE_STATE --file README.md --write-smoke`. It uses at most 48 API attempts and one retained verification clone, compares every exported object/ref, runs native fsck, and independently checks source inventory, graph, root tree, selected history/blame and up to eight canonical deltas. It then creates and rejects one unpublished proposal, checking its canonical delta, content, root tree and unchanged published refs. [Write acceptance](private-write-verification-green.txt) exercises this complete workflow locally, including unchanged replay and detection of a corrupted imported delta. Completed replay makes no network transfer. [Timing acceptance](verification-timing-journal.txt) verifies retained per-attempt measurements: API, history/blame, ancestry, merge-base, clone and fsck times come from the same run.
+## Architecture and performance
 
-The production Clerk/GitHub login and repository catalog have [retained browser evidence](production-github-login.png). The completed private workspace still needs its final browser check. A [connection closed without an HTTP response](private-connection-stop.json) stopped the retained native job at 76,800 acknowledged commits. The [real HTTP disconnect fixture](changeset-disconnect-recovery.txt) proves explicit same-journal recovery before and after transaction acceptance, without another blob upload. Explicit UI recovery reused the original input and budgets and completed all 85,563 canonical commits. Git bootstrap then stopped because Artifacts does not advertise atomic push support. The [bounded protocol probe](artifacts-bridge-capabilities.json) performed no pack transfer and revoked its diagnostic token. The [failing native fixture](native-nonatomic-red.txt) and [passing recovery](native-nonatomic-green.txt) disable atomic support, reject one tag after three refs succeed, retain a redacted private diagnostic, and finish on explicit resume with no extra GitHub clone or source writes. The source project remains importing until every frozen ref matches.
+- Canonical authority: `source.test.ts` in the final suite rebuilds native trees/commits after deleting compatibility metadata, preserving modes and non-UTF-8 commit bytes.
+- Generic derived data: [index checks](derived-full-e2e.txt), [recursive blame](derived-blame-full-e2e.txt), eager/lazy rebuilding and explicit bounds.
+- Graph: [merge-base failure](mainline-merge-base-red.txt), [ancestry failure](mainline-ancestry-red.txt), [native comparison](mainline-ancestry-green.txt); 1,024-step mainline queries use 13 SQL statements, with criss-cross and second-parent checks.
+- SQL protocol/cache: [prepared statements](database-protocol-green.txt), [immutable cache](immutable-source-cache-green.txt), [production read sample](production-immutable-cache.json); repeated source-row queries fall from 11 to zero while scope checks remain live.
+- Incremental operations: [proposal admission](proposal-admission-green.txt), [publication](publication-cost-green.txt), [watcher](working-copy-watch-green.txt), [base race](working-copy-watch-race-red.txt). The final watcher fixture remains bounded and reconciles OS-coalesced events.
+- Local throughput: [64 changes / eight clients](local-source.json), 318.19/s, p95 95.93 ms. Production: [64-change baseline](cloud-baseline.json), [latest eight-change sample](cloud-prepared.json), 2.301/s, p95 3,368.85 ms. These different sizes are not a controlled speedup comparison.
+- [Connection metrics](hyperdrive-performance.json) and [pool contention](hyperdrive-pool-contention.json) retain unfavorable results. The two-second proposal target remains unmet. [Performance and single-run private timings](../../performance.md).
 
-## Cost and release gates
+## Retained recovery history
 
-- [Admission budget](../../source-import-budget.md): deduplicated inputs, finite attempts, current official prices and separate Azure/Workers/storage exposure.
-- [R2 provider checkpoint](provider-r2-checkpoint.json): provider observations with reporting lag; it is not an invoice or the final reconciliation.
-- [Public Azure list prices](azure-retail-prices.json): existing infrastructure still has a cost. Private billing records stay outside the public repository.
-- [Continuous recording instructions](../../demo-source.md): final capture refuses to run without the completed private report. Earlier quick format/preflight probes are not a submission video.
-- [Entry form text](../../entry-fields.md): prepared for the eligible entrant after all gates pass.
+Earlier progress/failure reports are historical, not current pending work. [Chronology](chronology.md) preserves the original checkpoints.
 
-## Bounded Git bridge continuation
+- HTTP disconnect: [stopped journal](private-connection-stop.json), [real recovery fixture](changeset-disconnect-recovery.txt).
+- Artifacts protocol/provider limits: [capability probe](artifacts-bridge-capabilities.json), [non-atomic recovery](native-nonatomic-green.txt), [provider failure](private-bridge-provider-error.json), [seed plan](private-seed-plan.json), [legacy counter check](native-seed-legacy-budget-red.txt), [attempt-limit E2E](native-recovery-budget-green.txt), [storage limit](private-seed-storage-limit.json).
+- Snapshot: [budget](snapshot-budget.md), [native clone/fsck and HTTP cases](source-snapshot-final-e2e.txt), [wrong-membership/replay regression](source-snapshot-membership-red.txt), [one-click capacity fallback](native-snapshot-fallback-green.txt), [small-pack retention failure](native-snapshot-zero-limit-failure.txt), [installation](source-snapshot-install.json).
+- Credential tracing isolation: [verifier](verification-tracing-green.txt), [native importer](native-clone-tracing-green.txt). Only fixture credentials occur in the corresponding red reports.
+- First continuous recording: `continuous-demo-*` reports show an encoded movie, but visual inspection found stale frames after navigation. [Capture failure](continuous-capture-red.txt) is retained. **That movie is not the submission video.** [Corrected quick check](continuous-capture-quick.txt) and the `continuous-final-*` reports supersede it.
 
-[Provider error](private-bridge-provider-error.json), [native journal](private-bridge-server-failure.json) and [zero remaining refs](private-bridge-after-failure.json) retain the third job attempt’s failure. The [128 MiB preflight](private-seed-plan-128mb.json) rejected an indivisible original tag before any transfer; the [256 MiB preflight](private-seed-plan.json) admits 50 bounded steps. The [real Git recovery fixture](native-seed-recovery-green.txt) limits each push, stops if an acknowledged earlier ref disappears, then resumes the same input/journal and verifies every exported object/ref plus native fsck. [Legacy counter failure](native-seed-legacy-budget-red.txt) proves old failed pushes stay counted. [Attempt-limit E2E](native-recovery-budget-green.txt) confirms that browser clients cannot enlarge their allowance; a scoped operator record can extend one job from three to four. Source and provider total budgets remain unchanged.
-
-The affected browser UI has [four passing checks](native-seed-ui.txt), including Adobe timeout fallback, navigation reuse, actual Proxima Nova Latin and PingFang SC CJK glyphs. The latest cold font activation was 3.747 seconds and reviewer action readiness 3.873 seconds; earlier samples remain retained.
-
-The final verification clone strips inherited Git HTTP, packet and pack tracing. [Red evidence](verification-tracing-red.txt) demonstrates that `GIT_CURL_VERBOSE=0` remains present and packet tracing can leak through; [the focused E2E](verification-tracing-green.txt) verifies the real clone environment, native identity, write/rejection flow and zero-transfer replay after the fix. Command: `node --import tsx --test tests/verify-import.test.ts`. Typecheck: [report](verification-tracing-typecheck.txt).
-
-
-## R2 compatibility snapshot after the capacity limit
-
-[The retained provider failure](private-seed-storage-limit.json) records eleven accepted batches and the explicit storage-limit response. No further Artifacts transfer follows that response. [The bounded migration budget](snapshot-budget.md) reuses the existing pack, original source journal and monthly caps.
-
-[Snapshot E2E](source-snapshot-final-e2e.txt) covers native clone/fsck, complete object/ref equality, source writes and rejection through the independent verifier, incremental fetch, range reads, authorization, concurrency, corrupt chunks and lost acknowledgements. [The membership/replay failure](source-snapshot-membership-red.txt) is retained: server activation now rejects a different valid same-count pack, and an accepted manifest stays reusable after publication. [Native one-click fallback](native-snapshot-fallback-green.txt) tests a real receive-pack storage rejection followed by snapshot completion in the same job, one failed push and no second GitHub clone. Small clones retain their pack with `fetch.unpackLimit=1`; the failed zero-limit assumption is retained in [its report](native-snapshot-zero-limit-failure.txt).
-
-The [additive schema/native installation](source-snapshot-install.json) preserves the source journal and 4/4 historical attempts. The initial clone also removes inherited HTTP/packet tracing; [red](native-clone-tracing-red.txt) and [green](native-clone-tracing-green.txt) evidence use only fixture credentials.
+[Form text](../../entry-fields.md) and [submission material](../../submission.md) are ready for the eligible human entrant. No automated competition entry is sent.

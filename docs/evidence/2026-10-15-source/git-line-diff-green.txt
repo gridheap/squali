@@ -1,0 +1,10 @@
+{"command":"node --import tsx --test tests/git-line-diff.test.ts","nativeCases":134,"sharedBudget":true}
+✔ bounded line diff matches native Git Myers and indent compaction (1236.56375ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1348.74225

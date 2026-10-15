@@ -1,4 +1,5 @@
-import {diffIndices,diff3Merge} from 'node-diff3';
+import {diff3Merge} from 'node-diff3';
+import {gitLineDiff,gitLines} from './git-line-diff.ts';
 import {commitGraph} from './graph.ts';
 import {resolveDerivedBatch,type DerivedBatch} from './derived-data.ts';
 import {GitSession,sha256,validPath} from './git.ts';
@@ -11,10 +12,10 @@ export function metadataService(sql:Sql,project:string,repo:Repository,pathLates
  const g=new GitSession(repo);const commits=new Map<string,Commit>();let trees=0,lineWork=0;
  const ref=(oid:unknown)=>{if(typeof oid!=='string'||!/^[a-f0-9]{40}$/.test(oid))throw new Problem(400,'invalid_ref','Use an immutable commit ID');return oid;};
  async function cached<T,I>(kind:string,keys:string[],definition:Pick<DerivedBatch<T,I>,'load'|'compute'>){
-  // Preserve existing cache identities so this refactor does not repeat fresh
-  // provider work. All derived queries use the same version/dependency engine.
-  const cacheKind=kind+'-v1';
-  return resolveDerivedBatch<T,I>({kind,version:1,...definition,
+  // Preserve unrelated cache identities. Version 4 isolates the Apache comparator
+  // without scheduling a backfill; old source and commit caches remain reusable.
+  const version=kind==='blame'||kind==='blame-renames'?4:1,cacheKind=kind+'-v'+version;
+  return resolveDerivedBatch<T,I>({kind,version,...definition,
    async read(ids){return new Map((await sql`SELECT key,value FROM weave_derived WHERE project=${project} AND kind=${cacheKind} AND key=ANY(${ids})`).map(r=>[r.key,r.value as T]));},
    async save(values){const rows=[...values].map(([key,value])=>({project,kind:cacheKind,key,value:sql.json(value as any)}));for(let at=0;at<rows.length;at+=128)await sql`INSERT INTO weave_derived ${sql(rows.slice(at,at+128),'project','kind','key','value')} ON CONFLICT DO NOTHING`;}
   },keys);
@@ -40,22 +41,24 @@ export function metadataService(sql:Sql,project:string,repo:Repository,pathLates
   return {commits:result,next:current??null,scanned,order:'first-parent'};
  }
  type Line={text:string;commit:string;originalLine:number};
+ function blameDiff(old:string[],next:string[]){
+  return gitLineDiff(old,next,units=>{lineWork+=units;if(lineWork>4000000)throw new Problem(422,'query_budget','Blame comparison budget exceeded; choose a smaller file');});
+ }
  async function renamed(oid:string,parent:string,path:string,text:string[]){
   if(!renameCandidates)return null;
   let selected:string|null=null,best=0.5;
   for(const candidate of await renameCandidates(oid,parent,path)){
    const entry=await g.entry(parent,candidate);if(!entry||entry.type!=='blob'||!['100644','100755'].includes(entry.mode))continue;
    let content:string|null;try{content=await g.file(parent,candidate);}catch(e){if(e instanceof Problem&&e.code==='binary_file')continue;throw e;}
-   if(content===null)continue;const old=content.split('\n');if(old.at(-1)==='')old.pop();if(old.length>2000)throw new Problem(413,'blame_limit','Rename comparison accepts at most 2,000 lines');
-   lineWork+=old.length*text.length;if(lineWork>4000000)throw new Problem(422,'query_budget','Blame rename comparison budget exceeded');
-   let a=0,b=0,common=0;for(const h of [...diffIndices(old,text),{buffer1:[old.length,0],buffer2:[text.length,0]}]){while(a<h.buffer1[0]&&b<h.buffer2[0]){common+=Buffer.byteLength(old[a])+1;a++;b++;}a=h.buffer1[0]+h.buffer1[1];b=h.buffer2[0]+h.buffer2[1];}
-   const score=common/Math.max(1,Buffer.byteLength(content),Buffer.byteLength(text.join('\n'))+1);if(score>best||score===best&&selected===null){best=score;selected=candidate;}
+   if(content===null)continue;const old=gitLines(content);if(old.length>2000)throw new Problem(413,'blame_limit','Rename comparison accepts at most 2,000 lines');
+   let a=0,b=0,common=0;for(const h of [...blameDiff(old,text),{buffer1:[old.length,0],buffer2:[text.length,0]}]){while(a<h.buffer1[0]&&b<h.buffer2[0]){common+=Buffer.byteLength(old[a]);a++;b++;}a=h.buffer1[0]+h.buffer1[1];b=h.buffer2[0]+h.buffer2[1];}
+   const score=common/Math.max(1,Buffer.byteLength(content),Buffer.byteLength(text.join('')));if(score>best||score===best&&selected===null){best=score;selected=candidate;}
   }
   return selected;
  }
  async function blame(oid:string,path:string):Promise<{ref:string;path:string;lines:Line[]}>{
   ref(oid);validPath(path);
-  type Result={ref:string;path:string;lines:Line[]};
+  type Result={ref:string;path:string;lines:Line[];records:string[]};
   type Input={oid:string;path:string;text?:string[];alias?:boolean};
   const queries=new Map<string,{oid:string;path:string}>();
   const keyFor=(oid:string,path:string)=>{const key=oid+':'+sha256(path);queries.set(key,{oid,path});return key;};
@@ -64,22 +67,28 @@ export function metadataService(sql:Sql,project:string,repo:Repository,pathLates
     const query=queries.get(key)!;
     const stable=pathLatest?await pathLatest(query.oid,query.path):await graph.unchanged(query.oid);
     if(stable!==query.oid){inputs.set(key,{key,parents:[keyFor(stable,query.path)],input:{...query,alias:true}});continue;}
-    const c=await commit(query.oid),content=await g.file(query.oid,query.path);if(content===null)throw new Problem(404,'file_missing','File not found');const text=content.split('\n');if(text.at(-1)==='')text.pop();if(text.length>2000)throw new Problem(413,'blame_limit','Blame accepts at most 2,000 lines');
-    const parents:string[]=[];for(const parent of c.parents){const entry=await g.entry(parent,query.path),previousPath=entry?query.path:await renamed(query.oid,parent,query.path,text);if(previousPath)parents.push(keyFor(parent,previousPath));}
+    const c=await commit(query.oid),content=await g.file(query.oid,query.path);if(content===null)throw new Problem(404,'file_missing','File not found');const text=gitLines(content);if(text.length>2000)throw new Problem(413,'blame_limit','Blame accepts at most 2,000 lines');
+    const current=await g.entry(query.oid,query.path),origins=new Map<string,{path:string;oid:string}>();let identical:string|undefined;
+    // Git checks all same-path parents before looking for renames. Any identical
+    // parent blob receives the entire file, before line-level attribution.
+    for(const parent of c.parents){const entry=await g.entry(parent,query.path);if(entry?.type==='blob'){origins.set(parent,{path:query.path,oid:entry.oid});if(entry.oid===current?.oid){identical=keyFor(parent,query.path);break;}}}
+    if(!identical)for(const parent of c.parents){if(origins.has(parent))continue;const previousPath=await renamed(query.oid,parent,query.path,text);if(previousPath){const entry=await g.entry(parent,previousPath);if(entry){origins.set(parent,{path:previousPath,oid:entry.oid});if(entry.oid===current?.oid){identical=keyFor(parent,previousPath);break;}}}}
+    if(identical){inputs.set(key,{key,parents:[identical],input:{...query,alias:true}});continue;}
+    const seen=new Set<string>(),parents:string[]=[];for(const parent of c.parents){const origin=origins.get(parent);if(origin&&!seen.has(origin.oid)){seen.add(origin.oid);parents.push(keyFor(parent,origin.path));}}
     inputs.set(key,{key,parents,input:{...query,text}});
    }return inputs;},
    async compute(inputs,resolved){const values=new Map<string,Result>();for(const node of inputs){
-    const {oid,path,text,alias}=node.input;let lines:Line[];
-    if(alias)lines=resolved.get(node.parents[0])!.lines;
+    const {oid,path,text,alias}=node.input;let lines:Line[],records:string[];
+    if(alias){const previous=resolved.get(node.parents[0])!;lines=previous.lines;records=previous.records;}
     else {
-     lines=text!.map((text,i)=>({text,commit:oid,originalLine:i+1}));
-     for(const parent of node.parents){const previous=resolved.get(parent)!,old=previous.lines.map(l=>l.text);lineWork+=old.length*text!.length;if(lineWork>4000000)throw new Problem(422,'query_budget','Blame comparison budget exceeded; choose a smaller file');let a=0,b=0;
-      for(const h of [...diffIndices(old,text!),{buffer1:[old.length,0],buffer2:[text!.length,0]}]){while(a<h.buffer1[0]&&b<h.buffer2[0]){if(lines[b].commit===oid)lines[b]={...previous.lines[a]};a++;b++;}a=h.buffer1[0]+h.buffer1[1];b=h.buffer2[0]+h.buffer2[1];}
+     records=text!;lines=records.map((record,i)=>({text:record.endsWith('\n')?record.slice(0,-1):record,commit:oid,originalLine:i+1}));
+     for(const parent of node.parents){const previous=resolved.get(parent)!,old=previous.records;let a=0,b=0;
+      for(const h of [...blameDiff(old,records),{buffer1:[old.length,0],buffer2:[records.length,0]}]){while(a<h.buffer1[0]&&b<h.buffer2[0]){if(lines[b].commit===oid)lines[b]={...previous.lines[a]};a++;b++;}a=h.buffer1[0]+h.buffer1[1];b=h.buffer2[0]+h.buffer2[1];}
      }
     }
-    const value={ref:oid,path,lines};values.set(node.key,value);resolved.set(node.key,value);
+    const value={ref:oid,path,lines,records};values.set(node.key,value);resolved.set(node.key,value);
    }return values;}
-  });return result.values[0];
+  });const {records,...value}=result.values[0];return value;
  }
  async function revert(target:string,head:string):Promise<Patch[]>{const c=await commit(ref(target));const changes=await diff(c.parents[0]??ZERO,target);const files:Patch[]=[];for(const file of changes.files){if(file.binary)throw new Problem(422,'binary_file','Binary reverts require native tooling');const current=await g.entry(head,file.path);if((current?.oid??null)!==file.afterOid||(current?.mode??null)!==file.mode)throw new Problem(409,'revert_conflict','Later edits conflict with the revert',{path:file.path});files.push({path:file.path,content:file.before,...(file.beforeMode?{mode:file.beforeMode}:{})});}return files;}
  async function rebase(source:string,onto:string,parent?:number,resolutions:Patch[]=[]){

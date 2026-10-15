@@ -1,0 +1,19 @@
+{
+  "scope" : "Decoded PCM signal in all eight scenes; narration is the retained script rendered by the installed Samantha voice. This is not speech recognition.",
+  "success" : true,
+  "command" : "swift scripts\/inspect-demo-audio.swift work\/continuous-demo-final work\/continuous-demo-final\/squali-source-demo.mp4",
+  "sceneAudibleSeconds" : [
+    40.497320673185982,
+    34.287957781462346,
+    38.654870719437,
+    37.056075900978101,
+    43.082097103792307,
+    39.530416236626451,
+    48.170952933103877,
+    53.113582698743244
+  ],
+  "rmsAmplitude" : 0.14368899065206397,
+  "decodedSeconds" : 405.27668934239711,
+  "decodedSamples" : 8936351,
+  "peakAmplitude" : 0.82355087995529175
+}

@@ -183,7 +183,16 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
  }
  async function latestPath(project:string,start:string,path:string){const result=await history(project,start,path,1);if(!result.commits.length&&result.cursor)throw new Problem(422,'path_query_budget','Path candidates require another bounded history page');return result.commits[0]?.oid??start;}
  async function renameCandidates(project:string,id:string,parent:string,path:string){
-  const current=await commit(project,id);if(current?.parents[0]!==parent)return [];
+  const current=await commit(project,id);if(!current?.parents.includes(parent))return [];
+  if(current.parents[0]!==parent){
+   const previous=await commit(project,parent),deleted:string[]=[];let trees=0,entries=0;
+   async function walk(before:string,after:string|null,prefix:string){
+    if(before===after)return;if(++trees>256)throw new Problem(422,'rename_budget','Merge rename detection exceeds 256 changed trees');
+    const old=decodeTree(await raw(project,before)),next=after?decodeTree(await raw(project,after)):[];entries+=old.length+next.length;if(entries>20000)throw new Problem(422,'rename_budget','Merge rename detection exceeds 20,000 tree entries');const byName=new Map(next.map(e=>[e.name,e]));
+    for(const entry of old){const found=byName.get(entry.name),name=prefix?prefix+'/'+entry.name:entry.name;if(entry.oid===found?.oid&&entry.mode===found.mode)continue;if(entry.type==='tree')await walk(entry.oid,found?.type==='tree'?found.oid:null,name);else if(!found||found.type==='tree'){if(deleted.length>=32)throw new Problem(422,'rename_budget','Blame rename detection exceeds 32 deleted candidates');deleted.push(name);}}
+   }
+   if(previous)await walk(previous.tree,current.tree,'');return deleted.sort().filter(candidate=>candidate!==path);
+  }
   const rows=await sql`SELECT f->>'path' AS path FROM weave_changesets c CROSS JOIN LATERAL jsonb_array_elements(c.files) f WHERE c.project=${project} AND c.git_oid=${id} AND f->>'mode' IS NULL ORDER BY f->>'path' LIMIT 33`;
   if(rows.length>32)throw new Problem(422,'rename_budget','Blame rename detection exceeds 32 deleted candidates');return rows.map(r=>r.path as string).filter(candidate=>candidate!==path);
  }

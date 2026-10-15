@@ -1,0 +1,30 @@
+✖ blame compares only changed regions across a long stable file history (1659.073334ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1910.192709
+
+✖ failing tests:
+
+test at tests/blame-budget.test.ts:1:340
+✖ blame compares only changed regions across a long stable file history (1659.073334ms)
+  AssertionError [ERR_ASSERTION]: {"error":"query_budget","message":"Blame comparison budget exceeded; choose a smaller file"}
+  
+  422 !== 200
+  
+      at get (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-budget.test.ts:14:124)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-budget.test.ts:23:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

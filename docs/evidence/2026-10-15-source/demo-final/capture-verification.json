@@ -1,0 +1,7 @@
+{
+  "command": "node --import tsx scripts/check-demo-capture.ts work/continuous-demo-final",
+  "success": true,
+  "frames": 2046,
+  "durationSeconds": 410.140378417,
+  "failures": []
+}

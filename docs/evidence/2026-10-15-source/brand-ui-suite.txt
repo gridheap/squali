@@ -1,0 +1,13 @@
+$ playwright test
+
+Running 5 tests using 1 worker
+
+(node:15358) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui.spec.ts:5:1 › five-shark brand uses squa.li and stays inside desktop and mobile navigation (498ms)
+  ✓  2 tests/ui.spec.ts:21:1 › reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs (6.5s)
+  ✓  3 tests/ui.spec.ts:48:1 › font CSS timeout preserves usable inputs and locks the fallback across navigation (5.9s)
+  ✓  4 tests/ui.spec.ts:56:1 › a reviewer revises every file in a proposal and sees actual reserved usage (5.7s)
+  ✓  5 tests/ui.spec.ts:75:1 › reviewer selects a publication subset and inspects source history and blame (7.8s)
+
+  5 passed (29.1s)

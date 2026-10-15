@@ -2,6 +2,22 @@ import {test,expect} from '@playwright/test';
 import {mkdir,writeFile} from 'node:fs/promises';
 const evidence=process.env.WEAVE_UI_EVIDENCE??'work/ui-evidence';
 
+test('five-shark brand uses squa.li and stays inside desktop and mobile navigation',async({page})=>{
+ await page.route('https://use.typekit.net/**',route=>route.abort());
+ await page.goto('/');const brand=page.getByRole('link',{name:'Squali home',exact:true});
+ await expect(brand).toHaveText('squa.li');
+ const mark=brand.locator('img');await expect(mark).toHaveAttribute('src','/squali-five-sharks.png');
+ await expect.poll(()=>mark.evaluate((image:HTMLImageElement)=>image.complete&&image.naturalWidth>0)).toBe(true);
+ await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href','/squali-five-sharks.png');
+ await expect(page.locator('html')).toHaveClass(/wf-inactive/);
+ await mkdir(evidence,{recursive:true});
+ for(const width of [1440,768,390,320]){await page.setViewportSize({width,height:960});
+  const bounds=await brand.evaluate(el=>{const b=el.getBoundingClientRect(),s=el.closest('aside')!.getBoundingClientRect(),image=el.querySelector('img')!.getBoundingClientRect();return{right:b.right,parentRight:s.right,imageWidth:image.width,overflow:document.documentElement.scrollWidth>innerWidth};});
+  expect(bounds.right).toBeLessThanOrEqual(bounds.parentRight);expect(bounds.imageWidth).toBeGreaterThanOrEqual(36);expect(bounds.overflow).toBe(false);
+  await page.screenshot({path:evidence+`/brand-${width}.png`,fullPage:true});
+ }
+});
+
 test('reviewer completes the browser workflow and Adobe resolves Latin and CJK glyphs',async({page,request})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const started=Date.now();
  await page.goto('/');await expect(page).toHaveTitle(/Squali/);

@@ -1,0 +1,51 @@
+$ playwright test --grep 'five-shark brand'
+
+Running 1 test using 1 worker
+
+(node:14563) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui.spec.ts:5:1 › five-shark brand uses squa.li and stays inside desktop and mobile navigation (5.3s)
+
+
+  1) tests/ui.spec.ts:5:1 › five-shark brand uses squa.li and stays inside desktop and mobile navigation 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('link', { name: 'Squali home', exact: true })
+    Expected: "squa.li"
+    Received: "squali."
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('link', { name: 'Squali home', exact: true }) with timeout 5000ms
+      - waiting for getByRole('link', { name: 'Squali home', exact: true })
+        14 × locator resolved to <a href="#" class="brand" aria-label="Squali home">…</a>
+           - unexpected value "squali."
+
+
+       6 |  await page.route('https://use.typekit.net/**',route=>route.abort());
+       7 |  await page.goto('/');const brand=page.getByRole('link',{name:'Squali home',exact:true});
+    >  8 |  await expect(brand).toHaveText('squa.li');
+         |                      ^
+       9 |  const mark=brand.locator('img');await expect(mark).toHaveAttribute('src','/squali-five-sharks.png');
+      10 |  await expect.poll(()=>mark.evaluate((image:HTMLImageElement)=>image.complete&&image.naturalWidth>0)).toBe(true);
+      11 |  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href','/squali-five-sharks.png');
+        at /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/ui.spec.ts:8:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-five-shark-brand-uses-s-45cc4-sktop-and-mobile-navigation/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: work/ui-artifacts/ui-five-shark-brand-uses-s-45cc4-sktop-and-mobile-navigation/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    work/ui-artifacts/ui-five-shark-brand-uses-s-45cc4-sktop-and-mobile-navigation/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace work/ui-artifacts/ui-five-shark-brand-uses-s-45cc4-sktop-and-mobile-navigation/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/ui.spec.ts:5:1 › five-shark brand uses squa.li and stays inside desktop and mobile navigation 
+[ELIFECYCLE] Command failed with exit code 1.

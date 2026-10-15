@@ -1,0 +1,40 @@
+{"command":"node --import tsx --test tests/blame-budget.test.ts","commits":20,"lines":502,"nativeOriginsEqual":true,"completedReplayExtraCalls":0}
+✔ blame compares only changed regions across a long stable file history (1282.219375ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"newline","lines":1,"nativeOriginsEqual":true}
+✔ native blame origins: newline (701.226917ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"identical-parent","lines":2,"nativeOriginsEqual":true}
+✔ native blame origins: identical-parent (707.681125ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"rename-parent","lines":4,"nativeOriginsEqual":true}
+✔ native blame origins: rename-parent (717.054584ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"blank-lines","lines":24,"nativeOriginsEqual":true}
+✔ native blame origins: blank-lines (1284.460958ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (839.767542ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (460.445333ms)
+✖ blame dependency rebuilding preserves native line origins and existing versioned cache entries (591.047208ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3581.434333
+
+✖ failing tests:
+
+test at tests/derived-indexes.test.ts:1:5015
+✖ blame dependency rebuilding preserves native line origins and existing versioned cache entries (591.047208ms)
+  AssertionError [ERR_ASSERTION]: Blame persists reusable parent results
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/derived-indexes.test.ts:62:137)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,26 +1,30 @@
-# Original goal and submission readiness
+# Acceptance and entry readiness
 
-**Not ready for final submission. Full Scion parity is not complete.** The goal is an online source-control service with strong performance and cost efficiency, using Workers, Artifacts and R2, without D1. The [Scion capability map](scion-parity.md) is the acceptance boundary.
+**Implementation acceptance passed; the project package is ready for the eligible team member. No competition entry has been submitted.** The Apache-2.0 comparator replacement passes the final local suite and the live private-file regression. The eligible team member must personally submit under the official rules.
 
-## Verified at the latest checkpoint
+## What passed
 
-- Canonical changesets with first-parent deltas, independent compressed R2 blobs, separate CAS publication and no proposal refs. Git trees/commits can be reconstructed from canonical data.
-- Source authority, native import, Git clone/fetch and recovery, single/continuous rebase, semantic review, automatic bisect, graph/path indices, directory IAM, sparse working-copy recovery and cache isolation have retained E2E evidence. The latest complete API/CLI suite has **78 passing tests**.
-- Real Linux FUSE performs lazy content reads through the node socket; two mounts share a cache. Metadata inspection fetches no file bodies. Verified snapshots and failure isolation are tested. Mounts remain read-only; writable operations use the sparse client/API.
-- The persistent native GitHub consumer runs on the existing Azure VM. It admits one active job, retains Git/input journals, continues healthy checkpoints, and never automatically restarts a failed job. Browser fixture tests cover login/catalog/private import, pause/resume and owner isolation.
-- Source-backed rebase, semantic approval and Git export work with a single database connection. Export transfers do not hold database transactions. A slow export does not block another workspace or allow duplicate export.
-- Local 64-change/8-client source sample: 318.19 changes/s, p95 95.93 ms, zero new blob writes during publication. These are local measurements, not cloud throughput. Batch sealing 128 commits uses 17 SQL queries versus the earlier 1,793.
-- Mobile UI, workflow, failure fallback and warm Adobe glyph selection have saved browser evidence. Cold Adobe CSS exceeded its 2.8-second budget in one run; fallback remained stable. The latest native-seed UI run activated Adobe on a cold navigation in 3.747 seconds; the reviewer action completed in 3.873 seconds. Proxima Nova Latin and platform PingFang SC CJK were confirmed through CDP. Earlier failures remain retained.
-- Latest Worker: `7c16dd9b-d8bc-4d36-a133-967938277a0f`, at https://squa.li. The legacy workers.dev and preview URLs remain disabled. Source R2 objects have no expiry; disposable cache objects expire after seven days. No D1 or application Durable Object.
+- **20/20 fixed capability criteria**, including mandatory architecture items 3, 4, 5, 6, 13 and 15. This clears the project's ≥19/20 threshold. It measures the [published completion criteria](scion-acceptance.md), not the percentage of Anthropic's unpublished implementation or a competition score.
+- **84/84 HTTP, CLI and native tests**, five rendered browser tests, typecheck and Worker build. Tests cover canonical changesets, independent R2 blobs, CAS publication, derived data, graph/path queries, rebase/revert/bisect, permissions, semantic review, sparse clients, cache isolation, import recovery and Git interoperability. [Evidence index](evidence/2026-10-15-source/README.md).
+- **Large private import:** 421,219 frozen objects, 85,563 commits, 1,020 refs and 8.33 GB raw history. All exported objects and refs match native Git; fsck passes. Eight canonical deltas, root tree, README content/history/blame and graph queries independently match. A rejected write smoke verifies a new delta without changing the published head. One verification clone and 40/48 HTTP attempts. [Result](evidence/2026-10-15-source/private-verification.json).
+- **Production Clerk/GitHub and UI:** real sign-in, 97 authorized repositories, completed private workspace, source/history/blame, rejected proposal and cost view. The final five-shark logo and `squa.li` wordmark render in production and at 320–1440 px. Adobe Latin/system CJK and bounded fallback pass. [Browser proof](evidence/2026-10-15-source/private-browser-acceptance.md).
+- **Cost reconciliation:** provider measurements, application reservations, original failures, shared Azure capacity and ongoing storage are documented. The queue has no pending/running jobs; acceptance credentials are revoked; no recurring verification or full backfill is scheduled. [Report](cost-final.md).
+- **Current continuous video:** 410.2 seconds, 25,416,963 bytes, H.264/AAC, one video/audio track. All eight scenes have audible narration; 2,046 retained timed frames; five decoded frames inspected, including the final production report. [Media evidence](evidence/2026-10-15-source/demo-final/) and [reproduction](demo-source.md).
+- **Final comparator validation:** 135 native line-diff pairs pass. The live v4 response matches all 75 full commit origins and seven retained native original-line regression points. [Replacement evidence](evidence/2026-10-15-source/imara-validation.md).
+- **Independent review:** final Standards and Spec reviews each found zero new actionable findings. Earlier findings and their fixes remain documented in [the review record](evidence/2026-10-15-source/review-snapshot.md).
 
-## Still required before submission
+## Production and measured limits
 
-1. Finish and independently verify the private fixture: 85,563 commits, 1,020 refs, 421,219 objects and 8.33 GB raw data. Source fsck passed. All 421,219 source objects and 85,563 canonical changesets are durable. Artifacts rejected an atomic push and then failed the full non-atomic push. Eleven bounded seed batches succeeded before Artifacts reported its repository storage limit. The new R2 compatibility snapshot reuses the retained native pack and preserves source data, previous failures and original budgets. The production snapshot migration is underway. Independent native verification remains pending.
-2. Finish the private workspace end-to-end verification after import. Real production GitHub login and repository discovery now pass: 97 authorized repositories are listed, and the retained private job is visible in the catalog. No new whole-repository transfer was triggered for this browser check.
-3. Finish final object/ref/native-Git comparisons and cost reconciliation. A real 64-change/8-client cloud sample and a smaller post-optimization smoke are retained. Reconcile provider metrics with application reservations; account for Azure capacity and ongoing storage.
-4. Reconcile every fixed Scion checklist item and its explicit limits. Tree, generation, graph, path and blame results now share the versioned dependency engine; head-only rebuilding, merge parents, resource limits and zero additional blob I/O pass E2E. Do not count partial work as complete.
-5. Record a continuous current-version demonstration, review the final package, then have the eligible team member submit the competition entry.
+Worker `79cc8779-a322-4f22-9219-4e563007e799` serves https://squa.li. The legacy workers.dev and preview URLs remain disabled. No D1 or application Durable Object. Source data persists; disposable cache expires after seven days.
 
-The competition asks for Workers, Artifacts, concurrent agent changes, an open-source license, runnable instructions and a 5–10 minute video. Its format requirements do not by themselves establish product readiness. No submission has been made.
+Artifacts reached its repository limit after eleven accepted seed batches. The same retained native pack now provides a verified R2 Git snapshot; no fifth native attempt, second GitHub clone or repeated source backfill was used. Snapshot admission remains 500,000 objects, a 512 MiB pack and a 16 MiB index.
 
-Sources: [article](https://www.anthropic.com/engineering/redesigning-source-control), [competition](https://www.cloudflare.com/git-competition/), [rules](https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf).
+The latest bounded production sample achieves 2.301 proposals/s, p50 1.486 s, p95 3.369 s and eight-change publication in 1.825 s. The two-second proposal investigation target is **unmet**. The original private README blame sample took 17.378 s; the final Apache/v4 request took 20.995 s, excluding Clerk refresh. These separate observations do not establish a speedup. These are transparent observations, not a highest-performance claim. [Performance](performance.md).
+
+Linux FUSE is read-only; edits use the writable sparse client/API. PostgreSQL has not demonstrated Spanner-scale horizontal throughput. There is no dedicated regional cache fleet, measured 99% fleet hit rate, full-text code search or automatic CI. Text, graph, rename and export budgets remain explicit. [Capability boundaries](scion-parity.md).
+
+## Final human step
+
+The [official rules](https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf) prohibit automated entries. An eligible team member must personally review the [prepared form text](entry-fields.md), provide their contact/eligibility confirmations, upload the accepted video and submit the [official form](https://www.cloudflare.com/git-competition/submit/).
+
+Deadline: **October 15, 2026 at 14:59 Taipei**, equivalent to October 14 at 11:59 p.m. PDT. Publishing the GitHub release is not a competition entry.

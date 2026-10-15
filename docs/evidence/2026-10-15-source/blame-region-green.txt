@@ -1,0 +1,20 @@
+{"command":"node --import tsx --test tests/blame-budget.test.ts","commits":20,"lines":502,"nativeOriginsEqual":true,"completedReplayExtraCalls":0}
+✔ blame compares only changed regions across a long stable file history (1577.268916ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (934.146375ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (469.674583ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","recursiveBlame":true,"editedRenameMatchesGit":true,"parentCacheReused":true,"existingCacheIdentityPreserved":true}
+✔ blame dependency rebuilding preserves native line origins and existing versioned cache entries (661.031083ms)
+{"command":"pnpm test:metadata","mergeBase":"18bfa23393188f1a9447a5bb975db4d2a9ccb732","mergedHead":"659b45dd3ffd18b84fbf4bad5c79e4ca554a28b8","blameCommits":["82487f80e3ff104b8afe15a4419fabe23e2893e5","18bfa23393188f1a9447a5bb975db4d2a9ccb732","56c320df4b9d1bce067bf3bd3ef9382cc7df7116"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (1302.447709ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (459.890833ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2228.245542

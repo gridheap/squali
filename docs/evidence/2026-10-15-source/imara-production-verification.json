@@ -1,0 +1,21 @@
+{
+  "command": "python3 scripts/compare-blame-report.py docs/evidence/2026-10-15-source/imara-production-blame.json docs/evidence/2026-10-15-source/imara-upstream-source.json --regressions docs/evidence/2026-10-15-source/imara-native-regression-points.json",
+  "head": "6de20f6092dcf9bdb1c8efe03db4b70c82b423dd",
+  "path": "README.md",
+  "lines": 75,
+  "allFullCommitOriginsMatch": true,
+  "nativeOriginalLineRegressionPoints": [
+    6,
+    10,
+    15,
+    28,
+    32,
+    47,
+    17
+  ],
+  "httpCalls": 0,
+  "gitTransfers": 0,
+  "limits": [
+    "GitHub ranges supply commit origins, not original line positions; positions at the named regression points come from retained native acceptance evidence."
+  ]
+}

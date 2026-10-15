@@ -1,0 +1,309 @@
+{
+  "evidenceFormat": "blame-origin-projection-v1",
+  "description": "Captured response projected to line identities; third-party file text and author details omitted. Raw capture retained privately.",
+  "rawCaptureSha256": "5349618b58855bd9bea67a33538c12f823e797369c346a031c956ea6a25ee0e1",
+  "ref": "6de20f6092dcf9bdb1c8efe03db4b70c82b423dd",
+  "path": "README.md",
+  "lines": [
+    {
+      "commit": "fc1bac6b57a99cefe2c0febbe57bd19bd3e03ab9",
+      "originalLine": 1
+    },
+    {
+      "commit": "fc1bac6b57a99cefe2c0febbe57bd19bd3e03ab9",
+      "originalLine": 2
+    },
+    {
+      "commit": "5f7864663bdb71635b4aaf0d996db14e4d521ff6",
+      "originalLine": 2
+    },
+    {
+      "commit": "28513c4f56a2164fd6d3a16ceddbab3a5bf3f191",
+      "originalLine": 1
+    },
+    {
+      "commit": "28513c4f56a2164fd6d3a16ceddbab3a5bf3f191",
+      "originalLine": 2
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 6
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 18
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 19
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 20
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 21
+    },
+    {
+      "commit": "779d7e93773a0dcf918dc77023511fdc68161bd8",
+      "originalLine": 22
+    },
+    {
+      "commit": "779d7e93773a0dcf918dc77023511fdc68161bd8",
+      "originalLine": 23
+    },
+    {
+      "commit": "71ce415dc088f19a0b8d6c8567dfdd6d851842b2",
+      "originalLine": 24
+    },
+    {
+      "commit": "71ce415dc088f19a0b8d6c8567dfdd6d851842b2",
+      "originalLine": 25
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 25
+    },
+    {
+      "commit": "6164972018ba3adbae2db1e7b286e2b811b3e7c2",
+      "originalLine": 24
+    },
+    {
+      "commit": "aa98eb3d6581a123852e4e080011acc3a61bc556",
+      "originalLine": 27
+    },
+    {
+      "commit": "bcd886d897d22f88fac63fd190b65884f4c58f8f",
+      "originalLine": 15
+    },
+    {
+      "commit": "d9b297db70b29189398772c2997754420d323838",
+      "originalLine": 27
+    },
+    {
+      "commit": "d9b297db70b29189398772c2997754420d323838",
+      "originalLine": 28
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 20
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 21
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 22
+    },
+    {
+      "commit": "aa98eb3d6581a123852e4e080011acc3a61bc556",
+      "originalLine": 31
+    },
+    {
+      "commit": "a299e3a39619dc5e05790d0cc06d8336e7c3d756",
+      "originalLine": 22
+    },
+    {
+      "commit": "a299e3a39619dc5e05790d0cc06d8336e7c3d756",
+      "originalLine": 23
+    },
+    {
+      "commit": "a299e3a39619dc5e05790d0cc06d8336e7c3d756",
+      "originalLine": 24
+    },
+    {
+      "commit": "aa98eb3d6581a123852e4e080011acc3a61bc556",
+      "originalLine": 35
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 28
+    },
+    {
+      "commit": "a299e3a39619dc5e05790d0cc06d8336e7c3d756",
+      "originalLine": 27
+    },
+    {
+      "commit": "aa98eb3d6581a123852e4e080011acc3a61bc556",
+      "originalLine": 38
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 31
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 35
+    },
+    {
+      "commit": "556b6600b25713054430b1dcaa731120eefbbd5b",
+      "originalLine": 36
+    },
+    {
+      "commit": "07f050c9996cbda2af8d42996ebd349dcdb4c28d",
+      "originalLine": 45
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 35
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 36
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 37
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 38
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 39
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 40
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 41
+    },
+    {
+      "commit": "af3d2c160fd6de6f868cdf17053241ad7663cbd7",
+      "originalLine": 42
+    },
+    {
+      "commit": "af3d2c160fd6de6f868cdf17053241ad7663cbd7",
+      "originalLine": 43
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 44
+    },
+    {
+      "commit": "d05b08cd52cfda627f1d865bdfe6040a2c9521b5",
+      "originalLine": 45
+    },
+    {
+      "commit": "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+      "originalLine": 52
+    },
+    {
+      "commit": "2a00502b14cd88299c8e69abcedf8aadcfaaaa6e",
+      "originalLine": 39
+    },
+    {
+      "commit": "2a00502b14cd88299c8e69abcedf8aadcfaaaa6e",
+      "originalLine": 40
+    },
+    {
+      "commit": "2a00502b14cd88299c8e69abcedf8aadcfaaaa6e",
+      "originalLine": 41
+    },
+    {
+      "commit": "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+      "originalLine": 53
+    },
+    {
+      "commit": "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+      "originalLine": 54
+    },
+    {
+      "commit": "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+      "originalLine": 55
+    },
+    {
+      "commit": "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+      "originalLine": 56
+    },
+    {
+      "commit": "6164972018ba3adbae2db1e7b286e2b811b3e7c2",
+      "originalLine": 54
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 44
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 45
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 46
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 47
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 48
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 49
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 50
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 51
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 52
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 53
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 54
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 55
+    },
+    {
+      "commit": "a217f07388b847192565c71e5ef6a9cc81633594",
+      "originalLine": 56
+    },
+    {
+      "commit": "6164972018ba3adbae2db1e7b286e2b811b3e7c2",
+      "originalLine": 55
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 69
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 70
+    },
+    {
+      "commit": "c50fbb2dd225e7e82abba4380423ae105089f4d7",
+      "originalLine": 71
+    },
+    {
+      "commit": "6164972018ba3adbae2db1e7b286e2b811b3e7c2",
+      "originalLine": 60
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 73
+    },
+    {
+      "commit": "4ed7dfa7135385d29bc09358d0b1d373a7ef7c0e",
+      "originalLine": 74
+    }
+  ]
+}

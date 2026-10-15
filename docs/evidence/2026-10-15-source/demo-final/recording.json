@@ -1,0 +1,8261 @@
+{
+  "command": "SQUALI_DEMO_DIR=/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/continuous-demo-final node --import tsx scripts/demo-continuous.ts",
+  "success": true,
+  "quick": false,
+  "format": "Continuous CDP browser sampling at five frames/second; no cuts or scene retiming; local source service then retained production report; captions and synthesized narration",
+  "durationSeconds": 410.140378417,
+  "frames": [
+    {
+      "timeSeconds": 0.03879204200000095,
+      "file": "capture/000000.jpg"
+    },
+    {
+      "timeSeconds": 0.20768595800000184,
+      "file": "capture/000001.jpg"
+    },
+    {
+      "timeSeconds": 0.4093485419999997,
+      "file": "capture/000002.jpg"
+    },
+    {
+      "timeSeconds": 0.6173526669999992,
+      "file": "capture/000003.jpg"
+    },
+    {
+      "timeSeconds": 0.8089373330000017,
+      "file": "capture/000004.jpg"
+    },
+    {
+      "timeSeconds": 1.0128200419999993,
+      "file": "capture/000005.jpg"
+    },
+    {
+      "timeSeconds": 1.2261699580000023,
+      "file": "capture/000006.jpg"
+    },
+    {
+      "timeSeconds": 1.4107368750000022,
+      "file": "capture/000007.jpg"
+    },
+    {
+      "timeSeconds": 1.6137513749999999,
+      "file": "capture/000008.jpg"
+    },
+    {
+      "timeSeconds": 1.8112803329999987,
+      "file": "capture/000009.jpg"
+    },
+    {
+      "timeSeconds": 2.0119259999999994,
+      "file": "capture/000010.jpg"
+    },
+    {
+      "timeSeconds": 2.212424417000002,
+      "file": "capture/000011.jpg"
+    },
+    {
+      "timeSeconds": 2.4115960830000005,
+      "file": "capture/000012.jpg"
+    },
+    {
+      "timeSeconds": 2.610573375,
+      "file": "capture/000013.jpg"
+    },
+    {
+      "timeSeconds": 2.8151166250000026,
+      "file": "capture/000014.jpg"
+    },
+    {
+      "timeSeconds": 3.0292912920000017,
+      "file": "capture/000015.jpg"
+    },
+    {
+      "timeSeconds": 3.2171316250000017,
+      "file": "capture/000016.jpg"
+    },
+    {
+      "timeSeconds": 3.414373125000002,
+      "file": "capture/000017.jpg"
+    },
+    {
+      "timeSeconds": 3.6220065830000023,
+      "file": "capture/000018.jpg"
+    },
+    {
+      "timeSeconds": 3.820474792000001,
+      "file": "capture/000019.jpg"
+    },
+    {
+      "timeSeconds": 4.021440666999999,
+      "file": "capture/000020.jpg"
+    },
+    {
+      "timeSeconds": 4.220399832999999,
+      "file": "capture/000021.jpg"
+    },
+    {
+      "timeSeconds": 4.420473292000002,
+      "file": "capture/000022.jpg"
+    },
+    {
+      "timeSeconds": 4.620672042000002,
+      "file": "capture/000023.jpg"
+    },
+    {
+      "timeSeconds": 4.820425417000002,
+      "file": "capture/000024.jpg"
+    },
+    {
+      "timeSeconds": 5.039900958000002,
+      "file": "capture/000025.jpg"
+    },
+    {
+      "timeSeconds": 5.222444083000002,
+      "file": "capture/000026.jpg"
+    },
+    {
+      "timeSeconds": 5.422726957999999,
+      "file": "capture/000027.jpg"
+    },
+    {
+      "timeSeconds": 5.623978083000002,
+      "file": "capture/000028.jpg"
+    },
+    {
+      "timeSeconds": 5.822584875,
+      "file": "capture/000029.jpg"
+    },
+    {
+      "timeSeconds": 6.037920207999999,
+      "file": "capture/000030.jpg"
+    },
+    {
+      "timeSeconds": 6.221824292000001,
+      "file": "capture/000031.jpg"
+    },
+    {
+      "timeSeconds": 6.421297000000003,
+      "file": "capture/000032.jpg"
+    },
+    {
+      "timeSeconds": 6.622130708,
+      "file": "capture/000033.jpg"
+    },
+    {
+      "timeSeconds": 6.837687375000002,
+      "file": "capture/000034.jpg"
+    },
+    {
+      "timeSeconds": 7.023625082999999,
+      "file": "capture/000035.jpg"
+    },
+    {
+      "timeSeconds": 7.237323375,
+      "file": "capture/000036.jpg"
+    },
+    {
+      "timeSeconds": 7.424967917000002,
+      "file": "capture/000037.jpg"
+    },
+    {
+      "timeSeconds": 7.625414124999999,
+      "file": "capture/000038.jpg"
+    },
+    {
+      "timeSeconds": 7.826119083000002,
+      "file": "capture/000039.jpg"
+    },
+    {
+      "timeSeconds": 8.027012292,
+      "file": "capture/000040.jpg"
+    },
+    {
+      "timeSeconds": 8.227886125000001,
+      "file": "capture/000041.jpg"
+    },
+    {
+      "timeSeconds": 8.428657208,
+      "file": "capture/000042.jpg"
+    },
+    {
+      "timeSeconds": 8.637537833000001,
+      "file": "capture/000043.jpg"
+    },
+    {
+      "timeSeconds": 8.830536,
+      "file": "capture/000044.jpg"
+    },
+    {
+      "timeSeconds": 9.037677542,
+      "file": "capture/000045.jpg"
+    },
+    {
+      "timeSeconds": 9.237525833,
+      "file": "capture/000046.jpg"
+    },
+    {
+      "timeSeconds": 9.437022458,
+      "file": "capture/000047.jpg"
+    },
+    {
+      "timeSeconds": 9.637484250000002,
+      "file": "capture/000048.jpg"
+    },
+    {
+      "timeSeconds": 9.837210792000002,
+      "file": "capture/000049.jpg"
+    },
+    {
+      "timeSeconds": 10.037289375,
+      "file": "capture/000050.jpg"
+    },
+    {
+      "timeSeconds": 10.239561417,
+      "file": "capture/000051.jpg"
+    },
+    {
+      "timeSeconds": 10.437605458000002,
+      "file": "capture/000052.jpg"
+    },
+    {
+      "timeSeconds": 10.637602332999998,
+      "file": "capture/000053.jpg"
+    },
+    {
+      "timeSeconds": 10.838118708000001,
+      "file": "capture/000054.jpg"
+    },
+    {
+      "timeSeconds": 11.041800167000002,
+      "file": "capture/000055.jpg"
+    },
+    {
+      "timeSeconds": 11.243035458000001,
+      "file": "capture/000056.jpg"
+    },
+    {
+      "timeSeconds": 11.437815083000002,
+      "file": "capture/000057.jpg"
+    },
+    {
+      "timeSeconds": 11.639371917,
+      "file": "capture/000058.jpg"
+    },
+    {
+      "timeSeconds": 11.837869,
+      "file": "capture/000059.jpg"
+    },
+    {
+      "timeSeconds": 12.037638792000001,
+      "file": "capture/000060.jpg"
+    },
+    {
+      "timeSeconds": 12.238310125,
+      "file": "capture/000061.jpg"
+    },
+    {
+      "timeSeconds": 12.43885675,
+      "file": "capture/000062.jpg"
+    },
+    {
+      "timeSeconds": 12.640238083,
+      "file": "capture/000063.jpg"
+    },
+    {
+      "timeSeconds": 12.839986250000003,
+      "file": "capture/000064.jpg"
+    },
+    {
+      "timeSeconds": 13.040608124999999,
+      "file": "capture/000065.jpg"
+    },
+    {
+      "timeSeconds": 13.241352042000003,
+      "file": "capture/000066.jpg"
+    },
+    {
+      "timeSeconds": 13.442402458,
+      "file": "capture/000067.jpg"
+    },
+    {
+      "timeSeconds": 13.643739499999999,
+      "file": "capture/000068.jpg"
+    },
+    {
+      "timeSeconds": 13.843647042,
+      "file": "capture/000069.jpg"
+    },
+    {
+      "timeSeconds": 14.044547125000001,
+      "file": "capture/000070.jpg"
+    },
+    {
+      "timeSeconds": 14.244278417000002,
+      "file": "capture/000071.jpg"
+    },
+    {
+      "timeSeconds": 14.4446025,
+      "file": "capture/000072.jpg"
+    },
+    {
+      "timeSeconds": 14.645568875,
+      "file": "capture/000073.jpg"
+    },
+    {
+      "timeSeconds": 14.847488000000002,
+      "file": "capture/000074.jpg"
+    },
+    {
+      "timeSeconds": 15.048743542,
+      "file": "capture/000075.jpg"
+    },
+    {
+      "timeSeconds": 15.246866583,
+      "file": "capture/000076.jpg"
+    },
+    {
+      "timeSeconds": 15.454021292000002,
+      "file": "capture/000077.jpg"
+    },
+    {
+      "timeSeconds": 15.656545416999997,
+      "file": "capture/000078.jpg"
+    },
+    {
+      "timeSeconds": 15.857253500000002,
+      "file": "capture/000079.jpg"
+    },
+    {
+      "timeSeconds": 16.053748457999998,
+      "file": "capture/000080.jpg"
+    },
+    {
+      "timeSeconds": 16.255236708,
+      "file": "capture/000081.jpg"
+    },
+    {
+      "timeSeconds": 16.470678458,
+      "file": "capture/000082.jpg"
+    },
+    {
+      "timeSeconds": 16.656087792,
+      "file": "capture/000083.jpg"
+    },
+    {
+      "timeSeconds": 16.853589833,
+      "file": "capture/000084.jpg"
+    },
+    {
+      "timeSeconds": 17.053925458000002,
+      "file": "capture/000085.jpg"
+    },
+    {
+      "timeSeconds": 17.256320625000004,
+      "file": "capture/000086.jpg"
+    },
+    {
+      "timeSeconds": 17.453523041999997,
+      "file": "capture/000087.jpg"
+    },
+    {
+      "timeSeconds": 17.671493708,
+      "file": "capture/000088.jpg"
+    },
+    {
+      "timeSeconds": 17.867804125,
+      "file": "capture/000089.jpg"
+    },
+    {
+      "timeSeconds": 18.056787083,
+      "file": "capture/000090.jpg"
+    },
+    {
+      "timeSeconds": 18.257431874999998,
+      "file": "capture/000091.jpg"
+    },
+    {
+      "timeSeconds": 18.457798667,
+      "file": "capture/000092.jpg"
+    },
+    {
+      "timeSeconds": 18.656999542,
+      "file": "capture/000093.jpg"
+    },
+    {
+      "timeSeconds": 18.857215167,
+      "file": "capture/000094.jpg"
+    },
+    {
+      "timeSeconds": 19.057128417000005,
+      "file": "capture/000095.jpg"
+    },
+    {
+      "timeSeconds": 19.259097458,
+      "file": "capture/000096.jpg"
+    },
+    {
+      "timeSeconds": 19.458711875,
+      "file": "capture/000097.jpg"
+    },
+    {
+      "timeSeconds": 19.659464042000003,
+      "file": "capture/000098.jpg"
+    },
+    {
+      "timeSeconds": 19.86075375,
+      "file": "capture/000099.jpg"
+    },
+    {
+      "timeSeconds": 20.059677792,
+      "file": "capture/000100.jpg"
+    },
+    {
+      "timeSeconds": 20.260698333000004,
+      "file": "capture/000101.jpg"
+    },
+    {
+      "timeSeconds": 20.461439833,
+      "file": "capture/000102.jpg"
+    },
+    {
+      "timeSeconds": 20.662121416999998,
+      "file": "capture/000103.jpg"
+    },
+    {
+      "timeSeconds": 20.863262667,
+      "file": "capture/000104.jpg"
+    },
+    {
+      "timeSeconds": 21.062757917,
+      "file": "capture/000105.jpg"
+    },
+    {
+      "timeSeconds": 21.264900417,
+      "file": "capture/000106.jpg"
+    },
+    {
+      "timeSeconds": 21.463115207999998,
+      "file": "capture/000107.jpg"
+    },
+    {
+      "timeSeconds": 21.662911042000005,
+      "file": "capture/000108.jpg"
+    },
+    {
+      "timeSeconds": 21.864056999999995,
+      "file": "capture/000109.jpg"
+    },
+    {
+      "timeSeconds": 22.070738000000002,
+      "file": "capture/000110.jpg"
+    },
+    {
+      "timeSeconds": 22.270390541999998,
+      "file": "capture/000111.jpg"
+    },
+    {
+      "timeSeconds": 22.470134625000004,
+      "file": "capture/000112.jpg"
+    },
+    {
+      "timeSeconds": 22.670721292,
+      "file": "capture/000113.jpg"
+    },
+    {
+      "timeSeconds": 22.871701375,
+      "file": "capture/000114.jpg"
+    },
+    {
+      "timeSeconds": 23.069754292000002,
+      "file": "capture/000115.jpg"
+    },
+    {
+      "timeSeconds": 23.269520916999998,
+      "file": "capture/000116.jpg"
+    },
+    {
+      "timeSeconds": 23.469667542,
+      "file": "capture/000117.jpg"
+    },
+    {
+      "timeSeconds": 23.694693667000003,
+      "file": "capture/000118.jpg"
+    },
+    {
+      "timeSeconds": 23.873358667000005,
+      "file": "capture/000119.jpg"
+    },
+    {
+      "timeSeconds": 24.095432541999998,
+      "file": "capture/000120.jpg"
+    },
+    {
+      "timeSeconds": 24.270924958,
+      "file": "capture/000121.jpg"
+    },
+    {
+      "timeSeconds": 24.469804083,
+      "file": "capture/000122.jpg"
+    },
+    {
+      "timeSeconds": 24.6707945,
+      "file": "capture/000123.jpg"
+    },
+    {
+      "timeSeconds": 24.871904708,
+      "file": "capture/000124.jpg"
+    },
+    {
+      "timeSeconds": 25.072162792,
+      "file": "capture/000125.jpg"
+    },
+    {
+      "timeSeconds": 25.273003625,
+      "file": "capture/000126.jpg"
+    },
+    {
+      "timeSeconds": 25.473128333000005,
+      "file": "capture/000127.jpg"
+    },
+    {
+      "timeSeconds": 25.674114958,
+      "file": "capture/000128.jpg"
+    },
+    {
+      "timeSeconds": 25.876008083,
+      "file": "capture/000129.jpg"
+    },
+    {
+      "timeSeconds": 26.075651667000002,
+      "file": "capture/000130.jpg"
+    },
+    {
+      "timeSeconds": 26.276625499999998,
+      "file": "capture/000131.jpg"
+    },
+    {
+      "timeSeconds": 26.477883208,
+      "file": "capture/000132.jpg"
+    },
+    {
+      "timeSeconds": 26.680027624999997,
+      "file": "capture/000133.jpg"
+    },
+    {
+      "timeSeconds": 26.877924958,
+      "file": "capture/000134.jpg"
+    },
+    {
+      "timeSeconds": 27.076781333000003,
+      "file": "capture/000135.jpg"
+    },
+    {
+      "timeSeconds": 27.277833750000003,
+      "file": "capture/000136.jpg"
+    },
+    {
+      "timeSeconds": 27.479534875000002,
+      "file": "capture/000137.jpg"
+    },
+    {
+      "timeSeconds": 27.681115792,
+      "file": "capture/000138.jpg"
+    },
+    {
+      "timeSeconds": 27.881847917,
+      "file": "capture/000139.jpg"
+    },
+    {
+      "timeSeconds": 28.089985708000004,
+      "file": "capture/000140.jpg"
+    },
+    {
+      "timeSeconds": 28.286599833000004,
+      "file": "capture/000141.jpg"
+    },
+    {
+      "timeSeconds": 28.487066332999998,
+      "file": "capture/000142.jpg"
+    },
+    {
+      "timeSeconds": 28.690290583,
+      "file": "capture/000143.jpg"
+    },
+    {
+      "timeSeconds": 28.889123000000005,
+      "file": "capture/000144.jpg"
+    },
+    {
+      "timeSeconds": 29.091029625,
+      "file": "capture/000145.jpg"
+    },
+    {
+      "timeSeconds": 29.28853925,
+      "file": "capture/000146.jpg"
+    },
+    {
+      "timeSeconds": 29.49077075,
+      "file": "capture/000147.jpg"
+    },
+    {
+      "timeSeconds": 29.688974917000003,
+      "file": "capture/000148.jpg"
+    },
+    {
+      "timeSeconds": 29.887176000000004,
+      "file": "capture/000149.jpg"
+    },
+    {
+      "timeSeconds": 30.088293500000002,
+      "file": "capture/000150.jpg"
+    },
+    {
+      "timeSeconds": 30.288241042,
+      "file": "capture/000151.jpg"
+    },
+    {
+      "timeSeconds": 30.486227083000003,
+      "file": "capture/000152.jpg"
+    },
+    {
+      "timeSeconds": 30.690665750000004,
+      "file": "capture/000153.jpg"
+    },
+    {
+      "timeSeconds": 30.890650583,
+      "file": "capture/000154.jpg"
+    },
+    {
+      "timeSeconds": 31.087593042000005,
+      "file": "capture/000155.jpg"
+    },
+    {
+      "timeSeconds": 31.289842291999996,
+      "file": "capture/000156.jpg"
+    },
+    {
+      "timeSeconds": 31.492383417,
+      "file": "capture/000157.jpg"
+    },
+    {
+      "timeSeconds": 31.691424541999996,
+      "file": "capture/000158.jpg"
+    },
+    {
+      "timeSeconds": 31.889717917,
+      "file": "capture/000159.jpg"
+    },
+    {
+      "timeSeconds": 32.089901999999995,
+      "file": "capture/000160.jpg"
+    },
+    {
+      "timeSeconds": 32.291194208,
+      "file": "capture/000161.jpg"
+    },
+    {
+      "timeSeconds": 32.492744542000004,
+      "file": "capture/000162.jpg"
+    },
+    {
+      "timeSeconds": 32.693528375,
+      "file": "capture/000163.jpg"
+    },
+    {
+      "timeSeconds": 32.889027833,
+      "file": "capture/000164.jpg"
+    },
+    {
+      "timeSeconds": 33.091384708,
+      "file": "capture/000165.jpg"
+    },
+    {
+      "timeSeconds": 33.291500207999995,
+      "file": "capture/000166.jpg"
+    },
+    {
+      "timeSeconds": 33.495280417000004,
+      "file": "capture/000167.jpg"
+    },
+    {
+      "timeSeconds": 33.694689583,
+      "file": "capture/000168.jpg"
+    },
+    {
+      "timeSeconds": 33.895191667000006,
+      "file": "capture/000169.jpg"
+    },
+    {
+      "timeSeconds": 34.097512625,
+      "file": "capture/000170.jpg"
+    },
+    {
+      "timeSeconds": 34.296020292,
+      "file": "capture/000171.jpg"
+    },
+    {
+      "timeSeconds": 34.492905333,
+      "file": "capture/000172.jpg"
+    },
+    {
+      "timeSeconds": 34.6960745,
+      "file": "capture/000173.jpg"
+    },
+    {
+      "timeSeconds": 34.903808166999994,
+      "file": "capture/000174.jpg"
+    },
+    {
+      "timeSeconds": 35.095312082999996,
+      "file": "capture/000175.jpg"
+    },
+    {
+      "timeSeconds": 35.300879916999996,
+      "file": "capture/000176.jpg"
+    },
+    {
+      "timeSeconds": 35.50901570800001,
+      "file": "capture/000177.jpg"
+    },
+    {
+      "timeSeconds": 35.695821125,
+      "file": "capture/000178.jpg"
+    },
+    {
+      "timeSeconds": 35.895174792000006,
+      "file": "capture/000179.jpg"
+    },
+    {
+      "timeSeconds": 36.095885917000004,
+      "file": "capture/000180.jpg"
+    },
+    {
+      "timeSeconds": 36.302300583000005,
+      "file": "capture/000181.jpg"
+    },
+    {
+      "timeSeconds": 36.502533542,
+      "file": "capture/000182.jpg"
+    },
+    {
+      "timeSeconds": 36.70214750000001,
+      "file": "capture/000183.jpg"
+    },
+    {
+      "timeSeconds": 36.902096458,
+      "file": "capture/000184.jpg"
+    },
+    {
+      "timeSeconds": 37.105354875,
+      "file": "capture/000185.jpg"
+    },
+    {
+      "timeSeconds": 37.302406042,
+      "file": "capture/000186.jpg"
+    },
+    {
+      "timeSeconds": 37.502553125000006,
+      "file": "capture/000187.jpg"
+    },
+    {
+      "timeSeconds": 37.70340145800001,
+      "file": "capture/000188.jpg"
+    },
+    {
+      "timeSeconds": 37.902912375,
+      "file": "capture/000189.jpg"
+    },
+    {
+      "timeSeconds": 38.106059292000005,
+      "file": "capture/000190.jpg"
+    },
+    {
+      "timeSeconds": 38.321079,
+      "file": "capture/000191.jpg"
+    },
+    {
+      "timeSeconds": 38.503037417,
+      "file": "capture/000192.jpg"
+    },
+    {
+      "timeSeconds": 38.704331374999995,
+      "file": "capture/000193.jpg"
+    },
+    {
+      "timeSeconds": 38.920301333,
+      "file": "capture/000194.jpg"
+    },
+    {
+      "timeSeconds": 39.104920750000005,
+      "file": "capture/000195.jpg"
+    },
+    {
+      "timeSeconds": 39.307810874999994,
+      "file": "capture/000196.jpg"
+    },
+    {
+      "timeSeconds": 39.510209708,
+      "file": "capture/000197.jpg"
+    },
+    {
+      "timeSeconds": 39.710373458,
+      "file": "capture/000198.jpg"
+    },
+    {
+      "timeSeconds": 39.908890167,
+      "file": "capture/000199.jpg"
+    },
+    {
+      "timeSeconds": 40.108541625,
+      "file": "capture/000200.jpg"
+    },
+    {
+      "timeSeconds": 40.309861250000004,
+      "file": "capture/000201.jpg"
+    },
+    {
+      "timeSeconds": 40.513399875000005,
+      "file": "capture/000202.jpg"
+    },
+    {
+      "timeSeconds": 40.713885250000004,
+      "file": "capture/000203.jpg"
+    },
+    {
+      "timeSeconds": 40.911321375,
+      "file": "capture/000204.jpg"
+    },
+    {
+      "timeSeconds": 41.109391333000005,
+      "file": "capture/000205.jpg"
+    },
+    {
+      "timeSeconds": 41.31028237499999,
+      "file": "capture/000206.jpg"
+    },
+    {
+      "timeSeconds": 41.513010417,
+      "file": "capture/000207.jpg"
+    },
+    {
+      "timeSeconds": 41.712374624999995,
+      "file": "capture/000208.jpg"
+    },
+    {
+      "timeSeconds": 41.92005833299999,
+      "file": "capture/000209.jpg"
+    },
+    {
+      "timeSeconds": 42.14104954199999,
+      "file": "capture/000210.jpg"
+    },
+    {
+      "timeSeconds": 42.31984225,
+      "file": "capture/000211.jpg"
+    },
+    {
+      "timeSeconds": 42.519023458,
+      "file": "capture/000212.jpg"
+    },
+    {
+      "timeSeconds": 42.722155457999996,
+      "file": "capture/000213.jpg"
+    },
+    {
+      "timeSeconds": 42.919784958,
+      "file": "capture/000214.jpg"
+    },
+    {
+      "timeSeconds": 43.123553875,
+      "file": "capture/000215.jpg"
+    },
+    {
+      "timeSeconds": 43.320838124999995,
+      "file": "capture/000216.jpg"
+    },
+    {
+      "timeSeconds": 43.521221292,
+      "file": "capture/000217.jpg"
+    },
+    {
+      "timeSeconds": 43.721095917,
+      "file": "capture/000218.jpg"
+    },
+    {
+      "timeSeconds": 43.92007245799999,
+      "file": "capture/000219.jpg"
+    },
+    {
+      "timeSeconds": 44.122155167,
+      "file": "capture/000220.jpg"
+    },
+    {
+      "timeSeconds": 44.341139500000004,
+      "file": "capture/000221.jpg"
+    },
+    {
+      "timeSeconds": 44.54577058300001,
+      "file": "capture/000222.jpg"
+    },
+    {
+      "timeSeconds": 44.725144457999995,
+      "file": "capture/000223.jpg"
+    },
+    {
+      "timeSeconds": 44.924734416999996,
+      "file": "capture/000224.jpg"
+    },
+    {
+      "timeSeconds": 45.13927375000001,
+      "file": "capture/000225.jpg"
+    },
+    {
+      "timeSeconds": 45.320857625,
+      "file": "capture/000226.jpg"
+    },
+    {
+      "timeSeconds": 45.526187833,
+      "file": "capture/000227.jpg"
+    },
+    {
+      "timeSeconds": 45.725374792000004,
+      "file": "capture/000228.jpg"
+    },
+    {
+      "timeSeconds": 45.922335875,
+      "file": "capture/000229.jpg"
+    },
+    {
+      "timeSeconds": 46.128177958,
+      "file": "capture/000230.jpg"
+    },
+    {
+      "timeSeconds": 46.32312783300001,
+      "file": "capture/000231.jpg"
+    },
+    {
+      "timeSeconds": 46.529448917,
+      "file": "capture/000232.jpg"
+    },
+    {
+      "timeSeconds": 46.73953362499999,
+      "file": "capture/000233.jpg"
+    },
+    {
+      "timeSeconds": 46.926589792,
+      "file": "capture/000234.jpg"
+    },
+    {
+      "timeSeconds": 47.12746104199999,
+      "file": "capture/000235.jpg"
+    },
+    {
+      "timeSeconds": 47.329529875000006,
+      "file": "capture/000236.jpg"
+    },
+    {
+      "timeSeconds": 47.52969375000001,
+      "file": "capture/000237.jpg"
+    },
+    {
+      "timeSeconds": 47.729838208000004,
+      "file": "capture/000238.jpg"
+    },
+    {
+      "timeSeconds": 47.930803042,
+      "file": "capture/000239.jpg"
+    },
+    {
+      "timeSeconds": 48.130590041999994,
+      "file": "capture/000240.jpg"
+    },
+    {
+      "timeSeconds": 48.335534,
+      "file": "capture/000241.jpg"
+    },
+    {
+      "timeSeconds": 48.528192374999996,
+      "file": "capture/000242.jpg"
+    },
+    {
+      "timeSeconds": 48.728568583,
+      "file": "capture/000243.jpg"
+    },
+    {
+      "timeSeconds": 48.929118,
+      "file": "capture/000244.jpg"
+    },
+    {
+      "timeSeconds": 49.15247224999999,
+      "file": "capture/000245.jpg"
+    },
+    {
+      "timeSeconds": 49.337138167,
+      "file": "capture/000246.jpg"
+    },
+    {
+      "timeSeconds": 49.535177041999994,
+      "file": "capture/000247.jpg"
+    },
+    {
+      "timeSeconds": 49.734782917000004,
+      "file": "capture/000248.jpg"
+    },
+    {
+      "timeSeconds": 49.934674333000004,
+      "file": "capture/000249.jpg"
+    },
+    {
+      "timeSeconds": 50.135019042,
+      "file": "capture/000250.jpg"
+    },
+    {
+      "timeSeconds": 50.353715292,
+      "file": "capture/000251.jpg"
+    },
+    {
+      "timeSeconds": 50.535131083,
+      "file": "capture/000252.jpg"
+    },
+    {
+      "timeSeconds": 50.734752083,
+      "file": "capture/000253.jpg"
+    },
+    {
+      "timeSeconds": 50.937335958,
+      "file": "capture/000254.jpg"
+    },
+    {
+      "timeSeconds": 51.13480075,
+      "file": "capture/000255.jpg"
+    },
+    {
+      "timeSeconds": 51.337228749999994,
+      "file": "capture/000256.jpg"
+    },
+    {
+      "timeSeconds": 51.534760291999994,
+      "file": "capture/000257.jpg"
+    },
+    {
+      "timeSeconds": 51.73454112500001,
+      "file": "capture/000258.jpg"
+    },
+    {
+      "timeSeconds": 51.93754637499999,
+      "file": "capture/000259.jpg"
+    },
+    {
+      "timeSeconds": 52.144996625,
+      "file": "capture/000260.jpg"
+    },
+    {
+      "timeSeconds": 52.354429124999996,
+      "file": "capture/000261.jpg"
+    },
+    {
+      "timeSeconds": 52.536840874999996,
+      "file": "capture/000262.jpg"
+    },
+    {
+      "timeSeconds": 52.737593125,
+      "file": "capture/000263.jpg"
+    },
+    {
+      "timeSeconds": 52.937453375,
+      "file": "capture/000264.jpg"
+    },
+    {
+      "timeSeconds": 53.13749862499999,
+      "file": "capture/000265.jpg"
+    },
+    {
+      "timeSeconds": 53.338655958000004,
+      "file": "capture/000266.jpg"
+    },
+    {
+      "timeSeconds": 53.546828207999994,
+      "file": "capture/000267.jpg"
+    },
+    {
+      "timeSeconds": 53.75296487499999,
+      "file": "capture/000268.jpg"
+    },
+    {
+      "timeSeconds": 53.95994224999999,
+      "file": "capture/000269.jpg"
+    },
+    {
+      "timeSeconds": 54.146806583,
+      "file": "capture/000270.jpg"
+    },
+    {
+      "timeSeconds": 54.343794667,
+      "file": "capture/000271.jpg"
+    },
+    {
+      "timeSeconds": 54.54454024999999,
+      "file": "capture/000272.jpg"
+    },
+    {
+      "timeSeconds": 54.776738292,
+      "file": "capture/000273.jpg"
+    },
+    {
+      "timeSeconds": 54.946448833000005,
+      "file": "capture/000274.jpg"
+    },
+    {
+      "timeSeconds": 55.151624207999994,
+      "file": "capture/000275.jpg"
+    },
+    {
+      "timeSeconds": 55.351738083,
+      "file": "capture/000276.jpg"
+    },
+    {
+      "timeSeconds": 55.55226279199999,
+      "file": "capture/000277.jpg"
+    },
+    {
+      "timeSeconds": 55.751881417,
+      "file": "capture/000278.jpg"
+    },
+    {
+      "timeSeconds": 55.951420667,
+      "file": "capture/000279.jpg"
+    },
+    {
+      "timeSeconds": 56.15397166699999,
+      "file": "capture/000280.jpg"
+    },
+    {
+      "timeSeconds": 56.37299341699999,
+      "file": "capture/000281.jpg"
+    },
+    {
+      "timeSeconds": 56.573995583,
+      "file": "capture/000282.jpg"
+    },
+    {
+      "timeSeconds": 56.752880166999994,
+      "file": "capture/000283.jpg"
+    },
+    {
+      "timeSeconds": 56.95353754199999,
+      "file": "capture/000284.jpg"
+    },
+    {
+      "timeSeconds": 57.153943917,
+      "file": "capture/000285.jpg"
+    },
+    {
+      "timeSeconds": 57.35518912499999,
+      "file": "capture/000286.jpg"
+    },
+    {
+      "timeSeconds": 57.555901457999994,
+      "file": "capture/000287.jpg"
+    },
+    {
+      "timeSeconds": 57.75732337499999,
+      "file": "capture/000288.jpg"
+    },
+    {
+      "timeSeconds": 57.976396458,
+      "file": "capture/000289.jpg"
+    },
+    {
+      "timeSeconds": 58.158257541999994,
+      "file": "capture/000290.jpg"
+    },
+    {
+      "timeSeconds": 58.359995417,
+      "file": "capture/000291.jpg"
+    },
+    {
+      "timeSeconds": 58.559806083000005,
+      "file": "capture/000292.jpg"
+    },
+    {
+      "timeSeconds": 58.759351167,
+      "file": "capture/000293.jpg"
+    },
+    {
+      "timeSeconds": 58.959749249999994,
+      "file": "capture/000294.jpg"
+    },
+    {
+      "timeSeconds": 59.160171917,
+      "file": "capture/000295.jpg"
+    },
+    {
+      "timeSeconds": 59.360676458,
+      "file": "capture/000296.jpg"
+    },
+    {
+      "timeSeconds": 59.569128125000006,
+      "file": "capture/000297.jpg"
+    },
+    {
+      "timeSeconds": 59.770005375,
+      "file": "capture/000298.jpg"
+    },
+    {
+      "timeSeconds": 59.961963250000004,
+      "file": "capture/000299.jpg"
+    },
+    {
+      "timeSeconds": 60.174626458,
+      "file": "capture/000300.jpg"
+    },
+    {
+      "timeSeconds": 60.370616083,
+      "file": "capture/000301.jpg"
+    },
+    {
+      "timeSeconds": 60.56822070799999,
+      "file": "capture/000302.jpg"
+    },
+    {
+      "timeSeconds": 60.76843254199999,
+      "file": "capture/000303.jpg"
+    },
+    {
+      "timeSeconds": 60.991001000000004,
+      "file": "capture/000304.jpg"
+    },
+    {
+      "timeSeconds": 61.17154216699999,
+      "file": "capture/000305.jpg"
+    },
+    {
+      "timeSeconds": 61.370236416999994,
+      "file": "capture/000306.jpg"
+    },
+    {
+      "timeSeconds": 61.56827708299999,
+      "file": "capture/000307.jpg"
+    },
+    {
+      "timeSeconds": 61.77156599999999,
+      "file": "capture/000308.jpg"
+    },
+    {
+      "timeSeconds": 61.967903542,
+      "file": "capture/000309.jpg"
+    },
+    {
+      "timeSeconds": 62.174525167,
+      "file": "capture/000310.jpg"
+    },
+    {
+      "timeSeconds": 62.397443249999995,
+      "file": "capture/000311.jpg"
+    },
+    {
+      "timeSeconds": 62.58529862499999,
+      "file": "capture/000312.jpg"
+    },
+    {
+      "timeSeconds": 62.792347666999994,
+      "file": "capture/000313.jpg"
+    },
+    {
+      "timeSeconds": 62.99760129199999,
+      "file": "capture/000314.jpg"
+    },
+    {
+      "timeSeconds": 63.17848574999999,
+      "file": "capture/000315.jpg"
+    },
+    {
+      "timeSeconds": 63.37306199999999,
+      "file": "capture/000316.jpg"
+    },
+    {
+      "timeSeconds": 63.57058074999999,
+      "file": "capture/000317.jpg"
+    },
+    {
+      "timeSeconds": 63.771690625000005,
+      "file": "capture/000318.jpg"
+    },
+    {
+      "timeSeconds": 63.971333042,
+      "file": "capture/000319.jpg"
+    },
+    {
+      "timeSeconds": 64.175324417,
+      "file": "capture/000320.jpg"
+    },
+    {
+      "timeSeconds": 64.37539775,
+      "file": "capture/000321.jpg"
+    },
+    {
+      "timeSeconds": 64.574775542,
+      "file": "capture/000322.jpg"
+    },
+    {
+      "timeSeconds": 64.78794683299999,
+      "file": "capture/000323.jpg"
+    },
+    {
+      "timeSeconds": 64.97796575000001,
+      "file": "capture/000324.jpg"
+    },
+    {
+      "timeSeconds": 65.175882417,
+      "file": "capture/000325.jpg"
+    },
+    {
+      "timeSeconds": 65.376182542,
+      "file": "capture/000326.jpg"
+    },
+    {
+      "timeSeconds": 65.57867045799999,
+      "file": "capture/000327.jpg"
+    },
+    {
+      "timeSeconds": 65.776216458,
+      "file": "capture/000328.jpg"
+    },
+    {
+      "timeSeconds": 65.9764405,
+      "file": "capture/000329.jpg"
+    },
+    {
+      "timeSeconds": 66.190824583,
+      "file": "capture/000330.jpg"
+    },
+    {
+      "timeSeconds": 66.37715666700001,
+      "file": "capture/000331.jpg"
+    },
+    {
+      "timeSeconds": 66.5958385,
+      "file": "capture/000332.jpg"
+    },
+    {
+      "timeSeconds": 66.80211779199999,
+      "file": "capture/000333.jpg"
+    },
+    {
+      "timeSeconds": 66.984645708,
+      "file": "capture/000334.jpg"
+    },
+    {
+      "timeSeconds": 67.203044083,
+      "file": "capture/000335.jpg"
+    },
+    {
+      "timeSeconds": 67.389384583,
+      "file": "capture/000336.jpg"
+    },
+    {
+      "timeSeconds": 67.61026,
+      "file": "capture/000337.jpg"
+    },
+    {
+      "timeSeconds": 67.787372333,
+      "file": "capture/000338.jpg"
+    },
+    {
+      "timeSeconds": 67.984170583,
+      "file": "capture/000339.jpg"
+    },
+    {
+      "timeSeconds": 68.184827958,
+      "file": "capture/000340.jpg"
+    },
+    {
+      "timeSeconds": 68.4024825,
+      "file": "capture/000341.jpg"
+    },
+    {
+      "timeSeconds": 68.60742079199998,
+      "file": "capture/000342.jpg"
+    },
+    {
+      "timeSeconds": 68.801589542,
+      "file": "capture/000343.jpg"
+    },
+    {
+      "timeSeconds": 68.997045625,
+      "file": "capture/000344.jpg"
+    },
+    {
+      "timeSeconds": 69.20896025,
+      "file": "capture/000345.jpg"
+    },
+    {
+      "timeSeconds": 69.392836958,
+      "file": "capture/000346.jpg"
+    },
+    {
+      "timeSeconds": 69.60479579199999,
+      "file": "capture/000347.jpg"
+    },
+    {
+      "timeSeconds": 69.785588875,
+      "file": "capture/000348.jpg"
+    },
+    {
+      "timeSeconds": 70.000504625,
+      "file": "capture/000349.jpg"
+    },
+    {
+      "timeSeconds": 70.18521487499999,
+      "file": "capture/000350.jpg"
+    },
+    {
+      "timeSeconds": 70.385995542,
+      "file": "capture/000351.jpg"
+    },
+    {
+      "timeSeconds": 70.601575833,
+      "file": "capture/000352.jpg"
+    },
+    {
+      "timeSeconds": 70.804231958,
+      "file": "capture/000353.jpg"
+    },
+    {
+      "timeSeconds": 71.0003195,
+      "file": "capture/000354.jpg"
+    },
+    {
+      "timeSeconds": 71.208273083,
+      "file": "capture/000355.jpg"
+    },
+    {
+      "timeSeconds": 71.38978025,
+      "file": "capture/000356.jpg"
+    },
+    {
+      "timeSeconds": 71.58999987499999,
+      "file": "capture/000357.jpg"
+    },
+    {
+      "timeSeconds": 71.801038,
+      "file": "capture/000358.jpg"
+    },
+    {
+      "timeSeconds": 71.991538542,
+      "file": "capture/000359.jpg"
+    },
+    {
+      "timeSeconds": 72.191948833,
+      "file": "capture/000360.jpg"
+    },
+    {
+      "timeSeconds": 72.39484725,
+      "file": "capture/000361.jpg"
+    },
+    {
+      "timeSeconds": 72.59389566699998,
+      "file": "capture/000362.jpg"
+    },
+    {
+      "timeSeconds": 72.79419524999999,
+      "file": "capture/000363.jpg"
+    },
+    {
+      "timeSeconds": 73.008315042,
+      "file": "capture/000364.jpg"
+    },
+    {
+      "timeSeconds": 73.195243083,
+      "file": "capture/000365.jpg"
+    },
+    {
+      "timeSeconds": 73.400709292,
+      "file": "capture/000366.jpg"
+    },
+    {
+      "timeSeconds": 73.627529625,
+      "file": "capture/000367.jpg"
+    },
+    {
+      "timeSeconds": 73.80655070799999,
+      "file": "capture/000368.jpg"
+    },
+    {
+      "timeSeconds": 74.001451375,
+      "file": "capture/000369.jpg"
+    },
+    {
+      "timeSeconds": 74.202249833,
+      "file": "capture/000370.jpg"
+    },
+    {
+      "timeSeconds": 74.40055612500001,
+      "file": "capture/000371.jpg"
+    },
+    {
+      "timeSeconds": 74.602255125,
+      "file": "capture/000372.jpg"
+    },
+    {
+      "timeSeconds": 74.80232333299999,
+      "file": "capture/000373.jpg"
+    },
+    {
+      "timeSeconds": 75.00076487499999,
+      "file": "capture/000374.jpg"
+    },
+    {
+      "timeSeconds": 75.224200167,
+      "file": "capture/000375.jpg"
+    },
+    {
+      "timeSeconds": 75.401970667,
+      "file": "capture/000376.jpg"
+    },
+    {
+      "timeSeconds": 75.600916625,
+      "file": "capture/000377.jpg"
+    },
+    {
+      "timeSeconds": 75.802077083,
+      "file": "capture/000378.jpg"
+    },
+    {
+      "timeSeconds": 76.01910475,
+      "file": "capture/000379.jpg"
+    },
+    {
+      "timeSeconds": 76.20787083299999,
+      "file": "capture/000380.jpg"
+    },
+    {
+      "timeSeconds": 76.404827333,
+      "file": "capture/000381.jpg"
+    },
+    {
+      "timeSeconds": 76.608482333,
+      "file": "capture/000382.jpg"
+    },
+    {
+      "timeSeconds": 76.80488191699999,
+      "file": "capture/000383.jpg"
+    },
+    {
+      "timeSeconds": 77.00639004199999,
+      "file": "capture/000384.jpg"
+    },
+    {
+      "timeSeconds": 77.205286375,
+      "file": "capture/000385.jpg"
+    },
+    {
+      "timeSeconds": 77.412918833,
+      "file": "capture/000386.jpg"
+    },
+    {
+      "timeSeconds": 77.60806295799999,
+      "file": "capture/000387.jpg"
+    },
+    {
+      "timeSeconds": 77.80415562499999,
+      "file": "capture/000388.jpg"
+    },
+    {
+      "timeSeconds": 78.004045125,
+      "file": "capture/000389.jpg"
+    },
+    {
+      "timeSeconds": 78.208595208,
+      "file": "capture/000390.jpg"
+    },
+    {
+      "timeSeconds": 78.407979125,
+      "file": "capture/000391.jpg"
+    },
+    {
+      "timeSeconds": 78.613025583,
+      "file": "capture/000392.jpg"
+    },
+    {
+      "timeSeconds": 78.806755292,
+      "file": "capture/000393.jpg"
+    },
+    {
+      "timeSeconds": 79.006021083,
+      "file": "capture/000394.jpg"
+    },
+    {
+      "timeSeconds": 79.206276,
+      "file": "capture/000395.jpg"
+    },
+    {
+      "timeSeconds": 79.407217833,
+      "file": "capture/000396.jpg"
+    },
+    {
+      "timeSeconds": 79.60899274999998,
+      "file": "capture/000397.jpg"
+    },
+    {
+      "timeSeconds": 79.80818325,
+      "file": "capture/000398.jpg"
+    },
+    {
+      "timeSeconds": 80.00999120799999,
+      "file": "capture/000399.jpg"
+    },
+    {
+      "timeSeconds": 80.219387292,
+      "file": "capture/000400.jpg"
+    },
+    {
+      "timeSeconds": 80.422191417,
+      "file": "capture/000401.jpg"
+    },
+    {
+      "timeSeconds": 80.6142935,
+      "file": "capture/000402.jpg"
+    },
+    {
+      "timeSeconds": 80.82076429199999,
+      "file": "capture/000403.jpg"
+    },
+    {
+      "timeSeconds": 81.023875667,
+      "file": "capture/000404.jpg"
+    },
+    {
+      "timeSeconds": 81.221585417,
+      "file": "capture/000405.jpg"
+    },
+    {
+      "timeSeconds": 81.42303858300001,
+      "file": "capture/000406.jpg"
+    },
+    {
+      "timeSeconds": 81.621161625,
+      "file": "capture/000407.jpg"
+    },
+    {
+      "timeSeconds": 81.82277275,
+      "file": "capture/000408.jpg"
+    },
+    {
+      "timeSeconds": 82.0193255,
+      "file": "capture/000409.jpg"
+    },
+    {
+      "timeSeconds": 82.2535235,
+      "file": "capture/000410.jpg"
+    },
+    {
+      "timeSeconds": 82.437890958,
+      "file": "capture/000411.jpg"
+    },
+    {
+      "timeSeconds": 82.616963208,
+      "file": "capture/000412.jpg"
+    },
+    {
+      "timeSeconds": 82.82021975,
+      "file": "capture/000413.jpg"
+    },
+    {
+      "timeSeconds": 83.017613625,
+      "file": "capture/000414.jpg"
+    },
+    {
+      "timeSeconds": 83.217892292,
+      "file": "capture/000415.jpg"
+    },
+    {
+      "timeSeconds": 83.4209135,
+      "file": "capture/000416.jpg"
+    },
+    {
+      "timeSeconds": 83.639325542,
+      "file": "capture/000417.jpg"
+    },
+    {
+      "timeSeconds": 83.820374958,
+      "file": "capture/000418.jpg"
+    },
+    {
+      "timeSeconds": 84.019825,
+      "file": "capture/000419.jpg"
+    },
+    {
+      "timeSeconds": 84.22686220799999,
+      "file": "capture/000420.jpg"
+    },
+    {
+      "timeSeconds": 84.42270745799999,
+      "file": "capture/000421.jpg"
+    },
+    {
+      "timeSeconds": 84.63189075,
+      "file": "capture/000422.jpg"
+    },
+    {
+      "timeSeconds": 84.82993733299999,
+      "file": "capture/000423.jpg"
+    },
+    {
+      "timeSeconds": 85.043864125,
+      "file": "capture/000424.jpg"
+    },
+    {
+      "timeSeconds": 85.236901167,
+      "file": "capture/000425.jpg"
+    },
+    {
+      "timeSeconds": 85.43674495799999,
+      "file": "capture/000426.jpg"
+    },
+    {
+      "timeSeconds": 85.636162,
+      "file": "capture/000427.jpg"
+    },
+    {
+      "timeSeconds": 85.836376458,
+      "file": "capture/000428.jpg"
+    },
+    {
+      "timeSeconds": 86.038402458,
+      "file": "capture/000429.jpg"
+    },
+    {
+      "timeSeconds": 86.23728408299999,
+      "file": "capture/000430.jpg"
+    },
+    {
+      "timeSeconds": 86.43847408299999,
+      "file": "capture/000431.jpg"
+    },
+    {
+      "timeSeconds": 86.639377583,
+      "file": "capture/000432.jpg"
+    },
+    {
+      "timeSeconds": 86.83732225,
+      "file": "capture/000433.jpg"
+    },
+    {
+      "timeSeconds": 87.036259125,
+      "file": "capture/000434.jpg"
+    },
+    {
+      "timeSeconds": 87.256042125,
+      "file": "capture/000435.jpg"
+    },
+    {
+      "timeSeconds": 87.45474775,
+      "file": "capture/000436.jpg"
+    },
+    {
+      "timeSeconds": 87.637055458,
+      "file": "capture/000437.jpg"
+    },
+    {
+      "timeSeconds": 87.854926333,
+      "file": "capture/000438.jpg"
+    },
+    {
+      "timeSeconds": 88.038790583,
+      "file": "capture/000439.jpg"
+    },
+    {
+      "timeSeconds": 88.240242625,
+      "file": "capture/000440.jpg"
+    },
+    {
+      "timeSeconds": 88.43540545799999,
+      "file": "capture/000441.jpg"
+    },
+    {
+      "timeSeconds": 88.638584042,
+      "file": "capture/000442.jpg"
+    },
+    {
+      "timeSeconds": 88.843582083,
+      "file": "capture/000443.jpg"
+    },
+    {
+      "timeSeconds": 89.03925812499999,
+      "file": "capture/000444.jpg"
+    },
+    {
+      "timeSeconds": 89.238162542,
+      "file": "capture/000445.jpg"
+    },
+    {
+      "timeSeconds": 89.44174591699999,
+      "file": "capture/000446.jpg"
+    },
+    {
+      "timeSeconds": 89.644496292,
+      "file": "capture/000447.jpg"
+    },
+    {
+      "timeSeconds": 89.843300458,
+      "file": "capture/000448.jpg"
+    },
+    {
+      "timeSeconds": 90.044123667,
+      "file": "capture/000449.jpg"
+    },
+    {
+      "timeSeconds": 90.245652625,
+      "file": "capture/000450.jpg"
+    },
+    {
+      "timeSeconds": 90.443797875,
+      "file": "capture/000451.jpg"
+    },
+    {
+      "timeSeconds": 90.647068208,
+      "file": "capture/000452.jpg"
+    },
+    {
+      "timeSeconds": 90.844717458,
+      "file": "capture/000453.jpg"
+    },
+    {
+      "timeSeconds": 91.053076375,
+      "file": "capture/000454.jpg"
+    },
+    {
+      "timeSeconds": 91.253184458,
+      "file": "capture/000455.jpg"
+    },
+    {
+      "timeSeconds": 91.45279591699999,
+      "file": "capture/000456.jpg"
+    },
+    {
+      "timeSeconds": 91.650480958,
+      "file": "capture/000457.jpg"
+    },
+    {
+      "timeSeconds": 91.852677583,
+      "file": "capture/000458.jpg"
+    },
+    {
+      "timeSeconds": 92.050577208,
+      "file": "capture/000459.jpg"
+    },
+    {
+      "timeSeconds": 92.250373375,
+      "file": "capture/000460.jpg"
+    },
+    {
+      "timeSeconds": 92.451075042,
+      "file": "capture/000461.jpg"
+    },
+    {
+      "timeSeconds": 92.651703375,
+      "file": "capture/000462.jpg"
+    },
+    {
+      "timeSeconds": 92.849662625,
+      "file": "capture/000463.jpg"
+    },
+    {
+      "timeSeconds": 93.052202958,
+      "file": "capture/000464.jpg"
+    },
+    {
+      "timeSeconds": 93.25285783300001,
+      "file": "capture/000465.jpg"
+    },
+    {
+      "timeSeconds": 93.45116962499999,
+      "file": "capture/000466.jpg"
+    },
+    {
+      "timeSeconds": 93.651285792,
+      "file": "capture/000467.jpg"
+    },
+    {
+      "timeSeconds": 93.851568208,
+      "file": "capture/000468.jpg"
+    },
+    {
+      "timeSeconds": 94.056322208,
+      "file": "capture/000469.jpg"
+    },
+    {
+      "timeSeconds": 94.259926292,
+      "file": "capture/000470.jpg"
+    },
+    {
+      "timeSeconds": 94.454712208,
+      "file": "capture/000471.jpg"
+    },
+    {
+      "timeSeconds": 94.655990458,
+      "file": "capture/000472.jpg"
+    },
+    {
+      "timeSeconds": 94.856488625,
+      "file": "capture/000473.jpg"
+    },
+    {
+      "timeSeconds": 95.055416458,
+      "file": "capture/000474.jpg"
+    },
+    {
+      "timeSeconds": 95.26207424999998,
+      "file": "capture/000475.jpg"
+    },
+    {
+      "timeSeconds": 95.456141167,
+      "file": "capture/000476.jpg"
+    },
+    {
+      "timeSeconds": 95.657641292,
+      "file": "capture/000477.jpg"
+    },
+    {
+      "timeSeconds": 95.85830708299999,
+      "file": "capture/000478.jpg"
+    },
+    {
+      "timeSeconds": 96.062858542,
+      "file": "capture/000479.jpg"
+    },
+    {
+      "timeSeconds": 96.260883625,
+      "file": "capture/000480.jpg"
+    },
+    {
+      "timeSeconds": 96.466510375,
+      "file": "capture/000481.jpg"
+    },
+    {
+      "timeSeconds": 96.671964042,
+      "file": "capture/000482.jpg"
+    },
+    {
+      "timeSeconds": 96.858931125,
+      "file": "capture/000483.jpg"
+    },
+    {
+      "timeSeconds": 97.06045545799999,
+      "file": "capture/000484.jpg"
+    },
+    {
+      "timeSeconds": 97.262257917,
+      "file": "capture/000485.jpg"
+    },
+    {
+      "timeSeconds": 97.460043792,
+      "file": "capture/000486.jpg"
+    },
+    {
+      "timeSeconds": 97.67298875,
+      "file": "capture/000487.jpg"
+    },
+    {
+      "timeSeconds": 97.86714016699999,
+      "file": "capture/000488.jpg"
+    },
+    {
+      "timeSeconds": 98.06910966699999,
+      "file": "capture/000489.jpg"
+    },
+    {
+      "timeSeconds": 98.26714691699999,
+      "file": "capture/000490.jpg"
+    },
+    {
+      "timeSeconds": 98.466625083,
+      "file": "capture/000491.jpg"
+    },
+    {
+      "timeSeconds": 98.666603667,
+      "file": "capture/000492.jpg"
+    },
+    {
+      "timeSeconds": 98.867038125,
+      "file": "capture/000493.jpg"
+    },
+    {
+      "timeSeconds": 99.06672999999999,
+      "file": "capture/000494.jpg"
+    },
+    {
+      "timeSeconds": 99.288677417,
+      "file": "capture/000495.jpg"
+    },
+    {
+      "timeSeconds": 99.46967383299999,
+      "file": "capture/000496.jpg"
+    },
+    {
+      "timeSeconds": 99.669287333,
+      "file": "capture/000497.jpg"
+    },
+    {
+      "timeSeconds": 99.87050925,
+      "file": "capture/000498.jpg"
+    },
+    {
+      "timeSeconds": 100.070441375,
+      "file": "capture/000499.jpg"
+    },
+    {
+      "timeSeconds": 100.276325042,
+      "file": "capture/000500.jpg"
+    },
+    {
+      "timeSeconds": 100.48707316699999,
+      "file": "capture/000501.jpg"
+    },
+    {
+      "timeSeconds": 100.67296708299999,
+      "file": "capture/000502.jpg"
+    },
+    {
+      "timeSeconds": 100.886685958,
+      "file": "capture/000503.jpg"
+    },
+    {
+      "timeSeconds": 101.08365091699999,
+      "file": "capture/000504.jpg"
+    },
+    {
+      "timeSeconds": 101.271214042,
+      "file": "capture/000505.jpg"
+    },
+    {
+      "timeSeconds": 101.489498583,
+      "file": "capture/000506.jpg"
+    },
+    {
+      "timeSeconds": 101.68912658299999,
+      "file": "capture/000507.jpg"
+    },
+    {
+      "timeSeconds": 101.87307695799998,
+      "file": "capture/000508.jpg"
+    },
+    {
+      "timeSeconds": 102.084005792,
+      "file": "capture/000509.jpg"
+    },
+    {
+      "timeSeconds": 102.274856167,
+      "file": "capture/000510.jpg"
+    },
+    {
+      "timeSeconds": 102.478007625,
+      "file": "capture/000511.jpg"
+    },
+    {
+      "timeSeconds": 102.678994875,
+      "file": "capture/000512.jpg"
+    },
+    {
+      "timeSeconds": 102.883697667,
+      "file": "capture/000513.jpg"
+    },
+    {
+      "timeSeconds": 103.085722167,
+      "file": "capture/000514.jpg"
+    },
+    {
+      "timeSeconds": 103.283510333,
+      "file": "capture/000515.jpg"
+    },
+    {
+      "timeSeconds": 103.483109667,
+      "file": "capture/000516.jpg"
+    },
+    {
+      "timeSeconds": 103.68299904199999,
+      "file": "capture/000517.jpg"
+    },
+    {
+      "timeSeconds": 103.883422917,
+      "file": "capture/000518.jpg"
+    },
+    {
+      "timeSeconds": 104.082759083,
+      "file": "capture/000519.jpg"
+    },
+    {
+      "timeSeconds": 104.28340125,
+      "file": "capture/000520.jpg"
+    },
+    {
+      "timeSeconds": 104.58300275,
+      "file": "capture/000521.jpg"
+    },
+    {
+      "timeSeconds": 104.68764599999999,
+      "file": "capture/000522.jpg"
+    },
+    {
+      "timeSeconds": 104.89057625,
+      "file": "capture/000523.jpg"
+    },
+    {
+      "timeSeconds": 105.124210167,
+      "file": "capture/000524.jpg"
+    },
+    {
+      "timeSeconds": 105.293367,
+      "file": "capture/000525.jpg"
+    },
+    {
+      "timeSeconds": 105.547050542,
+      "file": "capture/000526.jpg"
+    },
+    {
+      "timeSeconds": 105.6985095,
+      "file": "capture/000527.jpg"
+    },
+    {
+      "timeSeconds": 105.895382333,
+      "file": "capture/000528.jpg"
+    },
+    {
+      "timeSeconds": 106.11335945799999,
+      "file": "capture/000529.jpg"
+    },
+    {
+      "timeSeconds": 106.33070724999999,
+      "file": "capture/000530.jpg"
+    },
+    {
+      "timeSeconds": 106.51137025,
+      "file": "capture/000531.jpg"
+    },
+    {
+      "timeSeconds": 106.712493083,
+      "file": "capture/000532.jpg"
+    },
+    {
+      "timeSeconds": 106.910024958,
+      "file": "capture/000533.jpg"
+    },
+    {
+      "timeSeconds": 107.10603291700001,
+      "file": "capture/000534.jpg"
+    },
+    {
+      "timeSeconds": 107.306305333,
+      "file": "capture/000535.jpg"
+    },
+    {
+      "timeSeconds": 107.50558183300001,
+      "file": "capture/000536.jpg"
+    },
+    {
+      "timeSeconds": 107.7120435,
+      "file": "capture/000537.jpg"
+    },
+    {
+      "timeSeconds": 107.948778917,
+      "file": "capture/000538.jpg"
+    },
+    {
+      "timeSeconds": 108.114006083,
+      "file": "capture/000539.jpg"
+    },
+    {
+      "timeSeconds": 108.31212849999999,
+      "file": "capture/000540.jpg"
+    },
+    {
+      "timeSeconds": 108.51198612499999,
+      "file": "capture/000541.jpg"
+    },
+    {
+      "timeSeconds": 108.71194475,
+      "file": "capture/000542.jpg"
+    },
+    {
+      "timeSeconds": 108.911165875,
+      "file": "capture/000543.jpg"
+    },
+    {
+      "timeSeconds": 109.11073491699999,
+      "file": "capture/000544.jpg"
+    },
+    {
+      "timeSeconds": 109.32162025,
+      "file": "capture/000545.jpg"
+    },
+    {
+      "timeSeconds": 109.51768125,
+      "file": "capture/000546.jpg"
+    },
+    {
+      "timeSeconds": 109.717050125,
+      "file": "capture/000547.jpg"
+    },
+    {
+      "timeSeconds": 109.916958458,
+      "file": "capture/000548.jpg"
+    },
+    {
+      "timeSeconds": 110.11700125,
+      "file": "capture/000549.jpg"
+    },
+    {
+      "timeSeconds": 110.316654,
+      "file": "capture/000550.jpg"
+    },
+    {
+      "timeSeconds": 110.533706708,
+      "file": "capture/000551.jpg"
+    },
+    {
+      "timeSeconds": 110.71723241699999,
+      "file": "capture/000552.jpg"
+    },
+    {
+      "timeSeconds": 110.91977983299999,
+      "file": "capture/000553.jpg"
+    },
+    {
+      "timeSeconds": 111.12184375,
+      "file": "capture/000554.jpg"
+    },
+    {
+      "timeSeconds": 111.320894208,
+      "file": "capture/000555.jpg"
+    },
+    {
+      "timeSeconds": 111.524540125,
+      "file": "capture/000556.jpg"
+    },
+    {
+      "timeSeconds": 111.723097792,
+      "file": "capture/000557.jpg"
+    },
+    {
+      "timeSeconds": 111.925214875,
+      "file": "capture/000558.jpg"
+    },
+    {
+      "timeSeconds": 112.12154575,
+      "file": "capture/000559.jpg"
+    },
+    {
+      "timeSeconds": 112.320906958,
+      "file": "capture/000560.jpg"
+    },
+    {
+      "timeSeconds": 112.519539,
+      "file": "capture/000561.jpg"
+    },
+    {
+      "timeSeconds": 112.72239658299999,
+      "file": "capture/000562.jpg"
+    },
+    {
+      "timeSeconds": 112.92261525,
+      "file": "capture/000563.jpg"
+    },
+    {
+      "timeSeconds": 113.124675875,
+      "file": "capture/000564.jpg"
+    },
+    {
+      "timeSeconds": 113.338913917,
+      "file": "capture/000565.jpg"
+    },
+    {
+      "timeSeconds": 113.52524604199999,
+      "file": "capture/000566.jpg"
+    },
+    {
+      "timeSeconds": 113.720815625,
+      "file": "capture/000567.jpg"
+    },
+    {
+      "timeSeconds": 113.92105870800002,
+      "file": "capture/000568.jpg"
+    },
+    {
+      "timeSeconds": 114.12152320799999,
+      "file": "capture/000569.jpg"
+    },
+    {
+      "timeSeconds": 114.32211195800001,
+      "file": "capture/000570.jpg"
+    },
+    {
+      "timeSeconds": 114.522534417,
+      "file": "capture/000571.jpg"
+    },
+    {
+      "timeSeconds": 114.722867542,
+      "file": "capture/000572.jpg"
+    },
+    {
+      "timeSeconds": 114.921305083,
+      "file": "capture/000573.jpg"
+    },
+    {
+      "timeSeconds": 115.12135016700002,
+      "file": "capture/000574.jpg"
+    },
+    {
+      "timeSeconds": 115.321199875,
+      "file": "capture/000575.jpg"
+    },
+    {
+      "timeSeconds": 115.521145333,
+      "file": "capture/000576.jpg"
+    },
+    {
+      "timeSeconds": 115.723615417,
+      "file": "capture/000577.jpg"
+    },
+    {
+      "timeSeconds": 115.920953708,
+      "file": "capture/000578.jpg"
+    },
+    {
+      "timeSeconds": 116.122167,
+      "file": "capture/000579.jpg"
+    },
+    {
+      "timeSeconds": 116.32212108299998,
+      "file": "capture/000580.jpg"
+    },
+    {
+      "timeSeconds": 116.52255841700001,
+      "file": "capture/000581.jpg"
+    },
+    {
+      "timeSeconds": 116.722059792,
+      "file": "capture/000582.jpg"
+    },
+    {
+      "timeSeconds": 116.92238416699999,
+      "file": "capture/000583.jpg"
+    },
+    {
+      "timeSeconds": 117.12121837500001,
+      "file": "capture/000584.jpg"
+    },
+    {
+      "timeSeconds": 117.32256533299999,
+      "file": "capture/000585.jpg"
+    },
+    {
+      "timeSeconds": 117.52263375,
+      "file": "capture/000586.jpg"
+    },
+    {
+      "timeSeconds": 117.72344383299998,
+      "file": "capture/000587.jpg"
+    },
+    {
+      "timeSeconds": 117.92485483300001,
+      "file": "capture/000588.jpg"
+    },
+    {
+      "timeSeconds": 118.12492870800001,
+      "file": "capture/000589.jpg"
+    },
+    {
+      "timeSeconds": 118.32623012499998,
+      "file": "capture/000590.jpg"
+    },
+    {
+      "timeSeconds": 118.532644208,
+      "file": "capture/000591.jpg"
+    },
+    {
+      "timeSeconds": 118.72497583299999,
+      "file": "capture/000592.jpg"
+    },
+    {
+      "timeSeconds": 118.92874912499998,
+      "file": "capture/000593.jpg"
+    },
+    {
+      "timeSeconds": 119.12844174999998,
+      "file": "capture/000594.jpg"
+    },
+    {
+      "timeSeconds": 119.332504875,
+      "file": "capture/000595.jpg"
+    },
+    {
+      "timeSeconds": 119.53283237499998,
+      "file": "capture/000596.jpg"
+    },
+    {
+      "timeSeconds": 119.732882542,
+      "file": "capture/000597.jpg"
+    },
+    {
+      "timeSeconds": 119.93252879199999,
+      "file": "capture/000598.jpg"
+    },
+    {
+      "timeSeconds": 120.13286829199998,
+      "file": "capture/000599.jpg"
+    },
+    {
+      "timeSeconds": 120.33266375,
+      "file": "capture/000600.jpg"
+    },
+    {
+      "timeSeconds": 120.532680292,
+      "file": "capture/000601.jpg"
+    },
+    {
+      "timeSeconds": 120.733049708,
+      "file": "capture/000602.jpg"
+    },
+    {
+      "timeSeconds": 120.932416083,
+      "file": "capture/000603.jpg"
+    },
+    {
+      "timeSeconds": 121.132527667,
+      "file": "capture/000604.jpg"
+    },
+    {
+      "timeSeconds": 121.3329415,
+      "file": "capture/000605.jpg"
+    },
+    {
+      "timeSeconds": 121.532414917,
+      "file": "capture/000606.jpg"
+    },
+    {
+      "timeSeconds": 121.73269316700001,
+      "file": "capture/000607.jpg"
+    },
+    {
+      "timeSeconds": 121.93339804200001,
+      "file": "capture/000608.jpg"
+    },
+    {
+      "timeSeconds": 122.13246099999999,
+      "file": "capture/000609.jpg"
+    },
+    {
+      "timeSeconds": 122.33268975,
+      "file": "capture/000610.jpg"
+    },
+    {
+      "timeSeconds": 122.532899292,
+      "file": "capture/000611.jpg"
+    },
+    {
+      "timeSeconds": 122.73257141699999,
+      "file": "capture/000612.jpg"
+    },
+    {
+      "timeSeconds": 122.9325555,
+      "file": "capture/000613.jpg"
+    },
+    {
+      "timeSeconds": 123.13265412499999,
+      "file": "capture/000614.jpg"
+    },
+    {
+      "timeSeconds": 123.349200833,
+      "file": "capture/000615.jpg"
+    },
+    {
+      "timeSeconds": 123.53229845799999,
+      "file": "capture/000616.jpg"
+    },
+    {
+      "timeSeconds": 123.733297542,
+      "file": "capture/000617.jpg"
+    },
+    {
+      "timeSeconds": 123.93414279199999,
+      "file": "capture/000618.jpg"
+    },
+    {
+      "timeSeconds": 124.13495341699999,
+      "file": "capture/000619.jpg"
+    },
+    {
+      "timeSeconds": 124.35002820799998,
+      "file": "capture/000620.jpg"
+    },
+    {
+      "timeSeconds": 124.53690195799999,
+      "file": "capture/000621.jpg"
+    },
+    {
+      "timeSeconds": 124.739683542,
+      "file": "capture/000622.jpg"
+    },
+    {
+      "timeSeconds": 124.950849042,
+      "file": "capture/000623.jpg"
+    },
+    {
+      "timeSeconds": 125.145391083,
+      "file": "capture/000624.jpg"
+    },
+    {
+      "timeSeconds": 125.34117066699999,
+      "file": "capture/000625.jpg"
+    },
+    {
+      "timeSeconds": 125.53946787499999,
+      "file": "capture/000626.jpg"
+    },
+    {
+      "timeSeconds": 125.74045124999999,
+      "file": "capture/000627.jpg"
+    },
+    {
+      "timeSeconds": 125.944344208,
+      "file": "capture/000628.jpg"
+    },
+    {
+      "timeSeconds": 126.152908542,
+      "file": "capture/000629.jpg"
+    },
+    {
+      "timeSeconds": 126.343563458,
+      "file": "capture/000630.jpg"
+    },
+    {
+      "timeSeconds": 126.54950387500001,
+      "file": "capture/000631.jpg"
+    },
+    {
+      "timeSeconds": 126.751716875,
+      "file": "capture/000632.jpg"
+    },
+    {
+      "timeSeconds": 126.955595458,
+      "file": "capture/000633.jpg"
+    },
+    {
+      "timeSeconds": 127.14968237499998,
+      "file": "capture/000634.jpg"
+    },
+    {
+      "timeSeconds": 127.349369792,
+      "file": "capture/000635.jpg"
+    },
+    {
+      "timeSeconds": 127.54887204199999,
+      "file": "capture/000636.jpg"
+    },
+    {
+      "timeSeconds": 127.749178042,
+      "file": "capture/000637.jpg"
+    },
+    {
+      "timeSeconds": 127.950080125,
+      "file": "capture/000638.jpg"
+    },
+    {
+      "timeSeconds": 128.151067042,
+      "file": "capture/000639.jpg"
+    },
+    {
+      "timeSeconds": 128.350885417,
+      "file": "capture/000640.jpg"
+    },
+    {
+      "timeSeconds": 128.56638845799998,
+      "file": "capture/000641.jpg"
+    },
+    {
+      "timeSeconds": 128.749501542,
+      "file": "capture/000642.jpg"
+    },
+    {
+      "timeSeconds": 128.95072100000002,
+      "file": "capture/000643.jpg"
+    },
+    {
+      "timeSeconds": 129.15595433299998,
+      "file": "capture/000644.jpg"
+    },
+    {
+      "timeSeconds": 129.355576875,
+      "file": "capture/000645.jpg"
+    },
+    {
+      "timeSeconds": 129.55221375000002,
+      "file": "capture/000646.jpg"
+    },
+    {
+      "timeSeconds": 129.75716812500002,
+      "file": "capture/000647.jpg"
+    },
+    {
+      "timeSeconds": 129.953358042,
+      "file": "capture/000648.jpg"
+    },
+    {
+      "timeSeconds": 130.16651025000002,
+      "file": "capture/000649.jpg"
+    },
+    {
+      "timeSeconds": 130.357205458,
+      "file": "capture/000650.jpg"
+    },
+    {
+      "timeSeconds": 130.55935045799998,
+      "file": "capture/000651.jpg"
+    },
+    {
+      "timeSeconds": 130.761601458,
+      "file": "capture/000652.jpg"
+    },
+    {
+      "timeSeconds": 130.9550835,
+      "file": "capture/000653.jpg"
+    },
+    {
+      "timeSeconds": 131.155550625,
+      "file": "capture/000654.jpg"
+    },
+    {
+      "timeSeconds": 131.362072292,
+      "file": "capture/000655.jpg"
+    },
+    {
+      "timeSeconds": 131.55863345800003,
+      "file": "capture/000656.jpg"
+    },
+    {
+      "timeSeconds": 131.75643133300002,
+      "file": "capture/000657.jpg"
+    },
+    {
+      "timeSeconds": 131.9586185,
+      "file": "capture/000658.jpg"
+    },
+    {
+      "timeSeconds": 132.15969229200002,
+      "file": "capture/000659.jpg"
+    },
+    {
+      "timeSeconds": 132.36041691700004,
+      "file": "capture/000660.jpg"
+    },
+    {
+      "timeSeconds": 132.563794042,
+      "file": "capture/000661.jpg"
+    },
+    {
+      "timeSeconds": 132.759948083,
+      "file": "capture/000662.jpg"
+    },
+    {
+      "timeSeconds": 132.96063441700002,
+      "file": "capture/000663.jpg"
+    },
+    {
+      "timeSeconds": 133.15995616700002,
+      "file": "capture/000664.jpg"
+    },
+    {
+      "timeSeconds": 133.365940208,
+      "file": "capture/000665.jpg"
+    },
+    {
+      "timeSeconds": 133.56644770800003,
+      "file": "capture/000666.jpg"
+    },
+    {
+      "timeSeconds": 133.766269458,
+      "file": "capture/000667.jpg"
+    },
+    {
+      "timeSeconds": 133.96531395800002,
+      "file": "capture/000668.jpg"
+    },
+    {
+      "timeSeconds": 134.16539095800002,
+      "file": "capture/000669.jpg"
+    },
+    {
+      "timeSeconds": 134.365804708,
+      "file": "capture/000670.jpg"
+    },
+    {
+      "timeSeconds": 134.56630225,
+      "file": "capture/000671.jpg"
+    },
+    {
+      "timeSeconds": 134.766581,
+      "file": "capture/000672.jpg"
+    },
+    {
+      "timeSeconds": 134.987352125,
+      "file": "capture/000673.jpg"
+    },
+    {
+      "timeSeconds": 135.18683866700002,
+      "file": "capture/000674.jpg"
+    },
+    {
+      "timeSeconds": 135.371854625,
+      "file": "capture/000675.jpg"
+    },
+    {
+      "timeSeconds": 135.56675412500002,
+      "file": "capture/000676.jpg"
+    },
+    {
+      "timeSeconds": 135.7689225,
+      "file": "capture/000677.jpg"
+    },
+    {
+      "timeSeconds": 135.96759945800002,
+      "file": "capture/000678.jpg"
+    },
+    {
+      "timeSeconds": 136.16634629200001,
+      "file": "capture/000679.jpg"
+    },
+    {
+      "timeSeconds": 136.367220417,
+      "file": "capture/000680.jpg"
+    },
+    {
+      "timeSeconds": 136.567107208,
+      "file": "capture/000681.jpg"
+    },
+    {
+      "timeSeconds": 136.767814125,
+      "file": "capture/000682.jpg"
+    },
+    {
+      "timeSeconds": 136.969357542,
+      "file": "capture/000683.jpg"
+    },
+    {
+      "timeSeconds": 137.169880333,
+      "file": "capture/000684.jpg"
+    },
+    {
+      "timeSeconds": 137.36921766700002,
+      "file": "capture/000685.jpg"
+    },
+    {
+      "timeSeconds": 137.571497708,
+      "file": "capture/000686.jpg"
+    },
+    {
+      "timeSeconds": 137.772519875,
+      "file": "capture/000687.jpg"
+    },
+    {
+      "timeSeconds": 137.973129625,
+      "file": "capture/000688.jpg"
+    },
+    {
+      "timeSeconds": 138.17104416700002,
+      "file": "capture/000689.jpg"
+    },
+    {
+      "timeSeconds": 138.372346125,
+      "file": "capture/000690.jpg"
+    },
+    {
+      "timeSeconds": 138.57485695800003,
+      "file": "capture/000691.jpg"
+    },
+    {
+      "timeSeconds": 138.773308167,
+      "file": "capture/000692.jpg"
+    },
+    {
+      "timeSeconds": 138.973126625,
+      "file": "capture/000693.jpg"
+    },
+    {
+      "timeSeconds": 139.1734315,
+      "file": "capture/000694.jpg"
+    },
+    {
+      "timeSeconds": 139.374552292,
+      "file": "capture/000695.jpg"
+    },
+    {
+      "timeSeconds": 139.57439329200002,
+      "file": "capture/000696.jpg"
+    },
+    {
+      "timeSeconds": 139.77535675000001,
+      "file": "capture/000697.jpg"
+    },
+    {
+      "timeSeconds": 139.98262450000001,
+      "file": "capture/000698.jpg"
+    },
+    {
+      "timeSeconds": 140.186592042,
+      "file": "capture/000699.jpg"
+    },
+    {
+      "timeSeconds": 140.381627083,
+      "file": "capture/000700.jpg"
+    },
+    {
+      "timeSeconds": 140.58179912500003,
+      "file": "capture/000701.jpg"
+    },
+    {
+      "timeSeconds": 140.781866,
+      "file": "capture/000702.jpg"
+    },
+    {
+      "timeSeconds": 140.981638458,
+      "file": "capture/000703.jpg"
+    },
+    {
+      "timeSeconds": 141.18170466700002,
+      "file": "capture/000704.jpg"
+    },
+    {
+      "timeSeconds": 141.38243575,
+      "file": "capture/000705.jpg"
+    },
+    {
+      "timeSeconds": 141.58192166700002,
+      "file": "capture/000706.jpg"
+    },
+    {
+      "timeSeconds": 141.798937292,
+      "file": "capture/000707.jpg"
+    },
+    {
+      "timeSeconds": 141.981467583,
+      "file": "capture/000708.jpg"
+    },
+    {
+      "timeSeconds": 142.18422270800002,
+      "file": "capture/000709.jpg"
+    },
+    {
+      "timeSeconds": 142.38126233300002,
+      "file": "capture/000710.jpg"
+    },
+    {
+      "timeSeconds": 142.58213350000003,
+      "file": "capture/000711.jpg"
+    },
+    {
+      "timeSeconds": 142.783057375,
+      "file": "capture/000712.jpg"
+    },
+    {
+      "timeSeconds": 142.98353979200002,
+      "file": "capture/000713.jpg"
+    },
+    {
+      "timeSeconds": 143.18369237500002,
+      "file": "capture/000714.jpg"
+    },
+    {
+      "timeSeconds": 143.38620158300003,
+      "file": "capture/000715.jpg"
+    },
+    {
+      "timeSeconds": 143.589790875,
+      "file": "capture/000716.jpg"
+    },
+    {
+      "timeSeconds": 143.784663792,
+      "file": "capture/000717.jpg"
+    },
+    {
+      "timeSeconds": 143.987595875,
+      "file": "capture/000718.jpg"
+    },
+    {
+      "timeSeconds": 144.186573458,
+      "file": "capture/000719.jpg"
+    },
+    {
+      "timeSeconds": 144.389234167,
+      "file": "capture/000720.jpg"
+    },
+    {
+      "timeSeconds": 144.5884475,
+      "file": "capture/000721.jpg"
+    },
+    {
+      "timeSeconds": 144.788832708,
+      "file": "capture/000722.jpg"
+    },
+    {
+      "timeSeconds": 144.98899679200002,
+      "file": "capture/000723.jpg"
+    },
+    {
+      "timeSeconds": 145.18772325,
+      "file": "capture/000724.jpg"
+    },
+    {
+      "timeSeconds": 145.399601708,
+      "file": "capture/000725.jpg"
+    },
+    {
+      "timeSeconds": 145.585426167,
+      "file": "capture/000726.jpg"
+    },
+    {
+      "timeSeconds": 145.787115292,
+      "file": "capture/000727.jpg"
+    },
+    {
+      "timeSeconds": 145.999957792,
+      "file": "capture/000728.jpg"
+    },
+    {
+      "timeSeconds": 146.19919537500002,
+      "file": "capture/000729.jpg"
+    },
+    {
+      "timeSeconds": 146.388400458,
+      "file": "capture/000730.jpg"
+    },
+    {
+      "timeSeconds": 146.589283292,
+      "file": "capture/000731.jpg"
+    },
+    {
+      "timeSeconds": 146.79932062500004,
+      "file": "capture/000732.jpg"
+    },
+    {
+      "timeSeconds": 146.989396125,
+      "file": "capture/000733.jpg"
+    },
+    {
+      "timeSeconds": 147.189937083,
+      "file": "capture/000734.jpg"
+    },
+    {
+      "timeSeconds": 147.39003970800002,
+      "file": "capture/000735.jpg"
+    },
+    {
+      "timeSeconds": 147.592128333,
+      "file": "capture/000736.jpg"
+    },
+    {
+      "timeSeconds": 147.79485241700002,
+      "file": "capture/000737.jpg"
+    },
+    {
+      "timeSeconds": 147.9926415,
+      "file": "capture/000738.jpg"
+    },
+    {
+      "timeSeconds": 148.19657187500002,
+      "file": "capture/000739.jpg"
+    },
+    {
+      "timeSeconds": 148.39266237500001,
+      "file": "capture/000740.jpg"
+    },
+    {
+      "timeSeconds": 148.60086575,
+      "file": "capture/000741.jpg"
+    },
+    {
+      "timeSeconds": 148.79919316700003,
+      "file": "capture/000742.jpg"
+    },
+    {
+      "timeSeconds": 148.998825458,
+      "file": "capture/000743.jpg"
+    },
+    {
+      "timeSeconds": 149.198142625,
+      "file": "capture/000744.jpg"
+    },
+    {
+      "timeSeconds": 149.39864854200002,
+      "file": "capture/000745.jpg"
+    },
+    {
+      "timeSeconds": 149.59853387500002,
+      "file": "capture/000746.jpg"
+    },
+    {
+      "timeSeconds": 149.79794741700002,
+      "file": "capture/000747.jpg"
+    },
+    {
+      "timeSeconds": 149.998952708,
+      "file": "capture/000748.jpg"
+    },
+    {
+      "timeSeconds": 150.200936,
+      "file": "capture/000749.jpg"
+    },
+    {
+      "timeSeconds": 150.398935458,
+      "file": "capture/000750.jpg"
+    },
+    {
+      "timeSeconds": 150.598152125,
+      "file": "capture/000751.jpg"
+    },
+    {
+      "timeSeconds": 150.79840641700002,
+      "file": "capture/000752.jpg"
+    },
+    {
+      "timeSeconds": 150.997423958,
+      "file": "capture/000753.jpg"
+    },
+    {
+      "timeSeconds": 151.19764537500004,
+      "file": "capture/000754.jpg"
+    },
+    {
+      "timeSeconds": 151.39812679200003,
+      "file": "capture/000755.jpg"
+    },
+    {
+      "timeSeconds": 151.61936995800002,
+      "file": "capture/000756.jpg"
+    },
+    {
+      "timeSeconds": 151.79984454200002,
+      "file": "capture/000757.jpg"
+    },
+    {
+      "timeSeconds": 152.015368042,
+      "file": "capture/000758.jpg"
+    },
+    {
+      "timeSeconds": 152.20248270800002,
+      "file": "capture/000759.jpg"
+    },
+    {
+      "timeSeconds": 152.42146762500002,
+      "file": "capture/000760.jpg"
+    },
+    {
+      "timeSeconds": 152.599773375,
+      "file": "capture/000761.jpg"
+    },
+    {
+      "timeSeconds": 152.80303258300003,
+      "file": "capture/000762.jpg"
+    },
+    {
+      "timeSeconds": 153.026166208,
+      "file": "capture/000763.jpg"
+    },
+    {
+      "timeSeconds": 153.20231816700002,
+      "file": "capture/000764.jpg"
+    },
+    {
+      "timeSeconds": 153.401771375,
+      "file": "capture/000765.jpg"
+    },
+    {
+      "timeSeconds": 153.60216408300002,
+      "file": "capture/000766.jpg"
+    },
+    {
+      "timeSeconds": 153.803692125,
+      "file": "capture/000767.jpg"
+    },
+    {
+      "timeSeconds": 154.004115458,
+      "file": "capture/000768.jpg"
+    },
+    {
+      "timeSeconds": 154.202905792,
+      "file": "capture/000769.jpg"
+    },
+    {
+      "timeSeconds": 154.40193262500003,
+      "file": "capture/000770.jpg"
+    },
+    {
+      "timeSeconds": 154.60336241700003,
+      "file": "capture/000771.jpg"
+    },
+    {
+      "timeSeconds": 154.80339929200002,
+      "file": "capture/000772.jpg"
+    },
+    {
+      "timeSeconds": 155.00388100000004,
+      "file": "capture/000773.jpg"
+    },
+    {
+      "timeSeconds": 155.205276667,
+      "file": "capture/000774.jpg"
+    },
+    {
+      "timeSeconds": 155.405103875,
+      "file": "capture/000775.jpg"
+    },
+    {
+      "timeSeconds": 155.618220417,
+      "file": "capture/000776.jpg"
+    },
+    {
+      "timeSeconds": 155.808800667,
+      "file": "capture/000777.jpg"
+    },
+    {
+      "timeSeconds": 156.01058795800003,
+      "file": "capture/000778.jpg"
+    },
+    {
+      "timeSeconds": 156.21108745800004,
+      "file": "capture/000779.jpg"
+    },
+    {
+      "timeSeconds": 156.41530937500002,
+      "file": "capture/000780.jpg"
+    },
+    {
+      "timeSeconds": 156.60519787500002,
+      "file": "capture/000781.jpg"
+    },
+    {
+      "timeSeconds": 156.81176320800003,
+      "file": "capture/000782.jpg"
+    },
+    {
+      "timeSeconds": 157.016915917,
+      "file": "capture/000783.jpg"
+    },
+    {
+      "timeSeconds": 157.210907083,
+      "file": "capture/000784.jpg"
+    },
+    {
+      "timeSeconds": 157.41723308299999,
+      "file": "capture/000785.jpg"
+    },
+    {
+      "timeSeconds": 157.635237208,
+      "file": "capture/000786.jpg"
+    },
+    {
+      "timeSeconds": 157.819731875,
+      "file": "capture/000787.jpg"
+    },
+    {
+      "timeSeconds": 158.032968792,
+      "file": "capture/000788.jpg"
+    },
+    {
+      "timeSeconds": 158.214477167,
+      "file": "capture/000789.jpg"
+    },
+    {
+      "timeSeconds": 158.414502292,
+      "file": "capture/000790.jpg"
+    },
+    {
+      "timeSeconds": 158.614928083,
+      "file": "capture/000791.jpg"
+    },
+    {
+      "timeSeconds": 158.819563333,
+      "file": "capture/000792.jpg"
+    },
+    {
+      "timeSeconds": 159.014381708,
+      "file": "capture/000793.jpg"
+    },
+    {
+      "timeSeconds": 159.230780167,
+      "file": "capture/000794.jpg"
+    },
+    {
+      "timeSeconds": 159.413923542,
+      "file": "capture/000795.jpg"
+    },
+    {
+      "timeSeconds": 159.61457483300003,
+      "file": "capture/000796.jpg"
+    },
+    {
+      "timeSeconds": 159.81775916700002,
+      "file": "capture/000797.jpg"
+    },
+    {
+      "timeSeconds": 160.015703167,
+      "file": "capture/000798.jpg"
+    },
+    {
+      "timeSeconds": 160.216480417,
+      "file": "capture/000799.jpg"
+    },
+    {
+      "timeSeconds": 160.420559125,
+      "file": "capture/000800.jpg"
+    },
+    {
+      "timeSeconds": 160.62140554200002,
+      "file": "capture/000801.jpg"
+    },
+    {
+      "timeSeconds": 160.82154529200002,
+      "file": "capture/000802.jpg"
+    },
+    {
+      "timeSeconds": 161.034428208,
+      "file": "capture/000803.jpg"
+    },
+    {
+      "timeSeconds": 161.220196667,
+      "file": "capture/000804.jpg"
+    },
+    {
+      "timeSeconds": 161.420967417,
+      "file": "capture/000805.jpg"
+    },
+    {
+      "timeSeconds": 161.624925292,
+      "file": "capture/000806.jpg"
+    },
+    {
+      "timeSeconds": 161.83674545800002,
+      "file": "capture/000807.jpg"
+    },
+    {
+      "timeSeconds": 162.048410458,
+      "file": "capture/000808.jpg"
+    },
+    {
+      "timeSeconds": 162.24149987500002,
+      "file": "capture/000809.jpg"
+    },
+    {
+      "timeSeconds": 162.434138833,
+      "file": "capture/000810.jpg"
+    },
+    {
+      "timeSeconds": 162.62848945800002,
+      "file": "capture/000811.jpg"
+    },
+    {
+      "timeSeconds": 162.835048042,
+      "file": "capture/000812.jpg"
+    },
+    {
+      "timeSeconds": 163.032890583,
+      "file": "capture/000813.jpg"
+    },
+    {
+      "timeSeconds": 163.235142958,
+      "file": "capture/000814.jpg"
+    },
+    {
+      "timeSeconds": 163.43281808300003,
+      "file": "capture/000815.jpg"
+    },
+    {
+      "timeSeconds": 163.63097100000002,
+      "file": "capture/000816.jpg"
+    },
+    {
+      "timeSeconds": 163.831053708,
+      "file": "capture/000817.jpg"
+    },
+    {
+      "timeSeconds": 164.03089445800003,
+      "file": "capture/000818.jpg"
+    },
+    {
+      "timeSeconds": 164.23100433300002,
+      "file": "capture/000819.jpg"
+    },
+    {
+      "timeSeconds": 164.43114912500002,
+      "file": "capture/000820.jpg"
+    },
+    {
+      "timeSeconds": 164.64611891700002,
+      "file": "capture/000821.jpg"
+    },
+    {
+      "timeSeconds": 164.832146042,
+      "file": "capture/000822.jpg"
+    },
+    {
+      "timeSeconds": 165.03227070800003,
+      "file": "capture/000823.jpg"
+    },
+    {
+      "timeSeconds": 165.231994417,
+      "file": "capture/000824.jpg"
+    },
+    {
+      "timeSeconds": 165.433195083,
+      "file": "capture/000825.jpg"
+    },
+    {
+      "timeSeconds": 165.63183583300003,
+      "file": "capture/000826.jpg"
+    },
+    {
+      "timeSeconds": 165.831869708,
+      "file": "capture/000827.jpg"
+    },
+    {
+      "timeSeconds": 166.03172420799999,
+      "file": "capture/000828.jpg"
+    },
+    {
+      "timeSeconds": 166.23235291700001,
+      "file": "capture/000829.jpg"
+    },
+    {
+      "timeSeconds": 166.43312475000002,
+      "file": "capture/000830.jpg"
+    },
+    {
+      "timeSeconds": 166.638447667,
+      "file": "capture/000831.jpg"
+    },
+    {
+      "timeSeconds": 166.83326870800002,
+      "file": "capture/000832.jpg"
+    },
+    {
+      "timeSeconds": 167.03284170800003,
+      "file": "capture/000833.jpg"
+    },
+    {
+      "timeSeconds": 167.232798125,
+      "file": "capture/000834.jpg"
+    },
+    {
+      "timeSeconds": 167.432769375,
+      "file": "capture/000835.jpg"
+    },
+    {
+      "timeSeconds": 167.633207875,
+      "file": "capture/000836.jpg"
+    },
+    {
+      "timeSeconds": 167.832404792,
+      "file": "capture/000837.jpg"
+    },
+    {
+      "timeSeconds": 168.03316595799998,
+      "file": "capture/000838.jpg"
+    },
+    {
+      "timeSeconds": 168.233613458,
+      "file": "capture/000839.jpg"
+    },
+    {
+      "timeSeconds": 168.43317745800002,
+      "file": "capture/000840.jpg"
+    },
+    {
+      "timeSeconds": 168.633567125,
+      "file": "capture/000841.jpg"
+    },
+    {
+      "timeSeconds": 168.848461917,
+      "file": "capture/000842.jpg"
+    },
+    {
+      "timeSeconds": 169.03347325000001,
+      "file": "capture/000843.jpg"
+    },
+    {
+      "timeSeconds": 169.23316820800002,
+      "file": "capture/000844.jpg"
+    },
+    {
+      "timeSeconds": 169.433653208,
+      "file": "capture/000845.jpg"
+    },
+    {
+      "timeSeconds": 169.63673487500003,
+      "file": "capture/000846.jpg"
+    },
+    {
+      "timeSeconds": 169.837836333,
+      "file": "capture/000847.jpg"
+    },
+    {
+      "timeSeconds": 170.03775791700002,
+      "file": "capture/000848.jpg"
+    },
+    {
+      "timeSeconds": 170.238733208,
+      "file": "capture/000849.jpg"
+    },
+    {
+      "timeSeconds": 170.43665854200003,
+      "file": "capture/000850.jpg"
+    },
+    {
+      "timeSeconds": 170.638072708,
+      "file": "capture/000851.jpg"
+    },
+    {
+      "timeSeconds": 170.8375705,
+      "file": "capture/000852.jpg"
+    },
+    {
+      "timeSeconds": 171.037779375,
+      "file": "capture/000853.jpg"
+    },
+    {
+      "timeSeconds": 171.237506375,
+      "file": "capture/000854.jpg"
+    },
+    {
+      "timeSeconds": 171.445636667,
+      "file": "capture/000855.jpg"
+    },
+    {
+      "timeSeconds": 171.63965008300002,
+      "file": "capture/000856.jpg"
+    },
+    {
+      "timeSeconds": 171.84050641700003,
+      "file": "capture/000857.jpg"
+    },
+    {
+      "timeSeconds": 172.04121045800002,
+      "file": "capture/000858.jpg"
+    },
+    {
+      "timeSeconds": 172.24170075,
+      "file": "capture/000859.jpg"
+    },
+    {
+      "timeSeconds": 172.44733462500002,
+      "file": "capture/000860.jpg"
+    },
+    {
+      "timeSeconds": 172.66462775000002,
+      "file": "capture/000861.jpg"
+    },
+    {
+      "timeSeconds": 172.847515875,
+      "file": "capture/000862.jpg"
+    },
+    {
+      "timeSeconds": 173.048387125,
+      "file": "capture/000863.jpg"
+    },
+    {
+      "timeSeconds": 173.247125917,
+      "file": "capture/000864.jpg"
+    },
+    {
+      "timeSeconds": 173.447176,
+      "file": "capture/000865.jpg"
+    },
+    {
+      "timeSeconds": 173.646981,
+      "file": "capture/000866.jpg"
+    },
+    {
+      "timeSeconds": 173.84831937500002,
+      "file": "capture/000867.jpg"
+    },
+    {
+      "timeSeconds": 174.048382792,
+      "file": "capture/000868.jpg"
+    },
+    {
+      "timeSeconds": 174.264468292,
+      "file": "capture/000869.jpg"
+    },
+    {
+      "timeSeconds": 174.45192925,
+      "file": "capture/000870.jpg"
+    },
+    {
+      "timeSeconds": 174.647521958,
+      "file": "capture/000871.jpg"
+    },
+    {
+      "timeSeconds": 174.84683204200002,
+      "file": "capture/000872.jpg"
+    },
+    {
+      "timeSeconds": 175.04760287500002,
+      "file": "capture/000873.jpg"
+    },
+    {
+      "timeSeconds": 175.249507375,
+      "file": "capture/000874.jpg"
+    },
+    {
+      "timeSeconds": 175.448425125,
+      "file": "capture/000875.jpg"
+    },
+    {
+      "timeSeconds": 175.648923125,
+      "file": "capture/000876.jpg"
+    },
+    {
+      "timeSeconds": 175.852294625,
+      "file": "capture/000877.jpg"
+    },
+    {
+      "timeSeconds": 176.05221041700003,
+      "file": "capture/000878.jpg"
+    },
+    {
+      "timeSeconds": 176.250010042,
+      "file": "capture/000879.jpg"
+    },
+    {
+      "timeSeconds": 176.45052279200002,
+      "file": "capture/000880.jpg"
+    },
+    {
+      "timeSeconds": 176.65165550000003,
+      "file": "capture/000881.jpg"
+    },
+    {
+      "timeSeconds": 176.851273875,
+      "file": "capture/000882.jpg"
+    },
+    {
+      "timeSeconds": 177.05171075,
+      "file": "capture/000883.jpg"
+    },
+    {
+      "timeSeconds": 177.251648417,
+      "file": "capture/000884.jpg"
+    },
+    {
+      "timeSeconds": 177.45234091700001,
+      "file": "capture/000885.jpg"
+    },
+    {
+      "timeSeconds": 177.652959,
+      "file": "capture/000886.jpg"
+    },
+    {
+      "timeSeconds": 177.853116125,
+      "file": "capture/000887.jpg"
+    },
+    {
+      "timeSeconds": 178.05474712500003,
+      "file": "capture/000888.jpg"
+    },
+    {
+      "timeSeconds": 178.254126417,
+      "file": "capture/000889.jpg"
+    },
+    {
+      "timeSeconds": 178.45493037500003,
+      "file": "capture/000890.jpg"
+    },
+    {
+      "timeSeconds": 178.655277167,
+      "file": "capture/000891.jpg"
+    },
+    {
+      "timeSeconds": 178.86482241700003,
+      "file": "capture/000892.jpg"
+    },
+    {
+      "timeSeconds": 179.05795820800003,
+      "file": "capture/000893.jpg"
+    },
+    {
+      "timeSeconds": 179.256362708,
+      "file": "capture/000894.jpg"
+    },
+    {
+      "timeSeconds": 179.456221708,
+      "file": "capture/000895.jpg"
+    },
+    {
+      "timeSeconds": 179.657203833,
+      "file": "capture/000896.jpg"
+    },
+    {
+      "timeSeconds": 179.86415637500002,
+      "file": "capture/000897.jpg"
+    },
+    {
+      "timeSeconds": 180.06434641700002,
+      "file": "capture/000898.jpg"
+    },
+    {
+      "timeSeconds": 180.263802542,
+      "file": "capture/000899.jpg"
+    },
+    {
+      "timeSeconds": 180.465687833,
+      "file": "capture/000900.jpg"
+    },
+    {
+      "timeSeconds": 180.664828542,
+      "file": "capture/000901.jpg"
+    },
+    {
+      "timeSeconds": 180.866414958,
+      "file": "capture/000902.jpg"
+    },
+    {
+      "timeSeconds": 181.081578,
+      "file": "capture/000903.jpg"
+    },
+    {
+      "timeSeconds": 181.26732766700002,
+      "file": "capture/000904.jpg"
+    },
+    {
+      "timeSeconds": 181.466120292,
+      "file": "capture/000905.jpg"
+    },
+    {
+      "timeSeconds": 181.66672962500002,
+      "file": "capture/000906.jpg"
+    },
+    {
+      "timeSeconds": 181.86784883300004,
+      "file": "capture/000907.jpg"
+    },
+    {
+      "timeSeconds": 182.105724833,
+      "file": "capture/000908.jpg"
+    },
+    {
+      "timeSeconds": 182.264278917,
+      "file": "capture/000909.jpg"
+    },
+    {
+      "timeSeconds": 182.471815,
+      "file": "capture/000910.jpg"
+    },
+    {
+      "timeSeconds": 182.66513404200003,
+      "file": "capture/000911.jpg"
+    },
+    {
+      "timeSeconds": 182.867573375,
+      "file": "capture/000912.jpg"
+    },
+    {
+      "timeSeconds": 183.06895791700003,
+      "file": "capture/000913.jpg"
+    },
+    {
+      "timeSeconds": 183.28183166700003,
+      "file": "capture/000914.jpg"
+    },
+    {
+      "timeSeconds": 183.4814915,
+      "file": "capture/000915.jpg"
+    },
+    {
+      "timeSeconds": 183.66515970800003,
+      "file": "capture/000916.jpg"
+    },
+    {
+      "timeSeconds": 183.871816958,
+      "file": "capture/000917.jpg"
+    },
+    {
+      "timeSeconds": 184.070314458,
+      "file": "capture/000918.jpg"
+    },
+    {
+      "timeSeconds": 184.276906042,
+      "file": "capture/000919.jpg"
+    },
+    {
+      "timeSeconds": 184.467646458,
+      "file": "capture/000920.jpg"
+    },
+    {
+      "timeSeconds": 184.667407542,
+      "file": "capture/000921.jpg"
+    },
+    {
+      "timeSeconds": 184.86988504200002,
+      "file": "capture/000922.jpg"
+    },
+    {
+      "timeSeconds": 185.06692087500002,
+      "file": "capture/000923.jpg"
+    },
+    {
+      "timeSeconds": 185.269719125,
+      "file": "capture/000924.jpg"
+    },
+    {
+      "timeSeconds": 185.470483125,
+      "file": "capture/000925.jpg"
+    },
+    {
+      "timeSeconds": 185.668826375,
+      "file": "capture/000926.jpg"
+    },
+    {
+      "timeSeconds": 185.86898554200002,
+      "file": "capture/000927.jpg"
+    },
+    {
+      "timeSeconds": 186.06986425000002,
+      "file": "capture/000928.jpg"
+    },
+    {
+      "timeSeconds": 186.27143937500003,
+      "file": "capture/000929.jpg"
+    },
+    {
+      "timeSeconds": 186.471519417,
+      "file": "capture/000930.jpg"
+    },
+    {
+      "timeSeconds": 186.674271792,
+      "file": "capture/000931.jpg"
+    },
+    {
+      "timeSeconds": 186.875336,
+      "file": "capture/000932.jpg"
+    },
+    {
+      "timeSeconds": 187.07014808300002,
+      "file": "capture/000933.jpg"
+    },
+    {
+      "timeSeconds": 187.270635917,
+      "file": "capture/000934.jpg"
+    },
+    {
+      "timeSeconds": 187.47021312500001,
+      "file": "capture/000935.jpg"
+    },
+    {
+      "timeSeconds": 187.67105408300003,
+      "file": "capture/000936.jpg"
+    },
+    {
+      "timeSeconds": 187.872357875,
+      "file": "capture/000937.jpg"
+    },
+    {
+      "timeSeconds": 188.077259583,
+      "file": "capture/000938.jpg"
+    },
+    {
+      "timeSeconds": 188.281747917,
+      "file": "capture/000939.jpg"
+    },
+    {
+      "timeSeconds": 188.476088,
+      "file": "capture/000940.jpg"
+    },
+    {
+      "timeSeconds": 188.684858542,
+      "file": "capture/000941.jpg"
+    },
+    {
+      "timeSeconds": 188.884674708,
+      "file": "capture/000942.jpg"
+    },
+    {
+      "timeSeconds": 189.08022470800003,
+      "file": "capture/000943.jpg"
+    },
+    {
+      "timeSeconds": 189.28488175,
+      "file": "capture/000944.jpg"
+    },
+    {
+      "timeSeconds": 189.48006729200003,
+      "file": "capture/000945.jpg"
+    },
+    {
+      "timeSeconds": 189.679935333,
+      "file": "capture/000946.jpg"
+    },
+    {
+      "timeSeconds": 189.88438066700002,
+      "file": "capture/000947.jpg"
+    },
+    {
+      "timeSeconds": 190.079549875,
+      "file": "capture/000948.jpg"
+    },
+    {
+      "timeSeconds": 190.279751583,
+      "file": "capture/000949.jpg"
+    },
+    {
+      "timeSeconds": 190.47953987500003,
+      "file": "capture/000950.jpg"
+    },
+    {
+      "timeSeconds": 190.70175133300003,
+      "file": "capture/000951.jpg"
+    },
+    {
+      "timeSeconds": 190.901478875,
+      "file": "capture/000952.jpg"
+    },
+    {
+      "timeSeconds": 191.10172020800002,
+      "file": "capture/000953.jpg"
+    },
+    {
+      "timeSeconds": 191.2843775,
+      "file": "capture/000954.jpg"
+    },
+    {
+      "timeSeconds": 191.480141833,
+      "file": "capture/000955.jpg"
+    },
+    {
+      "timeSeconds": 191.69844700000002,
+      "file": "capture/000956.jpg"
+    },
+    {
+      "timeSeconds": 191.885605542,
+      "file": "capture/000957.jpg"
+    },
+    {
+      "timeSeconds": 192.08617850000002,
+      "file": "capture/000958.jpg"
+    },
+    {
+      "timeSeconds": 192.301773167,
+      "file": "capture/000959.jpg"
+    },
+    {
+      "timeSeconds": 192.485090208,
+      "file": "capture/000960.jpg"
+    },
+    {
+      "timeSeconds": 192.68527804200002,
+      "file": "capture/000961.jpg"
+    },
+    {
+      "timeSeconds": 192.88340141700002,
+      "file": "capture/000962.jpg"
+    },
+    {
+      "timeSeconds": 193.083579417,
+      "file": "capture/000963.jpg"
+    },
+    {
+      "timeSeconds": 193.301988667,
+      "file": "capture/000964.jpg"
+    },
+    {
+      "timeSeconds": 193.485619667,
+      "file": "capture/000965.jpg"
+    },
+    {
+      "timeSeconds": 193.685322625,
+      "file": "capture/000966.jpg"
+    },
+    {
+      "timeSeconds": 193.888391875,
+      "file": "capture/000967.jpg"
+    },
+    {
+      "timeSeconds": 194.085409625,
+      "file": "capture/000968.jpg"
+    },
+    {
+      "timeSeconds": 194.30280891700002,
+      "file": "capture/000969.jpg"
+    },
+    {
+      "timeSeconds": 194.49371545800003,
+      "file": "capture/000970.jpg"
+    },
+    {
+      "timeSeconds": 194.68842875,
+      "file": "capture/000971.jpg"
+    },
+    {
+      "timeSeconds": 194.88818937500002,
+      "file": "capture/000972.jpg"
+    },
+    {
+      "timeSeconds": 195.09166558300004,
+      "file": "capture/000973.jpg"
+    },
+    {
+      "timeSeconds": 195.297454958,
+      "file": "capture/000974.jpg"
+    },
+    {
+      "timeSeconds": 195.493515833,
+      "file": "capture/000975.jpg"
+    },
+    {
+      "timeSeconds": 195.694511667,
+      "file": "capture/000976.jpg"
+    },
+    {
+      "timeSeconds": 195.892610458,
+      "file": "capture/000977.jpg"
+    },
+    {
+      "timeSeconds": 196.09285995800002,
+      "file": "capture/000978.jpg"
+    },
+    {
+      "timeSeconds": 196.30204583300002,
+      "file": "capture/000979.jpg"
+    },
+    {
+      "timeSeconds": 196.518333167,
+      "file": "capture/000980.jpg"
+    },
+    {
+      "timeSeconds": 196.696151417,
+      "file": "capture/000981.jpg"
+    },
+    {
+      "timeSeconds": 196.896731042,
+      "file": "capture/000982.jpg"
+    },
+    {
+      "timeSeconds": 197.096567833,
+      "file": "capture/000983.jpg"
+    },
+    {
+      "timeSeconds": 197.301937917,
+      "file": "capture/000984.jpg"
+    },
+    {
+      "timeSeconds": 197.495881875,
+      "file": "capture/000985.jpg"
+    },
+    {
+      "timeSeconds": 197.700969625,
+      "file": "capture/000986.jpg"
+    },
+    {
+      "timeSeconds": 197.90094770800002,
+      "file": "capture/000987.jpg"
+    },
+    {
+      "timeSeconds": 198.10048662500003,
+      "file": "capture/000988.jpg"
+    },
+    {
+      "timeSeconds": 198.29936408300003,
+      "file": "capture/000989.jpg"
+    },
+    {
+      "timeSeconds": 198.50146633300002,
+      "file": "capture/000990.jpg"
+    },
+    {
+      "timeSeconds": 198.709251042,
+      "file": "capture/000991.jpg"
+    },
+    {
+      "timeSeconds": 198.918458458,
+      "file": "capture/000992.jpg"
+    },
+    {
+      "timeSeconds": 199.099861917,
+      "file": "capture/000993.jpg"
+    },
+    {
+      "timeSeconds": 199.29844737500002,
+      "file": "capture/000994.jpg"
+    },
+    {
+      "timeSeconds": 199.501698,
+      "file": "capture/000995.jpg"
+    },
+    {
+      "timeSeconds": 199.70268129200002,
+      "file": "capture/000996.jpg"
+    },
+    {
+      "timeSeconds": 199.899829417,
+      "file": "capture/000997.jpg"
+    },
+    {
+      "timeSeconds": 200.100344083,
+      "file": "capture/000998.jpg"
+    },
+    {
+      "timeSeconds": 200.304697208,
+      "file": "capture/000999.jpg"
+    },
+    {
+      "timeSeconds": 200.504084083,
+      "file": "capture/001000.jpg"
+    },
+    {
+      "timeSeconds": 200.70167533300003,
+      "file": "capture/001001.jpg"
+    },
+    {
+      "timeSeconds": 200.901415125,
+      "file": "capture/001002.jpg"
+    },
+    {
+      "timeSeconds": 201.102592417,
+      "file": "capture/001003.jpg"
+    },
+    {
+      "timeSeconds": 201.30230250000002,
+      "file": "capture/001004.jpg"
+    },
+    {
+      "timeSeconds": 201.50306829200002,
+      "file": "capture/001005.jpg"
+    },
+    {
+      "timeSeconds": 201.703854833,
+      "file": "capture/001006.jpg"
+    },
+    {
+      "timeSeconds": 201.91820704200003,
+      "file": "capture/001007.jpg"
+    },
+    {
+      "timeSeconds": 202.11537950000002,
+      "file": "capture/001008.jpg"
+    },
+    {
+      "timeSeconds": 202.30911575,
+      "file": "capture/001009.jpg"
+    },
+    {
+      "timeSeconds": 202.508091833,
+      "file": "capture/001010.jpg"
+    },
+    {
+      "timeSeconds": 202.71549966700002,
+      "file": "capture/001011.jpg"
+    },
+    {
+      "timeSeconds": 202.907727042,
+      "file": "capture/001012.jpg"
+    },
+    {
+      "timeSeconds": 203.11334179200003,
+      "file": "capture/001013.jpg"
+    },
+    {
+      "timeSeconds": 203.31386175,
+      "file": "capture/001014.jpg"
+    },
+    {
+      "timeSeconds": 203.514850042,
+      "file": "capture/001015.jpg"
+    },
+    {
+      "timeSeconds": 203.71989495800003,
+      "file": "capture/001016.jpg"
+    },
+    {
+      "timeSeconds": 203.921121875,
+      "file": "capture/001017.jpg"
+    },
+    {
+      "timeSeconds": 204.11349341700003,
+      "file": "capture/001018.jpg"
+    },
+    {
+      "timeSeconds": 204.308274917,
+      "file": "capture/001019.jpg"
+    },
+    {
+      "timeSeconds": 204.509229083,
+      "file": "capture/001020.jpg"
+    },
+    {
+      "timeSeconds": 204.732673917,
+      "file": "capture/001021.jpg"
+    },
+    {
+      "timeSeconds": 204.91315083300003,
+      "file": "capture/001022.jpg"
+    },
+    {
+      "timeSeconds": 205.11559529200002,
+      "file": "capture/001023.jpg"
+    },
+    {
+      "timeSeconds": 205.315823625,
+      "file": "capture/001024.jpg"
+    },
+    {
+      "timeSeconds": 205.517757667,
+      "file": "capture/001025.jpg"
+    },
+    {
+      "timeSeconds": 205.716880833,
+      "file": "capture/001026.jpg"
+    },
+    {
+      "timeSeconds": 205.91293037500003,
+      "file": "capture/001027.jpg"
+    },
+    {
+      "timeSeconds": 206.112929458,
+      "file": "capture/001028.jpg"
+    },
+    {
+      "timeSeconds": 206.312645583,
+      "file": "capture/001029.jpg"
+    },
+    {
+      "timeSeconds": 206.513197083,
+      "file": "capture/001030.jpg"
+    },
+    {
+      "timeSeconds": 206.71235125,
+      "file": "capture/001031.jpg"
+    },
+    {
+      "timeSeconds": 206.91237362500001,
+      "file": "capture/001032.jpg"
+    },
+    {
+      "timeSeconds": 207.112465667,
+      "file": "capture/001033.jpg"
+    },
+    {
+      "timeSeconds": 207.312272417,
+      "file": "capture/001034.jpg"
+    },
+    {
+      "timeSeconds": 207.548903875,
+      "file": "capture/001035.jpg"
+    },
+    {
+      "timeSeconds": 207.71209916700002,
+      "file": "capture/001036.jpg"
+    },
+    {
+      "timeSeconds": 207.912393917,
+      "file": "capture/001037.jpg"
+    },
+    {
+      "timeSeconds": 208.12968733300002,
+      "file": "capture/001038.jpg"
+    },
+    {
+      "timeSeconds": 208.312380375,
+      "file": "capture/001039.jpg"
+    },
+    {
+      "timeSeconds": 208.51551641700001,
+      "file": "capture/001040.jpg"
+    },
+    {
+      "timeSeconds": 208.71283075000002,
+      "file": "capture/001041.jpg"
+    },
+    {
+      "timeSeconds": 208.91814254200003,
+      "file": "capture/001042.jpg"
+    },
+    {
+      "timeSeconds": 209.1168565,
+      "file": "capture/001043.jpg"
+    },
+    {
+      "timeSeconds": 209.31694104200002,
+      "file": "capture/001044.jpg"
+    },
+    {
+      "timeSeconds": 209.51694879200002,
+      "file": "capture/001045.jpg"
+    },
+    {
+      "timeSeconds": 209.720002458,
+      "file": "capture/001046.jpg"
+    },
+    {
+      "timeSeconds": 209.915836958,
+      "file": "capture/001047.jpg"
+    },
+    {
+      "timeSeconds": 210.117156667,
+      "file": "capture/001048.jpg"
+    },
+    {
+      "timeSeconds": 210.31678429200002,
+      "file": "capture/001049.jpg"
+    },
+    {
+      "timeSeconds": 210.516754625,
+      "file": "capture/001050.jpg"
+    },
+    {
+      "timeSeconds": 210.717613333,
+      "file": "capture/001051.jpg"
+    },
+    {
+      "timeSeconds": 210.917800292,
+      "file": "capture/001052.jpg"
+    },
+    {
+      "timeSeconds": 211.117792917,
+      "file": "capture/001053.jpg"
+    },
+    {
+      "timeSeconds": 211.31776404200002,
+      "file": "capture/001054.jpg"
+    },
+    {
+      "timeSeconds": 211.518523583,
+      "file": "capture/001055.jpg"
+    },
+    {
+      "timeSeconds": 211.718238958,
+      "file": "capture/001056.jpg"
+    },
+    {
+      "timeSeconds": 211.91914504200003,
+      "file": "capture/001057.jpg"
+    },
+    {
+      "timeSeconds": 212.119677125,
+      "file": "capture/001058.jpg"
+    },
+    {
+      "timeSeconds": 212.32033341700003,
+      "file": "capture/001059.jpg"
+    },
+    {
+      "timeSeconds": 212.521029792,
+      "file": "capture/001060.jpg"
+    },
+    {
+      "timeSeconds": 212.72163991700003,
+      "file": "capture/001061.jpg"
+    },
+    {
+      "timeSeconds": 212.92245533300002,
+      "file": "capture/001062.jpg"
+    },
+    {
+      "timeSeconds": 213.12947829200002,
+      "file": "capture/001063.jpg"
+    },
+    {
+      "timeSeconds": 213.329525167,
+      "file": "capture/001064.jpg"
+    },
+    {
+      "timeSeconds": 213.529659083,
+      "file": "capture/001065.jpg"
+    },
+    {
+      "timeSeconds": 213.750992292,
+      "file": "capture/001066.jpg"
+    },
+    {
+      "timeSeconds": 213.92915970800001,
+      "file": "capture/001067.jpg"
+    },
+    {
+      "timeSeconds": 214.129434542,
+      "file": "capture/001068.jpg"
+    },
+    {
+      "timeSeconds": 214.32915133300003,
+      "file": "capture/001069.jpg"
+    },
+    {
+      "timeSeconds": 214.52900645800003,
+      "file": "capture/001070.jpg"
+    },
+    {
+      "timeSeconds": 214.728995792,
+      "file": "capture/001071.jpg"
+    },
+    {
+      "timeSeconds": 214.928506083,
+      "file": "capture/001072.jpg"
+    },
+    {
+      "timeSeconds": 215.128693042,
+      "file": "capture/001073.jpg"
+    },
+    {
+      "timeSeconds": 215.346386208,
+      "file": "capture/001074.jpg"
+    },
+    {
+      "timeSeconds": 215.54610775000003,
+      "file": "capture/001075.jpg"
+    },
+    {
+      "timeSeconds": 215.72878595800003,
+      "file": "capture/001076.jpg"
+    },
+    {
+      "timeSeconds": 215.929703708,
+      "file": "capture/001077.jpg"
+    },
+    {
+      "timeSeconds": 216.130494292,
+      "file": "capture/001078.jpg"
+    },
+    {
+      "timeSeconds": 216.33077679200002,
+      "file": "capture/001079.jpg"
+    },
+    {
+      "timeSeconds": 216.53025845800002,
+      "file": "capture/001080.jpg"
+    },
+    {
+      "timeSeconds": 216.730565667,
+      "file": "capture/001081.jpg"
+    },
+    {
+      "timeSeconds": 216.930352542,
+      "file": "capture/001082.jpg"
+    },
+    {
+      "timeSeconds": 217.13254187500002,
+      "file": "capture/001083.jpg"
+    },
+    {
+      "timeSeconds": 217.330467042,
+      "file": "capture/001084.jpg"
+    },
+    {
+      "timeSeconds": 217.54878662500002,
+      "file": "capture/001085.jpg"
+    },
+    {
+      "timeSeconds": 217.73375387500002,
+      "file": "capture/001086.jpg"
+    },
+    {
+      "timeSeconds": 217.93490525,
+      "file": "capture/001087.jpg"
+    },
+    {
+      "timeSeconds": 218.13340562500002,
+      "file": "capture/001088.jpg"
+    },
+    {
+      "timeSeconds": 218.33431025000002,
+      "file": "capture/001089.jpg"
+    },
+    {
+      "timeSeconds": 218.533545333,
+      "file": "capture/001090.jpg"
+    },
+    {
+      "timeSeconds": 218.73437187500002,
+      "file": "capture/001091.jpg"
+    },
+    {
+      "timeSeconds": 218.94556633300002,
+      "file": "capture/001092.jpg"
+    },
+    {
+      "timeSeconds": 219.13474300000001,
+      "file": "capture/001093.jpg"
+    },
+    {
+      "timeSeconds": 219.33444350000002,
+      "file": "capture/001094.jpg"
+    },
+    {
+      "timeSeconds": 219.533652708,
+      "file": "capture/001095.jpg"
+    },
+    {
+      "timeSeconds": 219.734558292,
+      "file": "capture/001096.jpg"
+    },
+    {
+      "timeSeconds": 219.93492700000002,
+      "file": "capture/001097.jpg"
+    },
+    {
+      "timeSeconds": 220.13583258300002,
+      "file": "capture/001098.jpg"
+    },
+    {
+      "timeSeconds": 220.33622675,
+      "file": "capture/001099.jpg"
+    },
+    {
+      "timeSeconds": 220.537219583,
+      "file": "capture/001100.jpg"
+    },
+    {
+      "timeSeconds": 220.738648,
+      "file": "capture/001101.jpg"
+    },
+    {
+      "timeSeconds": 220.94534075,
+      "file": "capture/001102.jpg"
+    },
+    {
+      "timeSeconds": 221.14184733300002,
+      "file": "capture/001103.jpg"
+    },
+    {
+      "timeSeconds": 221.34166775000003,
+      "file": "capture/001104.jpg"
+    },
+    {
+      "timeSeconds": 221.545836958,
+      "file": "capture/001105.jpg"
+    },
+    {
+      "timeSeconds": 221.73855425000002,
+      "file": "capture/001106.jpg"
+    },
+    {
+      "timeSeconds": 221.94190762500003,
+      "file": "capture/001107.jpg"
+    },
+    {
+      "timeSeconds": 222.144939875,
+      "file": "capture/001108.jpg"
+    },
+    {
+      "timeSeconds": 222.345929042,
+      "file": "capture/001109.jpg"
+    },
+    {
+      "timeSeconds": 222.54544720799998,
+      "file": "capture/001110.jpg"
+    },
+    {
+      "timeSeconds": 222.745479167,
+      "file": "capture/001111.jpg"
+    },
+    {
+      "timeSeconds": 222.94514716700002,
+      "file": "capture/001112.jpg"
+    },
+    {
+      "timeSeconds": 223.145387583,
+      "file": "capture/001113.jpg"
+    },
+    {
+      "timeSeconds": 223.34530833300002,
+      "file": "capture/001114.jpg"
+    },
+    {
+      "timeSeconds": 223.54520208300002,
+      "file": "capture/001115.jpg"
+    },
+    {
+      "timeSeconds": 223.762232958,
+      "file": "capture/001116.jpg"
+    },
+    {
+      "timeSeconds": 223.96191008300002,
+      "file": "capture/001117.jpg"
+    },
+    {
+      "timeSeconds": 224.145003708,
+      "file": "capture/001118.jpg"
+    },
+    {
+      "timeSeconds": 224.3623045,
+      "file": "capture/001119.jpg"
+    },
+    {
+      "timeSeconds": 224.563259167,
+      "file": "capture/001120.jpg"
+    },
+    {
+      "timeSeconds": 224.746078917,
+      "file": "capture/001121.jpg"
+    },
+    {
+      "timeSeconds": 224.946206708,
+      "file": "capture/001122.jpg"
+    },
+    {
+      "timeSeconds": 225.146171,
+      "file": "capture/001123.jpg"
+    },
+    {
+      "timeSeconds": 225.349262458,
+      "file": "capture/001124.jpg"
+    },
+    {
+      "timeSeconds": 225.56247687500002,
+      "file": "capture/001125.jpg"
+    },
+    {
+      "timeSeconds": 225.750486542,
+      "file": "capture/001126.jpg"
+    },
+    {
+      "timeSeconds": 225.95098833300003,
+      "file": "capture/001127.jpg"
+    },
+    {
+      "timeSeconds": 226.151231458,
+      "file": "capture/001128.jpg"
+    },
+    {
+      "timeSeconds": 226.34994500000002,
+      "file": "capture/001129.jpg"
+    },
+    {
+      "timeSeconds": 226.55036925000002,
+      "file": "capture/001130.jpg"
+    },
+    {
+      "timeSeconds": 226.750636167,
+      "file": "capture/001131.jpg"
+    },
+    {
+      "timeSeconds": 226.950520125,
+      "file": "capture/001132.jpg"
+    },
+    {
+      "timeSeconds": 227.153082708,
+      "file": "capture/001133.jpg"
+    },
+    {
+      "timeSeconds": 227.35409900000002,
+      "file": "capture/001134.jpg"
+    },
+    {
+      "timeSeconds": 227.55339550000002,
+      "file": "capture/001135.jpg"
+    },
+    {
+      "timeSeconds": 227.75388175,
+      "file": "capture/001136.jpg"
+    },
+    {
+      "timeSeconds": 227.954826292,
+      "file": "capture/001137.jpg"
+    },
+    {
+      "timeSeconds": 228.17957541700002,
+      "file": "capture/001138.jpg"
+    },
+    {
+      "timeSeconds": 228.36193670800003,
+      "file": "capture/001139.jpg"
+    },
+    {
+      "timeSeconds": 228.56187970800002,
+      "file": "capture/001140.jpg"
+    },
+    {
+      "timeSeconds": 228.76176291700003,
+      "file": "capture/001141.jpg"
+    },
+    {
+      "timeSeconds": 228.962194958,
+      "file": "capture/001142.jpg"
+    },
+    {
+      "timeSeconds": 229.161822292,
+      "file": "capture/001143.jpg"
+    },
+    {
+      "timeSeconds": 229.371223167,
+      "file": "capture/001144.jpg"
+    },
+    {
+      "timeSeconds": 229.561933,
+      "file": "capture/001145.jpg"
+    },
+    {
+      "timeSeconds": 229.76191016700002,
+      "file": "capture/001146.jpg"
+    },
+    {
+      "timeSeconds": 229.961726292,
+      "file": "capture/001147.jpg"
+    },
+    {
+      "timeSeconds": 230.161875833,
+      "file": "capture/001148.jpg"
+    },
+    {
+      "timeSeconds": 230.36117245800003,
+      "file": "capture/001149.jpg"
+    },
+    {
+      "timeSeconds": 230.56126954200002,
+      "file": "capture/001150.jpg"
+    },
+    {
+      "timeSeconds": 230.76171775,
+      "file": "capture/001151.jpg"
+    },
+    {
+      "timeSeconds": 230.961541833,
+      "file": "capture/001152.jpg"
+    },
+    {
+      "timeSeconds": 231.1615295,
+      "file": "capture/001153.jpg"
+    },
+    {
+      "timeSeconds": 231.36151975,
+      "file": "capture/001154.jpg"
+    },
+    {
+      "timeSeconds": 231.57864533300003,
+      "file": "capture/001155.jpg"
+    },
+    {
+      "timeSeconds": 231.778998708,
+      "file": "capture/001156.jpg"
+    },
+    {
+      "timeSeconds": 231.962043375,
+      "file": "capture/001157.jpg"
+    },
+    {
+      "timeSeconds": 232.162914875,
+      "file": "capture/001158.jpg"
+    },
+    {
+      "timeSeconds": 232.363494,
+      "file": "capture/001159.jpg"
+    },
+    {
+      "timeSeconds": 232.566638542,
+      "file": "capture/001160.jpg"
+    },
+    {
+      "timeSeconds": 232.764497333,
+      "file": "capture/001161.jpg"
+    },
+    {
+      "timeSeconds": 232.967705667,
+      "file": "capture/001162.jpg"
+    },
+    {
+      "timeSeconds": 233.167916333,
+      "file": "capture/001163.jpg"
+    },
+    {
+      "timeSeconds": 233.367290833,
+      "file": "capture/001164.jpg"
+    },
+    {
+      "timeSeconds": 233.56744608300002,
+      "file": "capture/001165.jpg"
+    },
+    {
+      "timeSeconds": 233.76802566700002,
+      "file": "capture/001166.jpg"
+    },
+    {
+      "timeSeconds": 233.968017083,
+      "file": "capture/001167.jpg"
+    },
+    {
+      "timeSeconds": 234.167088333,
+      "file": "capture/001168.jpg"
+    },
+    {
+      "timeSeconds": 234.367721958,
+      "file": "capture/001169.jpg"
+    },
+    {
+      "timeSeconds": 234.567595417,
+      "file": "capture/001170.jpg"
+    },
+    {
+      "timeSeconds": 234.76870825000003,
+      "file": "capture/001171.jpg"
+    },
+    {
+      "timeSeconds": 234.968964292,
+      "file": "capture/001172.jpg"
+    },
+    {
+      "timeSeconds": 235.169896708,
+      "file": "capture/001173.jpg"
+    },
+    {
+      "timeSeconds": 235.36959275,
+      "file": "capture/001174.jpg"
+    },
+    {
+      "timeSeconds": 235.570657375,
+      "file": "capture/001175.jpg"
+    },
+    {
+      "timeSeconds": 235.77433770800002,
+      "file": "capture/001176.jpg"
+    },
+    {
+      "timeSeconds": 235.971583625,
+      "file": "capture/001177.jpg"
+    },
+    {
+      "timeSeconds": 236.17219525000002,
+      "file": "capture/001178.jpg"
+    },
+    {
+      "timeSeconds": 236.374459917,
+      "file": "capture/001179.jpg"
+    },
+    {
+      "timeSeconds": 236.57805195800003,
+      "file": "capture/001180.jpg"
+    },
+    {
+      "timeSeconds": 236.77802970800002,
+      "file": "capture/001181.jpg"
+    },
+    {
+      "timeSeconds": 236.97829058300002,
+      "file": "capture/001182.jpg"
+    },
+    {
+      "timeSeconds": 237.177977792,
+      "file": "capture/001183.jpg"
+    },
+    {
+      "timeSeconds": 237.37810412500002,
+      "file": "capture/001184.jpg"
+    },
+    {
+      "timeSeconds": 237.57810029200002,
+      "file": "capture/001185.jpg"
+    },
+    {
+      "timeSeconds": 237.777962792,
+      "file": "capture/001186.jpg"
+    },
+    {
+      "timeSeconds": 237.977817542,
+      "file": "capture/001187.jpg"
+    },
+    {
+      "timeSeconds": 238.178127875,
+      "file": "capture/001188.jpg"
+    },
+    {
+      "timeSeconds": 238.377973958,
+      "file": "capture/001189.jpg"
+    },
+    {
+      "timeSeconds": 238.577983917,
+      "file": "capture/001190.jpg"
+    },
+    {
+      "timeSeconds": 238.79553029200002,
+      "file": "capture/001191.jpg"
+    },
+    {
+      "timeSeconds": 238.97811537500002,
+      "file": "capture/001192.jpg"
+    },
+    {
+      "timeSeconds": 239.17936500000002,
+      "file": "capture/001193.jpg"
+    },
+    {
+      "timeSeconds": 239.379297333,
+      "file": "capture/001194.jpg"
+    },
+    {
+      "timeSeconds": 239.58016529200003,
+      "file": "capture/001195.jpg"
+    },
+    {
+      "timeSeconds": 239.783138333,
+      "file": "capture/001196.jpg"
+    },
+    {
+      "timeSeconds": 239.98431887499999,
+      "file": "capture/001197.jpg"
+    },
+    {
+      "timeSeconds": 240.18211433300002,
+      "file": "capture/001198.jpg"
+    },
+    {
+      "timeSeconds": 240.38286637500002,
+      "file": "capture/001199.jpg"
+    },
+    {
+      "timeSeconds": 240.583329125,
+      "file": "capture/001200.jpg"
+    },
+    {
+      "timeSeconds": 240.784134208,
+      "file": "capture/001201.jpg"
+    },
+    {
+      "timeSeconds": 240.984765167,
+      "file": "capture/001202.jpg"
+    },
+    {
+      "timeSeconds": 241.186431542,
+      "file": "capture/001203.jpg"
+    },
+    {
+      "timeSeconds": 241.395726208,
+      "file": "capture/001204.jpg"
+    },
+    {
+      "timeSeconds": 241.58669150000003,
+      "file": "capture/001205.jpg"
+    },
+    {
+      "timeSeconds": 241.801331125,
+      "file": "capture/001206.jpg"
+    },
+    {
+      "timeSeconds": 241.986962042,
+      "file": "capture/001207.jpg"
+    },
+    {
+      "timeSeconds": 242.194844042,
+      "file": "capture/001208.jpg"
+    },
+    {
+      "timeSeconds": 242.388229208,
+      "file": "capture/001209.jpg"
+    },
+    {
+      "timeSeconds": 242.612090125,
+      "file": "capture/001210.jpg"
+    },
+    {
+      "timeSeconds": 242.80406104200003,
+      "file": "capture/001211.jpg"
+    },
+    {
+      "timeSeconds": 242.994521833,
+      "file": "capture/001212.jpg"
+    },
+    {
+      "timeSeconds": 243.194360167,
+      "file": "capture/001213.jpg"
+    },
+    {
+      "timeSeconds": 243.394175292,
+      "file": "capture/001214.jpg"
+    },
+    {
+      "timeSeconds": 243.594296417,
+      "file": "capture/001215.jpg"
+    },
+    {
+      "timeSeconds": 243.81138520800002,
+      "file": "capture/001216.jpg"
+    },
+    {
+      "timeSeconds": 244.01117720800002,
+      "file": "capture/001217.jpg"
+    },
+    {
+      "timeSeconds": 244.21157250000002,
+      "file": "capture/001218.jpg"
+    },
+    {
+      "timeSeconds": 244.394279958,
+      "file": "capture/001219.jpg"
+    },
+    {
+      "timeSeconds": 244.611329042,
+      "file": "capture/001220.jpg"
+    },
+    {
+      "timeSeconds": 244.795010958,
+      "file": "capture/001221.jpg"
+    },
+    {
+      "timeSeconds": 244.99474666700002,
+      "file": "capture/001222.jpg"
+    },
+    {
+      "timeSeconds": 245.195794042,
+      "file": "capture/001223.jpg"
+    },
+    {
+      "timeSeconds": 245.39637579200001,
+      "file": "capture/001224.jpg"
+    },
+    {
+      "timeSeconds": 245.59972800000003,
+      "file": "capture/001225.jpg"
+    },
+    {
+      "timeSeconds": 245.80004362500003,
+      "file": "capture/001226.jpg"
+    },
+    {
+      "timeSeconds": 246.00026450000001,
+      "file": "capture/001227.jpg"
+    },
+    {
+      "timeSeconds": 246.20400112500005,
+      "file": "capture/001228.jpg"
+    },
+    {
+      "timeSeconds": 246.39926370799998,
+      "file": "capture/001229.jpg"
+    },
+    {
+      "timeSeconds": 246.600215083,
+      "file": "capture/001230.jpg"
+    },
+    {
+      "timeSeconds": 246.80474454200004,
+      "file": "capture/001231.jpg"
+    },
+    {
+      "timeSeconds": 246.999819208,
+      "file": "capture/001232.jpg"
+    },
+    {
+      "timeSeconds": 247.20090345800003,
+      "file": "capture/001233.jpg"
+    },
+    {
+      "timeSeconds": 247.40295287499998,
+      "file": "capture/001234.jpg"
+    },
+    {
+      "timeSeconds": 247.600968417,
+      "file": "capture/001235.jpg"
+    },
+    {
+      "timeSeconds": 247.80282499999998,
+      "file": "capture/001236.jpg"
+    },
+    {
+      "timeSeconds": 248.00369712500003,
+      "file": "capture/001237.jpg"
+    },
+    {
+      "timeSeconds": 248.212020833,
+      "file": "capture/001238.jpg"
+    },
+    {
+      "timeSeconds": 248.40773566700003,
+      "file": "capture/001239.jpg"
+    },
+    {
+      "timeSeconds": 248.602568958,
+      "file": "capture/001240.jpg"
+    },
+    {
+      "timeSeconds": 248.80863749999997,
+      "file": "capture/001241.jpg"
+    },
+    {
+      "timeSeconds": 249.02413462500004,
+      "file": "capture/001242.jpg"
+    },
+    {
+      "timeSeconds": 249.21154808300003,
+      "file": "capture/001243.jpg"
+    },
+    {
+      "timeSeconds": 249.41134495800003,
+      "file": "capture/001244.jpg"
+    },
+    {
+      "timeSeconds": 249.61194908299998,
+      "file": "capture/001245.jpg"
+    },
+    {
+      "timeSeconds": 249.81277154200004,
+      "file": "capture/001246.jpg"
+    },
+    {
+      "timeSeconds": 250.010306167,
+      "file": "capture/001247.jpg"
+    },
+    {
+      "timeSeconds": 250.212240792,
+      "file": "capture/001248.jpg"
+    },
+    {
+      "timeSeconds": 250.428973167,
+      "file": "capture/001249.jpg"
+    },
+    {
+      "timeSeconds": 250.62883716700003,
+      "file": "capture/001250.jpg"
+    },
+    {
+      "timeSeconds": 250.81239845800002,
+      "file": "capture/001251.jpg"
+    },
+    {
+      "timeSeconds": 251.015456333,
+      "file": "capture/001252.jpg"
+    },
+    {
+      "timeSeconds": 251.21750129200004,
+      "file": "capture/001253.jpg"
+    },
+    {
+      "timeSeconds": 251.413039542,
+      "file": "capture/001254.jpg"
+    },
+    {
+      "timeSeconds": 251.614297958,
+      "file": "capture/001255.jpg"
+    },
+    {
+      "timeSeconds": 251.8187945,
+      "file": "capture/001256.jpg"
+    },
+    {
+      "timeSeconds": 252.016374875,
+      "file": "capture/001257.jpg"
+    },
+    {
+      "timeSeconds": 252.21670258300003,
+      "file": "capture/001258.jpg"
+    },
+    {
+      "timeSeconds": 252.41754383300002,
+      "file": "capture/001259.jpg"
+    },
+    {
+      "timeSeconds": 252.629729375,
+      "file": "capture/001260.jpg"
+    },
+    {
+      "timeSeconds": 252.820362125,
+      "file": "capture/001261.jpg"
+    },
+    {
+      "timeSeconds": 253.029626,
+      "file": "capture/001262.jpg"
+    },
+    {
+      "timeSeconds": 253.22329733300003,
+      "file": "capture/001263.jpg"
+    },
+    {
+      "timeSeconds": 253.43126870799998,
+      "file": "capture/001264.jpg"
+    },
+    {
+      "timeSeconds": 253.61898937500004,
+      "file": "capture/001265.jpg"
+    },
+    {
+      "timeSeconds": 253.826889542,
+      "file": "capture/001266.jpg"
+    },
+    {
+      "timeSeconds": 254.02139525000004,
+      "file": "capture/001267.jpg"
+    },
+    {
+      "timeSeconds": 254.23035475000003,
+      "file": "capture/001268.jpg"
+    },
+    {
+      "timeSeconds": 254.428778333,
+      "file": "capture/001269.jpg"
+    },
+    {
+      "timeSeconds": 254.644747458,
+      "file": "capture/001270.jpg"
+    },
+    {
+      "timeSeconds": 254.828952333,
+      "file": "capture/001271.jpg"
+    },
+    {
+      "timeSeconds": 255.02704383300002,
+      "file": "capture/001272.jpg"
+    },
+    {
+      "timeSeconds": 255.227714542,
+      "file": "capture/001273.jpg"
+    },
+    {
+      "timeSeconds": 255.42738404200003,
+      "file": "capture/001274.jpg"
+    },
+    {
+      "timeSeconds": 255.62689200000003,
+      "file": "capture/001275.jpg"
+    },
+    {
+      "timeSeconds": 255.82647041700002,
+      "file": "capture/001276.jpg"
+    },
+    {
+      "timeSeconds": 256.026739167,
+      "file": "capture/001277.jpg"
+    },
+    {
+      "timeSeconds": 256.22794058299996,
+      "file": "capture/001278.jpg"
+    },
+    {
+      "timeSeconds": 256.42813729200003,
+      "file": "capture/001279.jpg"
+    },
+    {
+      "timeSeconds": 256.628454,
+      "file": "capture/001280.jpg"
+    },
+    {
+      "timeSeconds": 256.854979333,
+      "file": "capture/001281.jpg"
+    },
+    {
+      "timeSeconds": 257.035853583,
+      "file": "capture/001282.jpg"
+    },
+    {
+      "timeSeconds": 257.23719062500004,
+      "file": "capture/001283.jpg"
+    },
+    {
+      "timeSeconds": 257.448761417,
+      "file": "capture/001284.jpg"
+    },
+    {
+      "timeSeconds": 257.634486833,
+      "file": "capture/001285.jpg"
+    },
+    {
+      "timeSeconds": 257.84718250000003,
+      "file": "capture/001286.jpg"
+    },
+    {
+      "timeSeconds": 258.035736458,
+      "file": "capture/001287.jpg"
+    },
+    {
+      "timeSeconds": 258.22804550000006,
+      "file": "capture/001288.jpg"
+    },
+    {
+      "timeSeconds": 258.428541542,
+      "file": "capture/001289.jpg"
+    },
+    {
+      "timeSeconds": 258.63554066700004,
+      "file": "capture/001290.jpg"
+    },
+    {
+      "timeSeconds": 258.85031225,
+      "file": "capture/001291.jpg"
+    },
+    {
+      "timeSeconds": 259.034309875,
+      "file": "capture/001292.jpg"
+    },
+    {
+      "timeSeconds": 259.235422792,
+      "file": "capture/001293.jpg"
+    },
+    {
+      "timeSeconds": 259.43611687500004,
+      "file": "capture/001294.jpg"
+    },
+    {
+      "timeSeconds": 259.635977625,
+      "file": "capture/001295.jpg"
+    },
+    {
+      "timeSeconds": 259.835644042,
+      "file": "capture/001296.jpg"
+    },
+    {
+      "timeSeconds": 260.04320912500003,
+      "file": "capture/001297.jpg"
+    },
+    {
+      "timeSeconds": 260.240336958,
+      "file": "capture/001298.jpg"
+    },
+    {
+      "timeSeconds": 260.43911170800004,
+      "file": "capture/001299.jpg"
+    },
+    {
+      "timeSeconds": 260.63988879199997,
+      "file": "capture/001300.jpg"
+    },
+    {
+      "timeSeconds": 260.84629587500007,
+      "file": "capture/001301.jpg"
+    },
+    {
+      "timeSeconds": 261.047007833,
+      "file": "capture/001302.jpg"
+    },
+    {
+      "timeSeconds": 261.248028917,
+      "file": "capture/001303.jpg"
+    },
+    {
+      "timeSeconds": 261.450533625,
+      "file": "capture/001304.jpg"
+    },
+    {
+      "timeSeconds": 261.64660145799996,
+      "file": "capture/001305.jpg"
+    },
+    {
+      "timeSeconds": 261.846957417,
+      "file": "capture/001306.jpg"
+    },
+    {
+      "timeSeconds": 262.045985333,
+      "file": "capture/001307.jpg"
+    },
+    {
+      "timeSeconds": 262.2501185,
+      "file": "capture/001308.jpg"
+    },
+    {
+      "timeSeconds": 262.447802625,
+      "file": "capture/001309.jpg"
+    },
+    {
+      "timeSeconds": 262.68271212499997,
+      "file": "capture/001310.jpg"
+    },
+    {
+      "timeSeconds": 262.84641358299996,
+      "file": "capture/001311.jpg"
+    },
+    {
+      "timeSeconds": 263.054444958,
+      "file": "capture/001312.jpg"
+    },
+    {
+      "timeSeconds": 263.24722687499997,
+      "file": "capture/001313.jpg"
+    },
+    {
+      "timeSeconds": 263.46251112499993,
+      "file": "capture/001314.jpg"
+    },
+    {
+      "timeSeconds": 263.666228167,
+      "file": "capture/001315.jpg"
+    },
+    {
+      "timeSeconds": 263.86537679199995,
+      "file": "capture/001316.jpg"
+    },
+    {
+      "timeSeconds": 264.04675612499994,
+      "file": "capture/001317.jpg"
+    },
+    {
+      "timeSeconds": 264.245444083,
+      "file": "capture/001318.jpg"
+    },
+    {
+      "timeSeconds": 264.445865542,
+      "file": "capture/001319.jpg"
+    },
+    {
+      "timeSeconds": 264.646089208,
+      "file": "capture/001320.jpg"
+    },
+    {
+      "timeSeconds": 264.84614816699997,
+      "file": "capture/001321.jpg"
+    },
+    {
+      "timeSeconds": 265.04691358299993,
+      "file": "capture/001322.jpg"
+    },
+    {
+      "timeSeconds": 265.25124008299997,
+      "file": "capture/001323.jpg"
+    },
+    {
+      "timeSeconds": 265.45194020799994,
+      "file": "capture/001324.jpg"
+    },
+    {
+      "timeSeconds": 265.650087333,
+      "file": "capture/001325.jpg"
+    },
+    {
+      "timeSeconds": 265.85063025,
+      "file": "capture/001326.jpg"
+    },
+    {
+      "timeSeconds": 266.0482465,
+      "file": "capture/001327.jpg"
+    },
+    {
+      "timeSeconds": 266.25143683299996,
+      "file": "capture/001328.jpg"
+    },
+    {
+      "timeSeconds": 266.4493235,
+      "file": "capture/001329.jpg"
+    },
+    {
+      "timeSeconds": 266.649674583,
+      "file": "capture/001330.jpg"
+    },
+    {
+      "timeSeconds": 266.84943525,
+      "file": "capture/001331.jpg"
+    },
+    {
+      "timeSeconds": 267.06031,
+      "file": "capture/001332.jpg"
+    },
+    {
+      "timeSeconds": 267.250435708,
+      "file": "capture/001333.jpg"
+    },
+    {
+      "timeSeconds": 267.45126899999997,
+      "file": "capture/001334.jpg"
+    },
+    {
+      "timeSeconds": 267.65247475,
+      "file": "capture/001335.jpg"
+    },
+    {
+      "timeSeconds": 267.861975375,
+      "file": "capture/001336.jpg"
+    },
+    {
+      "timeSeconds": 268.05336424999996,
+      "file": "capture/001337.jpg"
+    },
+    {
+      "timeSeconds": 268.27070012499996,
+      "file": "capture/001338.jpg"
+    },
+    {
+      "timeSeconds": 268.463288917,
+      "file": "capture/001339.jpg"
+    },
+    {
+      "timeSeconds": 268.661194208,
+      "file": "capture/001340.jpg"
+    },
+    {
+      "timeSeconds": 268.86061799999993,
+      "file": "capture/001341.jpg"
+    },
+    {
+      "timeSeconds": 269.06069733299995,
+      "file": "capture/001342.jpg"
+    },
+    {
+      "timeSeconds": 269.259970125,
+      "file": "capture/001343.jpg"
+    },
+    {
+      "timeSeconds": 269.46017504199995,
+      "file": "capture/001344.jpg"
+    },
+    {
+      "timeSeconds": 269.66003975,
+      "file": "capture/001345.jpg"
+    },
+    {
+      "timeSeconds": 269.86003925,
+      "file": "capture/001346.jpg"
+    },
+    {
+      "timeSeconds": 270.077807875,
+      "file": "capture/001347.jpg"
+    },
+    {
+      "timeSeconds": 270.27679175,
+      "file": "capture/001348.jpg"
+    },
+    {
+      "timeSeconds": 270.46100087499997,
+      "file": "capture/001349.jpg"
+    },
+    {
+      "timeSeconds": 270.66129070799997,
+      "file": "capture/001350.jpg"
+    },
+    {
+      "timeSeconds": 270.86073545799997,
+      "file": "capture/001351.jpg"
+    },
+    {
+      "timeSeconds": 271.06171945799997,
+      "file": "capture/001352.jpg"
+    },
+    {
+      "timeSeconds": 271.26240870799995,
+      "file": "capture/001353.jpg"
+    },
+    {
+      "timeSeconds": 271.461926333,
+      "file": "capture/001354.jpg"
+    },
+    {
+      "timeSeconds": 271.66211175,
+      "file": "capture/001355.jpg"
+    },
+    {
+      "timeSeconds": 271.86258262499996,
+      "file": "capture/001356.jpg"
+    },
+    {
+      "timeSeconds": 272.06253312499996,
+      "file": "capture/001357.jpg"
+    },
+    {
+      "timeSeconds": 272.26417212499996,
+      "file": "capture/001358.jpg"
+    },
+    {
+      "timeSeconds": 272.463216083,
+      "file": "capture/001359.jpg"
+    },
+    {
+      "timeSeconds": 272.66405654199997,
+      "file": "capture/001360.jpg"
+    },
+    {
+      "timeSeconds": 272.8670355,
+      "file": "capture/001361.jpg"
+    },
+    {
+      "timeSeconds": 273.06522570799996,
+      "file": "capture/001362.jpg"
+    },
+    {
+      "timeSeconds": 273.26545883299997,
+      "file": "capture/001363.jpg"
+    },
+    {
+      "timeSeconds": 273.46758866700003,
+      "file": "capture/001364.jpg"
+    },
+    {
+      "timeSeconds": 273.665329667,
+      "file": "capture/001365.jpg"
+    },
+    {
+      "timeSeconds": 273.867738083,
+      "file": "capture/001366.jpg"
+    },
+    {
+      "timeSeconds": 274.06786900000003,
+      "file": "capture/001367.jpg"
+    },
+    {
+      "timeSeconds": 274.268529,
+      "file": "capture/001368.jpg"
+    },
+    {
+      "timeSeconds": 274.466663,
+      "file": "capture/001369.jpg"
+    },
+    {
+      "timeSeconds": 274.673249042,
+      "file": "capture/001370.jpg"
+    },
+    {
+      "timeSeconds": 274.876028875,
+      "file": "capture/001371.jpg"
+    },
+    {
+      "timeSeconds": 275.08141858299996,
+      "file": "capture/001372.jpg"
+    },
+    {
+      "timeSeconds": 275.271885,
+      "file": "capture/001373.jpg"
+    },
+    {
+      "timeSeconds": 275.476200792,
+      "file": "capture/001374.jpg"
+    },
+    {
+      "timeSeconds": 275.66992995799995,
+      "file": "capture/001375.jpg"
+    },
+    {
+      "timeSeconds": 275.872941708,
+      "file": "capture/001376.jpg"
+    },
+    {
+      "timeSeconds": 276.081783667,
+      "file": "capture/001377.jpg"
+    },
+    {
+      "timeSeconds": 276.273894417,
+      "file": "capture/001378.jpg"
+    },
+    {
+      "timeSeconds": 276.473116292,
+      "file": "capture/001379.jpg"
+    },
+    {
+      "timeSeconds": 276.6791535,
+      "file": "capture/001380.jpg"
+    },
+    {
+      "timeSeconds": 276.880583792,
+      "file": "capture/001381.jpg"
+    },
+    {
+      "timeSeconds": 277.07665112499996,
+      "file": "capture/001382.jpg"
+    },
+    {
+      "timeSeconds": 277.277038833,
+      "file": "capture/001383.jpg"
+    },
+    {
+      "timeSeconds": 277.49530624999994,
+      "file": "capture/001384.jpg"
+    },
+    {
+      "timeSeconds": 277.676765167,
+      "file": "capture/001385.jpg"
+    },
+    {
+      "timeSeconds": 277.876679458,
+      "file": "capture/001386.jpg"
+    },
+    {
+      "timeSeconds": 278.076537333,
+      "file": "capture/001387.jpg"
+    },
+    {
+      "timeSeconds": 278.276547042,
+      "file": "capture/001388.jpg"
+    },
+    {
+      "timeSeconds": 278.47611291699997,
+      "file": "capture/001389.jpg"
+    },
+    {
+      "timeSeconds": 278.693492333,
+      "file": "capture/001390.jpg"
+    },
+    {
+      "timeSeconds": 278.876104208,
+      "file": "capture/001391.jpg"
+    },
+    {
+      "timeSeconds": 279.076644875,
+      "file": "capture/001392.jpg"
+    },
+    {
+      "timeSeconds": 279.276506,
+      "file": "capture/001393.jpg"
+    },
+    {
+      "timeSeconds": 279.47756904199997,
+      "file": "capture/001394.jpg"
+    },
+    {
+      "timeSeconds": 279.679268,
+      "file": "capture/001395.jpg"
+    },
+    {
+      "timeSeconds": 279.883240125,
+      "file": "capture/001396.jpg"
+    },
+    {
+      "timeSeconds": 280.08121775,
+      "file": "capture/001397.jpg"
+    },
+    {
+      "timeSeconds": 280.2852365,
+      "file": "capture/001398.jpg"
+    },
+    {
+      "timeSeconds": 280.489172458,
+      "file": "capture/001399.jpg"
+    },
+    {
+      "timeSeconds": 280.687977708,
+      "file": "capture/001400.jpg"
+    },
+    {
+      "timeSeconds": 280.88261762499997,
+      "file": "capture/001401.jpg"
+    },
+    {
+      "timeSeconds": 281.102286667,
+      "file": "capture/001402.jpg"
+    },
+    {
+      "timeSeconds": 281.286488042,
+      "file": "capture/001403.jpg"
+    },
+    {
+      "timeSeconds": 281.484120375,
+      "file": "capture/001404.jpg"
+    },
+    {
+      "timeSeconds": 281.684237458,
+      "file": "capture/001405.jpg"
+    },
+    {
+      "timeSeconds": 281.88530366699996,
+      "file": "capture/001406.jpg"
+    },
+    {
+      "timeSeconds": 282.085484458,
+      "file": "capture/001407.jpg"
+    },
+    {
+      "timeSeconds": 282.285267917,
+      "file": "capture/001408.jpg"
+    },
+    {
+      "timeSeconds": 282.48687095799994,
+      "file": "capture/001409.jpg"
+    },
+    {
+      "timeSeconds": 282.68712075,
+      "file": "capture/001410.jpg"
+    },
+    {
+      "timeSeconds": 282.893867042,
+      "file": "capture/001411.jpg"
+    },
+    {
+      "timeSeconds": 283.110973083,
+      "file": "capture/001412.jpg"
+    },
+    {
+      "timeSeconds": 283.294399125,
+      "file": "capture/001413.jpg"
+    },
+    {
+      "timeSeconds": 283.493065625,
+      "file": "capture/001414.jpg"
+    },
+    {
+      "timeSeconds": 283.693232083,
+      "file": "capture/001415.jpg"
+    },
+    {
+      "timeSeconds": 283.89341804199995,
+      "file": "capture/001416.jpg"
+    },
+    {
+      "timeSeconds": 284.09278224999997,
+      "file": "capture/001417.jpg"
+    },
+    {
+      "timeSeconds": 284.292927875,
+      "file": "capture/001418.jpg"
+    },
+    {
+      "timeSeconds": 284.492757208,
+      "file": "capture/001419.jpg"
+    },
+    {
+      "timeSeconds": 284.692821833,
+      "file": "capture/001420.jpg"
+    },
+    {
+      "timeSeconds": 284.892647375,
+      "file": "capture/001421.jpg"
+    },
+    {
+      "timeSeconds": 285.093287542,
+      "file": "capture/001422.jpg"
+    },
+    {
+      "timeSeconds": 285.31091725,
+      "file": "capture/001423.jpg"
+    },
+    {
+      "timeSeconds": 285.51159625,
+      "file": "capture/001424.jpg"
+    },
+    {
+      "timeSeconds": 285.693711625,
+      "file": "capture/001425.jpg"
+    },
+    {
+      "timeSeconds": 285.918269292,
+      "file": "capture/001426.jpg"
+    },
+    {
+      "timeSeconds": 286.093443667,
+      "file": "capture/001427.jpg"
+    },
+    {
+      "timeSeconds": 286.2951655,
+      "file": "capture/001428.jpg"
+    },
+    {
+      "timeSeconds": 286.495800333,
+      "file": "capture/001429.jpg"
+    },
+    {
+      "timeSeconds": 286.698249333,
+      "file": "capture/001430.jpg"
+    },
+    {
+      "timeSeconds": 286.897406458,
+      "file": "capture/001431.jpg"
+    },
+    {
+      "timeSeconds": 287.098375375,
+      "file": "capture/001432.jpg"
+    },
+    {
+      "timeSeconds": 287.296382792,
+      "file": "capture/001433.jpg"
+    },
+    {
+      "timeSeconds": 287.502204125,
+      "file": "capture/001434.jpg"
+    },
+    {
+      "timeSeconds": 287.700930042,
+      "file": "capture/001435.jpg"
+    },
+    {
+      "timeSeconds": 287.901325875,
+      "file": "capture/001436.jpg"
+    },
+    {
+      "timeSeconds": 288.102411708,
+      "file": "capture/001437.jpg"
+    },
+    {
+      "timeSeconds": 288.302951583,
+      "file": "capture/001438.jpg"
+    },
+    {
+      "timeSeconds": 288.50057649999997,
+      "file": "capture/001439.jpg"
+    },
+    {
+      "timeSeconds": 288.70161541699997,
+      "file": "capture/001440.jpg"
+    },
+    {
+      "timeSeconds": 288.901559917,
+      "file": "capture/001441.jpg"
+    },
+    {
+      "timeSeconds": 289.102558708,
+      "file": "capture/001442.jpg"
+    },
+    {
+      "timeSeconds": 289.302858917,
+      "file": "capture/001443.jpg"
+    },
+    {
+      "timeSeconds": 289.503563167,
+      "file": "capture/001444.jpg"
+    },
+    {
+      "timeSeconds": 289.70359387499997,
+      "file": "capture/001445.jpg"
+    },
+    {
+      "timeSeconds": 289.9098665,
+      "file": "capture/001446.jpg"
+    },
+    {
+      "timeSeconds": 290.109448375,
+      "file": "capture/001447.jpg"
+    },
+    {
+      "timeSeconds": 290.30935662499996,
+      "file": "capture/001448.jpg"
+    },
+    {
+      "timeSeconds": 290.50975187499995,
+      "file": "capture/001449.jpg"
+    },
+    {
+      "timeSeconds": 290.709724667,
+      "file": "capture/001450.jpg"
+    },
+    {
+      "timeSeconds": 290.909210708,
+      "file": "capture/001451.jpg"
+    },
+    {
+      "timeSeconds": 291.109043875,
+      "file": "capture/001452.jpg"
+    },
+    {
+      "timeSeconds": 291.326802333,
+      "file": "capture/001453.jpg"
+    },
+    {
+      "timeSeconds": 291.50970891699995,
+      "file": "capture/001454.jpg"
+    },
+    {
+      "timeSeconds": 291.71085745799996,
+      "file": "capture/001455.jpg"
+    },
+    {
+      "timeSeconds": 291.911067125,
+      "file": "capture/001456.jpg"
+    },
+    {
+      "timeSeconds": 292.110919875,
+      "file": "capture/001457.jpg"
+    },
+    {
+      "timeSeconds": 292.312092167,
+      "file": "capture/001458.jpg"
+    },
+    {
+      "timeSeconds": 292.511951917,
+      "file": "capture/001459.jpg"
+    },
+    {
+      "timeSeconds": 292.71180449999997,
+      "file": "capture/001460.jpg"
+    },
+    {
+      "timeSeconds": 292.912920583,
+      "file": "capture/001461.jpg"
+    },
+    {
+      "timeSeconds": 293.116001208,
+      "file": "capture/001462.jpg"
+    },
+    {
+      "timeSeconds": 293.31408529199996,
+      "file": "capture/001463.jpg"
+    },
+    {
+      "timeSeconds": 293.516523458,
+      "file": "capture/001464.jpg"
+    },
+    {
+      "timeSeconds": 293.71631254199997,
+      "file": "capture/001465.jpg"
+    },
+    {
+      "timeSeconds": 293.917721583,
+      "file": "capture/001466.jpg"
+    },
+    {
+      "timeSeconds": 294.11849299999994,
+      "file": "capture/001467.jpg"
+    },
+    {
+      "timeSeconds": 294.31896091699997,
+      "file": "capture/001468.jpg"
+    },
+    {
+      "timeSeconds": 294.517530292,
+      "file": "capture/001469.jpg"
+    },
+    {
+      "timeSeconds": 294.717947375,
+      "file": "capture/001470.jpg"
+    },
+    {
+      "timeSeconds": 294.91796629199996,
+      "file": "capture/001471.jpg"
+    },
+    {
+      "timeSeconds": 295.118727333,
+      "file": "capture/001472.jpg"
+    },
+    {
+      "timeSeconds": 295.31995924999995,
+      "file": "capture/001473.jpg"
+    },
+    {
+      "timeSeconds": 295.519923542,
+      "file": "capture/001474.jpg"
+    },
+    {
+      "timeSeconds": 295.72647970799994,
+      "file": "capture/001475.jpg"
+    },
+    {
+      "timeSeconds": 295.926193125,
+      "file": "capture/001476.jpg"
+    },
+    {
+      "timeSeconds": 296.126091417,
+      "file": "capture/001477.jpg"
+    },
+    {
+      "timeSeconds": 296.32596104199996,
+      "file": "capture/001478.jpg"
+    },
+    {
+      "timeSeconds": 296.52611375,
+      "file": "capture/001479.jpg"
+    },
+    {
+      "timeSeconds": 296.725696458,
+      "file": "capture/001480.jpg"
+    },
+    {
+      "timeSeconds": 296.92585325,
+      "file": "capture/001481.jpg"
+    },
+    {
+      "timeSeconds": 297.126006083,
+      "file": "capture/001482.jpg"
+    },
+    {
+      "timeSeconds": 297.326005375,
+      "file": "capture/001483.jpg"
+    },
+    {
+      "timeSeconds": 297.527964208,
+      "file": "capture/001484.jpg"
+    },
+    {
+      "timeSeconds": 297.72617475,
+      "file": "capture/001485.jpg"
+    },
+    {
+      "timeSeconds": 297.92543437499995,
+      "file": "capture/001486.jpg"
+    },
+    {
+      "timeSeconds": 298.145348167,
+      "file": "capture/001487.jpg"
+    },
+    {
+      "timeSeconds": 298.326969542,
+      "file": "capture/001488.jpg"
+    },
+    {
+      "timeSeconds": 298.52665525000003,
+      "file": "capture/001489.jpg"
+    },
+    {
+      "timeSeconds": 298.730155125,
+      "file": "capture/001490.jpg"
+    },
+    {
+      "timeSeconds": 298.929724417,
+      "file": "capture/001491.jpg"
+    },
+    {
+      "timeSeconds": 299.1456165,
+      "file": "capture/001492.jpg"
+    },
+    {
+      "timeSeconds": 299.326787708,
+      "file": "capture/001493.jpg"
+    },
+    {
+      "timeSeconds": 299.527035792,
+      "file": "capture/001494.jpg"
+    },
+    {
+      "timeSeconds": 299.729103375,
+      "file": "capture/001495.jpg"
+    },
+    {
+      "timeSeconds": 299.927565417,
+      "file": "capture/001496.jpg"
+    },
+    {
+      "timeSeconds": 300.129229917,
+      "file": "capture/001497.jpg"
+    },
+    {
+      "timeSeconds": 300.329362708,
+      "file": "capture/001498.jpg"
+    },
+    {
+      "timeSeconds": 300.530207708,
+      "file": "capture/001499.jpg"
+    },
+    {
+      "timeSeconds": 300.730086458,
+      "file": "capture/001500.jpg"
+    },
+    {
+      "timeSeconds": 300.93438433299997,
+      "file": "capture/001501.jpg"
+    },
+    {
+      "timeSeconds": 301.134348208,
+      "file": "capture/001502.jpg"
+    },
+    {
+      "timeSeconds": 301.335121292,
+      "file": "capture/001503.jpg"
+    },
+    {
+      "timeSeconds": 301.53323629199997,
+      "file": "capture/001504.jpg"
+    },
+    {
+      "timeSeconds": 301.7335705,
+      "file": "capture/001505.jpg"
+    },
+    {
+      "timeSeconds": 301.936257625,
+      "file": "capture/001506.jpg"
+    },
+    {
+      "timeSeconds": 302.13499883299994,
+      "file": "capture/001507.jpg"
+    },
+    {
+      "timeSeconds": 302.335434042,
+      "file": "capture/001508.jpg"
+    },
+    {
+      "timeSeconds": 302.535017,
+      "file": "capture/001509.jpg"
+    },
+    {
+      "timeSeconds": 302.734692292,
+      "file": "capture/001510.jpg"
+    },
+    {
+      "timeSeconds": 302.93635375,
+      "file": "capture/001511.jpg"
+    },
+    {
+      "timeSeconds": 303.134669083,
+      "file": "capture/001512.jpg"
+    },
+    {
+      "timeSeconds": 303.33445333299994,
+      "file": "capture/001513.jpg"
+    },
+    {
+      "timeSeconds": 303.53462470799997,
+      "file": "capture/001514.jpg"
+    },
+    {
+      "timeSeconds": 303.735122792,
+      "file": "capture/001515.jpg"
+    },
+    {
+      "timeSeconds": 303.936469625,
+      "file": "capture/001516.jpg"
+    },
+    {
+      "timeSeconds": 304.135971042,
+      "file": "capture/001517.jpg"
+    },
+    {
+      "timeSeconds": 304.33663425,
+      "file": "capture/001518.jpg"
+    },
+    {
+      "timeSeconds": 304.543520625,
+      "file": "capture/001519.jpg"
+    },
+    {
+      "timeSeconds": 304.744585,
+      "file": "capture/001520.jpg"
+    },
+    {
+      "timeSeconds": 304.9430425,
+      "file": "capture/001521.jpg"
+    },
+    {
+      "timeSeconds": 305.159485583,
+      "file": "capture/001522.jpg"
+    },
+    {
+      "timeSeconds": 305.34562812499996,
+      "file": "capture/001523.jpg"
+    },
+    {
+      "timeSeconds": 305.541949792,
+      "file": "capture/001524.jpg"
+    },
+    {
+      "timeSeconds": 305.742449625,
+      "file": "capture/001525.jpg"
+    },
+    {
+      "timeSeconds": 305.9445725,
+      "file": "capture/001526.jpg"
+    },
+    {
+      "timeSeconds": 306.14248349999997,
+      "file": "capture/001527.jpg"
+    },
+    {
+      "timeSeconds": 306.344545,
+      "file": "capture/001528.jpg"
+    },
+    {
+      "timeSeconds": 306.541988333,
+      "file": "capture/001529.jpg"
+    },
+    {
+      "timeSeconds": 306.746289667,
+      "file": "capture/001530.jpg"
+    },
+    {
+      "timeSeconds": 306.94618966699994,
+      "file": "capture/001531.jpg"
+    },
+    {
+      "timeSeconds": 307.14696112499996,
+      "file": "capture/001532.jpg"
+    },
+    {
+      "timeSeconds": 307.34282025,
+      "file": "capture/001533.jpg"
+    },
+    {
+      "timeSeconds": 307.54317229199995,
+      "file": "capture/001534.jpg"
+    },
+    {
+      "timeSeconds": 307.768076625,
+      "file": "capture/001535.jpg"
+    },
+    {
+      "timeSeconds": 307.944141375,
+      "file": "capture/001536.jpg"
+    },
+    {
+      "timeSeconds": 308.14904654199995,
+      "file": "capture/001537.jpg"
+    },
+    {
+      "timeSeconds": 308.34794416700004,
+      "file": "capture/001538.jpg"
+    },
+    {
+      "timeSeconds": 308.544443042,
+      "file": "capture/001539.jpg"
+    },
+    {
+      "timeSeconds": 308.743893458,
+      "file": "capture/001540.jpg"
+    },
+    {
+      "timeSeconds": 308.96072195799997,
+      "file": "capture/001541.jpg"
+    },
+    {
+      "timeSeconds": 309.14301141699997,
+      "file": "capture/001542.jpg"
+    },
+    {
+      "timeSeconds": 309.34404845800003,
+      "file": "capture/001543.jpg"
+    },
+    {
+      "timeSeconds": 309.545104208,
+      "file": "capture/001544.jpg"
+    },
+    {
+      "timeSeconds": 309.745745625,
+      "file": "capture/001545.jpg"
+    },
+    {
+      "timeSeconds": 309.94643154199997,
+      "file": "capture/001546.jpg"
+    },
+    {
+      "timeSeconds": 310.149553167,
+      "file": "capture/001547.jpg"
+    },
+    {
+      "timeSeconds": 310.349920625,
+      "file": "capture/001548.jpg"
+    },
+    {
+      "timeSeconds": 310.54824225,
+      "file": "capture/001549.jpg"
+    },
+    {
+      "timeSeconds": 310.75083454199995,
+      "file": "capture/001550.jpg"
+    },
+    {
+      "timeSeconds": 310.95488541699996,
+      "file": "capture/001551.jpg"
+    },
+    {
+      "timeSeconds": 311.149379417,
+      "file": "capture/001552.jpg"
+    },
+    {
+      "timeSeconds": 311.351478167,
+      "file": "capture/001553.jpg"
+    },
+    {
+      "timeSeconds": 311.54975254199996,
+      "file": "capture/001554.jpg"
+    },
+    {
+      "timeSeconds": 311.752143208,
+      "file": "capture/001555.jpg"
+    },
+    {
+      "timeSeconds": 311.952735458,
+      "file": "capture/001556.jpg"
+    },
+    {
+      "timeSeconds": 312.15279729199995,
+      "file": "capture/001557.jpg"
+    },
+    {
+      "timeSeconds": 312.3556775,
+      "file": "capture/001558.jpg"
+    },
+    {
+      "timeSeconds": 312.5523525,
+      "file": "capture/001559.jpg"
+    },
+    {
+      "timeSeconds": 312.752397917,
+      "file": "capture/001560.jpg"
+    },
+    {
+      "timeSeconds": 312.954581042,
+      "file": "capture/001561.jpg"
+    },
+    {
+      "timeSeconds": 313.161315333,
+      "file": "capture/001562.jpg"
+    },
+    {
+      "timeSeconds": 313.363992667,
+      "file": "capture/001563.jpg"
+    },
+    {
+      "timeSeconds": 313.560298,
+      "file": "capture/001564.jpg"
+    },
+    {
+      "timeSeconds": 313.780763542,
+      "file": "capture/001565.jpg"
+    },
+    {
+      "timeSeconds": 313.966004958,
+      "file": "capture/001566.jpg"
+    },
+    {
+      "timeSeconds": 314.16500591700003,
+      "file": "capture/001567.jpg"
+    },
+    {
+      "timeSeconds": 314.36375824999993,
+      "file": "capture/001568.jpg"
+    },
+    {
+      "timeSeconds": 314.559622708,
+      "file": "capture/001569.jpg"
+    },
+    {
+      "timeSeconds": 314.763110208,
+      "file": "capture/001570.jpg"
+    },
+    {
+      "timeSeconds": 314.97874974999996,
+      "file": "capture/001571.jpg"
+    },
+    {
+      "timeSeconds": 315.159500167,
+      "file": "capture/001572.jpg"
+    },
+    {
+      "timeSeconds": 315.363029042,
+      "file": "capture/001573.jpg"
+    },
+    {
+      "timeSeconds": 315.56122225,
+      "file": "capture/001574.jpg"
+    },
+    {
+      "timeSeconds": 315.762300292,
+      "file": "capture/001575.jpg"
+    },
+    {
+      "timeSeconds": 315.961280375,
+      "file": "capture/001576.jpg"
+    },
+    {
+      "timeSeconds": 316.163214667,
+      "file": "capture/001577.jpg"
+    },
+    {
+      "timeSeconds": 316.36289966699997,
+      "file": "capture/001578.jpg"
+    },
+    {
+      "timeSeconds": 316.565122583,
+      "file": "capture/001579.jpg"
+    },
+    {
+      "timeSeconds": 316.765492,
+      "file": "capture/001580.jpg"
+    },
+    {
+      "timeSeconds": 316.967874667,
+      "file": "capture/001581.jpg"
+    },
+    {
+      "timeSeconds": 317.16904404199994,
+      "file": "capture/001582.jpg"
+    },
+    {
+      "timeSeconds": 317.36922129199996,
+      "file": "capture/001583.jpg"
+    },
+    {
+      "timeSeconds": 317.569583375,
+      "file": "capture/001584.jpg"
+    },
+    {
+      "timeSeconds": 317.768733792,
+      "file": "capture/001585.jpg"
+    },
+    {
+      "timeSeconds": 317.96905075,
+      "file": "capture/001586.jpg"
+    },
+    {
+      "timeSeconds": 318.16806779199993,
+      "file": "capture/001587.jpg"
+    },
+    {
+      "timeSeconds": 318.36859479199995,
+      "file": "capture/001588.jpg"
+    },
+    {
+      "timeSeconds": 318.570857875,
+      "file": "capture/001589.jpg"
+    },
+    {
+      "timeSeconds": 318.768414417,
+      "file": "capture/001590.jpg"
+    },
+    {
+      "timeSeconds": 318.96859037499996,
+      "file": "capture/001591.jpg"
+    },
+    {
+      "timeSeconds": 319.167571917,
+      "file": "capture/001592.jpg"
+    },
+    {
+      "timeSeconds": 319.36861191699995,
+      "file": "capture/001593.jpg"
+    },
+    {
+      "timeSeconds": 319.575082667,
+      "file": "capture/001594.jpg"
+    },
+    {
+      "timeSeconds": 319.77538058299996,
+      "file": "capture/001595.jpg"
+    },
+    {
+      "timeSeconds": 319.977192667,
+      "file": "capture/001596.jpg"
+    },
+    {
+      "timeSeconds": 320.17720404199997,
+      "file": "capture/001597.jpg"
+    },
+    {
+      "timeSeconds": 320.384111792,
+      "file": "capture/001598.jpg"
+    },
+    {
+      "timeSeconds": 320.577078875,
+      "file": "capture/001599.jpg"
+    },
+    {
+      "timeSeconds": 320.774420042,
+      "file": "capture/001600.jpg"
+    },
+    {
+      "timeSeconds": 320.994300417,
+      "file": "capture/001601.jpg"
+    },
+    {
+      "timeSeconds": 321.175311542,
+      "file": "capture/001602.jpg"
+    },
+    {
+      "timeSeconds": 321.378361583,
+      "file": "capture/001603.jpg"
+    },
+    {
+      "timeSeconds": 321.578793875,
+      "file": "capture/001604.jpg"
+    },
+    {
+      "timeSeconds": 321.776494375,
+      "file": "capture/001605.jpg"
+    },
+    {
+      "timeSeconds": 321.97707879199993,
+      "file": "capture/001606.jpg"
+    },
+    {
+      "timeSeconds": 322.17826095799995,
+      "file": "capture/001607.jpg"
+    },
+    {
+      "timeSeconds": 322.379839875,
+      "file": "capture/001608.jpg"
+    },
+    {
+      "timeSeconds": 322.57790779199996,
+      "file": "capture/001609.jpg"
+    },
+    {
+      "timeSeconds": 322.779299083,
+      "file": "capture/001610.jpg"
+    },
+    {
+      "timeSeconds": 322.98798,
+      "file": "capture/001611.jpg"
+    },
+    {
+      "timeSeconds": 323.183706875,
+      "file": "capture/001612.jpg"
+    },
+    {
+      "timeSeconds": 323.395272375,
+      "file": "capture/001613.jpg"
+    },
+    {
+      "timeSeconds": 323.583321,
+      "file": "capture/001614.jpg"
+    },
+    {
+      "timeSeconds": 323.786651583,
+      "file": "capture/001615.jpg"
+    },
+    {
+      "timeSeconds": 323.991151958,
+      "file": "capture/001616.jpg"
+    },
+    {
+      "timeSeconds": 324.20246195799996,
+      "file": "capture/001617.jpg"
+    },
+    {
+      "timeSeconds": 324.39053720799996,
+      "file": "capture/001618.jpg"
+    },
+    {
+      "timeSeconds": 324.585621958,
+      "file": "capture/001619.jpg"
+    },
+    {
+      "timeSeconds": 324.78320991699997,
+      "file": "capture/001620.jpg"
+    },
+    {
+      "timeSeconds": 324.985193042,
+      "file": "capture/001621.jpg"
+    },
+    {
+      "timeSeconds": 325.194848917,
+      "file": "capture/001622.jpg"
+    },
+    {
+      "timeSeconds": 325.39097783299997,
+      "file": "capture/001623.jpg"
+    },
+    {
+      "timeSeconds": 325.586682417,
+      "file": "capture/001624.jpg"
+    },
+    {
+      "timeSeconds": 325.791763458,
+      "file": "capture/001625.jpg"
+    },
+    {
+      "timeSeconds": 325.990949792,
+      "file": "capture/001626.jpg"
+    },
+    {
+      "timeSeconds": 326.196124958,
+      "file": "capture/001627.jpg"
+    },
+    {
+      "timeSeconds": 326.39781945799996,
+      "file": "capture/001628.jpg"
+    },
+    {
+      "timeSeconds": 326.596210167,
+      "file": "capture/001629.jpg"
+    },
+    {
+      "timeSeconds": 326.797811083,
+      "file": "capture/001630.jpg"
+    },
+    {
+      "timeSeconds": 326.99654608299994,
+      "file": "capture/001631.jpg"
+    },
+    {
+      "timeSeconds": 327.21438474999997,
+      "file": "capture/001632.jpg"
+    },
+    {
+      "timeSeconds": 327.41328120799994,
+      "file": "capture/001633.jpg"
+    },
+    {
+      "timeSeconds": 327.593160417,
+      "file": "capture/001634.jpg"
+    },
+    {
+      "timeSeconds": 327.796547792,
+      "file": "capture/001635.jpg"
+    },
+    {
+      "timeSeconds": 327.99306974999996,
+      "file": "capture/001636.jpg"
+    },
+    {
+      "timeSeconds": 328.192977708,
+      "file": "capture/001637.jpg"
+    },
+    {
+      "timeSeconds": 328.417357417,
+      "file": "capture/001638.jpg"
+    },
+    {
+      "timeSeconds": 328.597558125,
+      "file": "capture/001639.jpg"
+    },
+    {
+      "timeSeconds": 328.814759208,
+      "file": "capture/001640.jpg"
+    },
+    {
+      "timeSeconds": 328.997067042,
+      "file": "capture/001641.jpg"
+    },
+    {
+      "timeSeconds": 329.195442125,
+      "file": "capture/001642.jpg"
+    },
+    {
+      "timeSeconds": 329.395075583,
+      "file": "capture/001643.jpg"
+    },
+    {
+      "timeSeconds": 329.59592374999994,
+      "file": "capture/001644.jpg"
+    },
+    {
+      "timeSeconds": 329.796512417,
+      "file": "capture/001645.jpg"
+    },
+    {
+      "timeSeconds": 329.999841583,
+      "file": "capture/001646.jpg"
+    },
+    {
+      "timeSeconds": 330.210867792,
+      "file": "capture/001647.jpg"
+    },
+    {
+      "timeSeconds": 330.40152374999997,
+      "file": "capture/001648.jpg"
+    },
+    {
+      "timeSeconds": 330.605669208,
+      "file": "capture/001649.jpg"
+    },
+    {
+      "timeSeconds": 330.812313917,
+      "file": "capture/001650.jpg"
+    },
+    {
+      "timeSeconds": 331.002228125,
+      "file": "capture/001651.jpg"
+    },
+    {
+      "timeSeconds": 331.215586208,
+      "file": "capture/001652.jpg"
+    },
+    {
+      "timeSeconds": 331.409792708,
+      "file": "capture/001653.jpg"
+    },
+    {
+      "timeSeconds": 331.615088458,
+      "file": "capture/001654.jpg"
+    },
+    {
+      "timeSeconds": 331.813510458,
+      "file": "capture/001655.jpg"
+    },
+    {
+      "timeSeconds": 332.004265792,
+      "file": "capture/001656.jpg"
+    },
+    {
+      "timeSeconds": 332.216247958,
+      "file": "capture/001657.jpg"
+    },
+    {
+      "timeSeconds": 332.432043875,
+      "file": "capture/001658.jpg"
+    },
+    {
+      "timeSeconds": 332.63232308299996,
+      "file": "capture/001659.jpg"
+    },
+    {
+      "timeSeconds": 332.810415167,
+      "file": "capture/001660.jpg"
+    },
+    {
+      "timeSeconds": 333.00935024999995,
+      "file": "capture/001661.jpg"
+    },
+    {
+      "timeSeconds": 333.209478167,
+      "file": "capture/001662.jpg"
+    },
+    {
+      "timeSeconds": 333.409427292,
+      "file": "capture/001663.jpg"
+    },
+    {
+      "timeSeconds": 333.60935137499996,
+      "file": "capture/001664.jpg"
+    },
+    {
+      "timeSeconds": 333.81041629199996,
+      "file": "capture/001665.jpg"
+    },
+    {
+      "timeSeconds": 334.028919042,
+      "file": "capture/001666.jpg"
+    },
+    {
+      "timeSeconds": 334.21100279199993,
+      "file": "capture/001667.jpg"
+    },
+    {
+      "timeSeconds": 334.42533954199996,
+      "file": "capture/001668.jpg"
+    },
+    {
+      "timeSeconds": 334.61853516699995,
+      "file": "capture/001669.jpg"
+    },
+    {
+      "timeSeconds": 334.83099429199996,
+      "file": "capture/001670.jpg"
+    },
+    {
+      "timeSeconds": 335.01797949999997,
+      "file": "capture/001671.jpg"
+    },
+    {
+      "timeSeconds": 335.211012958,
+      "file": "capture/001672.jpg"
+    },
+    {
+      "timeSeconds": 335.413118875,
+      "file": "capture/001673.jpg"
+    },
+    {
+      "timeSeconds": 335.612732417,
+      "file": "capture/001674.jpg"
+    },
+    {
+      "timeSeconds": 335.81707845799997,
+      "file": "capture/001675.jpg"
+    },
+    {
+      "timeSeconds": 336.018651417,
+      "file": "capture/001676.jpg"
+    },
+    {
+      "timeSeconds": 336.218778583,
+      "file": "capture/001677.jpg"
+    },
+    {
+      "timeSeconds": 336.431075208,
+      "file": "capture/001678.jpg"
+    },
+    {
+      "timeSeconds": 336.61708637499993,
+      "file": "capture/001679.jpg"
+    },
+    {
+      "timeSeconds": 336.818828958,
+      "file": "capture/001680.jpg"
+    },
+    {
+      "timeSeconds": 337.022062625,
+      "file": "capture/001681.jpg"
+    },
+    {
+      "timeSeconds": 337.21834975,
+      "file": "capture/001682.jpg"
+    },
+    {
+      "timeSeconds": 337.418962833,
+      "file": "capture/001683.jpg"
+    },
+    {
+      "timeSeconds": 337.62896324999997,
+      "file": "capture/001684.jpg"
+    },
+    {
+      "timeSeconds": 337.819381875,
+      "file": "capture/001685.jpg"
+    },
+    {
+      "timeSeconds": 338.04695695799995,
+      "file": "capture/001686.jpg"
+    },
+    {
+      "timeSeconds": 338.22960608299996,
+      "file": "capture/001687.jpg"
+    },
+    {
+      "timeSeconds": 338.432258125,
+      "file": "capture/001688.jpg"
+    },
+    {
+      "timeSeconds": 338.618024333,
+      "file": "capture/001689.jpg"
+    },
+    {
+      "timeSeconds": 338.826141583,
+      "file": "capture/001690.jpg"
+    },
+    {
+      "timeSeconds": 339.026690042,
+      "file": "capture/001691.jpg"
+    },
+    {
+      "timeSeconds": 339.227014458,
+      "file": "capture/001692.jpg"
+    },
+    {
+      "timeSeconds": 339.423941792,
+      "file": "capture/001693.jpg"
+    },
+    {
+      "timeSeconds": 339.626086125,
+      "file": "capture/001694.jpg"
+    },
+    {
+      "timeSeconds": 339.827153417,
+      "file": "capture/001695.jpg"
+    },
+    {
+      "timeSeconds": 340.028406917,
+      "file": "capture/001696.jpg"
+    },
+    {
+      "timeSeconds": 340.226097083,
+      "file": "capture/001697.jpg"
+    },
+    {
+      "timeSeconds": 340.42592533299995,
+      "file": "capture/001698.jpg"
+    },
+    {
+      "timeSeconds": 340.62409320800003,
+      "file": "capture/001699.jpg"
+    },
+    {
+      "timeSeconds": 340.825819375,
+      "file": "capture/001700.jpg"
+    },
+    {
+      "timeSeconds": 341.0430055,
+      "file": "capture/001701.jpg"
+    },
+    {
+      "timeSeconds": 341.229343583,
+      "file": "capture/001702.jpg"
+    },
+    {
+      "timeSeconds": 341.44319774999997,
+      "file": "capture/001703.jpg"
+    },
+    {
+      "timeSeconds": 341.643163208,
+      "file": "capture/001704.jpg"
+    },
+    {
+      "timeSeconds": 341.826081,
+      "file": "capture/001705.jpg"
+    },
+    {
+      "timeSeconds": 342.02579754199996,
+      "file": "capture/001706.jpg"
+    },
+    {
+      "timeSeconds": 342.225939,
+      "file": "capture/001707.jpg"
+    },
+    {
+      "timeSeconds": 342.425485917,
+      "file": "capture/001708.jpg"
+    },
+    {
+      "timeSeconds": 342.62826841699996,
+      "file": "capture/001709.jpg"
+    },
+    {
+      "timeSeconds": 342.840437917,
+      "file": "capture/001710.jpg"
+    },
+    {
+      "timeSeconds": 343.03908554199995,
+      "file": "capture/001711.jpg"
+    },
+    {
+      "timeSeconds": 343.24407362499994,
+      "file": "capture/001712.jpg"
+    },
+    {
+      "timeSeconds": 343.44396812499997,
+      "file": "capture/001713.jpg"
+    },
+    {
+      "timeSeconds": 343.63369325,
+      "file": "capture/001714.jpg"
+    },
+    {
+      "timeSeconds": 343.833852875,
+      "file": "capture/001715.jpg"
+    },
+    {
+      "timeSeconds": 344.03430449999996,
+      "file": "capture/001716.jpg"
+    },
+    {
+      "timeSeconds": 344.234526708,
+      "file": "capture/001717.jpg"
+    },
+    {
+      "timeSeconds": 344.43223975,
+      "file": "capture/001718.jpg"
+    },
+    {
+      "timeSeconds": 344.63288291699996,
+      "file": "capture/001719.jpg"
+    },
+    {
+      "timeSeconds": 344.843641167,
+      "file": "capture/001720.jpg"
+    },
+    {
+      "timeSeconds": 345.054226542,
+      "file": "capture/001721.jpg"
+    },
+    {
+      "timeSeconds": 345.238074167,
+      "file": "capture/001722.jpg"
+    },
+    {
+      "timeSeconds": 345.43436283299997,
+      "file": "capture/001723.jpg"
+    },
+    {
+      "timeSeconds": 345.633877333,
+      "file": "capture/001724.jpg"
+    },
+    {
+      "timeSeconds": 345.83421812499995,
+      "file": "capture/001725.jpg"
+    },
+    {
+      "timeSeconds": 346.034166042,
+      "file": "capture/001726.jpg"
+    },
+    {
+      "timeSeconds": 346.236199125,
+      "file": "capture/001727.jpg"
+    },
+    {
+      "timeSeconds": 346.434078042,
+      "file": "capture/001728.jpg"
+    },
+    {
+      "timeSeconds": 346.633858542,
+      "file": "capture/001729.jpg"
+    },
+    {
+      "timeSeconds": 346.834624208,
+      "file": "capture/001730.jpg"
+    },
+    {
+      "timeSeconds": 347.040361583,
+      "file": "capture/001731.jpg"
+    },
+    {
+      "timeSeconds": 347.242789208,
+      "file": "capture/001732.jpg"
+    },
+    {
+      "timeSeconds": 347.442708917,
+      "file": "capture/001733.jpg"
+    },
+    {
+      "timeSeconds": 347.643634208,
+      "file": "capture/001734.jpg"
+    },
+    {
+      "timeSeconds": 347.841934042,
+      "file": "capture/001735.jpg"
+    },
+    {
+      "timeSeconds": 348.04182020799993,
+      "file": "capture/001736.jpg"
+    },
+    {
+      "timeSeconds": 348.24255237499995,
+      "file": "capture/001737.jpg"
+    },
+    {
+      "timeSeconds": 348.44234987499993,
+      "file": "capture/001738.jpg"
+    },
+    {
+      "timeSeconds": 348.641532542,
+      "file": "capture/001739.jpg"
+    },
+    {
+      "timeSeconds": 348.842294167,
+      "file": "capture/001740.jpg"
+    },
+    {
+      "timeSeconds": 349.04723574999997,
+      "file": "capture/001741.jpg"
+    },
+    {
+      "timeSeconds": 349.25778295799995,
+      "file": "capture/001742.jpg"
+    },
+    {
+      "timeSeconds": 349.441746375,
+      "file": "capture/001743.jpg"
+    },
+    {
+      "timeSeconds": 349.64238,
+      "file": "capture/001744.jpg"
+    },
+    {
+      "timeSeconds": 349.84471870799996,
+      "file": "capture/001745.jpg"
+    },
+    {
+      "timeSeconds": 350.057633333,
+      "file": "capture/001746.jpg"
+    },
+    {
+      "timeSeconds": 350.242199833,
+      "file": "capture/001747.jpg"
+    },
+    {
+      "timeSeconds": 350.442718708,
+      "file": "capture/001748.jpg"
+    },
+    {
+      "timeSeconds": 350.64250824999993,
+      "file": "capture/001749.jpg"
+    },
+    {
+      "timeSeconds": 350.84348124999997,
+      "file": "capture/001750.jpg"
+    },
+    {
+      "timeSeconds": 351.04637799999995,
+      "file": "capture/001751.jpg"
+    },
+    {
+      "timeSeconds": 351.249039917,
+      "file": "capture/001752.jpg"
+    },
+    {
+      "timeSeconds": 351.447635708,
+      "file": "capture/001753.jpg"
+    },
+    {
+      "timeSeconds": 351.645992333,
+      "file": "capture/001754.jpg"
+    },
+    {
+      "timeSeconds": 351.84667404199996,
+      "file": "capture/001755.jpg"
+    },
+    {
+      "timeSeconds": 352.052413833,
+      "file": "capture/001756.jpg"
+    },
+    {
+      "timeSeconds": 352.261192,
+      "file": "capture/001757.jpg"
+    },
+    {
+      "timeSeconds": 352.45337558299997,
+      "file": "capture/001758.jpg"
+    },
+    {
+      "timeSeconds": 352.652483167,
+      "file": "capture/001759.jpg"
+    },
+    {
+      "timeSeconds": 352.851179167,
+      "file": "capture/001760.jpg"
+    },
+    {
+      "timeSeconds": 353.053755083,
+      "file": "capture/001761.jpg"
+    },
+    {
+      "timeSeconds": 353.253095417,
+      "file": "capture/001762.jpg"
+    },
+    {
+      "timeSeconds": 353.46616224999997,
+      "file": "capture/001763.jpg"
+    },
+    {
+      "timeSeconds": 353.675784292,
+      "file": "capture/001764.jpg"
+    },
+    {
+      "timeSeconds": 353.867954667,
+      "file": "capture/001765.jpg"
+    },
+    {
+      "timeSeconds": 354.071540125,
+      "file": "capture/001766.jpg"
+    },
+    {
+      "timeSeconds": 354.26042370799996,
+      "file": "capture/001767.jpg"
+    },
+    {
+      "timeSeconds": 354.4648075,
+      "file": "capture/001768.jpg"
+    },
+    {
+      "timeSeconds": 354.688847583,
+      "file": "capture/001769.jpg"
+    },
+    {
+      "timeSeconds": 354.863594333,
+      "file": "capture/001770.jpg"
+    },
+    {
+      "timeSeconds": 355.06076187499997,
+      "file": "capture/001771.jpg"
+    },
+    {
+      "timeSeconds": 355.26084008299995,
+      "file": "capture/001772.jpg"
+    },
+    {
+      "timeSeconds": 355.45884266699994,
+      "file": "capture/001773.jpg"
+    },
+    {
+      "timeSeconds": 355.660261833,
+      "file": "capture/001774.jpg"
+    },
+    {
+      "timeSeconds": 355.861101417,
+      "file": "capture/001775.jpg"
+    },
+    {
+      "timeSeconds": 356.06409958300003,
+      "file": "capture/001776.jpg"
+    },
+    {
+      "timeSeconds": 356.262277167,
+      "file": "capture/001777.jpg"
+    },
+    {
+      "timeSeconds": 356.462164958,
+      "file": "capture/001778.jpg"
+    },
+    {
+      "timeSeconds": 356.662857417,
+      "file": "capture/001779.jpg"
+    },
+    {
+      "timeSeconds": 356.86399274999997,
+      "file": "capture/001780.jpg"
+    },
+    {
+      "timeSeconds": 357.06628025000003,
+      "file": "capture/001781.jpg"
+    },
+    {
+      "timeSeconds": 357.26515275,
+      "file": "capture/001782.jpg"
+    },
+    {
+      "timeSeconds": 357.477495583,
+      "file": "capture/001783.jpg"
+    },
+    {
+      "timeSeconds": 357.66957666699994,
+      "file": "capture/001784.jpg"
+    },
+    {
+      "timeSeconds": 357.867738458,
+      "file": "capture/001785.jpg"
+    },
+    {
+      "timeSeconds": 358.067970333,
+      "file": "capture/001786.jpg"
+    },
+    {
+      "timeSeconds": 358.26723895799995,
+      "file": "capture/001787.jpg"
+    },
+    {
+      "timeSeconds": 358.467338458,
+      "file": "capture/001788.jpg"
+    },
+    {
+      "timeSeconds": 358.669635,
+      "file": "capture/001789.jpg"
+    },
+    {
+      "timeSeconds": 358.86808158299993,
+      "file": "capture/001790.jpg"
+    },
+    {
+      "timeSeconds": 359.06952170799997,
+      "file": "capture/001791.jpg"
+    },
+    {
+      "timeSeconds": 359.27704562499997,
+      "file": "capture/001792.jpg"
+    },
+    {
+      "timeSeconds": 359.47653258299994,
+      "file": "capture/001793.jpg"
+    },
+    {
+      "timeSeconds": 359.676814542,
+      "file": "capture/001794.jpg"
+    },
+    {
+      "timeSeconds": 359.893505417,
+      "file": "capture/001795.jpg"
+    },
+    {
+      "timeSeconds": 360.07651029199997,
+      "file": "capture/001796.jpg"
+    },
+    {
+      "timeSeconds": 360.27654674999997,
+      "file": "capture/001797.jpg"
+    },
+    {
+      "timeSeconds": 360.47638687499995,
+      "file": "capture/001798.jpg"
+    },
+    {
+      "timeSeconds": 360.676923958,
+      "file": "capture/001799.jpg"
+    },
+    {
+      "timeSeconds": 360.877277958,
+      "file": "capture/001800.jpg"
+    },
+    {
+      "timeSeconds": 361.075516917,
+      "file": "capture/001801.jpg"
+    },
+    {
+      "timeSeconds": 361.281158625,
+      "file": "capture/001802.jpg"
+    },
+    {
+      "timeSeconds": 361.48005641699996,
+      "file": "capture/001803.jpg"
+    },
+    {
+      "timeSeconds": 361.693583,
+      "file": "capture/001804.jpg"
+    },
+    {
+      "timeSeconds": 361.89170499999994,
+      "file": "capture/001805.jpg"
+    },
+    {
+      "timeSeconds": 362.10857491699994,
+      "file": "capture/001806.jpg"
+    },
+    {
+      "timeSeconds": 362.301462917,
+      "file": "capture/001807.jpg"
+    },
+    {
+      "timeSeconds": 362.49255124999996,
+      "file": "capture/001808.jpg"
+    },
+    {
+      "timeSeconds": 362.70658283299997,
+      "file": "capture/001809.jpg"
+    },
+    {
+      "timeSeconds": 362.90118816699993,
+      "file": "capture/001810.jpg"
+    },
+    {
+      "timeSeconds": 363.10661,
+      "file": "capture/001811.jpg"
+    },
+    {
+      "timeSeconds": 363.290957333,
+      "file": "capture/001812.jpg"
+    },
+    {
+      "timeSeconds": 363.49551416699995,
+      "file": "capture/001813.jpg"
+    },
+    {
+      "timeSeconds": 363.703497958,
+      "file": "capture/001814.jpg"
+    },
+    {
+      "timeSeconds": 363.89699325,
+      "file": "capture/001815.jpg"
+    },
+    {
+      "timeSeconds": 364.105680167,
+      "file": "capture/001816.jpg"
+    },
+    {
+      "timeSeconds": 364.31621887499995,
+      "file": "capture/001817.jpg"
+    },
+    {
+      "timeSeconds": 364.49696104199995,
+      "file": "capture/001818.jpg"
+    },
+    {
+      "timeSeconds": 364.724794208,
+      "file": "capture/001819.jpg"
+    },
+    {
+      "timeSeconds": 364.89915454199996,
+      "file": "capture/001820.jpg"
+    },
+    {
+      "timeSeconds": 365.103418833,
+      "file": "capture/001821.jpg"
+    },
+    {
+      "timeSeconds": 365.293238542,
+      "file": "capture/001822.jpg"
+    },
+    {
+      "timeSeconds": 365.492922625,
+      "file": "capture/001823.jpg"
+    },
+    {
+      "timeSeconds": 365.692566625,
+      "file": "capture/001824.jpg"
+    },
+    {
+      "timeSeconds": 365.89310895799997,
+      "file": "capture/001825.jpg"
+    },
+    {
+      "timeSeconds": 366.090188792,
+      "file": "capture/001826.jpg"
+    },
+    {
+      "timeSeconds": 366.28996458299997,
+      "file": "capture/001827.jpg"
+    },
+    {
+      "timeSeconds": 366.490729292,
+      "file": "capture/001828.jpg"
+    },
+    {
+      "timeSeconds": 366.69403625,
+      "file": "capture/001829.jpg"
+    },
+    {
+      "timeSeconds": 366.89180512499996,
+      "file": "capture/001830.jpg"
+    },
+    {
+      "timeSeconds": 367.097689917,
+      "file": "capture/001831.jpg"
+    },
+    {
+      "timeSeconds": 367.29560274999994,
+      "file": "capture/001832.jpg"
+    },
+    {
+      "timeSeconds": 367.510106667,
+      "file": "capture/001833.jpg"
+    },
+    {
+      "timeSeconds": 367.727178458,
+      "file": "capture/001834.jpg"
+    },
+    {
+      "timeSeconds": 367.90831475,
+      "file": "capture/001835.jpg"
+    },
+    {
+      "timeSeconds": 368.114085875,
+      "file": "capture/001836.jpg"
+    },
+    {
+      "timeSeconds": 368.328614833,
+      "file": "capture/001837.jpg"
+    },
+    {
+      "timeSeconds": 368.508324292,
+      "file": "capture/001838.jpg"
+    },
+    {
+      "timeSeconds": 368.72242608299996,
+      "file": "capture/001839.jpg"
+    },
+    {
+      "timeSeconds": 368.91087770799993,
+      "file": "capture/001840.jpg"
+    },
+    {
+      "timeSeconds": 369.12308958299997,
+      "file": "capture/001841.jpg"
+    },
+    {
+      "timeSeconds": 369.307601583,
+      "file": "capture/001842.jpg"
+    },
+    {
+      "timeSeconds": 369.511666208,
+      "file": "capture/001843.jpg"
+    },
+    {
+      "timeSeconds": 369.721317833,
+      "file": "capture/001844.jpg"
+    },
+    {
+      "timeSeconds": 369.9038015,
+      "file": "capture/001845.jpg"
+    },
+    {
+      "timeSeconds": 370.10777254199996,
+      "file": "capture/001846.jpg"
+    },
+    {
+      "timeSeconds": 370.312455708,
+      "file": "capture/001847.jpg"
+    },
+    {
+      "timeSeconds": 370.51788491699995,
+      "file": "capture/001848.jpg"
+    },
+    {
+      "timeSeconds": 370.723914208,
+      "file": "capture/001849.jpg"
+    },
+    {
+      "timeSeconds": 370.91797725,
+      "file": "capture/001850.jpg"
+    },
+    {
+      "timeSeconds": 371.13081875,
+      "file": "capture/001851.jpg"
+    },
+    {
+      "timeSeconds": 371.33476233299996,
+      "file": "capture/001852.jpg"
+    },
+    {
+      "timeSeconds": 371.52529812499995,
+      "file": "capture/001853.jpg"
+    },
+    {
+      "timeSeconds": 371.74163566699997,
+      "file": "capture/001854.jpg"
+    },
+    {
+      "timeSeconds": 371.91861504199994,
+      "file": "capture/001855.jpg"
+    },
+    {
+      "timeSeconds": 372.128315,
+      "file": "capture/001856.jpg"
+    },
+    {
+      "timeSeconds": 372.330170292,
+      "file": "capture/001857.jpg"
+    },
+    {
+      "timeSeconds": 372.540677958,
+      "file": "capture/001858.jpg"
+    },
+    {
+      "timeSeconds": 372.741010417,
+      "file": "capture/001859.jpg"
+    },
+    {
+      "timeSeconds": 372.942838375,
+      "file": "capture/001860.jpg"
+    },
+    {
+      "timeSeconds": 373.15455245799996,
+      "file": "capture/001861.jpg"
+    },
+    {
+      "timeSeconds": 373.326891833,
+      "file": "capture/001862.jpg"
+    },
+    {
+      "timeSeconds": 373.53010691699996,
+      "file": "capture/001863.jpg"
+    },
+    {
+      "timeSeconds": 373.72638958299996,
+      "file": "capture/001864.jpg"
+    },
+    {
+      "timeSeconds": 373.92594504199997,
+      "file": "capture/001865.jpg"
+    },
+    {
+      "timeSeconds": 374.12925983299994,
+      "file": "capture/001866.jpg"
+    },
+    {
+      "timeSeconds": 374.327521292,
+      "file": "capture/001867.jpg"
+    },
+    {
+      "timeSeconds": 374.5380465,
+      "file": "capture/001868.jpg"
+    },
+    {
+      "timeSeconds": 374.777991583,
+      "file": "capture/001869.jpg"
+    },
+    {
+      "timeSeconds": 374.953622458,
+      "file": "capture/001870.jpg"
+    },
+    {
+      "timeSeconds": 375.13458362499995,
+      "file": "capture/001871.jpg"
+    },
+    {
+      "timeSeconds": 375.33935295799995,
+      "file": "capture/001872.jpg"
+    },
+    {
+      "timeSeconds": 375.553050375,
+      "file": "capture/001873.jpg"
+    },
+    {
+      "timeSeconds": 375.754991917,
+      "file": "capture/001874.jpg"
+    },
+    {
+      "timeSeconds": 375.94093024999995,
+      "file": "capture/001875.jpg"
+    },
+    {
+      "timeSeconds": 376.15033341699996,
+      "file": "capture/001876.jpg"
+    },
+    {
+      "timeSeconds": 376.327587458,
+      "file": "capture/001877.jpg"
+    },
+    {
+      "timeSeconds": 376.525381708,
+      "file": "capture/001878.jpg"
+    },
+    {
+      "timeSeconds": 376.72657495799996,
+      "file": "capture/001879.jpg"
+    },
+    {
+      "timeSeconds": 376.925278167,
+      "file": "capture/001880.jpg"
+    },
+    {
+      "timeSeconds": 377.12609825,
+      "file": "capture/001881.jpg"
+    },
+    {
+      "timeSeconds": 377.326789583,
+      "file": "capture/001882.jpg"
+    },
+    {
+      "timeSeconds": 377.526618167,
+      "file": "capture/001883.jpg"
+    },
+    {
+      "timeSeconds": 377.72689279199994,
+      "file": "capture/001884.jpg"
+    },
+    {
+      "timeSeconds": 377.932768667,
+      "file": "capture/001885.jpg"
+    },
+    {
+      "timeSeconds": 378.12692108299996,
+      "file": "capture/001886.jpg"
+    },
+    {
+      "timeSeconds": 378.327877875,
+      "file": "capture/001887.jpg"
+    },
+    {
+      "timeSeconds": 378.528577125,
+      "file": "capture/001888.jpg"
+    },
+    {
+      "timeSeconds": 378.729537833,
+      "file": "capture/001889.jpg"
+    },
+    {
+      "timeSeconds": 378.930578208,
+      "file": "capture/001890.jpg"
+    },
+    {
+      "timeSeconds": 379.130158167,
+      "file": "capture/001891.jpg"
+    },
+    {
+      "timeSeconds": 379.331153708,
+      "file": "capture/001892.jpg"
+    },
+    {
+      "timeSeconds": 379.534782,
+      "file": "capture/001893.jpg"
+    },
+    {
+      "timeSeconds": 379.73888879199995,
+      "file": "capture/001894.jpg"
+    },
+    {
+      "timeSeconds": 379.93396212499994,
+      "file": "capture/001895.jpg"
+    },
+    {
+      "timeSeconds": 380.144171,
+      "file": "capture/001896.jpg"
+    },
+    {
+      "timeSeconds": 380.346529333,
+      "file": "capture/001897.jpg"
+    },
+    {
+      "timeSeconds": 380.55316874999994,
+      "file": "capture/001898.jpg"
+    },
+    {
+      "timeSeconds": 380.74174816699997,
+      "file": "capture/001899.jpg"
+    },
+    {
+      "timeSeconds": 380.940073375,
+      "file": "capture/001900.jpg"
+    },
+    {
+      "timeSeconds": 381.143051125,
+      "file": "capture/001901.jpg"
+    },
+    {
+      "timeSeconds": 381.34101558299994,
+      "file": "capture/001902.jpg"
+    },
+    {
+      "timeSeconds": 381.559455292,
+      "file": "capture/001903.jpg"
+    },
+    {
+      "timeSeconds": 381.781895583,
+      "file": "capture/001904.jpg"
+    },
+    {
+      "timeSeconds": 381.963283292,
+      "file": "capture/001905.jpg"
+    },
+    {
+      "timeSeconds": 382.157865708,
+      "file": "capture/001906.jpg"
+    },
+    {
+      "timeSeconds": 382.366051208,
+      "file": "capture/001907.jpg"
+    },
+    {
+      "timeSeconds": 382.558617292,
+      "file": "capture/001908.jpg"
+    },
+    {
+      "timeSeconds": 382.770623583,
+      "file": "capture/001909.jpg"
+    },
+    {
+      "timeSeconds": 382.949866958,
+      "file": "capture/001910.jpg"
+    },
+    {
+      "timeSeconds": 383.194819125,
+      "file": "capture/001911.jpg"
+    },
+    {
+      "timeSeconds": 383.35252920799996,
+      "file": "capture/001912.jpg"
+    },
+    {
+      "timeSeconds": 383.552234375,
+      "file": "capture/001913.jpg"
+    },
+    {
+      "timeSeconds": 383.7523555,
+      "file": "capture/001914.jpg"
+    },
+    {
+      "timeSeconds": 383.959449417,
+      "file": "capture/001915.jpg"
+    },
+    {
+      "timeSeconds": 384.15067124999996,
+      "file": "capture/001916.jpg"
+    },
+    {
+      "timeSeconds": 384.37695049999996,
+      "file": "capture/001917.jpg"
+    },
+    {
+      "timeSeconds": 384.55023562499997,
+      "file": "capture/001918.jpg"
+    },
+    {
+      "timeSeconds": 384.75255516699997,
+      "file": "capture/001919.jpg"
+    },
+    {
+      "timeSeconds": 384.95294316699994,
+      "file": "capture/001920.jpg"
+    },
+    {
+      "timeSeconds": 385.159425667,
+      "file": "capture/001921.jpg"
+    },
+    {
+      "timeSeconds": 385.356812208,
+      "file": "capture/001922.jpg"
+    },
+    {
+      "timeSeconds": 385.559298167,
+      "file": "capture/001923.jpg"
+    },
+    {
+      "timeSeconds": 385.756804333,
+      "file": "capture/001924.jpg"
+    },
+    {
+      "timeSeconds": 385.96075199999996,
+      "file": "capture/001925.jpg"
+    },
+    {
+      "timeSeconds": 386.175245417,
+      "file": "capture/001926.jpg"
+    },
+    {
+      "timeSeconds": 386.38155137499996,
+      "file": "capture/001927.jpg"
+    },
+    {
+      "timeSeconds": 386.58946775,
+      "file": "capture/001928.jpg"
+    },
+    {
+      "timeSeconds": 386.75647562499995,
+      "file": "capture/001929.jpg"
+    },
+    {
+      "timeSeconds": 386.962494333,
+      "file": "capture/001930.jpg"
+    },
+    {
+      "timeSeconds": 387.188866375,
+      "file": "capture/001931.jpg"
+    },
+    {
+      "timeSeconds": 387.36694399999993,
+      "file": "capture/001932.jpg"
+    },
+    {
+      "timeSeconds": 387.55955662499997,
+      "file": "capture/001933.jpg"
+    },
+    {
+      "timeSeconds": 387.757544958,
+      "file": "capture/001934.jpg"
+    },
+    {
+      "timeSeconds": 387.95887291699995,
+      "file": "capture/001935.jpg"
+    },
+    {
+      "timeSeconds": 388.158651042,
+      "file": "capture/001936.jpg"
+    },
+    {
+      "timeSeconds": 388.373934,
+      "file": "capture/001937.jpg"
+    },
+    {
+      "timeSeconds": 388.56466341699996,
+      "file": "capture/001938.jpg"
+    },
+    {
+      "timeSeconds": 388.7791545,
+      "file": "capture/001939.jpg"
+    },
+    {
+      "timeSeconds": 388.96001583299994,
+      "file": "capture/001940.jpg"
+    },
+    {
+      "timeSeconds": 389.161910375,
+      "file": "capture/001941.jpg"
+    },
+    {
+      "timeSeconds": 389.371648583,
+      "file": "capture/001942.jpg"
+    },
+    {
+      "timeSeconds": 389.57581799999997,
+      "file": "capture/001943.jpg"
+    },
+    {
+      "timeSeconds": 389.763760042,
+      "file": "capture/001944.jpg"
+    },
+    {
+      "timeSeconds": 389.96433129199994,
+      "file": "capture/001945.jpg"
+    },
+    {
+      "timeSeconds": 390.16556533299996,
+      "file": "capture/001946.jpg"
+    },
+    {
+      "timeSeconds": 390.375882125,
+      "file": "capture/001947.jpg"
+    },
+    {
+      "timeSeconds": 390.564941292,
+      "file": "capture/001948.jpg"
+    },
+    {
+      "timeSeconds": 390.76513070799996,
+      "file": "capture/001949.jpg"
+    },
+    {
+      "timeSeconds": 390.967541833,
+      "file": "capture/001950.jpg"
+    },
+    {
+      "timeSeconds": 391.168133042,
+      "file": "capture/001951.jpg"
+    },
+    {
+      "timeSeconds": 391.368717625,
+      "file": "capture/001952.jpg"
+    },
+    {
+      "timeSeconds": 391.566325833,
+      "file": "capture/001953.jpg"
+    },
+    {
+      "timeSeconds": 391.772777208,
+      "file": "capture/001954.jpg"
+    },
+    {
+      "timeSeconds": 391.97287991699994,
+      "file": "capture/001955.jpg"
+    },
+    {
+      "timeSeconds": 392.17317725,
+      "file": "capture/001956.jpg"
+    },
+    {
+      "timeSeconds": 392.3734565,
+      "file": "capture/001957.jpg"
+    },
+    {
+      "timeSeconds": 392.57260387499997,
+      "file": "capture/001958.jpg"
+    },
+    {
+      "timeSeconds": 392.772714917,
+      "file": "capture/001959.jpg"
+    },
+    {
+      "timeSeconds": 392.975415625,
+      "file": "capture/001960.jpg"
+    },
+    {
+      "timeSeconds": 393.172537458,
+      "file": "capture/001961.jpg"
+    },
+    {
+      "timeSeconds": 393.377561708,
+      "file": "capture/001962.jpg"
+    },
+    {
+      "timeSeconds": 393.572672292,
+      "file": "capture/001963.jpg"
+    },
+    {
+      "timeSeconds": 393.77284158299994,
+      "file": "capture/001964.jpg"
+    },
+    {
+      "timeSeconds": 393.972728708,
+      "file": "capture/001965.jpg"
+    },
+    {
+      "timeSeconds": 394.173032875,
+      "file": "capture/001966.jpg"
+    },
+    {
+      "timeSeconds": 394.372519083,
+      "file": "capture/001967.jpg"
+    },
+    {
+      "timeSeconds": 394.589739083,
+      "file": "capture/001968.jpg"
+    },
+    {
+      "timeSeconds": 394.78982570799997,
+      "file": "capture/001969.jpg"
+    },
+    {
+      "timeSeconds": 394.98931124999996,
+      "file": "capture/001970.jpg"
+    },
+    {
+      "timeSeconds": 395.175571458,
+      "file": "capture/001971.jpg"
+    },
+    {
+      "timeSeconds": 395.37697791700003,
+      "file": "capture/001972.jpg"
+    },
+    {
+      "timeSeconds": 395.578981667,
+      "file": "capture/001973.jpg"
+    },
+    {
+      "timeSeconds": 395.790141833,
+      "file": "capture/001974.jpg"
+    },
+    {
+      "timeSeconds": 395.989012125,
+      "file": "capture/001975.jpg"
+    },
+    {
+      "timeSeconds": 396.177087458,
+      "file": "capture/001976.jpg"
+    },
+    {
+      "timeSeconds": 396.377230208,
+      "file": "capture/001977.jpg"
+    },
+    {
+      "timeSeconds": 396.57849170799994,
+      "file": "capture/001978.jpg"
+    },
+    {
+      "timeSeconds": 396.778496583,
+      "file": "capture/001979.jpg"
+    },
+    {
+      "timeSeconds": 396.994975875,
+      "file": "capture/001980.jpg"
+    },
+    {
+      "timeSeconds": 397.19775104199994,
+      "file": "capture/001981.jpg"
+    },
+    {
+      "timeSeconds": 397.401996958,
+      "file": "capture/001982.jpg"
+    },
+    {
+      "timeSeconds": 397.601281542,
+      "file": "capture/001983.jpg"
+    },
+    {
+      "timeSeconds": 397.805582792,
+      "file": "capture/001984.jpg"
+    },
+    {
+      "timeSeconds": 398.004715,
+      "file": "capture/001985.jpg"
+    },
+    {
+      "timeSeconds": 398.202009167,
+      "file": "capture/001986.jpg"
+    },
+    {
+      "timeSeconds": 398.406220583,
+      "file": "capture/001987.jpg"
+    },
+    {
+      "timeSeconds": 398.62230337499994,
+      "file": "capture/001988.jpg"
+    },
+    {
+      "timeSeconds": 398.805581042,
+      "file": "capture/001989.jpg"
+    },
+    {
+      "timeSeconds": 399.0245785,
+      "file": "capture/001990.jpg"
+    },
+    {
+      "timeSeconds": 399.223728375,
+      "file": "capture/001991.jpg"
+    },
+    {
+      "timeSeconds": 399.418776167,
+      "file": "capture/001992.jpg"
+    },
+    {
+      "timeSeconds": 399.589169583,
+      "file": "capture/001993.jpg"
+    },
+    {
+      "timeSeconds": 399.78946704199996,
+      "file": "capture/001994.jpg"
+    },
+    {
+      "timeSeconds": 399.98876508300003,
+      "file": "capture/001995.jpg"
+    },
+    {
+      "timeSeconds": 400.18915499999997,
+      "file": "capture/001996.jpg"
+    },
+    {
+      "timeSeconds": 400.38928695799996,
+      "file": "capture/001997.jpg"
+    },
+    {
+      "timeSeconds": 400.588998292,
+      "file": "capture/001998.jpg"
+    },
+    {
+      "timeSeconds": 400.80687087499996,
+      "file": "capture/001999.jpg"
+    },
+    {
+      "timeSeconds": 400.9926845,
+      "file": "capture/002000.jpg"
+    },
+    {
+      "timeSeconds": 401.19769095799995,
+      "file": "capture/002001.jpg"
+    },
+    {
+      "timeSeconds": 401.39410449999997,
+      "file": "capture/002002.jpg"
+    },
+    {
+      "timeSeconds": 401.594195833,
+      "file": "capture/002003.jpg"
+    },
+    {
+      "timeSeconds": 401.79366341699995,
+      "file": "capture/002004.jpg"
+    },
+    {
+      "timeSeconds": 401.99650475,
+      "file": "capture/002005.jpg"
+    },
+    {
+      "timeSeconds": 402.19709774999995,
+      "file": "capture/002006.jpg"
+    },
+    {
+      "timeSeconds": 402.417297042,
+      "file": "capture/002007.jpg"
+    },
+    {
+      "timeSeconds": 402.597916083,
+      "file": "capture/002008.jpg"
+    },
+    {
+      "timeSeconds": 402.79824216699996,
+      "file": "capture/002009.jpg"
+    },
+    {
+      "timeSeconds": 402.998069042,
+      "file": "capture/002010.jpg"
+    },
+    {
+      "timeSeconds": 403.203306958,
+      "file": "capture/002011.jpg"
+    },
+    {
+      "timeSeconds": 403.402118833,
+      "file": "capture/002012.jpg"
+    },
+    {
+      "timeSeconds": 403.604769833,
+      "file": "capture/002013.jpg"
+    },
+    {
+      "timeSeconds": 403.839638417,
+      "file": "capture/002014.jpg"
+    },
+    {
+      "timeSeconds": 404.038143292,
+      "file": "capture/002015.jpg"
+    },
+    {
+      "timeSeconds": 404.2405905,
+      "file": "capture/002016.jpg"
+    },
+    {
+      "timeSeconds": 404.42450595799994,
+      "file": "capture/002017.jpg"
+    },
+    {
+      "timeSeconds": 404.607374667,
+      "file": "capture/002018.jpg"
+    },
+    {
+      "timeSeconds": 404.834745167,
+      "file": "capture/002019.jpg"
+    },
+    {
+      "timeSeconds": 405.025620375,
+      "file": "capture/002020.jpg"
+    },
+    {
+      "timeSeconds": 405.20722370799996,
+      "file": "capture/002021.jpg"
+    },
+    {
+      "timeSeconds": 405.409137333,
+      "file": "capture/002022.jpg"
+    },
+    {
+      "timeSeconds": 405.644020083,
+      "file": "capture/002023.jpg"
+    },
+    {
+      "timeSeconds": 405.81024637499996,
+      "file": "capture/002024.jpg"
+    },
+    {
+      "timeSeconds": 406.023050417,
+      "file": "capture/002025.jpg"
+    },
+    {
+      "timeSeconds": 406.21039974999997,
+      "file": "capture/002026.jpg"
+    },
+    {
+      "timeSeconds": 406.413191208,
+      "file": "capture/002027.jpg"
+    },
+    {
+      "timeSeconds": 406.6118785,
+      "file": "capture/002028.jpg"
+    },
+    {
+      "timeSeconds": 406.814183583,
+      "file": "capture/002029.jpg"
+    },
+    {
+      "timeSeconds": 407.0177505,
+      "file": "capture/002030.jpg"
+    },
+    {
+      "timeSeconds": 407.22759249999996,
+      "file": "capture/002031.jpg"
+    },
+    {
+      "timeSeconds": 407.414210125,
+      "file": "capture/002032.jpg"
+    },
+    {
+      "timeSeconds": 407.614653667,
+      "file": "capture/002033.jpg"
+    },
+    {
+      "timeSeconds": 407.813741792,
+      "file": "capture/002034.jpg"
+    },
+    {
+      "timeSeconds": 408.014304917,
+      "file": "capture/002035.jpg"
+    },
+    {
+      "timeSeconds": 408.214348833,
+      "file": "capture/002036.jpg"
+    },
+    {
+      "timeSeconds": 408.414956,
+      "file": "capture/002037.jpg"
+    },
+    {
+      "timeSeconds": 408.61459099999996,
+      "file": "capture/002038.jpg"
+    },
+    {
+      "timeSeconds": 408.81449449999997,
+      "file": "capture/002039.jpg"
+    },
+    {
+      "timeSeconds": 409.01435237499993,
+      "file": "capture/002040.jpg"
+    },
+    {
+      "timeSeconds": 409.21458225,
+      "file": "capture/002041.jpg"
+    },
+    {
+      "timeSeconds": 409.415285708,
+      "file": "capture/002042.jpg"
+    },
+    {
+      "timeSeconds": 409.614951833,
+      "file": "capture/002043.jpg"
+    },
+    {
+      "timeSeconds": 409.816047375,
+      "file": "capture/002044.jpg"
+    },
+    {
+      "timeSeconds": 410.025708958,
+      "file": "capture/002045.jpg"
+    }
+  ],
+  "events": [
+    {
+      "scene": 0,
+      "title": "Squali · Source control for parallel agents",
+      "caption": "Continuous local demonstration of the real source service. Production evidence is separate.",
+      "startSeconds": 0.10359570800000074,
+      "visualReadySeconds": 0.1537767500000009,
+      "endSeconds": 45.105587583
+    },
+    {
+      "scene": 1,
+      "title": "01 / Fetch the source a task needs",
+      "caption": "An authenticated path query needs no clone. Immutable identities support reusable caches.",
+      "startSeconds": 45.105602042,
+      "visualReadySeconds": 57.278758542,
+      "endSeconds": 85.10566866699999
+    },
+    {
+      "scene": 2,
+      "title": "02 / Independent changes, exact review",
+      "caption": "Concurrent API writes preserve intent, dependencies and agent-reported evidence.",
+      "startSeconds": 85.11252,
+      "visualReadySeconds": 106.56704875,
+      "endSeconds": 140.114238792
+    },
+    {
+      "scene": 3,
+      "title": "03 / Publish a selected set",
+      "caption": "Keep approved work pending while landing a compatible subset with one main update.",
+      "startSeconds": 140.114244542,
+      "visualReadySeconds": 145.32663704200002,
+      "endSeconds": 183.114628833
+    },
+    {
+      "scene": 4,
+      "title": "04 / Resolve conflicts explicitly",
+      "caption": "A conflicting batch stops. The resolution retains context and requires fresh review.",
+      "startSeconds": 183.11463295800002,
+      "visualReadySeconds": 204.09626583300002,
+      "endSeconds": 248.11636725000005
+    },
+    {
+      "scene": 5,
+      "title": "05 / Query history and protect meaning",
+      "caption": "Indexed history and blame; parser-backed constraints for explicitly supported changes.",
+      "startSeconds": 248.11637175,
+      "visualReadySeconds": 263.866122125,
+      "endSeconds": 299.11744558299995
+    },
+    {
+      "scene": 6,
+      "title": "06 / Keep the cost visible and bounded",
+      "caption": "Persistent admission, finite attempts, reusable checkpoints, no hidden full reruns.",
+      "startSeconds": 299.117451875,
+      "visualReadySeconds": 316.256550208,
+      "endSeconds": 352.11815537499996
+    },
+    {
+      "scene": 7,
+      "title": "07 / Evidence before submission",
+      "caption": "Retained production verification; full object/ref identity, native Git fsck, explicit limits.",
+      "startSeconds": 352.118163333,
+      "view": "retained-production-verification",
+      "visualReadySeconds": 352.21287504199995,
+      "endSeconds": 410.11957524999997
+    }
+  ],
+  "errors": []
+}

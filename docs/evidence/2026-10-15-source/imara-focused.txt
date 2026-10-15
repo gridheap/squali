@@ -1,0 +1,20 @@
+{"command":"node --import tsx --test tests/blame-budget.test.ts","commits":20,"lines":502,"nativeOriginsEqual":true,"completedReplayExtraCalls":0}
+✔ blame compares only changed regions across a long stable file history (3022.157458ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"newline","lines":1,"nativeOriginsEqual":true}
+✔ native blame origins: newline (1926.166917ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"identical-parent","lines":2,"nativeOriginsEqual":true}
+✔ native blame origins: identical-parent (1107.870083ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"rename-parent","lines":4,"nativeOriginsEqual":true}
+✔ native blame origins: rename-parent (1092.266791ms)
+{"command":"node --import tsx --test tests/blame-native.test.ts","scenario":"blank-lines","lines":24,"nativeOriginsEqual":true}
+✔ native blame origins: blank-lines (1557.441875ms)
+{"command":"node --import tsx --test tests/git-line-diff.test.ts","nativeCases":134,"sharedBudget":true}
+✔ bounded line diff matches native Git Myers and indent compaction (3044.286583ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5918.72575

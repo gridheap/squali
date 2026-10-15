@@ -1,60 +1,45 @@
 # Competition submission material
 
-**Draft: final private-import acceptance and a current continuous video are still required. No competition entry has been submitted.**
+**Accepted implementation/package; human entry not yet submitted.** [Release v0.2.0](https://github.com/gridheap/squali/releases/tag/v0.2.0) · [410-second video](https://github.com/gridheap/squali/releases/download/v0.2.0/squali-source-demo.mp4) · [Form-ready text](entry-fields.md).
 
 ## Project
 
 **Squali — source control for parallel agents.**
 
-Live application: https://squa.li
+Live application: https://squa.li . Open source: https://github.com/gridheap/squali . Original code is MIT; the bounded line comparator uses Apache-2.0 imara-diff, with source, attribution and license included.
 
-Open-source repository: https://github.com/gridheap/squali
+## Vision and architecture
 
-License: MIT
+Agents create immutable changesets through authenticated APIs without cloning a repository. Squali keeps each change with its intent, evidence and dependencies. People approve exact revisions, select compatible changes, resolve conflicts and publish a separate compare-and-swap main update. Source queries, sparse clients and a shared node cache let jobs fetch only what they need.
 
-## Vision
+The architecture follows Anthropic's public Scion design: independent incremental changesets, content-addressed blobs, server-side source operations, derived indexes and separate publication. Its [fixed checklist](scion-acceptance.md) has 20 passing bounded criteria, clearing the ≥19 threshold and all six mandatory architecture gates. This is an engineering acceptance measure, not certification or a percentage of Anthropic's private implementation.
 
-Agents can create changes through an authenticated API without cloning a repository. Squali keeps each immutable change with its intent, evidence and dependencies. People approve exact revisions, select compatible changes, resolve conflicts and publish a single main update. Source queries, sparse clients and a shared node cache let jobs fetch only the data they need.
+## Cloudflare usage
 
-Squali follows Anthropic's public Scion design: independent incremental changesets, content-addressed blobs, server-side source operations, derived indexes and separate publication. Git interoperability remains available through Cloudflare Artifacts. The acceptance checklist describes coverage of that published design; it is not certification or a claim of access to Anthropic's internal implementation.
+Workers serves the application and source APIs. R2 stores authoritative, independently compressed blobs addressed by SHA-256. PostgreSQL through Hyperdrive stores canonical first-parent deltas, indexes, identities, reviews, journals and persistent usage budgets. Proposals require neither Git refs nor Artifacts calls.
 
-## How it uses Cloudflare
+Artifacts provides the derived native Git compatibility copy. An explicit repository capacity rejection selects a bounded, verified R2 snapshot using the existing native pack. Native Git clone/fetch remains available for admitted snapshots. Source queries and changes remain independent of the compatibility copy. A separate R2 bucket caches disposable compatibility objects for seven days.
 
-Workers serves the application and authenticated source APIs. R2 holds authoritative compressed blobs addressed by SHA-256. PostgreSQL through Hyperdrive holds canonical changesets, indexes, identities, reviews, journals and persistent usage budgets. A changeset stores first-parent file deltas and does not require a proposal ref. Publishing approved changes separately updates the main ref with compare-and-swap.
+Clerk handles GitHub sign-in. Users queue their authorized private repositories from the catalog. The native consumer on an existing Azure VM downloads each input once and retains its journal. Only one job runs at a time; failed jobs require explicit recovery. Normal source APIs do not need the native input. There is no D1 or application Durable Object.
 
-Artifacts provides a derived Git compatibility repository for native clone and fetch. When its repository storage limit is reached, a bounded R2 snapshot preserves Git interoperability for admitted inputs without another Artifacts transfer. Independent source reads and proposals do not depend on that copy, and source import can finish when the Git provider's repository-size limit prevents an export. A separate R2 bucket caches disposable Git compatibility objects. Existing source objects are reused across resumed jobs, and unknown upload acknowledgements are reconciled by immutable identity.
+## Acceptance evidence
 
-Clerk handles GitHub sign-in. A connected user's authorized private repositories can be queued from the catalog. A bounded native consumer on an existing Azure VM downloads an input once, persists its journal, ingests objects in batches and seeds the Git compatibility copy. Only one job runs at a time; failures require explicit recovery. There is no D1 or application Durable Object.
+- Independent private fixture: **421,219 objects, 85,563 commits, 1,020 refs, 8.33 GB raw history**. Exported object/ref equality and native fsck pass. Root tree, README content/history/blame, graph queries and eight canonical deltas match native Git. A rejected proposal verifies writes without advancing main. [Exact result](evidence/2026-10-15-source/private-verification.json).
+- **84 passing HTTP/CLI/native tests**, **five passing rendered browser tests**, typecheck/build, and real Linux FUSE lazy reads. [Evidence guide](evidence/2026-10-15-source/README.md).
+- Production Clerk/GitHub login, private repository discovery and the completed workspace browser flow. [Screens and sequence](evidence/2026-10-15-source/private-browser-acceptance.md).
+- Server diff/merge/rebase/revert/bisect; recursive derived data; graph skips; sparse writable clients and read-only FUSE; shared daemon/snapshots; directory IAM; explicit JS/JSON semantic constraints; selected publication and recovery.
+- The final **6-minute-50-second continuous video** shows three concurrent scoped agent identities, exact review, selected publication, conflict resolution, blame, semantic checks and cost limits, then the retained production report. It is a real local source-service workflow, not a cloud load benchmark. [Media inspection](evidence/2026-10-15-source/demo-final/).
 
-## Demonstrated workflows
+## Performance and cost
 
-- Concurrent source changes, exact-version review and selected batch publication.
-- Server-side diff, merge, continuous rebase with conflict recovery, revert and executable first-parent bisect.
-- Commit graph skip pointers, ancestry/merge-base, indexed path history and blame.
-- Sparse writable clients with restart recovery and a shared Unix-socket daemon.
-- Actual Linux FUSE lazy reads, verified cache snapshots and failure isolation.
-- Directory-scoped credentials and explicit JS/JSON semantic review policies.
-- Git clone/fetch, native object identity and lost-acknowledgement recovery.
-- Production GitHub login and private repository discovery; full large-import acceptance remains pending.
+Latest bounded production sample: 2.301 proposals/s, p50 1.486 s, p95 3.369 s, eight-change publication 1.825 s. The two-second proposal target remains unmet. One private README blame takes 17.378 s. Local 64-change/eight-client throughput is 318.19/s and is explicitly local. Batch sealing 128 commits uses 17 SQL queries instead of 1,793. [Performance details](performance.md).
 
-## Reproduction and evidence
+The final [cost reconciliation](cost-final.md) preserves provider metrics, reservations, prior failures, reporting lag and shared infrastructure exposure. Source R2 payload is about 2.2 GB. Existing shared Azure compute plus PostgreSQL storage lists about $65.95/month before disks/network/discounts; this is not Squali's marginal bill. No pending acceptance job or recurring backfill remains.
 
-Follow [README](../README.md) and [source operations](source-operations.md). Local development defaults to the source store and needs PostgreSQL, Git, Python 3 and the pinned Node/pnpm toolchain. Fixture tokens are separate from production credentials.
+## Run and inspect
 
-Run `node --import tsx --test --test-concurrency=4 tests/*.test.ts` for the complete API/CLI suite. The current retained report has [78 passing tests](evidence/2026-10-15-source/source-snapshot-final-suite.txt). Rendered workflow, mobile, font-loading fallback, actual glyph provenance, native FUSE and failure/recovery evidence are indexed in [the evidence guide](evidence/2026-10-15-source/README.md).
-
-[Performance evidence](performance.md) separates current source results from earlier Git-adapter results. A production 64-change/8-client sample and an eight-change optimization follow-up are retained, including unfavorable latency and initial authorization failures. Different batch sizes are not a controlled speedup comparison. [The source budget](source-import-budget.md) distinguishes provider metrics, application reservations and ongoing Azure/storage costs.
-
-## Remaining acceptance gates
-
-The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. All source objects and canonical changesets are durable. After eleven accepted seed batches, Artifacts reached its repository storage limit. A bounded R2 compatibility snapshot now reuses the existing native pack; production migration and independent verification are underway. The final verifier will compare all exported objects and refs, native fsck, source tree, selected history/blame results and a bounded canonical-delta sample against that frozen cache, using one retained clone and a bounded API journal.
-
-The [fixed Scion checklist](scion-acceptance.md) requires 19 of 20 fully verified items and all mandatory architecture gates. Tree, generation, graph, path and blame results share the same versioned dependency engine, with bounded vectorized adapters and retained eager/lazy reconstruction evidence. FUSE is read-only; changes use the sparse client or API. Text editing, graph queries and Git bridge exports have documented budgets. See [readiness](readiness.md) and [capability boundaries](scion-parity.md).
-
-A **continuous 5–10 minute demonstration of the accepted current version is still required**. The old v0.1.0 video predates the source architecture and must not be used as the final submission video.
+Follow [README](../README.md), [source operations](source-operations.md) and [entry fields](entry-fields.md). Use Node 24.21.0, pnpm 11.25.0, PostgreSQL 17+, Git and Python 3. Run `pnpm install --frozen-lockfile`, `bash scripts/setup-local.sh`, then `pnpm dev`. Local fixture credentials are documented separately from production secrets. Run `pnpm typecheck`, `pnpm test:e2e`, `pnpm test:ui` (with the local server running) and `pnpm build`.
 
 ## Human submission
 
-The [official rules](https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf) prohibit robotic, programmed or automated entries. After all acceptance gates pass, an eligible team member must personally review and submit the [entry form](https://www.cloudflare.com/git-competition/submit/), supplying their own contact information and required confirmations.
-
-Deadline: October 14, 2026 at 11:59 p.m. PDT, equivalent to **October 15 at 14:59 in Taipei**. Preparing this package is not a submitted entry.
+The [official rules](https://www.cloudflare.com/documents/build-next-gen-git-platform-competition-terms.pdf) prohibit robotic, programmed or automated entries. An eligible team member must personally submit the [official form](https://www.cloudflare.com/git-competition/submit/), supplying their own contact details and confirmations. Deadline: **October 15, 2026, 14:59 Taipei** (October 14, 11:59 p.m. PDT). No competition entry has been submitted by this repository or release.

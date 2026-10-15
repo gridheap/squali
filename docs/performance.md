@@ -16,7 +16,7 @@ All samples use the same workspace, originally containing 64 files and 419,400 b
 
 The baseline retains 152 HTTP attempts across two segments, including nine initial authorization failures. Every follow-up uses 25 attempts without a retry. Reports and exact commands: [baseline](evidence/2026-10-15-source/cloud-baseline.json), [blob reuse](evidence/2026-10-15-source/cloud-optimized.json), [one connection](evidence/2026-10-15-source/cloud-connection.json), [pool configuration](evidence/2026-10-15-source/cloud-pool8.json), [prepared protocol](evidence/2026-10-15-source/cloud-prepared.json). The [bounded runner](source-operations.md) retains its journal and makes no network calls on completed replay.
 
-The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, after commit `6e73423`. Artifacts reservations stayed at 172. Its explicit file verification added one source read; shared source-write counters also contain import traffic and cannot be attributed to this sample. Later deployment `4a36bd39-edf7-4689-9b67-84bc7646f4f4` adds the mainline graph shortcuts described below, without changing the proposal path. The current deployment `7c16dd9b-d8bc-4d36-a133-967938277a0f` also adds the bounded R2 Git snapshot fallback. No further cloud load sample is scheduled.
+The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, after commit `6e73423`. Artifacts reservations stayed at 172. Its explicit file verification added one source read; shared source-write counters also contain import traffic and cannot be attributed to this sample. Later deployment `4a36bd39-edf7-4689-9b67-84bc7646f4f4` adds the mainline graph shortcuts described below, without changing the proposal path. The final deployment `79cc8779-a322-4f22-9219-4e563007e799` includes the bounded R2 Git snapshot fallback, the Apache-2.0 bounded line comparator, v4 blame caches and final branding. No further cloud load sample is scheduled.
 
 ## Changes supported by local measurements
 
@@ -31,7 +31,7 @@ The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, aft
 
 The writer passes its known delta to the shared versioned derivation engine. Independent admission uses one atomic insert, while dependency admission retains its transaction. Graph shortcuts return only after proving a first-parent relationship; other cases keep all-parent traversal and native criss-cross comparisons. The graph fixture contains a 1,024-commit mainline with 128 merge commits. Cache authorization, revocation and workspace-state checks remain live.
 
-The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [78 passing tests](evidence/2026-10-15-source/source-snapshot-final-suite.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
+The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [84 passing tests](evidence/2026-10-15-source/imara-final-suite.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
 
 ## Database and cache interpretation
 
@@ -47,7 +47,7 @@ Production file reads in the original sample take 541–729 ms first and 288–3
 
 The private fixture has 421,219 objects, 85,563 commits, 1,020 refs, 8.33 GB of raw data and a 324.6 MB Git pack. Its source import needs 166,297 unique blob writes. It retains one input and cumulative journal, with 12,000 HTTP attempts, 200,000 monthly source-write reservations and one active native job. Six source-upload slots refill as requests finish, respecting [Workers' pending-connection limit](https://developers.cloudflare.com/workers/platform/limits/#simultaneous-open-connections).
 
-Independent private verification and final provider reconciliation remain release gates. [The admission budget](source-import-budget.md) records official prices, the retry-bounded maximum, shared allowance uncertainty, Azure capacity and continuing storage exposure. Provider analytics, application reservations and an invoice are different measurements. Earlier failed attempts remain included in the evidence.
+Independent private verification and final provider reconciliation passed; see [native acceptance](evidence/2026-10-15-source/private-verification.json) and [cost reconciliation](cost-final.md). [The admission budget](source-import-budget.md) records official prices, the retry-bounded maximum, shared allowance uncertainty, Azure capacity and continuing storage exposure. Provider analytics, application reservations and an invoice are different measurements. Earlier failed attempts remain included in the evidence.
 
 ## Historical native Git comparison
 
@@ -66,3 +66,13 @@ Both paths start with 64 files (419,400 bytes), then 32 independent one-file cha
 | Publication | 333.05 ms | 1438.95 ms |
 
 Native clone preparation takes 360.55 ms; Squali review takes 51.87 ms. Both are reported separately from proposal timing. This is one local Apple M4 Max sample with 128 GiB RAM and no cloud calls. Bare Git does not provide the same workflow services. The result does not measure distributed contention, provider cost or CPU/memory consumption. Its initial gzip-negotiation failure and subsequent fix remain retained.
+
+## Completed private verification
+
+[The retained independent production run](evidence/2026-10-15-source/private-verification.json) confirms all 421,219 exported objects and 1,020 refs plus native fsck. One observed clone took 48.215 s; native fsck 24.087 s; eight canonical queries 2.952 s total; README history 2.107 s and blame 17.378 s; 1,024-step ancestry 200 ms and merge-base 188 ms. A rejected source proposal took 1.677 s. These are single verification observations with the current network/provider state, not throughput or percentile measurements. The comparatively slow cold blame remains visible. The sample does not establish equivalent behavior for every possible rename or huge text file.
+
+[Final cost reconciliation](cost-final.md) reports provider operations, application reservations, failed attempts and ongoing Azure/storage exposure. No additional cloud load sample is scheduled.
+
+## Final comparator observation
+
+After replacing the experimental LGPL comparator, one live private README v4 blame request returned HTTP 200 in **20.995 seconds**, excluding a preceding Clerk token refresh. All 75 commit origins and seven native original-line regression points match. This is one request over the current client network; the earlier 17.378-second native-verification sample used a different implementation and is retained separately. It is not a controlled performance comparison. [Network timestamps](evidence/2026-10-15-source/imara-production-network.json) · [comparison](evidence/2026-10-15-source/imara-production-verification.json).

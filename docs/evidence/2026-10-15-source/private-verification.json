@@ -1,0 +1,60 @@
+{
+  "command": "python3 /var/lib/squali-private-verification/verify-import.py gh-5fd5a2f4bc33a0286d6728ad /var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/source.git --state /var/lib/squali-private-verification/state --file README.md --write-smoke",
+  "timestamp": "2026-10-15T03:48:09Z",
+  "complete": true,
+  "project": "gh-5fd5a2f4bc33a0286d6728ad",
+  "head": "6de20f6092dcf9bdb1c8efe03db4b70c82b423dd",
+  "objects": 421219,
+  "commits": 85563,
+  "refs": 1020,
+  "objectInventorySha256": "a531643338a17d61f4d5d432e2e1c4f3986a7c3a258d860c54d1a24039345e2d",
+  "nativeFsck": true,
+  "canonicalChangesetsVerified": 8,
+  "canonicalSampleOids": [
+    "6de20f6092dcf9bdb1c8efe03db4b70c82b423dd",
+    "e83c5163316f89bfbde7d9ab23ca2e25604af290",
+    "a625740aae48c0f08916e564bc11f49542d4fb48",
+    "309ca68e5a11f14491f1b5ad9b0b3384ac4df383",
+    "5331af2352be0d6dd57a5fc4c5dfce278cf911c7",
+    "f66a5bd9236b19288ad39387ec519a11d65b513d",
+    "b52cb95a13ed7beb0a633213b58f0d6ef557d26e",
+    "c679abf7d2c0f3f4ee623e0882a50964e9b100cc"
+  ],
+  "rootTreeMatches": true,
+  "sparseFile": "README.md",
+  "sparseFileSha256": "da0bd9ed3f4ef6046ba391493911a36284db2515f9ee1771d4f02adeb2de8b05",
+  "historyMatchesNative": true,
+  "blameMatchesNative": true,
+  "firstParentDistance": 1024,
+  "httpAttempts": 40,
+  "gitTransfers": 1,
+  "timings": {
+    "apiResponses": 40,
+    "apiTotalMs": 110620.259,
+    "canonicalApiMs": 2951.778,
+    "historyMs": 2106.877,
+    "blameMs": 17378.15,
+    "ancestryMs": 200.364,
+    "mergeBaseMs": 187.897,
+    "cloneMs": 48214.831,
+    "fsckMs": 24087.391
+  },
+  "limitations": [
+    "Full exported Git closure is verified; source R2 bodies are identity-checked on ingestion and sampled here",
+    "Up to eight canonical deltas are independently compared with native Git; this is a bounded sample, not all changesets",
+    "One selected file exercises history/blame; other files retain the documented query budgets",
+    "Timings are this one observed verification run; they include its network and provider state, not a load benchmark",
+    "No automatic network retry; complete replay makes zero HTTP or Git transfers",
+    "Inventory counts describe the frozen import; one later rejected proposal adds its canonical delta and source objects without changing published refs"
+  ],
+  "writeSmoke": {
+    "id": "source-write-verification",
+    "oid": "1b28d1df53ee6b2795248a35de7df68fd8d1ea06",
+    "status": "rejected",
+    "path": "squali-verification.txt",
+    "canonicalDeltaMatches": true,
+    "rootTreeMatches": true,
+    "publishedHeadUnchanged": true,
+    "proposalMs": 1676.579
+  }
+}

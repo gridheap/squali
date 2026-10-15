@@ -1,0 +1,52 @@
+scripts/inspect-demo-audio.swift:13:20: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+11 | let events = record["events"] as! [[String: Any]]
+12 | let asset = AVURLAsset(url: movie)
+13 | let tracks = asset.tracks(withMediaType: .audio)
+   |                    `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+14 | precondition(tracks.count == 1, "The final demonstration must contain one narration track")
+15 | let reader = try AVAssetReader(asset: asset)
+
+scripts/inspect-demo-audio.swift:23:8: warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead [#DeprecatedDeclaration]
+21 |     AVLinearPCMIsNonInterleaved: false
+22 | ])
+23 | reader.add(output)
+   |        `- warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead [#DeprecatedDeclaration]
+24 | precondition(reader.startReading(), "Start audio decoding")
+25 | var peak: Float = 0
+
+scripts/inspect-demo-audio.swift:24:21: warning: 'startReading()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+22 | ])
+23 | reader.add(output)
+24 | precondition(reader.startReading(), "Start audio decoding")
+   |                     `- warning: 'startReading()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+25 | var peak: Float = 0
+26 | var decodedSeconds = 0.0
+
+scripts/inspect-demo-audio.swift:30:27: warning: 'copyNextSampleBuffer()' was deprecated in macOS 27.0: Use AVAssetReaderOutput.Provider.next() instead [#DeprecatedDeclaration]
+28 | var sumSquares = 0.0
+29 | var samples = 0
+30 | while let sample = output.copyNextSampleBuffer() {
+   |                           `- warning: 'copyNextSampleBuffer()' was deprecated in macOS 27.0: Use AVAssetReaderOutput.Provider.next() instead [#DeprecatedDeclaration]
+31 |     guard let block = CMSampleBufferGetDataBuffer(sample) else { fatalError("Audio sample has no data") }
+32 |     let bytes = CMBlockBufferGetDataLength(block)
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+{
+  "scope" : "Decoded PCM signal in all eight scenes; narration is the retained script rendered by the installed Samantha voice. This is not speech recognition.",
+  "success" : true,
+  "command" : "swift scripts\/inspect-demo-audio.swift work\/continuous-demo-final work\/continuous-demo-final\/squali-source-demo.mp4",
+  "sceneAudibleSeconds" : [
+    40.497320673185982,
+    34.287957781462346,
+    38.654870719437,
+    37.056075900978101,
+    43.082097103792307,
+    39.530416236626451,
+    48.170952933103877,
+    53.113582698743244
+  ],
+  "rmsAmplitude" : 0.14368899065206397,
+  "decodedSeconds" : 405.27668934239711,
+  "decodedSamples" : 8936351,
+  "peakAmplitude" : 0.82355087995529175
+}

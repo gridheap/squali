@@ -1,0 +1,49 @@
+✖ bounded line diff matches native Git Myers and indent compaction (1439.191209ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1553.505667
+
+✖ failing tests:
+
+test at tests/git-line-diff.test.ts:1:364
+✖ bounded line diff matches native Git Myers and indent compaction (1439.191209ms)
+  AssertionError [ERR_ASSERTION]: {"left":"record 0\nrecord 1\n\nrecord 2\n\n record 3\n   record 4\n   record 5\n record 6\n   record 7\n record 8\n   record 9\n record 10\n\nrecord 11\nrecord 12\nrecord 13\n\nrecord 14\nrecord 15\nrecord 16\nrecord 17\nrecord 18\n\nrecord 19\nrecord 20\nrecord 21\n","right":"\n\n\n\nrecord 17\n\n\n\n\n"}
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        0,
+        21,
+        0,
+  ...
+        22,
+  -     1,
+        5,
+  +     5,
+  +     4
+  -     0
+      ],
+  -   [
+  -     24,
+  -     3,
+  -     6,
+  -     3
+  -   ]
+    ]
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/git-line-diff.test.ts:24:141)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 0, 21, 0, 4 ], [ 22, 5, 5, 4 ] ],
+    expected: [ [ 0, 21, 0, 4 ], [ 22, 1, 5, 0 ], [ 24, 3, 6, 3 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

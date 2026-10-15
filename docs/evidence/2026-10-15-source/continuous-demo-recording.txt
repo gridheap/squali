@@ -1,0 +1,9 @@
+{"scene":0,"title":"Squali · Source control for parallel agents"}
+{"scene":1,"title":"01 / Fetch the source a task needs"}
+{"scene":2,"title":"02 / Independent changes, exact review"}
+{"scene":3,"title":"03 / Publish a selected set"}
+{"scene":4,"title":"04 / Resolve conflicts explicitly"}
+{"scene":5,"title":"05 / Query history and protect meaning"}
+{"scene":6,"title":"06 / Keep the cost visible and bounded"}
+{"scene":7,"title":"07 / Evidence before submission"}
+{"success":true,"durationSeconds":415.490993625,"capturedFrames":40}

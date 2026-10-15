@@ -1,6 +1,6 @@
 # Current source-service demonstration
 
-The final video uses one continuous browser screencast of the real local source service, followed by the retained production verification report. It has no cuts or scene retiming. Raw CDP frames retain their actual capture times; a native macOS renderer encodes a five-frame-per-second H.264 timeline and adds captions and locally synthesized narration. No browser or FFmpeg download is required.
+The final video uses one continuous browser recording of the real local source service, followed by the retained production verification report. It has no cuts or scene retiming. CDP samples the actual browser continuously at five frames per second; frames retain their actual capture times; a native macOS renderer encodes a five-frame-per-second H.264 timeline and adds captions and locally synthesized narration. No browser or FFmpeg download is required.
 
 The source application, PostgreSQL and browser actions are real. Fixture credentials are local. The final report is explicitly identified as retained production evidence. This video is not a cloud load benchmark.
 
@@ -22,9 +22,10 @@ swift scripts/render-continuous.swift work/continuous-format work/continuous-for
 A quick format probe is not the final competition video. For the final continuous recording, first finish the independent private import verifier and save its successful report as `docs/evidence/2026-10-15-source/private-verification.json`:
 
 ```sh
-node --import tsx scripts/demo-continuous.ts
-swift scripts/render-continuous.swift work/continuous-demo work/continuous-demo/squali-source-demo.mp4
-swift scripts/inspect-demo-audio.swift work/continuous-demo work/continuous-demo/squali-source-demo.mp4
+SQUALI_DEMO_DIR=work/continuous-demo-final node --import tsx scripts/demo-continuous.ts
+node --import tsx scripts/check-demo-capture.ts work/continuous-demo-final
+swift scripts/render-continuous.swift work/continuous-demo-final work/continuous-demo-final/squali-source-demo.mp4
+swift scripts/inspect-demo-audio.swift work/continuous-demo-final work/continuous-demo-final/squali-source-demo.mp4
 ```
 
 The recorder refuses a final run without a complete production report, native fsck and canonical-delta verification. It synthesizes English narration with the installed Samantha voice, measures its duration and reserves scene time before capture. The renderer checks a 5–10 minute successful capture, continuous timestamps and narration fit. The result includes a machine-readable report and five decoded frames for visual verification. The audio check decodes the final movie to PCM and requires an audible signal in every scene, retaining peak/RMS levels and scene durations. It rejects the silent format probe; it does not perform speech recognition. Inspect the final video and audio before publishing it.
@@ -32,3 +33,7 @@ The recorder refuses a final run without a complete production report, native fs
 `SQUALI_DEMO_DIR`, `SQUALI_PRIVATE_PROOF` and `SQUALI_BROWSER` override the output directory, accepted report and existing browser executable. Keep failure and preflight reports separate from the final recording. Source narration: [demo-source-script.json](demo-source-script.json).
 
 The concurrent opening scene uses three distinct project-scoped fixture credentials through the real token verifier. These credentials exist only in the local demonstration database; no production account is impersonated. `SQUALI_DEMO_DIR=work/demo-identity-check node --import tsx scripts/demo-continuous.ts --quick` verifies three distinct authors and the complete workflow before final recording.
+
+## Accepted video
+
+[Release MP4](https://github.com/gridheap/squali/releases/download/v0.2.0/squali-source-demo.mp4): 410.2 seconds, 25,416,963 bytes, H.264/AAC. [Retained manifest, decoded images, audio check and checksum](evidence/2026-10-15-source/demo-final/). All eight scenes have audible narration. The final decoded frame shows the real completed production verification report; the opening shows the five-shark identity. The earlier event-throttled movie failed visual inspection and was not published as the final video.

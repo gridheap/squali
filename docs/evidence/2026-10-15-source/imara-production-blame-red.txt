@@ -1,0 +1,7 @@
+{
+  "captureSha256": "6c96cec6a197b1655f9ef9123aad9e875daec81fd16fa713a3583fd95fe581e7",
+  "description": "Full third-party README text retained privately; this public file records only the observed regression identity.",
+  "line": 17,
+  "origin": "61649720:25",
+  "passed": false
+}

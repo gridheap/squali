@@ -1,0 +1,98 @@
+{
+  "httpAttempts": 12,
+  "gitTransfers": 0,
+  "head": "6de20f6092dcf9bdb1c8efe03db4b70c82b423dd",
+  "lineCount": 75,
+  "mismatches": 6,
+  "first": [
+    {
+      "line": 6,
+      "text": "",
+      "actual": [
+        "e83c5163316f89bfbde7d9ab23ca2e25604af290",
+        1
+      ],
+      "native": [
+        "556b6600b25713054430b1dcaa731120eefbbd5b",
+        6
+      ]
+    },
+    {
+      "line": 10,
+      "text": "",
+      "actual": [
+        "e83c5163316f89bfbde7d9ab23ca2e25604af290",
+        18
+      ],
+      "native": [
+        "556b6600b25713054430b1dcaa731120eefbbd5b",
+        21
+      ]
+    },
+    {
+      "line": 15,
+      "text": "",
+      "actual": [
+        "e83c5163316f89bfbde7d9ab23ca2e25604af290",
+        21
+      ],
+      "native": [
+        "556b6600b25713054430b1dcaa731120eefbbd5b",
+        25
+      ]
+    },
+    {
+      "line": 28,
+      "text": "",
+      "actual": [
+        "e83c5163316f89bfbde7d9ab23ca2e25604af290",
+        29
+      ],
+      "native": [
+        "aa98eb3d6581a123852e4e080011acc3a61bc556",
+        35
+      ]
+    },
+    {
+      "line": 32,
+      "text": "",
+      "actual": [
+        "aa98eb3d6581a123852e4e080011acc3a61bc556",
+        39
+      ],
+      "native": [
+        "556b6600b25713054430b1dcaa731120eefbbd5b",
+        31
+      ]
+    },
+    {
+      "line": 47,
+      "text": "",
+      "actual": [
+        "620d3f4216e5a9cf29f1de8c91ea5380e766238c",
+        41
+      ],
+      "native": [
+        "33b29fd12c04fb599ff3d2a3235bb187710a9080",
+        52
+      ]
+    }
+  ],
+  "history": [
+    "5dce549160 gitk: discourage AI contributions",
+    "fc1bac6b57 README: add GitLab CI badge to make it more discoverable",
+    "ac8fec7d8d gitk: add README with usage, build, and contribution details",
+    "c50fbb2dd2 README: *.txt -> *.adoc fixes",
+    "83cf2847b0 git-gui: note the new maintainer",
+    "af3d2c160f Docs: majordomo@vger.kernel.org has been decomissioned",
+    "d05b08cd52 doc: switch links to https",
+    "4ed7dfa713 README.md: add CodingGuidelines and a link for Translators",
+    "df7375d772 CI: use shorter names that fit in UX tooltips",
+    "8cf36407ca git-gui: Fix a typo in README",
+    "6081d3898f ci: retire the Azure Pipelines definition",
+    "9ae7dcb402 README: add a build badge for the GitHub Actions runs",
+    "46c67492aa doc: recommend lore.kernel.org over public-inbox.org",
+    "1e6880fd06 git-gui: add a readme",
+    "7926cee904 README: fix rendering of text in angle brackets"
+  ]
+}

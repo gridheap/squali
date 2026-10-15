@@ -59,10 +59,10 @@ test('blame dependency rebuilding preserves native line origins and existing ver
   const native=server.dir+'/blame.git';await exec('git',['-c','http.extraHeader=Authorization: Bearer local-admin-test-token','clone','--mirror',server.url+'/api/projects/blame-derived/git',native]);
   const raw=(await exec('git',['--git-dir',native,'blame','--root','--line-porcelain',head,'--','README.md'])).stdout,expected=[...raw.matchAll(/^([a-f0-9]{40}) (\d+) \d+(?: \d+)?$/gm)].map(m=>[m[1],Number(m[2])]);
   const first=await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual(first.lines.map((l:any)=>[l.commit,l.originalLine]),expected);
-  const cached=(await server.sql`SELECT key,value FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v1'`);assert.ok(cached.length>=3,'Blame persists reusable parent results');
+  const cached=(await server.sql`SELECT key,value FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v4'`);assert.ok(cached.length>=3,'Blame persists reusable parent results');
   const usage=(await call('/usage')).source;
-  await server.sql`DELETE FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v1' AND key LIKE ${head+':%'}`;
+  await server.sql`DELETE FROM weave_derived WHERE project='blame-derived' AND kind='blame-renames-v4' AND key LIKE ${head+':%'}`;
   const rebuilt=await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual(rebuilt,first);const after=(await call('/usage')).source;assert.ok(after.reads-usage.reads<=2,'Only the current file and edited-rename candidate may be fetched; parent line results are cached');assert.equal(after.writes,usage.writes);await call('/projects/blame-derived/blame?path=README.md&ref='+head);assert.deepEqual((await call('/usage')).source,after,'A complete cached result adds no source I/O');
-  console.log(JSON.stringify({command:'node --import tsx --test tests/derived-indexes.test.ts',recursiveBlame:true,editedRenameMatchesGit:true,parentCacheReused:true,existingCacheIdentityPreserved:true}));
+  console.log(JSON.stringify({command:'node --import tsx --test tests/derived-indexes.test.ts',recursiveBlame:true,editedRenameMatchesGit:true,parentCacheReused:true,currentCacheVersionReused:true}));
  }finally{await server.close();}
 });

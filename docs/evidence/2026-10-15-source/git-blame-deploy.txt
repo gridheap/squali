@@ -1,0 +1,31 @@
+$ wrangler deploy
+
+ ⛅️ wrangler 4.150.0 (update available 4.151.0)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 5 files from the assets directory /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/public
+🌀 Starting asset upload...
+No updated asset files to upload. Proceeding with deployment...
+Total Upload: 602.62 KiB / gzip: 144.55 KiB
+Worker Startup Time: 11 ms
+Your Worker has access to the following bindings:
+Binding                                                                Resource                  
+env.HYPERDRIVE (c5366ae0d2d54d76b2b7daf414c6333d)                      Hyperdrive Config         
+env.OBJECTS (squali-objects)                                           R2 Bucket                 
+env.SOURCE (squali-source)                                             R2 Bucket                 
+env.ARTIFACTS (weave)                                                  Artifacts                 
+env.ASSETS                                                             Assets                    
+env.NATIVE_IMPORTS ("true")                                            Environment Variable      
+env.MAX_PROJECTS ("100")                                               Environment Variable      
+env.MONTHLY_SOURCE_READ_CAP ("200000")                                 Environment Variable      
+env.MONTHLY_SOURCE_WRITE_CAP ("200000")                                Environment Variable      
+env.SOURCE_REPOSITORY_BYTE_CAP ("107374182400")                        Environment Variable      
+env.MONTHLY_ARTIFACT_CALL_CAP ("2000")                                 Environment Variable      
+env.MONTHLY_R2_READ_CAP ("20000")                                      Environment Variable      
+env.MONTHLY_R2_WRITE_CAP ("2000")                                      Environment Variable      
+env.ADOBE_KIT_ID ("ggy5hcn")                                           Environment Variable      
+
+Uploaded gridheap-weave (28.65 sec)
+Deployed gridheap-weave triggers (4.83 sec)
+  squa.li (custom domain - zone id: a9e767db975bf6b80cfdad9df81e972b) [previews: disabled]
+Current Version ID: d98343e9-a473-4028-b583-4a4010f11e73

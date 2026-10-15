@@ -4,21 +4,21 @@ This checklist measures implementation coverage of [Anthropic's public Scion des
 
 The denominator is fixed at 20. At least 19 must pass, and items **3, 4, 5, 6, 13 and 15** are mandatory. Partial implementations receive no fractional credit. Complete private-import validation, cost reconciliation and the final video are additional release gates.
 
-**Current decision: hold submission.** The core implementation has local E2E evidence, but the large private import has not completed its independent production validation. No final percentage is reported.
+**Capability decision: all 20 fixed completion criteria pass, including mandatory items 3, 4, 5, 6, 13 and 15.** This clears the ≥19/20 engineering threshold within the explicit boundaries below. It does not measure the percentage of Anthropic’s unpublished implementation. The large private import, independent native comparison, production browser workflow and cost reconciliation have passed. Final media/package inspection also passed: [410.2-second current video and reports](evidence/2026-10-15-source/demo-final/). Competition submission remains a human action.
 
 ## Fixed requirements and evidence
 
-The [current full report](evidence/2026-10-15-source/source-snapshot-final-suite.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
+The [current full report](evidence/2026-10-15-source/imara-final-suite.txt) runs the API/CLI tests named below. [The evidence guide](evidence/2026-10-15-source/README.md) retains failure reports and earlier checkpoints.
 
-| # | Requirement | Completion criterion | Evidence / remaining gate |
+| # | Requirement | Completion criterion | Passing evidence |
 |---|---|---|---|
 | 1 | Online source API | Read and write through authenticated APIs without a client repository | `source.test.ts`, `api.test.ts`, deployed source API |
 | 2 | Client/server separation | Clients handle files/cache; the server performs source operations | `sparse.test.ts`, `metadata.test.ts`, writable sparse client, bounded native filesystem watcher and node daemon; FUSE remains read-only |
 | 3 | Immutable incremental changesets | Durable first-parent deltas and content identities reconstruct the version | `source.test.ts`: remove compatibility metadata, rebuild identical trees/commits, preserve historical modes and non-UTF-8 commit bytes |
 | 4 | Independent change creation | Creating changes does not move refs or coordinate main | `source.test.ts`, `publication-cost.test.ts`: no proposal refs, zero Artifacts calls, separate publication CAS |
-| 5 | Distributed content storage | The source service does not need a complete repository on one node; source survives Git compatibility limits | R2 authority and SQL canonical deltas; source-limit E2E passes. **Large private production gate pending** |
-| 6 | Commit graph | Generation, skip pointers, all-parent ancestry and merge bases | `graph.test.ts`: 1,025 commits, restart, criss-cross bases, second-parent ancestry; **large production graph gate pending** |
-| 7 | Path history and blame | Indexed path queries and reusable recursive line origins | `source.test.ts`: skip 511 unrelated commits; `derived-indexes.test.ts`: native edited-rename blame and reusable parent results; final private comparison pending |
+| 5 | Distributed content storage | The source service does not need a complete repository on one node; source survives Git compatibility limits | R2 authority and SQL canonical deltas; source-limit E2E passes. [421,219-object private import and clone/fsck passed](evidence/2026-10-15-source/private-verification.json) |
+| 6 | Commit graph | Generation, skip pointers, all-parent ancestry and merge bases | `graph.test.ts`: 1,025 commits, restart, criss-cross bases, second-parent ancestry; production 1,024-step ancestry and native merge-base equality passed |
+| 7 | Path history and blame | Indexed path queries and reusable recursive line origins | `source.test.ts`: skip 511 unrelated commits; `derived-indexes.test.ts`: native edited-rename blame and reusable parent results; `blame-native.test.ts`: EOF, empty-line and merge-parent identity; production README history/blame match native Git |
 | 8 | Server diff | Compare immutable versions and selected paths | `metadata.test.ts`; bounded API, CLI and browser workflow |
 | 9 | Commit, merge and rebase | Complete source writes, merges and recoverable rebase conflicts | `api.test.ts`, `rebase.test.ts`: continuous rebase, restart, explicit resolution, fresh review, native Git tree equality |
 | 10 | Revert and bisect | Locate, verify and withdraw a change through usable workflows | `bisect-run.test.ts`: 16 commits, six executed tests, retained journal; reviewed revert in `metadata.test.ts` |
@@ -33,12 +33,12 @@ The [current full report](evidence/2026-10-15-source/source-snapshot-final-suite
 | 19 | Semantic review | Supported semantic constraints distinguish comment/value changes from logic changes | `semantic.test.ts`: parsed JavaScript and JSON, protected directives, duplicate-key rejection, checks at review and publication |
 | 20 | Selected publication | Dependencies, conflicts, exact review versions, main update and recovery form a complete flow | `api.test.ts`, `crash.test.ts`, `publication-cost.test.ts`; 64 changes / eight clients locally and in retained production sample |
 
-## Extra release gates
+## Additional release evidence
 
-1. The private fixture's 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB raw history complete source ingestion and native seeding. One retained verification clone must pass fsck and full object/ref equality. Root tree and selected history/blame must match the native input. A bounded canonical-delta sample must independently match native paths, hashes, parent mappings and original commit metadata.
-2. Production Clerk/GitHub sign-in and private catalog are verified; the completed private workspace must also pass its browser workflow.
-3. Reconcile final application reservations with provider metrics, preserving reporting lag, failed attempts, Azure costs and ongoing storage exposure. Reuse existing successful performance samples.
-4. Record and inspect the current 5–10 minute demonstration, review the runnable open-source package, and let the eligible team member personally submit the entry.
+1. **Passed:** [independent verification](evidence/2026-10-15-source/private-verification.json): 421,219 objects, 85,563 commits and 1,020 refs equal the frozen native input; native fsck, root tree, README content/history/blame, graph queries and eight canonical deltas match. One rejected proposal verifies writes without moving published refs. One clone and 40/48 HTTP attempts; no repeated full import.
+2. **Passed:** [production Clerk/GitHub and private workspace browser acceptance](evidence/2026-10-15-source/private-browser-acceptance.md).
+3. **Passed:** [provider/application cost reconciliation](cost-final.md), including failed attempts, reporting lag, shared Azure capacity and ongoing storage. Existing successful load samples are reused.
+4. **Passed:** [current continuous video and reproduction](demo-source.md), decoded video/audio inspection, runnable source package and [independent final review](evidence/2026-10-15-source/review-snapshot.md). Competition entry remains a human action under the official rules.
 
 ## Explicit boundaries
 

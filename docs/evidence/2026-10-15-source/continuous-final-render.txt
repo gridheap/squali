@@ -1,0 +1,158 @@
+scripts/render-continuous.swift:24:7: warning: 'expectsMediaDataInRealTime' was deprecated in macOS 27.0: Use the input receiver's appendImmediately(...) method instead [#DeprecatedDeclaration]
+22 | let writer = try AVAssetWriter(outputURL: rawURL, fileType: .mov)
+23 | let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey:AVVideoCodecType.h264,AVVideoWidthKey:width,AVVideoHeightKey:height,AVVideoCompressionPropertiesKey:[AVVideoAverageBitRateKey:2_000_000,AVVideoMaxKeyFrameIntervalKey:10]])
+24 | input.expectsMediaDataInRealTime = false
+   |       `- warning: 'expectsMediaDataInRealTime' was deprecated in macOS 27.0: Use the input receiver's appendImmediately(...) method instead [#DeprecatedDeclaration]
+25 | let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes:[kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32ARGB,kCVPixelBufferWidthKey as String:width,kCVPixelBufferHeightKey as String:height])
+26 | writer.add(input);writer.startWriting();writer.startSession(atSourceTime:.zero)
+
+scripts/render-continuous.swift:25:15: warning: 'AVAssetWriterInputPixelBufferAdaptor' was deprecated in macOS 27.0: Use AVAssetWriter.inputPixelBufferReceiver(for:pixelBufferAttributes:) instead [#DeprecatedDeclaration]
+23 | let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey:AVVideoCodecType.h264,AVVideoWidthKey:width,AVVideoHeightKey:height,AVVideoCompressionPropertiesKey:[AVVideoAverageBitRateKey:2_000_000,AVVideoMaxKeyFrameIntervalKey:10]])
+24 | input.expectsMediaDataInRealTime = false
+25 | let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes:[kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32ARGB,kCVPixelBufferWidthKey as String:width,kCVPixelBufferHeightKey as String:height])
+   |               `- warning: 'AVAssetWriterInputPixelBufferAdaptor' was deprecated in macOS 27.0: Use AVAssetWriter.inputPixelBufferReceiver(for:pixelBufferAttributes:) instead [#DeprecatedDeclaration]
+26 | writer.add(input);writer.startWriting();writer.startSession(atSourceTime:.zero)
+27 | var selected = -1, pointer = 0, selectedCaption = -2
+
+scripts/render-continuous.swift:26:8: warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetWriter.inputReceiver(for:...) overload for your input and optional adaptor instead [#DeprecatedDeclaration]
+24 | input.expectsMediaDataInRealTime = false
+25 | let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes:[kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32ARGB,kCVPixelBufferWidthKey as String:width,kCVPixelBufferHeightKey as String:height])
+26 | writer.add(input);writer.startWriting();writer.startSession(atSourceTime:.zero)
+   |        `- warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetWriter.inputReceiver(for:...) overload for your input and optional adaptor instead [#DeprecatedDeclaration]
+27 | var selected = -1, pointer = 0, selectedCaption = -2
+28 | var pixel: CVPixelBuffer?
+
+scripts/render-continuous.swift:26:26: warning: 'startWriting()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+24 | input.expectsMediaDataInRealTime = false
+25 | let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes:[kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32ARGB,kCVPixelBufferWidthKey as String:width,kCVPixelBufferHeightKey as String:height])
+26 | writer.add(input);writer.startWriting();writer.startSession(atSourceTime:.zero)
+   |                          `- warning: 'startWriting()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+27 | var selected = -1, pointer = 0, selectedCaption = -2
+28 | var pixel: CVPixelBuffer?
+
+scripts/render-continuous.swift:54:18: warning: 'isReadyForMoreMediaData' was deprecated in macOS 27.0: Use the input receiver's async append(...) method instead [#DeprecatedDeclaration]
+52 |         CVPixelBufferUnlockBaseAddress(buffer!,[]);pixel=buffer
+53 |     }
+54 |     while !input.isReadyForMoreMediaData { Thread.sleep(forTimeInterval:0.01) }
+   |                  `- warning: 'isReadyForMoreMediaData' was deprecated in macOS 27.0: Use the input receiver's async append(...) method instead [#DeprecatedDeclaration]
+55 |     guard adaptor.append(pixel!,withPresentationTime:CMTime(value:Int64(sample),timescale:Int32(fps))) else { throw writer.error! }
+56 | }
+
+scripts/render-continuous.swift:63:74: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+61 | let composition=AVMutableComposition(),video=AVURLAsset(url:rawURL)
+62 | let track=composition.addMutableTrack(withMediaType:.video,preferredTrackID:kCMPersistentTrackID_Invalid)!
+63 | try track.insertTimeRange(CMTimeRange(start:.zero,duration:end),of:video.tracks(withMediaType:.video)[0],at:.zero)
+   |                                                                          `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+64 | if !quick {
+65 |     let narration=composition.addMutableTrack(withMediaType:.audio,preferredTrackID:kCMPersistentTrackID_Invalid)!
+
+scripts/render-continuous.swift:69:45: warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+67 |         let audio=AVURLAsset(url:root.appendingPathComponent(String(format:"audio/%02d.aiff",index)))
+68 |         let start=event["startSeconds"] as! Double, finish=event["endSeconds"] as! Double
+69 |         precondition(CMTimeGetSeconds(audio.duration) <= finish-start, "Narration exceeds its original scene time")
+   |                                             `- warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+70 |         try narration.insertTimeRange(CMTimeRange(start:.zero,duration:audio.duration),of:audio.tracks(withMediaType:.audio)[0],at:CMTime(seconds:start,preferredTimescale:600))
+71 |     }
+
+scripts/render-continuous.swift:70:78: warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+68 |         let start=event["startSeconds"] as! Double, finish=event["endSeconds"] as! Double
+69 |         precondition(CMTimeGetSeconds(audio.duration) <= finish-start, "Narration exceeds its original scene time")
+70 |         try narration.insertTimeRange(CMTimeRange(start:.zero,duration:audio.duration),of:audio.tracks(withMediaType:.audio)[0],at:CMTime(seconds:start,preferredTimescale:600))
+   |                                                                              `- warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+71 |     }
+72 | }
+
+scripts/render-continuous.swift:70:97: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+68 |         let start=event["startSeconds"] as! Double, finish=event["endSeconds"] as! Double
+69 |         precondition(CMTimeGetSeconds(audio.duration) <= finish-start, "Narration exceeds its original scene time")
+70 |         try narration.insertTimeRange(CMTimeRange(start:.zero,duration:audio.duration),of:audio.tracks(withMediaType:.audio)[0],at:CMTime(seconds:start,preferredTimescale:600))
+   |                                                                                                 `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+71 |     }
+72 | }
+
+scripts/render-continuous.swift:75:10: warning: 'outputURL' was deprecated in macOS 27.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+73 | try? FileManager.default.removeItem(at:output)
+74 | let exporter=AVAssetExportSession(asset:composition,presetName:AVAssetExportPresetHighestQuality)!
+75 | exporter.outputURL=output;exporter.outputFileType = .mp4;exporter.shouldOptimizeForNetworkUse=true
+   |          `- warning: 'outputURL' was deprecated in macOS 27.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+76 | let done=DispatchSemaphore(value:0);exporter.exportAsynchronously { done.signal() };done.wait()
+77 | if exporter.status != .completed { throw exporter.error! }
+
+scripts/render-continuous.swift:75:36: warning: 'outputFileType' was deprecated in macOS 27.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+73 | try? FileManager.default.removeItem(at:output)
+74 | let exporter=AVAssetExportSession(asset:composition,presetName:AVAssetExportPresetHighestQuality)!
+75 | exporter.outputURL=output;exporter.outputFileType = .mp4;exporter.shouldOptimizeForNetworkUse=true
+   |                                    `- warning: 'outputFileType' was deprecated in macOS 27.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+76 | let done=DispatchSemaphore(value:0);exporter.exportAsynchronously { done.signal() };done.wait()
+77 | if exporter.status != .completed { throw exporter.error! }
+
+scripts/render-continuous.swift:76:46: warning: 'exportAsynchronously(completionHandler:)' was deprecated in macOS 15.0 [#DeprecatedDeclaration]
+74 | let exporter=AVAssetExportSession(asset:composition,presetName:AVAssetExportPresetHighestQuality)!
+75 | exporter.outputURL=output;exporter.outputFileType = .mp4;exporter.shouldOptimizeForNetworkUse=true
+76 | let done=DispatchSemaphore(value:0);exporter.exportAsynchronously { done.signal() };done.wait()
+   |                                              `- warning: 'exportAsynchronously(completionHandler:)' was deprecated in macOS 15.0 [#DeprecatedDeclaration]
+77 | if exporter.status != .completed { throw exporter.error! }
+78 | let result=AVURLAsset(url:output),generator=AVAssetImageGenerator(asset:AVURLAsset(url:output));generator.appliesPreferredTrackTransform=true
+
+scripts/render-continuous.swift:77:13: warning: 'status' was deprecated in macOS 15.0: Use states(updateInterval:) instead [#DeprecatedDeclaration]
+75 | exporter.outputURL=output;exporter.outputFileType = .mp4;exporter.shouldOptimizeForNetworkUse=true
+76 | let done=DispatchSemaphore(value:0);exporter.exportAsynchronously { done.signal() };done.wait()
+77 | if exporter.status != .completed { throw exporter.error! }
+   |             `- warning: 'status' was deprecated in macOS 15.0: Use states(updateInterval:) instead [#DeprecatedDeclaration]
+78 | let result=AVURLAsset(url:output),generator=AVAssetImageGenerator(asset:AVURLAsset(url:output));generator.appliesPreferredTrackTransform=true
+79 | for (index,second) in [0.0,duration*0.25,duration*0.5,duration*0.75,max(0,duration-1)].enumerated() {
+
+scripts/render-continuous.swift:77:51: warning: 'error' was deprecated in macOS 15.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+75 | exporter.outputURL=output;exporter.outputFileType = .mp4;exporter.shouldOptimizeForNetworkUse=true
+76 | let done=DispatchSemaphore(value:0);exporter.exportAsynchronously { done.signal() };done.wait()
+77 | if exporter.status != .completed { throw exporter.error! }
+   |                                                   `- warning: 'error' was deprecated in macOS 15.0: Use export(to:as:) async throws instead [#DeprecatedDeclaration]
+78 | let result=AVURLAsset(url:output),generator=AVAssetImageGenerator(asset:AVURLAsset(url:output));generator.appliesPreferredTrackTransform=true
+79 | for (index,second) in [0.0,duration*0.25,duration*0.5,duration*0.75,max(0,duration-1)].enumerated() {
+
+scripts/render-continuous.swift:80:29: warning: 'copyCGImage(at:actualTime:)' was deprecated in macOS 15.0: Use generateCGImageAsynchronouslyForTime:completionHandler: instead [#DeprecatedDeclaration]
+78 | let result=AVURLAsset(url:output),generator=AVAssetImageGenerator(asset:AVURLAsset(url:output));generator.appliesPreferredTrackTransform=true
+79 | for (index,second) in [0.0,duration*0.25,duration*0.5,duration*0.75,max(0,duration-1)].enumerated() {
+80 |     let image=try generator.copyCGImage(at:CMTime(seconds:second,preferredTimescale:600),actualTime:nil)
+   |                             `- warning: 'copyCGImage(at:actualTime:)' was deprecated in macOS 15.0: Use generateCGImageAsynchronouslyForTime:completionHandler: instead [#DeprecatedDeclaration]
+81 |     try NSBitmapImageRep(cgImage:image).representation(using:.png,properties:[:])!.write(to:root.appendingPathComponent("verify-\(index).png"))
+82 | }
+
+scripts/render-continuous.swift:84:285: warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+82 | }
+83 | let attributes=try FileManager.default.attributesOfItem(atPath:output.path)
+84 | let report:[String:Any]=["command":"swift scripts/render-continuous.swift \(CommandLine.arguments[1]) \(CommandLine.arguments[2])","success":true,"quick":quick,"format":"Continuous CDP capture, five fps, H.264/AAC; no cuts or scene retiming","durationSeconds":CMTimeGetSeconds(result.duration),"captureDurationSeconds":duration,"rawFrames":frames.count,"encodedFrames":sampleCount,"videoTracks":result.tracks(withMediaType:.video).count,"audioTracks":result.tracks(withMediaType:.audio).count,"bytes":attributes[.size]!]
+   |                                                                                                                                                                                                                                                                                             `- warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead [#DeprecatedDeclaration]
+85 | let data=try JSONSerialization.data(withJSONObject:report,options:.prettyPrinted)
+86 | try data.write(to:root.appendingPathComponent("video-verification.json"));print(String(data:data,encoding:.utf8)!)
+
+scripts/render-continuous.swift:84:403: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+82 | }
+83 | let attributes=try FileManager.default.attributesOfItem(atPath:output.path)
+84 | let report:[String:Any]=["command":"swift scripts/render-continuous.swift \(CommandLine.arguments[1]) \(CommandLine.arguments[2])","success":true,"quick":quick,"format":"Continuous CDP capture, five fps, H.264/AAC; no cuts or scene retiming","durationSeconds":CMTimeGetSeconds(result.duration),"captureDurationSeconds":duration,"rawFrames":frames.count,"encodedFrames":sampleCount,"videoTracks":result.tracks(withMediaType:.video).count,"audioTracks":result.tracks(withMediaType:.audio).count,"bytes":attributes[.size]!]
+   |                                                                                                                                                                                                                                                                                                                                                                                                                   `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+85 | let data=try JSONSerialization.data(withJSONObject:report,options:.prettyPrinted)
+86 | try data.write(to:root.appendingPathComponent("video-verification.json"));print(String(data:data,encoding:.utf8)!)
+
+scripts/render-continuous.swift:84:459: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+82 | }
+83 | let attributes=try FileManager.default.attributesOfItem(atPath:output.path)
+84 | let report:[String:Any]=["command":"swift scripts/render-continuous.swift \(CommandLine.arguments[1]) \(CommandLine.arguments[2])","success":true,"quick":quick,"format":"Continuous CDP capture, five fps, H.264/AAC; no cuts or scene retiming","durationSeconds":CMTimeGetSeconds(result.duration),"captureDurationSeconds":duration,"rawFrames":frames.count,"encodedFrames":sampleCount,"videoTracks":result.tracks(withMediaType:.video).count,"audioTracks":result.tracks(withMediaType:.audio).count,"bytes":attributes[.size]!]
+   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                           `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+85 | let data=try JSONSerialization.data(withJSONObject:report,options:.prettyPrinted)
+86 | try data.write(to:root.appendingPathComponent("video-verification.json"));print(String(data:data,encoding:.utf8)!)
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+{
+  "videoTracks" : 1,
+  "rawFrames" : 2046,
+  "captureDurationSeconds" : 410.14037841700002,
+  "quick" : false,
+  "encodedFrames" : 2051,
+  "success" : true,
+  "bytes" : 25416963,
+  "audioTracks" : 1,
+  "durationSeconds" : 410.19999999999999,
+  "command" : "swift scripts\/render-continuous.swift work\/continuous-demo-final work\/continuous-demo-final\/squali-source-demo.mp4",
+  "format" : "Continuous CDP capture, five fps, H.264\/AAC; no cuts or scene retiming"
+}

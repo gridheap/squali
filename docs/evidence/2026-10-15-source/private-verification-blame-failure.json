@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/var/lib/squali-private-verification/verify-import.py",
+    "gh-5fd5a2f4bc33a0286d6728ad",
+    "/var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/source.git",
+    "--state",
+    "/var/lib/squali-private-verification/state",
+    "--file",
+    "README.md",
+    "--write-smoke"
+  ],
+  "exit": 1,
+  "finishedAt": "2026-10-15T02:58:10Z",
+  "stdout": "",
+  "stderr": "Verification stopped: HTTP 422 query_budget\n"
+}

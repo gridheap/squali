@@ -2,7 +2,7 @@
 
 Source: [Anthropic, Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control), October 13, 2026. Checkpoint: October 15.
 
-Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the [fixed 20-item checklist](scion-acceptance.md), with mandatory architecture gates and additional private-import, performance and cost gates. Final competition submission is still pending. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.
+Squali now uses independent immutable changesets and R2 source blobs. The current acceptance boundary is the [fixed 20-item checklist](scion-acceptance.md), with mandatory architecture gates and additional private-import, performance and cost gates. All 20 fixed capability criteria pass within the stated limits. Final competition submission remains a human action. The percentage describes coverage of the published design; Anthropic has not published a complete implementation or conformance suite.
 
 | Article capability | Implemented and tested | Remaining boundary |
 |---|---|---|
@@ -16,14 +16,14 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 | Node daemon and tiered cache | Private Unix socket, concurrent miss coalescing, bounded shared cache, verified snapshots, Worker memory/edge and durable R2 | No dedicated regional cache fleet or measured 99% hit rate at every tier |
 | Fault isolation | Cache errors fail closed, upload leases and late-ack reconciliation, revoked credentials, bounded snapshots, no authority bypass | Same-user local cache directories are not an OS security boundary between hostile processes |
 | IAM and review constraints | Clerk owner isolation, expiring role/path credentials, parser-backed JS comment-only and JSON value policies | Semantic scope is explicit; it is not general proof of program equivalence or trusted CI attestation |
-| Private GitHub import | Persistent background jobs, single native worker, frozen cache/journal, pause/resume, short internal credential leases, no browser pack transfer | Real production GitHub login and the private catalog pass; full 421,219-object private import remains in progress |
-| Git interoperability | Published-only Artifacts export, incremental clone/fetch, native cache seeding, exact tags, lost-ack reconciliation, rebuildable derived copy | Worker export: 8,192 new objects/16 MiB; Artifacts remains limited to a 1 GB compatibility repository |
-| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 17 SQL queries in the retained local fixture | Production concurrency and database metrics are retained; final large-repository verification and cost reconciliation remain pending |
+| Private GitHub import | Persistent background jobs, single native worker, frozen cache/journal, pause/resume, short internal credential leases, no browser pack transfer | Real production login, catalog and 421,219-object import pass; all exported objects/refs and native fsck verified, eight canonical deltas and README history/blame sampled |
+| Git interoperability | Published-only Artifacts export, incremental clone/fetch, native cache seeding, exact tags, lost-ack reconciliation, rebuildable derived copy | Worker incremental export: 8,192 new objects/16 MiB; Artifacts: 1 GB; verified R2 fallback: 500,000 objects, 512 MiB pack, 16 MiB index |
+| Performance and independent storage | Stateless Workers; durable R2 blobs; SQL changesets; batch-sealing 128 commits reduced from 1,793 to 17 SQL queries in the retained local fixture | Private import and cost reconciliation passed; latest production proposal p95 is 3.37 s, above the two-second investigation target |
 
 ## Responsibilities
 
 - **Workers:** authentication, path policy, bounded queries/writes, source RPC and usage admission. They do not unpack a complete imported Git repository.
-- **R2 `SOURCE`:** authoritative independent gzip blobs, addressed by SHA-256. Completed source objects do not expire.
+- **R2 `SOURCE`:** authoritative independent gzip blobs, addressed by SHA-256, plus verified compatibility snapshot chunks when Artifacts is limited. Completed source objects do not expire.
 - **PostgreSQL through Hyperdrive:** canonical changesets, derived compatibility metadata/indexes, identities, review policy, journals and usage reservations.
 - **Artifacts:** derived Git interoperability copy. Source queries, changesets and publication do not require proposal refs or Artifacts calls. Legacy workspaces retain their old adapter.
 - **R2 `OBJECTS`:** disposable compatibility cache with seven-day expiry; separate metering from authoritative source storage.

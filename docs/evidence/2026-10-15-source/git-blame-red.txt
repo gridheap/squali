@@ -1,0 +1,214 @@
+✖ native blame origins: newline (711.777041ms)
+✖ native blame origins: identical-parent (838.960375ms)
+✖ native blame origins: rename-parent (791.758084ms)
+✖ native blame origins: blank-lines (1316.495792ms)
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/src/git-line-diff.ts' imported from /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/git-line-diff.test.ts
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveBaseSync (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+    at resolveDirectorySync (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+    at resolveTsPathsSync (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+    at resolve (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/tsx/4.23.15/dd1ba773ad27967bd531bf8ce3d1185017e15dfb36e0be6254ee9ab4ded8bf9d/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/src/git-line-diff.ts'
+}
+
+Node.js v24.21.0
+✖ tests/git-line-diff.test.ts (105.647ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3876.002458
+
+✖ failing tests:
+
+test at tests/blame-native.test.ts:1:429
+✖ native blame origins: newline (711.777041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+  +     'd8ea7caff4fd8406d3e50e3c745fe162a042c95c',
+  -     '59062b5ab866414100a0f0617e1371514c62eb75',
+        1
+      ]
+    ]
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-native.test.ts:26:193)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'd8ea7caff4fd8406d3e50e3c745fe162a042c95c', 1 ] ],
+    expected: [ [ '59062b5ab866414100a0f0617e1371514c62eb75', 1 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/blame-native.test.ts:1:429
+✖ native blame origins: identical-parent (838.960375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+  +     'e3b7caa9cbcaf7221fd9236efe91c29c1143d9fd',
+  -     'd1011b79dc05fb07cc6ce7b82b4dae70cfa23996',
+        1
+      ],
+      [
+        'd1011b79dc05fb07cc6ce7b82b4dae70cfa23996',
+        2
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-native.test.ts:26:193)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'e3b7caa9cbcaf7221fd9236efe91c29c1143d9fd', 1 ], [ 'd1011b79dc05fb07cc6ce7b82b4dae70cfa23996', 2 ] ],
+    expected: [ [ 'd1011b79dc05fb07cc6ce7b82b4dae70cfa23996', 1 ], [ 'd1011b79dc05fb07cc6ce7b82b4dae70cfa23996', 2 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/blame-native.test.ts:1:429
+✖ native blame origins: rename-parent (791.758084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b',
+        1
+      ],
+      [
+  +     '2ce408c98c032ef94c07464e70049b476ad59d16',
+  -     'e42bf06eb56382a3bf2983645156ebc118da8b94',
+        2
+      ],
+      [
+        'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b',
+        3
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-native.test.ts:26:193)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 1 ], [ '2ce408c98c032ef94c07464e70049b476ad59d16', 2 ], [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 3 ], [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 4 ] ],
+    expected: [ [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 1 ], [ 'e42bf06eb56382a3bf2983645156ebc118da8b94', 2 ], [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 3 ], [ 'bcb1b977f1d08eca8594ee8a1c1852b15f73ab3b', 4 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/blame-native.test.ts:1:429
+✖ native blame origins: blank-lines (1316.495792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        '93fd033e061fbc818c337de5136d8497c007118c',
+        1
+      ],
+  ...
+      [
+  +     'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b',
+  +     4
+  +   ],
+  +   [
+  +     '60e1d56e59e3e3f366d3b55bb5f0e307c555836c',
+  -     '1d85b550d5786519c9aa80fe707dd119f09985c0',
+        9
+      ],
+      [
+  +     'befb876cae33217c8c8d5cf6a509439de042f67a',
+  +     4
+  -     'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b',
+  -     5
+      ],
+      [
+  +     '93fd033e061fbc818c337de5136d8497c007118c',
+  +     14
+  -     '1d85b550d5786519c9aa80fe707dd119f09985c0',
+  -     10
+      ],
+      [
+  +     'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b',
+  +     8
+  +   ],
+  +   [
+        '93fd033e061fbc818c337de5136d8497c007118c',
+        15
+      ],
+      [
+        '3bca54f5f57e191c1f31fc66d786031e97c40cb7',
+  ...
+        'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b',
+  -     9
+  -   ],
+  -   [
+  -     '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794',
+  -     15
+  -   ],
+  -   [
+  -     'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b',
+        11
+      ],
+      [
+        '93fd033e061fbc818c337de5136d8497c007118c',
+        19
+      ],
+      [
+  +     '93fd033e061fbc818c337de5136d8497c007118c',
+  +     20
+  -     'befb876cae33217c8c8d5cf6a509439de042f67a',
+  -     18
+      ],
+      [
+  +     '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794',
+  +     20
+  -     '93fd033e061fbc818c337de5136d8497c007118c',
+  -     21
+      ],
+      [
+  +     'befb876cae33217c8c8d5cf6a509439de042f67a',
+  +     13
+  -     '1d85b550d5786519c9aa80fe707dd119f09985c0',
+  -     22
+      ],
+      [
+        '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794',
+        24
+      ],
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/blame-native.test.ts:26:193)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ '93fd033e061fbc818c337de5136d8497c007118c', 1 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 3 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 4 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 4 ], [ '60e1d56e59e3e3f366d3b55bb5f0e307c555836c', 9 ], [ 'befb876cae33217c8c8d5cf6a509439de042f67a', 4 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 14 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 8 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 15 ], [ '3bca54f5f57e191c1f31fc66d786031e97c40cb7', 20 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 11 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 19 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 20 ], [ '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794', 20 ], [ 'befb876cae33217c8c8d5cf6a509439de042f67a', 13 ], [ '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794', 24 ], [ 'befb876cae33217c8c8d5cf6a509439de042f67a', 24 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 18 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 19 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 20 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 21 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 22 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 23 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 24 ] ],
+    expected: [ [ '93fd033e061fbc818c337de5136d8497c007118c', 1 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 3 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 4 ], [ '1d85b550d5786519c9aa80fe707dd119f09985c0', 9 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 5 ], [ '1d85b550d5786519c9aa80fe707dd119f09985c0', 10 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 15 ], [ '3bca54f5f57e191c1f31fc66d786031e97c40cb7', 20 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 9 ], [ '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794', 15 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 11 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 19 ], [ 'befb876cae33217c8c8d5cf6a509439de042f67a', 18 ], [ '93fd033e061fbc818c337de5136d8497c007118c', 21 ], [ '1d85b550d5786519c9aa80fe707dd119f09985c0', 22 ], [ '7c0bd2776298e2860ed8e1c0ca343f4b4fe11794', 24 ], [ 'befb876cae33217c8c8d5cf6a509439de042f67a', 24 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 18 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 19 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 20 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 21 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 22 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 23 ], [ 'c4cb5a6b75d6575cc39ed847cbc7fe02b3a4ba3b', 24 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/git-line-diff.test.ts:1:1
+✖ tests/git-line-diff.test.ts (105.647ms)
+  'test failed'

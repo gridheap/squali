@@ -1,0 +1,22 @@
+{"command":"node --import tsx --test tests/blame-budget.test.ts","commits":20,"lines":502,"nativeOriginsEqual":true,"completedReplayExtraCalls":0}
+✔ blame compares only changed regions across a long stable file history (1419.814917ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","eagerAndLazy":true,"headOnlyRebuild":true,"mergeParentsPreserved":true,"processRestart":true,"extraBlobReads":0,"extraBlobWrites":0}
+✔ versioned graph and path derivation rebuilds parent dependencies from one immutable head (880.698958ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","oversizedDeltaRejected":true,"missingParentRejected":true,"incompleteMarkerPublished":false}
+✔ path derivation rejects oversized or disconnected canonical inputs before marking them complete (450.707667ms)
+{"command":"node --import tsx --test tests/derived-indexes.test.ts","recursiveBlame":true,"editedRenameMatchesGit":true,"parentCacheReused":true,"existingCacheIdentityPreserved":true}
+✔ blame dependency rebuilding preserves native line origins and existing versioned cache entries (645.039292ms)
+{"command":"node --import tsx --test tests/line-diff.test.ts","oracle":"node-diff3","exhaustivePairs":14641,"cumulativeBudget":true}
+✔ bounded line matching preserves node-diff3 ties and a cumulative work ceiling (40.42025ms)
+{"command":"pnpm test:metadata","mergeBase":"dc4219155a06723b719842b163f51b6259abaf18","mergedHead":"a878f8365fdb5a3d95aa547e4158b79683f931ef","blameCommits":["d74017aedc3685f912419b3ad42031e01c3d06d2","dc4219155a06723b719842b163f51b6259abaf18","4fe93d36583a3bb103569ee578675145a080556f"],"derivedReplayProviderCalls":0,"revertRequiresReview":true}
+✔ server metadata answers ancestry, merge bases, diff, history, blame, bisect and reviewed revert without checkout (1137.057042ms)
+{"command":"pnpm test:metadata","searchPages":[50,10],"uniqueMatches":60,"queryBoundCursor":true}
+✔ search pages resume across SQL JSON ordering and bind cursors to immutable queries (473.742208ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2202.669041

@@ -1,0 +1,27 @@
+{
+  "command": "node --import tsx scripts/check-demo-capture.ts work/continuous-demo",
+  "success": false,
+  "frames": 40,
+  "durationSeconds": 415.490993625,
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Scene 0: missing visual checkpoint"
+  ]
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: AssertionError [ERR_ASSERTION]: Scene 0: missing visual checkpoint
+
+1 !== 0
+
+    at <anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/scripts/check-demo-capture.ts:18:137) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
