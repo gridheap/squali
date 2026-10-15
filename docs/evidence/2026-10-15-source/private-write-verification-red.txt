@@ -1,0 +1,31 @@
+✖ import verification checks complete native identity and reuses its successful transfer (611.493834ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 736.960333
+
+✖ failing tests:
+
+test at tests/verify-import.test.ts:1:349
+✖ import verification checks complete native identity and reuses its successful transfer (611.493834ms)
+  Error: Command failed: python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-aGFbrJ/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-aGFbrJ/verification --file README.md --write-smoke
+  usage: verify-import.py [-h] --state STATE --file FILE project native
+  verify-import.py: error: unrecognized arguments: --write-smoke
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+    code: 2,
+    killed: false,
+    signal: null,
+    cmd: 'python3 scripts/verify-import.py verify /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-aGFbrJ/native --state /Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/e2e-aGFbrJ/verification --file README.md --write-smoke',
+    stdout: '',
+    stderr: 'usage: verify-import.py [-h] --state STATE --file FILE project native\nverify-import.py: error: unrecognized arguments: --write-smoke\n'
+  }

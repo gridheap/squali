@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verify a complete source import against a retained native repository, once."""
 import argparse,base64,fcntl,hashlib,http.client,json,os,pathlib,re,shlex,subprocess,sys,time,urllib.parse
-p=argparse.ArgumentParser(description=__doc__);p.add_argument('project');p.add_argument('native');p.add_argument('--state',required=True);p.add_argument('--file',required=True);a=p.parse_args()
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('project');p.add_argument('native');p.add_argument('--state',required=True);p.add_argument('--file',required=True);p.add_argument('--write-smoke',action='store_true',help='Create and reject one unpublished source proposal after native verification');a=p.parse_args()
 origin=os.environ.get('SQUALI_URL','https://squa.li').rstrip('/');token=os.environ.get('SQUALI_TOKEN');u=urllib.parse.urlparse(origin)
 if not token or u.scheme not in ('http','https') or u.username or u.password or u.query or u.fragment or not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_-]{0,62}',a.project):raise SystemExit('Use a valid endpoint/project and SQUALI_TOKEN')
 if a.file.startswith('/') or any(part in ('','.','..','.git') for part in a.file.split('/')):raise SystemExit('Use one safe repository-relative text file')
@@ -14,7 +14,7 @@ def git(repo,*args):
  if len(result.stdout)>64*1024*1024:raise RuntimeError('Native output exceeds 64 MiB')
  return result.stdout
 def refs(repo):return sorted(git(repo,'for-each-ref','--format=%(refname) %(objectname)','refs/heads','refs/tags').decode().splitlines())
-native=pathlib.Path(a.native).resolve();expected_refs=refs(native);head=git(native,'rev-parse','HEAD').decode().strip();identity={'origin':origin,'project':a.project,'native':str(native),'head':head,'refs':expected_refs,'file':a.file}
+native=pathlib.Path(a.native).resolve();expected_refs=refs(native);head=git(native,'rev-parse','HEAD').decode().strip();identity={'origin':origin,'project':a.project,'native':str(native),'head':head,'refs':expected_refs,'file':a.file,**({'writeSmoke':True} if a.write_smoke else {})}
 fingerprint=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();journal=root/'state.json';s=json.loads(journal.read_text()) if journal.exists() else {'identity':identity,'fingerprint':fingerprint,'httpAttempts':0,'gitTransfers':0,'steps':{},'report':None}
 if s['fingerprint']!=fingerprint:raise SystemExit('Verification source changed; retain the original journal')
 if s['report']:print(json.dumps(s['report']));raise SystemExit(0)
@@ -25,7 +25,7 @@ def save():
 http=(http.client.HTTPSConnection if u.scheme=='https' else http.client.HTTPConnection)(u.hostname,u.port,timeout=90)
 def call(key,path,body=None):
  if key in s['steps']:return s['steps'][key]
- if s['httpAttempts']>=40:raise RuntimeError('Persistent 40-request verification budget exhausted')
+ if s['httpAttempts']>=(48 if a.write_smoke else 40):raise RuntimeError('Persistent verification request budget exhausted')
  s['httpAttempts']+=1;save();started=time.monotonic();http.request('GET' if body is None else 'POST',u.path+'/api/projects/'+a.project+path,body=None if body is None else json.dumps(body).encode(),headers={'Authorization':'Bearer '+token,'Content-Type':'application/json','User-Agent':'Squali-Import-Verification/1'})
  r=http.getresponse();raw=r.read(2*1024*1024+1)
  s.setdefault('apiMeasurements',[]).append({'key':key,'attempt':s['httpAttempts'],'ms':round((time.monotonic()-started)*1000,3),'status':r.status,'bytes':len(raw)});save()
@@ -141,8 +141,25 @@ try:
  assert refs(clone)==expected_refs,'Exported refs differ'
  actual_objects=sorted(set(git(clone,'rev-list','--objects','--all','--no-object-names').decode().splitlines()));assert actual_objects==expected_objects,'Exported object closure differs'
  assert git(clone,'rev-parse','HEAD').decode().strip()==head,'Default branch differs'
+ write_smoke=None
+ if a.write_smoke:
+  path='squali-verification.txt';content='Squali source write verification.\n';body=content.encode();blob=hashlib.sha1(('blob '+str(len(body))+'\0').encode()+body).hexdigest()
+  assert not any(entry[0]==path for entry in native_tree),'The write-verification path already exists; do not overwrite it'
+  proposal=call('write-proposal','/changes',{'id':'source-write-verification','title':'Verify imported source writes','intent':'Acceptance fixture; keep this proposal unpublished and reject it after verification.','base':head,'context':{'fixture':True,'nativeImportHead':head},'files':[{'path':path,'content':content}]})
+  try:
+   delta=call('write-delta','/changesets/'+proposal['oid']);parent=call('changeset:'+head,'/changesets/'+head)
+   assert delta['parents']==[parent['id']] and len(delta['files'])==1,'New canonical delta has incorrect parents or paths'
+   changed=delta['files'][0];assert changed['path']==path and changed['mode']=='100644' and changed['gitOid']==blob and changed['blob']==hashlib.sha256(body).hexdigest(),'New canonical delta differs from written content'
+   assert call('write-file','/file?'+urllib.parse.urlencode({'ref':proposal['oid'],'path':path}))['content']==content,'New source file differs'
+   written_tree=call('write-tree','/tree?ref='+proposal['oid'])['entries'];assert sorted((e['name'],e['type'],e['oid'],e['mode']) for e in written_tree)==sorted([*native_tree,(path,'blob',blob,'100644')]),'New source tree changed unrelated entries'
+  finally:
+   rejected=call('write-reject','/changes/source-write-verification/review',{'decision':'rejected','note':'Import write acceptance complete; retain evidence without publishing this fixture.'});assert rejected['status']=='rejected'
+  assert call('write-head','')['head']==head,'Proposing a change moved the published head'
+  after=call('write-refs','/source');assert sorted(r['name']+' '+r['oid'] for r in after['refs'])==expected_refs and after['changesets']==commits+1,'A proposal changed imported refs or duplicated a changeset'
+  write_smoke={'id':proposal['id'],'oid':proposal['oid'],'status':'rejected','path':path,'canonicalDeltaMatches':True,'rootTreeMatches':True,'publishedHeadUnchanged':True,'proposalMs':next(v['ms'] for v in reversed(s['apiMeasurements']) if v['key']=='write-proposal' and v['status']==201)}
  timing=s.get('apiMeasurements',[]);last={v['key']:v for v in timing if 200<=v['status']<300};timings={'apiResponses':len(timing),'apiTotalMs':round(sum(v['ms'] for v in timing),3),'canonicalApiMs':round(sum(v['ms'] for v in timing if v['key'].startswith('changeset:')),3),**{name+'Ms':last.get(key,{}).get('ms') for name,key in [('history','history'),('blame','blame'),('ancestry','ancestry'),('mergeBase','merge-base')]},'cloneMs':s.get('cloneMs'),'fsckMs':s.get('fsckMs')}
  report={'command':shlex.join(['python3',*sys.argv]),'timestamp':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'complete':True,'project':a.project,'head':head,'objects':len(expected_objects),'commits':commits,'refs':len(expected_refs),'objectInventorySha256':hashlib.sha256(('\n'.join(expected_objects)+'\n').encode()).hexdigest(),'nativeFsck':True,'canonicalChangesetsVerified':len(verified_changesets),'canonicalSampleOids':verified_changesets,'rootTreeMatches':True,'sparseFile':a.file,'sparseFileSha256':hashlib.sha256(expected_file).hexdigest(),'historyMatchesNative':True,'blameMatchesNative':True,'firstParentDistance':distance,'httpAttempts':s['httpAttempts'],'gitTransfers':s['gitTransfers'],'timings':timings,'limitations':['Full exported Git closure is verified; source R2 bodies are identity-checked on ingestion and sampled here','Up to eight canonical deltas are independently compared with native Git; this is a bounded sample, not all changesets','One selected file exercises history/blame; other files retain the documented query budgets','Timings are this one observed verification run; they include its network and provider state, not a load benchmark','No automatic network retry; complete replay makes zero HTTP or Git transfers']}
+ if write_smoke:report['writeSmoke']=write_smoke;report['limitations'].append('Inventory counts describe the frozen import; one later rejected proposal adds its canonical delta and source objects without changing published refs')
  s['report']=report;save();(root/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 except Exception as error:raise SystemExit(str(error) if isinstance(error,(RuntimeError,AssertionError)) else 'Verification stopped: '+type(error).__name__)
 finally:http.close()
