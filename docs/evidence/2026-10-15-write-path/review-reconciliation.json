@@ -1,0 +1,16 @@
+{
+  "command": "Recorded local Python reconciliation in README.md",
+  "httpAttempts": 28,
+  "ambiguousReview": "review-6",
+  "alreadyApproved": false,
+  "duplicateReviewAvoided": false,
+  "sourceObjectReads": 0,
+  "sourceObjectWrites": 0,
+  "request": {
+    "method": "GET",
+    "url": "https://squa.li/api/projects/source-acceptance-20261015/changes",
+    "automaticRetries": 0
+  },
+  "observedStatus": "proposed",
+  "observedReviewNote": null
+}

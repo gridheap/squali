@@ -28,7 +28,7 @@ The separate `squali-regional` Worker implements the same source RPC as the node
 
 ## Work still required
 
-1. **Production latency:** the retained proposal p95 is 3.369 seconds and final cold README blame observation is 20.995 seconds. The SQL reduction has local evidence; production improvement still needs a bounded, controlled observation using new or genuinely missing results. Do not delete valid caches to manufacture a benchmark.
+1. **Production latency:** the new eight-change smoke observes proposal p95 4.531 seconds from the workstation; the earlier 3.369 seconds used an Azure client. These are different locations/principals and cannot establish a before/after speedup. Cold README blame remains 20.995 seconds. The next priority is measuring time in authentication, database admission, R2 acceptance and derivation on the production request path, so the next optimization targets observed work. Reuse valid data and do not purge caches or repeat successful paid workloads for measurement.
 2. **Regional capacity:** actual workerd now has a 512-blob working-set measurement, 16,384 additional cache-hit reads, process CPU/RSS and identified regional JS heap readings. Global/per-location scaling and long-duration behavior remain unmeasured. Objects larger than 1 MiB stream without regional retention. No 99% fleet hit rate has been established.
 3. **Client completeness:** in-place dirty-workspace rebase now passes native Git and crash-recovery acceptance. It requires pausing the workspace command and Linux mount capability; arbitrary binary/symlink writes remain unsupported. Existing text/file limits still apply.
 4. **Changeset cost at larger scale:** the 4,097-file/129-commit fixture now covers 768 writes at 8/32/128 concurrency, 12 publications, SQL counts, CPU, memory and storage calls. It recommends 32 concurrent bulk writers for the measured eight-connection pool. This single-host result does not establish horizontal scalability across regions or the best possible cost/performance.
@@ -53,3 +53,15 @@ Source Worker `c81e2b62-86d2-403a-92b0-e83056b77c02` and regional Worker `c71c1c
 Source Worker `33af85df-5716-4900-a00a-239dbbb6525f` now serves the no-write workspace rebase planner on `squa.li`; the regional deployment remains unchanged. Five production calls pass, with no additional source read/write reservations. Real Linux tests compare the entire resulting tree with native Git and cover conflicts, cancellation, changed retry inputs and interruption on both sides of the atomic generation switch.
 
 The longer local capacity run passes 128-client node reads, 16,384 regional cache reads, 65,536 node cache reads and 768 proposed/reviewed/published changes. It retains 130 earlier socket failures and their fixes. CPU, process RSS, regional heap, request latencies, exact object reads/writes and provider observations have separate records. [Measurements and limits](capacity.md) · [commands and raw evidence](evidence/2026-10-15-capacity/README.md). These results advance the public architecture match without inventing a percentage or submitting the competition.
+
+## Incremental write checkpoint
+
+Source deployment `fa64ef9e-9fcf-402d-ab21-17bd8d2becad` reduces a one-file proposal
+from 32 to 24 SQL statements and fixes an admission failure in which an exhausted
+write budget left an unstarted upload claim. **93 regression tests pass.** A
+controlled local delayed-database comparison increases throughput by 34.8–39.2%
+at 8/32 concurrency, with unchanged one-PUT-per-new-file behavior and exact native
+Git export. The production fixture publishes eight changes using eight R2 writes,
+one read and zero Artifacts calls. Its retained 35 attempts include eight scope
+denials, one network failure and a read-only review reconciliation. Production
+latency remains an open item. [Detailed assessment](write-path.md).

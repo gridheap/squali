@@ -1,0 +1,85 @@
+{
+  "command": "node --import tsx --test tests/working-copy-watch.test.ts",
+  "records": [
+    {
+      "event": "ready",
+      "project": "watch",
+      "base": "f13899452971913733a04c439604f33926842477",
+      "trackedFiles": 3,
+      "watchedDirectories": 3,
+      "changes": [
+        {
+          "path": "src/edit.txt",
+          "status": "modified",
+          "oid": "e892cb86edf2ddd03c54e21e35afb16aec2f9d42",
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "event": "change",
+      "path": "src/edit.txt",
+      "status": "modified",
+      "oid": "0716c336428048c4f84ae64eac62df38efb2d0c8",
+      "mode": "100644"
+    },
+    {
+      "event": "change",
+      "path": "src/link",
+      "status": "unsupported"
+    },
+    {
+      "event": "change",
+      "path": "src/new.txt",
+      "status": "untracked"
+    },
+    {
+      "event": "change",
+      "path": "src/run.sh",
+      "status": "modified",
+      "oid": "e8117c62d4a39ba4f0bdb36c546dfd1a69ad7826",
+      "mode": "100755"
+    },
+    {
+      "event": "change",
+      "path": "src/delete.txt",
+      "status": "deleted"
+    },
+    {
+      "event": "stopped",
+      "reason": "time-limit",
+      "complete": true,
+      "networkRequests": 0,
+      "nativeEvents": 7,
+      "hashedBytes": 49,
+      "metadataEntries": 14,
+      "peakWatchedDirectories": 3,
+      "changes": [
+        {
+          "path": "src/edit.txt",
+          "status": "modified",
+          "oid": "0716c336428048c4f84ae64eac62df38efb2d0c8",
+          "mode": "100644"
+        },
+        {
+          "path": "src/link",
+          "status": "unsupported"
+        },
+        {
+          "path": "src/new.txt",
+          "status": "untracked"
+        },
+        {
+          "path": "src/run.sh",
+          "status": "modified",
+          "oid": "e8117c62d4a39ba4f0bdb36c546dfd1a69ad7826",
+          "mode": "100755"
+        },
+        {
+          "path": "src/delete.txt",
+          "status": "deleted"
+        }
+      ]
+    }
+  ]
+}

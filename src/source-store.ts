@@ -75,17 +75,43 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   if(values.length>8192)throw new Problem(413,'source_objects','Too many objects');let bytes=0;
   for(const value of values){immutable(value.oid);bytes+=value.data.length;if(value.data.length>32*1024*1024||bytes>64*1024*1024)throw new Problem(413,'source_objects','Object upload exceeds its bound');if(!['commit','tree','blob','tag'].includes(value.type)||oid(value.type,value.data)!==value.oid)throw new Problem(400,'source_hash','Git object identity mismatch');if(value.type==='commit')decodeCommit(value.oid,value.data);if(value.type==='tree')decodeTree(value.data);}
   const prepared=[...new Map(values.map(value=>[value.oid,value])).values()].map(value=>({...value,blob:value.type==='blob'?hash('sha256',value.data):null,compressed:value.type==='blob'?(value.compressed??gzipSync(value.data,{level:1})):null}));
+  if(!prepared.length)return {accepted:0,received:values.length};
   const [claim,inserted]=await sql.begin(async tx=>{
    const blobs=prepared.filter(v=>v.blob).map(v=>({hash:v.blob!,size:v.data.length,compressed_size:v.compressed!.length}));
    const uniqueBlobs=[...new Map(blobs.map(v=>[v.hash,v])).values()];
-   const claimed=uniqueBlobs.length?await tx`INSERT INTO weave_source_blobs ${tx(uniqueBlobs,'hash','size','compressed_size')} ON CONFLICT DO NOTHING RETURNING hash`:[];
+   if(uniqueBlobs.length&&(!Number.isSafeInteger(caps.writes)||caps.writes<1))throw new Problem(503,'source_config','Source operation budget is not configured');
    const rows=prepared.map(v=>({project,oid:v.oid,kind:v.type,size:v.data.length,blob:v.blob,raw:v.type==='blob'?null:Buffer.from(v.data)}));
-   const added=rows.length?await tx`INSERT INTO weave_source_objects ${tx(rows,'project','oid','kind','size','blob','raw')} ON CONFLICT DO NOTHING RETURNING size`:[];
-   const total=added.reduce((n,r)=>n+Number(r.size),0);if(total){const quota=await tx`INSERT INTO weave_source_bytes(project,bytes) SELECT ${project},${total} WHERE ${total}::bigint<=${caps.repositoryBytes}::bigint ON CONFLICT(project) DO UPDATE SET bytes=weave_source_bytes.bytes+${total} WHERE weave_source_bytes.bytes+${total}<=${caps.repositoryBytes} RETURNING bytes`;if(!quota.length)throw new Problem(413,'source_repository_size','Source repository byte budget exceeded');}
-   return [claimed,added.length] as const;
+   // Admission, global content deduplication and both budgets share one SQL
+   // round trip. Rejecting either budget rolls this short transaction back,
+   // before any R2 operation. No network upload occurs while holding DB locks.
+   const [admission]=await tx`WITH claimed AS (
+    INSERT INTO weave_source_blobs(hash,size,compressed_size)
+    SELECT hash,size,compressed_size FROM jsonb_to_recordset(${tx.json(uniqueBlobs)}) AS b(hash text,size bigint,compressed_size bigint)
+    ON CONFLICT DO NOTHING RETURNING hash
+   ), added AS (
+    INSERT INTO weave_source_objects ${tx(rows,'project','oid','kind','size','blob','raw')}
+    ON CONFLICT DO NOTHING RETURNING size
+   ), total AS (
+    SELECT count(*) AS objects,COALESCE(sum(size),0)::bigint AS bytes FROM added
+   ), quota AS (
+    INSERT INTO weave_source_bytes(project,bytes)
+    SELECT ${project},bytes FROM total WHERE bytes>0 AND bytes<=${caps.repositoryBytes}::bigint
+    ON CONFLICT(project) DO UPDATE SET bytes=weave_source_bytes.bytes+EXCLUDED.bytes
+    WHERE weave_source_bytes.bytes+EXCLUDED.bytes<=${caps.repositoryBytes} RETURNING bytes
+   ), reserved AS (
+    INSERT INTO weave_source_usage(month,kind,attempts)
+    SELECT ${new Date().toISOString().slice(0,7)},'writes',count(*) FROM claimed
+    HAVING count(*)>0 AND count(*)<=${caps.writes}::bigint
+    ON CONFLICT(month,kind) DO UPDATE SET attempts=weave_source_usage.attempts+EXCLUDED.attempts
+    WHERE weave_source_usage.attempts+EXCLUDED.attempts<=${caps.writes} RETURNING attempts
+   ) SELECT ARRAY(SELECT hash FROM claimed) AS claimed,total.objects,
+    (total.bytes=0 OR EXISTS(SELECT 1 FROM quota)) AS quota_ok,
+    (NOT EXISTS(SELECT 1 FROM claimed) OR EXISTS(SELECT 1 FROM reserved)) AS budget_ok FROM total`;
+   if(!admission.quota_ok)throw new Problem(413,'source_repository_size','Source repository byte budget exceeded');
+   if(!admission.budget_ok)throw new Problem(429,'source_budget','Authoritative source operation budget exhausted');
+   return [(admission.claimed as string[]).map(hash=>({hash})),Number(admission.objects)] as const;
   });
   const claimed=new Set(claim.map(r=>r.hash)),ready:string[]=[];const uploads=prepared.filter(v=>v.blob&&claimed.has(v.blob));
-  if(uploads.length)await reserve('writes',uploads.length);
   // Refill each slot as soon as it completes. A slow object must not stall
   // an entire wave; six slots match Workers' pending connection allowance.
   let failed=false,next=0;await Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}}));

@@ -1,0 +1,79 @@
+{
+  "httpAttempts": 11,
+  "segments": 1,
+  "operations": {
+    "usage-before": {
+      "attempts": 1,
+      "complete": true,
+      "start": 1792069590.385046,
+      "ms": 1662.141,
+      "end": 1792069592.052622,
+      "status": 200
+    },
+    "existing": {
+      "attempts": 1,
+      "complete": true,
+      "start": 1792069592.054421,
+      "ms": 571.676,
+      "end": 1792069592.626994,
+      "status": 200
+    },
+    "source-before": {
+      "attempts": 1,
+      "complete": true,
+      "start": 1792069592.628256,
+      "ms": 973.909,
+      "end": 1792069593.603304,
+      "status": 200
+    },
+    "change-0": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.615895,
+      "error": "HTTP 403 scope"
+    },
+    "change-1": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.6178079,
+      "error": "HTTP 403 scope"
+    },
+    "change-2": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.619123,
+      "error": "HTTP 403 scope"
+    },
+    "change-3": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.620241,
+      "error": "HTTP 403 scope"
+    },
+    "change-4": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.624129,
+      "error": "HTTP 403 scope"
+    },
+    "change-5": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.630163,
+      "error": "HTTP 403 scope"
+    },
+    "change-6": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.631277,
+      "error": "HTTP 403 scope"
+    },
+    "change-7": {
+      "attempts": 1,
+      "complete": false,
+      "start": 1792069593.6323168,
+      "error": "HTTP 403 scope"
+    }
+  },
+  "complete": false
+}

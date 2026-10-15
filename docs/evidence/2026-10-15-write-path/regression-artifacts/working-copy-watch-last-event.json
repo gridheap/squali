@@ -1,0 +1,20 @@
+{
+  "output": "{\"event\":\"ready\",\"project\":\"watch-race\",\"base\":\"6dea87b4cbebcc6c31d47abf3608f305ea5cee78\",\"trackedFiles\":1,\"watchedDirectories\":3,\"changes\":[]}\n{\"event\":\"change\",\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}\n{\"event\":\"stopped\",\"reason\":\"event-limit\",\"complete\":true,\"networkRequests\":0,\"nativeEvents\":1,\"hashedBytes\":5,\"metadataEntries\":5,\"peakWatchedDirectories\":3,\"changes\":[{\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}]}\n",
+  "errors": "",
+  "stop": {
+    "event": "stopped",
+    "reason": "event-limit",
+    "complete": true,
+    "networkRequests": 0,
+    "nativeEvents": 1,
+    "hashedBytes": 5,
+    "metadataEntries": 5,
+    "peakWatchedDirectories": 3,
+    "changes": [
+      {
+        "path": "src/limit-event.txt",
+        "status": "untracked"
+      }
+    ]
+  }
+}

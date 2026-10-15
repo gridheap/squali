@@ -35,13 +35,21 @@ export function changeService(config:Config,p:any,principal:Principal){
    const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
    const files:FileDelta[]=[],delta:SourceDelta[]=[];for(const f of input.files){const before=await g.entry(c.base,f.path),after=await g.entry(built.oid,f.path);if(before?.oid===after?.oid&&before?.mode===after?.mode&&before?.rawMode===after?.rawMode)continue;files.push({path:f.path,before:before?.oid??null,after:after?.oid??null,afterBytes:Buffer.byteLength(f.content??''),mode:after?.mode??before?.mode??'100644',beforeMode:before?.mode??null});delta.push({path:f.path,gitOid:after?.oid??null,mode:after?.mode??null,...(after?.rawMode?{rawMode:after.rawMode}:{})});}
    if(!await repo.persist?.(built.oid,built.rawObjects,delta)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
-   return sql.begin(async tx=>{
-   const [current]=await tx`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id} FOR UPDATE`;
-   if(current.status!=='preparing')return changeView(current);
-   const [ready]=await tx`UPDATE weave_changes SET oid=${built.oid},files=${tx.json(files)},status='proposed' WHERE project=${pid} AND id=${input.id} RETURNING *`;
-   if(files.length)await tx`INSERT INTO weave_paths ${tx(files.map(f=>({project:pid,change_id:input.id,path:f.path})),'project','change_id','path')} ON CONFLICT DO NOTHING`;
-   await event(tx,'change.proposed',{id:c.id,title:c.title,objects:built.objects,bytes:built.bytes});return changeView(ready);
-  });
+   // One atomic statement publishes visibility, paths and the audit event. The
+   // conditional UPDATE is also the retry fence: only its winner emits effects.
+   // Blob acceptance and canonical sealing have completed before this point.
+   const [ready]=await sql`WITH ready AS (
+    UPDATE weave_changes SET oid=${built.oid},files=${sql.json(files)},status='proposed'
+    WHERE project=${pid} AND id=${input.id} AND status='preparing' RETURNING *
+   ), paths AS (
+    INSERT INTO weave_paths(project,change_id,path)
+    SELECT ready.project,ready.id,f->>'path' FROM ready CROSS JOIN LATERAL jsonb_array_elements(ready.files) f
+    ON CONFLICT DO NOTHING
+   ), audit AS (
+    INSERT INTO weave_events(project,kind,actor,data)
+    SELECT project,'change.proposed',author,${sql.json({id:c.id,title:c.title,objects:built.objects,bytes:built.bytes})} FROM ready
+   ) SELECT * FROM ready`;
+   return changeView(ready??await get(input.id));
  }
  async function details(cid:string){const c=await get(cid);const diff=[];for(const f of c.files as FileDelta[])diff.push({path:f.path,before:await g.file(c.base,f.path),after:await g.file(c.oid,f.path)});return {...changeView(c),diff};}
  async function review(cid:string,decision:string,note:string){

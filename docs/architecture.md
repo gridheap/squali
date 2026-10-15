@@ -37,6 +37,12 @@ Source publication and cancellation retain the same recoverable journal semantic
 
 Database transactions cover short metadata transitions. Semantic review preloads immutable content, then enforces the current policy in its transaction. Rebase persists progress through optimistic compare-and-swap. Git export uses a ten-minute SQL lease for network work and a short transaction to confirm its object index. Tests prove progress with one database connection and independent workspaces during a slow export.
 
+Source object admission claims new content and reserves repository bytes and monthly
+R2 writes together before dispatching uploads. A rejected budget rolls back all
+admission effects. Proposal finalization uses one conditional SQL statement for
+the visible state, changed paths and audit event; concurrent retries emit only one
+event. [Write cost and failure acceptance](write-path.md).
+
 ## Git compatibility
 
 Artifacts stores a derived copy of published refs and their reachable object closure. Unpublished proposals are excluded. An export index avoids fetching unchanged source blobs on later clones and publishes. Ambiguous pushes reconcile refs before another transfer. Deleting the compatibility copy leaves source data intact; bounded export can recreate it.

@@ -1,0 +1,1 @@
+Saved scoped provider CPU, storage and operation evidence: docs/evidence/2026-10-15-write-path/provider-current.json

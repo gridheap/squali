@@ -1,0 +1,95 @@
+{
+  "command": "WRITE_PATH_OUTPUT=docs/evidence/2026-10-15-write-path/capacity-before WRITE_PATH_APP_DIR=work/write-path-baseline node --import tsx tests/write-path-capacity.e2e.ts",
+  "complete": true,
+  "externalProviderCalls": 0,
+  "dataset": {
+    "baselineFiles": 64,
+    "proposalCounts": [
+      8,
+      64,
+      64
+    ],
+    "concurrency": [
+      1,
+      8,
+      32
+    ],
+    "poolSize": 8
+  },
+  "databaseLink": {
+    "delayEachDirectionMs": 10,
+    "synthetic": true
+  },
+  "phases": [
+    {
+      "concurrency": 1,
+      "count": 8,
+      "errors": [],
+      "wallMs": 6338.337750000001,
+      "requestsPerSecond": 1.2621605719890834,
+      "p50Ms": 749.288125,
+      "p95Ms": 1085.0467499999995,
+      "sqlStatements": 248,
+      "sqlPerProposal": 31,
+      "nodeCpuMs": 451.666,
+      "nodeMaxRssKiB": 439392,
+      "storage": {
+        "put": 8,
+        "get": 0,
+        "head": 0
+      }
+    },
+    {
+      "concurrency": 8,
+      "count": 64,
+      "errors": [],
+      "wallMs": 7281.8151659999985,
+      "requestsPerSecond": 8.789017372869694,
+      "p50Ms": 755.1852090000011,
+      "p95Ms": 1957.1602500000008,
+      "sqlStatements": 1991,
+      "sqlPerProposal": 31.109375,
+      "nodeCpuMs": 1182.985,
+      "nodeMaxRssKiB": 469792,
+      "storage": {
+        "put": 64,
+        "get": 0,
+        "head": 0
+      }
+    },
+    {
+      "concurrency": 32,
+      "count": 64,
+      "errors": [],
+      "wallMs": 5187.582749999998,
+      "requestsPerSecond": 12.337152597710375,
+      "p50Ms": 2274.2733750000007,
+      "p95Ms": 2685.6260409999995,
+      "sqlStatements": 1984,
+      "sqlPerProposal": 31,
+      "nodeCpuMs": 778.652,
+      "nodeMaxRssKiB": 469792,
+      "storage": {
+        "put": 64,
+        "get": 0,
+        "head": 0
+      }
+    }
+  ],
+  "src/changes.ts": "8c9b2bad43a45d8f656a813f81df4f3644f09ed6c9962a28ad3c3807d2e7d145",
+  "src/source-store.ts": "54608e6a6a00af9871d13e3b5d725e1924adb96f12b67a85ebec1f133874488e",
+  "httpAttempts": 149,
+  "sourcePhaseArtifactsOperations": 0,
+  "nativeGit": {
+    "publishedChanges": 8,
+    "exactHead": true,
+    "exactFiles": true,
+    "fsck": true
+  },
+  "limitations": [
+    "Local Node HTTP source, PostgreSQL and filesystem R2 adapter; no production throughput or Cloudflare CPU claim.",
+    "TCP proxy adds 10 ms per direction per chunk; this approximates network sensitivity, not a WAN measurement.",
+    "Node CPU includes HTTP load generator and latency proxy; it excludes PostgreSQL CPU.",
+    "Fresh isolated fixture per version; one controlled comparison, not a statistical confidence interval."
+  ]
+}
