@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "/var/lib/squali-seed-preflight/git_seed.py",
+    "/var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/source.git",
+    "--state",
+    "/var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/state",
+    "--output",
+    "/var/lib/squali-seed-preflight/plan.json"
+  ],
+  "exit": 1,
+  "checkedAt": "2026-10-15T01:05:50Z",
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 36, in <module>\n    result=plan(a.repository,state['identity']['refs'],root/'objects.txt');output.write_text(json.dumps(result,indent=2)+'\\n');output.chmod(0o600)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 29, in plan\n    for i in range(0,len(ordered),32):add(ordered[i:i+32])\n                                      ^^^^^^^^^^^^^^^^^^^^\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 26, in add\n    middle=len(group)//2;add(group[:middle]);add(group[middle:]);return\n                         ^^^^^^^^^^^^^^^^^^^\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 26, in add\n    middle=len(group)//2;add(group[:middle]);add(group[middle:]);return\n                                             ^^^^^^^^^^^^^^^^^^^\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 26, in add\n    middle=len(group)//2;add(group[:middle]);add(group[middle:]);return\n                                             ^^^^^^^^^^^^^^^^^^^\n  [Previous line repeated 2 more times]\n  File \"/var/lib/squali-seed-preflight/git_seed.py\", line 25, in add\n    if len(group)==1:raise RuntimeError('One original ref exceeds the Git seed step budget: '+group[0]['name']+' ('+str(len(objects))+' objects, '+str(size)+' raw bytes)')\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: One original ref exceeds the Git seed step budget: refs/tags/v2.41.0-rc0 (5910 objects, 159460256 raw bytes)\n",
+  "networkTransfers": 0
+}

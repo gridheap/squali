@@ -1,5 +1,5 @@
 {
-  "output": "{\"event\":\"ready\",\"project\":\"watch-race\",\"base\":\"d7e70d238170b1a8bf5d6ce3a1993c2ab1cf15f5\",\"trackedFiles\":1,\"watchedDirectories\":3,\"changes\":[]}\n{\"event\":\"change\",\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}\n{\"event\":\"stopped\",\"reason\":\"event-limit\",\"complete\":true,\"networkRequests\":0,\"nativeEvents\":1,\"hashedBytes\":5,\"metadataEntries\":5,\"peakWatchedDirectories\":3,\"changes\":[{\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}]}\n",
+  "output": "{\"event\":\"ready\",\"project\":\"watch-race\",\"base\":\"71e77aa6d3c68b439cd28e3ebf043c3fad4aa466\",\"trackedFiles\":1,\"watchedDirectories\":3,\"changes\":[]}\n{\"event\":\"change\",\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}\n{\"event\":\"stopped\",\"reason\":\"event-limit\",\"complete\":true,\"networkRequests\":0,\"nativeEvents\":1,\"hashedBytes\":5,\"metadataEntries\":5,\"peakWatchedDirectories\":3,\"changes\":[{\"path\":\"src/limit-event.txt\",\"status\":\"untracked\"}]}\n",
   "errors": "",
   "stop": {
     "event": "stopped",

@@ -1,0 +1,260 @@
+{
+  "checkedAt": "2026-10-15T01:09:12.044176+00:00",
+  "source": "https://prices.azure.com/api/retail/prices?%24filter=serviceName+eq+%27Bandwidth%27+and+armRegionName+eq+%27eastus2%27+and+priceType+eq+%27Consumption%27&currencyCode=USD",
+  "nextPageUnfetched": false,
+  "items": [
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer In",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 1 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 1 to 5 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.087,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 100.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.083,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 10335.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.05,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 153695.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.05,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 512095.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.07,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 51295.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 2 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Inter-Region Data Transfer",
+      "retailPrice": 0.02,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Bandwidth - Routing Preference: Internet",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Bandwidth - Routing Preference: Internet",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.08,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 100.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Bandwidth - Routing Preference: Internet",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.065,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 10100.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Bandwidth - Routing Preference: Internet",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.04,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 150100.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Bandwidth - Routing Preference: Internet",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out",
+      "retailPrice": 0.06,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 50100.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Inter-Availability Zone Data Transfer Out",
+      "retailPrice": 0.01,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 4 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 5 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Inter-Availability Zone Data Transfer In",
+      "retailPrice": 0.01,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer In - from China",
+      "retailPrice": 0.09,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "Standard",
+      "meterName": "Standard Data Transfer Out - to China",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 GB",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    },
+    {
+      "productName": "Rtn Preference: MGN",
+      "skuName": "China",
+      "meterName": "China Data Transfer - 6 to 200 Mbps",
+      "retailPrice": 0.0,
+      "unitOfMeasure": "1 Hour",
+      "tierMinimumUnits": 0.0,
+      "currencyCode": "USD",
+      "armRegionName": "eastus2",
+      "type": "Consumption"
+    }
+  ]
+}

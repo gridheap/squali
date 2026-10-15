@@ -1,0 +1,16 @@
+{
+  "status": 200,
+  "result": {
+    "checkedAt": "2026-10-15T00:58:27.118Z",
+    "project": "gh-5fd5a2f4bc33a0286d6728ad",
+    "repo": "weave-gh-5fd5a2f4bc33a0286d6728ad",
+    "providerReservations": 8,
+    "packTransfers": 0,
+    "metadata": {},
+    "receiveCapabilities": [],
+    "advertisedRefs": 0,
+    "git-upload-packStatus": 200,
+    "diagnosticTokenRevoked": true,
+    "complete": true
+  }
+}

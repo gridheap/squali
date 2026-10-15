@@ -8,9 +8,9 @@ The fixed release requirements are in [the Scion checklist](../../scion-acceptan
 
 | Check | Exact command | Retained result |
 |---|---|---|
-| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [74/74 passed](native-nonatomic-full-e2e.txt) |
-| Types | `pnpm typecheck` | [Passed](native-nonatomic-typecheck.txt) |
-| Worker build | `pnpm build` | [Dry run passed](mainline-graph-build.txt) |
+| Complete HTTP/CLI/native suite | `pnpm test:e2e` | [75/75 passed](native-seed-final-e2e.txt) |
+| Types | `pnpm typecheck` | [Passed](native-seed-final-typecheck.txt) |
+| Worker build | `pnpm build` | [Dry run passed](native-seed-final-build.txt) |
 | Deployment | `pnpm deploy` | [Worker 4a36bd39-edf7-4689-9b67-84bc7646f4f4](mainline-graph-deploy.txt) |
 | Rendered UI and typography | `SQUALI_URL=http://127.0.0.1:8799 WEAVE_UI_EVIDENCE=docs/evidence/2026-10-15-source/final-copy-ui pnpm test:ui` | [Four passed](final-copy-ui.txt); [screens and glyph evidence](final-copy-ui/) |
 | Actual Linux FUSE | See the exact command in the retained JSON | [First content reads](fuse-green-attempt.json), [shared-cache run](fuse-green.json) |
@@ -49,3 +49,9 @@ The production Clerk/GitHub login and repository catalog have [retained browser 
 - [Public Azure list prices](azure-retail-prices.json): existing infrastructure still has a cost. Private billing records stay outside the public repository.
 - [Continuous recording instructions](../../demo-source.md): final capture refuses to run without the completed private report. Earlier quick format/preflight probes are not a submission video.
 - [Entry form text](../../entry-fields.md): prepared for the eligible entrant after all gates pass.
+
+## Bounded Git bridge continuation
+
+[Provider error](private-bridge-provider-error.json), [native journal](private-bridge-server-failure.json) and [zero remaining refs](private-bridge-after-failure.json) retain the third job attempt’s failure. The [128 MiB preflight](private-seed-plan-128mb.json) rejected an indivisible original tag before any transfer; the [256 MiB preflight](private-seed-plan.json) admits 50 bounded steps. The [real Git recovery fixture](native-seed-recovery-green.txt) limits each push, stops if an acknowledged earlier ref disappears, then resumes the same input/journal and verifies every exported object/ref plus native fsck. [Legacy counter failure](native-seed-legacy-budget-red.txt) proves old failed pushes stay counted. [Attempt-limit E2E](native-recovery-budget-green.txt) confirms that browser clients cannot enlarge their allowance; a scoped operator record can extend one job from three to four. Source and provider total budgets remain unchanged.
+
+The affected browser UI has [four passing checks](native-seed-ui.txt), including Adobe timeout fallback, navigation reuse, actual Proxima Nova Latin and PingFang SC CJK glyphs. The latest cold font activation was 3.747 seconds and reviewer action readiness 3.873 seconds; earlier samples remain retained.

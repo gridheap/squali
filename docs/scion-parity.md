@@ -27,7 +27,7 @@ Squali now uses independent immutable changesets and R2 source blobs. The curren
 - **PostgreSQL through Hyperdrive:** canonical changesets, derived compatibility metadata/indexes, identities, review policy, journals and usage reservations.
 - **Artifacts:** derived Git interoperability copy. Source queries, changesets and publication do not require proposal refs or Artifacts calls. Legacy workspaces retain their old adapter.
 - **R2 `OBJECTS`:** disposable compatibility cache with seven-day expiry; separate metering from authoritative source storage.
-- **Native importer:** one existing Azure VM, one active job, cached Git input, cumulative eight-hour job limit, bounded HTTP/object/byte budgets and at most three explicit recovery attempts. Successful bounded segments continue the same job; failed jobs do not restart themselves.
+- **Native importer:** one existing Azure VM, one active job, cached Git input, cumulative eight-hour job limit, bounded HTTP/object/byte budgets and three explicit attempts by default; one scoped operator extension may admit a fourth without resetting any cumulative budget. Successful bounded segments continue the same job; failed jobs do not restart themselves.
 - **Client/node:** sparse writable client, shared socket daemon, verified bounded cache/snapshot, Linux FUSE on-demand reads.
 
 There is no D1 or application Durable Object. Scion's 100 GB history, 25 GB working copy, 25 million daily checkouts, 99% cache hit rates and 200× infrastructure reduction are **Anthropic's measurements**, not Squali's results. Local benchmark numbers are labeled as such.

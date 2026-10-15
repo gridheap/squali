@@ -1,0 +1,41 @@
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (5001.132417ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5135.552208
+
+✖ failing tests:
+
+test at tests/native-jobs.test.ts:1:545
+✖ one-click private imports run outside the browser, preserve native history, and reuse completed work (5001.132417ms)
+  Error [PostgresError]: column "attempt_limit" of relation "weave_native_jobs" does not exist
+      at ErrorResponse (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/postgres/3.4.9/1d2fedf0b488f3ac138dda119a8c0bc827a70d24de75cb3263c48a857b21911a/node_modules/postgres/src/connection.js:815:30)
+      at handle (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/postgres/3.4.9/1d2fedf0b488f3ac138dda119a8c0bc827a70d24de75cb3263c48a857b21911a/node_modules/postgres/src/connection.js:489:6)
+      at Socket.data (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/postgres/3.4.9/1d2fedf0b488f3ac138dda119a8c0bc827a70d24de75cb3263c48a857b21911a/node_modules/postgres/src/connection.js:324:9)
+      at Socket.emit (node:events:514:28)
+      at addChunk (node:internal/streams/readable:568:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:519:3)
+      at Readable.push (node:internal/streams/readable:399:5)
+      at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+      at new Query (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/postgres/3.4.9/1d2fedf0b488f3ac138dda119a8c0bc827a70d24de75cb3263c48a857b21911a/node_modules/postgres/src/query.js:35:9)
+      at Object.sql (file:///Users/binbinsh/Library/pnpm/store/v11/links/@/postgres/3.4.9/1d2fedf0b488f3ac138dda119a8c0bc827a70d24de75cb3263c48a857b21911a/node_modules/postgres/src/index.js:112:11)
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/native-jobs.test.ts:39:289)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    severity_local: 'ERROR',
+    severity: 'ERROR',
+    code: '42703',
+    position: '30',
+    file: 'analyze.c',
+    line: '2536',
+    routine: 'transformUpdateTargetList',
+    query: 'UPDATE weave_native_jobs SET attempt_limit=4 WHERE import_id=$1',
+    parameters: [ 'imp_d6e8ae51b944adee12dd62c6' ],
+    args: [ 'imp_d6e8ae51b944adee12dd62c6' ],
+    types: [ 0 ]
+  }

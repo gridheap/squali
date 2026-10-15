@@ -61,7 +61,7 @@ export function sourceExporter(sql:Sql,fallback:Artifacts,raw:(project:string,oi
   await fallback.create(project.artifact,project.main_ref.replace(/^refs\/heads\//,''));const repository=fallback.repo(project.artifact),known=await advertisedRefs(await repository.git(new Request('https://squali.invalid'),'/info/refs?service=git-upload-pack'));
   const expected=new Map(refs.map(r=>[r.name,r.oid]));if(known.some(r=>expected.get(r.name)!==r.oid))throw new Problem(409,'export_changed','The native Git destination has unexpected refs');
   if(known.length===refs.length)return {ready:true,manifest};
-  if(!repository.writeLease)throw new Problem(503,'export_lease','Native export credentials are unavailable');return {ready:false,manifest,...await repository.writeLease()};
+  if(!repository.writeLease)throw new Problem(503,'export_lease','Native export credentials are unavailable');return {ready:false,manifest,pendingRefs:refs.filter(r=>!known.some(k=>k.name===r.name)).map(r=>r.name),...await repository.writeLease()};
  }
  async function confirmSeed(project:any,input:unknown){
   const refs=seedRefs(project,input),manifest=sha256(JSON.stringify(refs));const [ready]=await sql`SELECT manifest FROM weave_git_exports WHERE project=${project.id}`;if(ready?.manifest===manifest)return {manifest,confirmed:true};

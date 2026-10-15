@@ -137,16 +137,41 @@ try:
    state['bridgeLimited']={'limitBytes':a.git_export_max_bytes,'reason':'provider_limit'};save()
  if lease and not state.get('bridgeComplete') and not state.get('bridgeLimited'):
   if not state.get('bridgeConfirmed'):
-   if state.get('bridgeAttempts',0)>=3:raise RuntimeError('Native Git seed attempt ceiling reached')
-   state['bridgeAttempts']=state.get('bridgeAttempts',0)+1;save()
-   offer=call('bridge-prepare',{'refs':refs,'defaultBranch':branch,'lease':lease})
-   if not offer['ready']:
+   from git_seed import plan
+   policy={'maxObjects':int(os.environ.get('SQUALI_GIT_SEED_OBJECT_CAP','16384')),'maxRawBytes':256*1024*1024,'maxPushes':128}
+   seed_file=root/'seed-plan.json'
+   if seed_file.exists():
+    seed=json.loads(seed_file.read_text())
+    if seed['refs']!=refs or seed['policy']!=policy or not seed.get('admissible'):raise RuntimeError('Frozen Git seed plan changed')
+   else:
+    seed=plan(a.repository,refs,root/'objects.txt',policy['maxObjects'],policy['maxRawBytes'],policy['maxPushes'])
+    temporary=root/'seed-plan.tmp'
+    with open(temporary,'w') as out:os.chmod(temporary,0o600);json.dump(seed,out);out.flush();os.fsync(out.fileno())
+    os.replace(temporary,seed_file)
+   if 'bridgePushAttempts' not in state:state['bridgePushAttempts']=state.get('bridgeAttempts',0);save()
+   if not state.get('bridgeSeedStarted'):
+    if state.get('bridgeAttempts',0)>=3:raise RuntimeError('Native Git seed attempt ceiling reached')
+    state['bridgeAttempts']=state.get('bridgeAttempts',0)+1;state['bridgeSeedStarted']=True;save()
+   offer=call('bridge-prepare',{'refs':refs,'defaultBranch':branch,'lease':lease});offer_used=False;acknowledged=set()
+   for batch in seed['batches']:
+    if offer['ready']:break
+    if not isinstance(offer.get('pendingRefs'),list):raise RuntimeError('Deploy the bounded Git seed server before continuing')
+    if not any(r['name'] in offer['pendingRefs'] for r in batch['refs']):
+     acknowledged.update(r['name'] for r in batch['refs']);continue
+    if exhausted():report();raise SystemExit(2)
+    if offer_used:offer=call('bridge-prepare',{'refs':refs,'defaultBranch':branch,'lease':lease})
+    if offer['ready']:break
+    if any(name in offer['pendingRefs'] for name in acknowledged):raise RuntimeError('An earlier acknowledged seed ref disappeared; stop before another transfer')
+    selected=[r for r in batch['refs'] if r['name'] in offer['pendingRefs']]
+    if not selected:continue
     remote=urllib.parse.urlparse(offer['remote']);testing=os.environ.get('SQUALI_ALLOW_TEST_HTTP')=='1'
     if remote.username or remote.password or remote.query or remote.scheme not in (['http','https'] if testing else ['https']):raise RuntimeError('Unsafe native Git export destination')
-    names=[r['name']+':'+r['name'] for r in refs]
+    names=[r['name']+':'+r['name'] for r in selected]
     if sum(len(name) for name in names)>512*1024:raise RuntimeError('Native export ref arguments exceed 512 KiB')
     environment={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_ALLOW_PROTOCOL':'http:https','GIT_CONFIG_COUNT':'2','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Bearer '+offer['token'],'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false','GIT_TRACE':'0','GIT_TRACE_CURL':'0','GIT_CURL_VERBOSE':'0'}
-    for secret in ('SQUALI_TOKEN','SQUALI_WORKER_DATABASE_URL'):environment.pop(secret,None)
+    for secret in ('SQUALI_TOKEN','SQUALI_WORKER_DATABASE_URL','GIT_CURL_VERBOSE','GIT_TRACE_CURL','GIT_TRACE_PACKET','GIT_TRACE_PACKFILE'):environment.pop(secret,None)
+    if state.get('bridgePushAttempts',0)>=128:raise RuntimeError('Persistent native Git push ceiling reached')
+    state['bridgePushAttempts']=state.get('bridgePushAttempts',0)+1;save()
     http.close() # The native Git push can exceed a provider's HTTP idle timeout.
     def bridge_error(code,stderr):
      detail=(stderr or b'').decode('utf-8',errors='replace')
@@ -164,6 +189,7 @@ try:
      bridge_error('timeout',error.stderr);raise RuntimeError('Native Git export timed out; resume reconciles provider refs before another transfer')
     if exported.returncode:
      bridge_error(exported.returncode,exported.stderr);raise RuntimeError('Native Git export stopped; resume reconciles provider refs before another transfer')
+    state['bridgeSeedBatchesDone']=state.get('bridgeSeedBatchesDone',0)+1;save();offer_used=True;acknowledged.update(r['name'] for r in batch['refs'])
    confirmation=call('bridge-confirm',{'refs':refs,'defaultBranch':branch,'lease':lease});state['bridgeConfirmed']=True;state['bridgeManifest']=confirmation['manifest'];save();offer=None
   if not (root/'export-objects.txt').exists():
    with open(root/'export-roots.txt','w') as out:out.write('\n'.join(r['oid'] for r in refs)+'\n')
@@ -175,6 +201,7 @@ try:
   state['bridgeComplete']=True;save()
  call('finish',{'refs':refs,'defaultBranch':branch,'gitBridgeLimited':bool(state.get('bridgeLimited'))});state['stage']='complete';state['complete']=True;save();report()
 except Exception as e:
+ if state.get('bridgeSeedStarted'):state['bridgeSeedStarted']=False;save()
  print(str(e),file=sys.stderr);report();raise SystemExit(1)
 finally:
  http.close()

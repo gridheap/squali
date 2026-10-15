@@ -1,0 +1,12 @@
+{"command":"node --import tsx --test tests/native-jobs.test.ts","private":true,"backgroundNativeJob":true,"nativeTransfers":1,"completedReplayTransfers":0,"branchesAndTags":4,"ownerIsolation":true,"credentialsKeptOffBrowser":true,"competingRunnerRejected":true,"pauseBeforeStart":true,"providerSupportsAtomic":false,"partialRefsBeforeRecovery":3,"explicitRecovery":true,"additionalSourceWrites":0,"gitErrorTokenRedacted":true}
+✔ one-click private imports run outside the browser, preserve native history, and reuse completed work (6707.648125ms)
+{"command":"node --import tsx --test tests/native-seed.test.ts","sourceCommits":30,"refs":7,"gitTransfers":6,"maxNewObjects":16,"nativeFsck":true,"fullObjectEquality":true,"completedReplayCalls":0}
+✔ native seeding sends bounded original-ref increments and preserves every object (3584.224917ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6839.903625

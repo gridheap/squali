@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS weave_native_jobs (
  progress jsonb NOT NULL DEFAULT '{}', updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS weave_native_jobs_queue ON weave_native_jobs(state,updated_at);
+ALTER TABLE weave_native_jobs ADD COLUMN IF NOT EXISTS attempt_limit integer NOT NULL DEFAULT 3 CHECK(attempt_limit BETWEEN 3 AND 4);
 CREATE TABLE IF NOT EXISTS weave_rebases (
  project text NOT NULL REFERENCES weave_projects(id),id text NOT NULL,author text NOT NULL,
  request_hash text NOT NULL,input jsonb NOT NULL,result jsonb NOT NULL,

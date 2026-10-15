@@ -17,7 +17,7 @@ export function cloudArtifacts(binding:Artifacts,sql:Sql,cap:number):Storage {
    (created as typeof created & Partial<Disposable>)[Symbol.dispose]?.();
   },
   repo(name):Repository {return {
-   writeLease:()=>use(name,async r=>{const info=await r.info();await reserve(3);const token=await r.createToken('write',600);return {remote:info.remote,token:token.plaintext};}),
+   writeLease:()=>use(name,async r=>{const info=await r.info();await reserve(4);const token=await r.createToken('write',600);return {remote:info.remote,token:token.plaintext};}),
    info:()=>use(name,async r=>{const info=await r.info();return {name:info.name,remote:info.remote};}),
    head:(ref='main')=>use(name,async r=>{const log=await r.log({ref,limit:1});return log[0]?.hash??null;}),
    commit:oid=>use(name,async r=>{const c=await r.readCommit(oid);return c?{oid:c.hash,tree:c.treeHash,parents:c.parents,message:c.message}:null;}),

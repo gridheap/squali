@@ -1,0 +1,32 @@
+{
+  "command": [
+    "python3",
+    "/var/lib/squali-seed-preflight/git_seed_256.py",
+    "/var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/source.git",
+    "--state",
+    "/var/lib/squali-native/imp_5fd5a2f4bc33a0286d6728ad/state",
+    "--output",
+    "/var/lib/squali-seed-preflight/plan-256.json"
+  ],
+  "exit": 0,
+  "checkedAt": "2026-10-15T01:10:00Z",
+  "stderr": "",
+  "networkTransfers": 0,
+  "plan": {
+    "output": "/var/lib/squali-seed-preflight/plan-256.json",
+    "admissible": true,
+    "violations": [],
+    "transferRawBytes": 8337277784,
+    "batches": 50,
+    "objects": 421219,
+    "rawBytes": 8332097572,
+    "maxStepObjects": 15038,
+    "maxStepRawBytes": 266999406,
+    "planningSeconds": 14.394,
+    "policy": {
+      "maxObjects": 16384,
+      "maxRawBytes": 268435456,
+      "maxPushes": 128
+    }
+  }
+}

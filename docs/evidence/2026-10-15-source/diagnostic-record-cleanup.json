@@ -1,10 +1,21 @@
 {
-  "squali-source-progress-06686cf5": "deleted",
-  "squali-source-progress-16072a7f": "deleted",
-  "squali-source-progress-34944a06": "deleted",
-  "squali-source-progress-472db10c": "deleted",
-  "squali-source-progress-4840453a": "deleted",
-  "squali-source-progress-555e4aae": "deleted",
-  "squali-source-progress-a410216a": "deleted",
-  "squali-source-progress-ac649da2": "deleted"
+  "command": "python3 work/retire-progress-commands.py",
+  "deletedCompletedTaskRecords": [
+    "squali-source-progress-06686cf5",
+    "squali-source-progress-16072a7f",
+    "squali-source-progress-34944a06",
+    "squali-source-progress-472db10c",
+    "squali-source-progress-4840453a",
+    "squali-source-progress-555e4aae",
+    "squali-source-progress-a410216a",
+    "squali-source-progress-ac649da2",
+    "squali-source-progress-24044e4f",
+    "squali-source-progress-b0dffa62",
+    "squali-source-progress-95155083",
+    "squali-source-progress-f7023b9e",
+    "squali-bridge-diagnostic-91a2edd5"
+  ],
+  "count": 13,
+  "retainedPrivateOutputs": "work/private/retired-progress-commands",
+  "scope": "Only completed task-owned diagnostic command records; no VM, service, native cache or job journal removed."
 }

@@ -1,0 +1,28 @@
+✖ native seeding sends bounded original-ref increments and preserves every object (2912.69525ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3047.815459
+
+✖ failing tests:
+
+test at tests/native-seed.test.ts:1:429
+✖ native seeding sends bounded original-ref increments and preserves every object (2912.69525ms)
+  AssertionError [ERR_ASSERTION]: Reconcile earlier acknowledged refs before another transfer
+  
+  6 !== 2
+  
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/native-seed.test.ts:34:89)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 6,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

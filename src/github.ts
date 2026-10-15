@@ -5,7 +5,7 @@ import {sha256} from './git.ts';
 import {advertisedRefs,sourceRefs,sourcePack,limitedBytes} from './git-transfer.ts';
 import type {GitRef} from './git-transfer.ts';
 const MAX_PACK=512*1024*1024;
-const view=(r:any)=>({id:r.id,repositoryId:Number(r.repository_id),projectId:r.project_id,repository:r.metadata.full_name,private:r.metadata.private,state:r.state,head:r.head,engine:r.engine??'artifacts',nativeAttempts:r.native_attempts??0,progress:r.progress??null,attempts:r.attempts,bytes:r.state==='complete'&&Number(r.bytes)===0&&r.refs?.length?null:Number(r.bytes),error:r.error});
+const view=(r:any)=>({id:r.id,repositoryId:Number(r.repository_id),projectId:r.project_id,repository:r.metadata.full_name,private:r.metadata.private,state:r.state,head:r.head,engine:r.engine??'artifacts',nativeAttempts:r.native_attempts??0,nativeAttemptLimit:r.attempt_limit??3,progress:r.progress??null,attempts:r.attempts,bytes:r.state==='complete'&&Number(r.bytes)===0&&r.refs?.length?null:Number(r.bytes),error:r.error});
 export function githubService(config:Config,principal:Principal){
  if(!principal.owner||!config.clerk)throw new Problem(403,'github_login','Sign in with GitHub through Clerk to import your repositories');
  const owner=principal.owner,sql=config.sql;const apiOrigin=config.github?.apiOrigin??'https://api.github.com';const gitOrigin=config.github?.gitOrigin??'https://github.com';
@@ -27,7 +27,7 @@ export function githubService(config:Config,principal:Principal){
   const payload={repositories,nextPage:next?page+1:null,truncated:next&&page===100};
   await sql`INSERT INTO weave_github_catalog(owner_id,page,payload,expires_at) VALUES(${owner},${page},${sql.json(payload)},now()+interval '15 minutes') ON CONFLICT(owner_id,page) DO UPDATE SET payload=EXCLUDED.payload,expires_at=EXCLUDED.expires_at`;return payload;
  }
- async function list(){return {imports:(await sql`SELECT i.*,j.progress FROM weave_github_imports i LEFT JOIN weave_native_jobs j ON j.import_id=i.id WHERE i.owner_id=${owner} ORDER BY i.created_at,i.id LIMIT 1000`).map(view)};}
+ async function list(){return {imports:(await sql`SELECT i.*,j.progress,j.attempt_limit FROM weave_github_imports i LEFT JOIN weave_native_jobs j ON j.import_id=i.id WHERE i.owner_id=${owner} ORDER BY i.created_at,i.id LIMIT 1000`).map(view)};}
  async function enqueue(ids:unknown){
   if(!Array.isArray(ids)||!ids.length||ids.length>1000||ids.some(id=>!Number.isSafeInteger(id)||id<1))throw new Problem(400,'repository_ids','Select 1–1,000 repository IDs');
   const unique=[...new Set(ids)] as number[];const pages=await sql`SELECT payload FROM weave_github_catalog WHERE owner_id=${owner} AND expires_at>now()`;const available=new Map<number,any>(pages.flatMap(p=>p.payload.repositories.map((r:any)=>[r.id,r])));
@@ -38,7 +38,7 @@ export function githubService(config:Config,principal:Principal){
   });return {imports:(await sql`SELECT * FROM weave_github_imports WHERE owner_id=${owner} AND repository_id=ANY(${unique}) ORDER BY created_at,id`).map(view)};
  }
  async function run(id:string,checkOnly=false){
-  const [initial]=await sql`SELECT * FROM weave_github_imports WHERE id=${id} AND owner_id=${owner}`;if(!initial)throw new Problem(404,'import_missing','Import not found');if(initial.state==='complete')return view(initial);
+  const [initial]=await sql`SELECT i.*,j.attempt_limit FROM weave_github_imports i LEFT JOIN weave_native_jobs j ON j.import_id=i.id WHERE i.id=${id} AND i.owner_id=${owner}`;if(!initial)throw new Problem(404,'import_missing','Import not found');if(initial.state==='complete')return view(initial);
   if(config.nativeImports||initial.engine==='source')return view(await nativeImports(config,owner).run(initial,checkOnly));
   // PostgreSQL releases the lock on process death. Durable refs permit safe reconciliation of a late push.
   return sql.begin(async tx=>{

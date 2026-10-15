@@ -273,7 +273,7 @@ async function revealCompletedImports(){
 function updateImportProgress(){
  const summary=$('#import-progress');if(!summary)return;
  const completed=state.imports.filter(r=>r.state==='complete').length;summary.textContent=`${completed} complete · ${state.imports.length-completed} pending${state.importPolls>=240?' · Automatic updates paused. Use Refresh progress to check again.':''}`;
- for(const job of state.imports){const row=document.querySelector(`[data-import-id="${job.id}"]`);if(!row)continue;const detail=row.querySelector('.import-detail'),badge=row.querySelector('.badge'),p=job.progress;badge.textContent=job.state;detail.textContent=job.engine==='source'?`${p?.stage??job.state}${p?.sourceObjects?' · '+Number(p.objectsProcessed??0).toLocaleString()+' / '+Number(p.sourceObjects).toLocaleString()+' objects':''}${p?.commitsProcessed?' · '+Number(p.commitsProcessed).toLocaleString()+' changesets':''} · Native attempts: ${job.nativeAttempts} / 3`:`Transfer attempts: ${job.attempts} / 3`;if(job.state==='complete')row.querySelector('input').disabled=true;}
+ for(const job of state.imports){const row=document.querySelector(`[data-import-id="${job.id}"]`);if(!row)continue;const detail=row.querySelector('.import-detail'),badge=row.querySelector('.badge'),p=job.progress;badge.textContent=job.state;detail.textContent=job.engine==='source'?`${p?.stage??job.state}${p?.sourceObjects?' · '+Number(p.objectsProcessed??0).toLocaleString()+' / '+Number(p.sourceObjects).toLocaleString()+' objects':''}${p?.commitsProcessed?' · '+Number(p.commitsProcessed).toLocaleString()+' changesets':''} · Native attempts: ${job.nativeAttempts} / ${job.nativeAttemptLimit??3}`:`Transfer attempts: ${job.attempts} / 3`;if(job.state==='complete')row.querySelector('input').disabled=true;}
 }
 function scheduleImportPoll(){
  clearTimeout(state.importTimer);
@@ -289,7 +289,7 @@ async function continueImports() {
     const rows = (await api('/github/imports')).imports;
     for (const row of rows) {
       if (state.importStop || generation !== state.authGeneration) break;
-      if (row.state === 'complete' || (row.engine==='source'||state.nativeImports ? row.nativeAttempts>=3 : row.attempts>=3)) continue;
+      if (row.state === 'complete' || (row.engine==='source'||state.nativeImports ? row.nativeAttempts>=(row.nativeAttemptLimit??3) : row.attempts>=3)) continue;
       status('Importing ' + row.repository + '…'); const progress = $('#import-progress'); if (progress) progress.textContent = 'Importing ' + row.repository + '…';
       try { await api('/github/imports/' + row.id + '/run', {}); }
       catch (e) { status(row.repository + ': ' + e.message, true); if ([403,409,429].includes(e.status)) { pauseReason = e.message; state.importStop = true; break; } }

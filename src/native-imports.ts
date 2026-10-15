@@ -10,9 +10,10 @@ export function nativeImports(config:Config,owner:string){
    if(!row)throw new Problem(404,'import_missing','Import not found');
    if(row.state==='complete')return row;
    const [job]=await tx`SELECT * FROM weave_native_jobs WHERE import_id=${row.id} FOR UPDATE`;
-   if(job&&['queued','running'].includes(job.state))return row;
+   if(job&&['queued','running'].includes(job.state))return {...row,attempt_limit:job.attempt_limit};
    if(checkOnly)throw new Problem(409,'import_incomplete','Native import has not finished');
-   if(row.native_attempts>=3)throw new Problem(429,'import_attempts','Three native attempts used; the deployment owner must inspect the retained journal');
+   const attemptLimit=job?.attempt_limit??3;
+   if(row.native_attempts>=attemptLimit)throw new Problem(429,'import_attempts',`${attemptLimit} native attempts used; the deployment owner must inspect the retained journal`);
    if(job?.elapsed_seconds>=MAX_SECONDS)throw new Problem(429,'import_time','The cumulative eight-hour execution budget is exhausted');
    if(row.metadata.size>2*1024*1024)throw new Problem(413,'import_size','Native imports admit at most 2 GiB of reported Git storage');
    await tx`SELECT pg_advisory_xact_lock(hashtextextended('weave-projects',0))`;
@@ -23,7 +24,7 @@ export function nativeImports(config:Config,owner:string){
    }
    await tx`INSERT INTO weave_native_jobs(import_id) VALUES(${row.id}) ON CONFLICT(import_id) DO UPDATE SET state='queued',pause_requested=false,lease=NULL,lease_until=NULL,token_id=NULL,updated_at=now()`;
    const [queued]=await tx`UPDATE weave_github_imports SET engine='source',state='queued',error=NULL,updated_at=now() WHERE id=${row.id} RETURNING *`;
-   await tx`SELECT pg_notify('squali_native_jobs','ready')`;return queued;
+   await tx`SELECT pg_notify('squali_native_jobs','ready')`;return {...queued,attempt_limit:attemptLimit};
   });
  }
  async function pause(id:string){return sql.begin(async tx=>{

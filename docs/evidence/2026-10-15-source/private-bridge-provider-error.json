@@ -1,0 +1,49 @@
+{
+  "data": {
+    "viewer": {
+      "accounts": [
+        {
+          "artifactsEventsAdaptiveGroups": [
+            {
+              "count": 1,
+              "dimensions": {
+                "datetime": "2026-10-15T00:49:05Z",
+                "errorMessage": "",
+                "eventKind": "action",
+                "eventType": "token_create"
+              },
+              "sum": {
+                "durationMs": 0
+              }
+            },
+            {
+              "count": 1,
+              "dimensions": {
+                "datetime": "2026-10-15T00:49:06Z",
+                "errorMessage": "",
+                "eventKind": "action",
+                "eventType": "token_create"
+              },
+              "sum": {
+                "durationMs": 0
+              }
+            },
+            {
+              "count": 1,
+              "dimensions": {
+                "datetime": "2026-10-15T00:51:23Z",
+                "errorMessage": "push failed",
+                "eventKind": "error",
+                "eventType": "serverError"
+              },
+              "sum": {
+                "durationMs": 128217.0919810012
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "errors": null
+}

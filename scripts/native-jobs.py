@@ -114,7 +114,7 @@ try:
  while not stopping and claimed<a.max_jobs and time.monotonic()-start<a.max_seconds:
   token='sq_'+secrets.token_urlsafe(32);token_id='job_'+secrets.token_hex(12);lease=secrets.token_hex(24)
   def claim():
-   rows=query("SELECT j.*,i.project_id,i.repository_id,i.native_attempts FROM weave_native_jobs j JOIN weave_github_imports i ON i.id=j.import_id WHERE j.state='queued' AND NOT j.pause_requested AND i.native_attempts<3 AND j.elapsed_seconds<28800 ORDER BY j.updated_at LIMIT 1 FOR UPDATE OF j SKIP LOCKED")
+   rows=query("SELECT j.*,i.project_id,i.repository_id,i.native_attempts FROM weave_native_jobs j JOIN weave_github_imports i ON i.id=j.import_id WHERE j.state='queued' AND NOT j.pause_requested AND i.native_attempts<j.attempt_limit AND j.elapsed_seconds<28800 ORDER BY j.updated_at LIMIT 1 FOR UPDATE OF j SKIP LOCKED")
    if not rows:return None
    row=rows[0];c.run("INSERT INTO weave_tokens(id,project,token_hash,label,role,expires_at) VALUES(:id,:project,:hash,'Native import job','admin',now()+interval '8 hours')",id=token_id,project=row['project_id'],hash=hashlib.sha256(token.encode()).hexdigest())
    c.run("UPDATE weave_native_jobs SET state='running',lease=:lease,lease_until=now()+interval '2 minutes',token_id=:token,updated_at=now() WHERE import_id=:id",lease=lease,token=token_id,id=row['import_id'])
