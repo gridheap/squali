@@ -1,0 +1,47 @@
+scripts/inspect-demo-audio.swift:13:20: warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+11 | let events = record["events"] as! [[String: Any]]
+12 | let asset = AVURLAsset(url: movie)
+13 | let tracks = asset.tracks(withMediaType: .audio)
+   |                    `- warning: 'tracks(withMediaType:)' was deprecated in macOS 13.0: Use loadTracks(withMediaType:) instead [#DeprecatedDeclaration]
+14 | precondition(tracks.count == 1, "The final demonstration must contain one narration track")
+15 | let reader = try AVAssetReader(asset: asset)
+
+scripts/inspect-demo-audio.swift:23:8: warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead [#DeprecatedDeclaration]
+21 |     AVLinearPCMIsNonInterleaved: false
+22 | ])
+23 | reader.add(output)
+   |        `- warning: 'add' was deprecated in macOS 27.0: Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead [#DeprecatedDeclaration]
+24 | precondition(reader.startReading(), "Start audio decoding")
+25 | var peak: Float = 0
+
+scripts/inspect-demo-audio.swift:24:21: warning: 'startReading()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+22 | ])
+23 | reader.add(output)
+24 | precondition(reader.startReading(), "Start audio decoding")
+   |                     `- warning: 'startReading()' was deprecated in macOS 27.0: Use start() instead [#DeprecatedDeclaration]
+25 | var peak: Float = 0
+26 | var decodedSeconds = 0.0
+
+main/inspect-demo-audio.swift:14: Precondition failed: The final demonstration must contain one narration track
+Stack dump:
+0.	Program arguments: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -interpret scripts/inspect-demo-audio.swift -Xllvm -aarch64-use-tbi -enable-objc-interop -stack-check -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk -no-color-diagnostics -Xcc -fno-color-diagnostics -new-driver-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-driver -empty-abi-descriptor -no-auto-bridging-header-chaining -module-name main -disable-clang-spi -target-sdk-version 27.0 -target-sdk-name macosx27.0 -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/swift/host/plugins#/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/local/lib/swift/host/plugins#/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/lib/swift/host/plugins -- work/continuous-format work/continuous-format/format-check.mp4
+1.	Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+2.	Compiling with effective version 5.10
+3.	While running user code "scripts/inspect-demo-audio.swift"
+Stack dump without symbol names (ensure you have llvm-symbolizer in your PATH or set the environment var `LLVM_SYMBOLIZER_PATH` to point to it):
+0  swift-frontend           0x000000010b74fbd0 llvm::sys::PrintStackTrace(llvm::raw_ostream&, int) + 56
+1  swift-frontend           0x000000010b74d358 llvm::sys::RunSignalHandlers() + 172
+2  swift-frontend           0x000000010b7501c8 SignalHandler(int, __siginfo*, void*) + 360
+3  libsystem_platform.dylib 0x000000019ca8c144 _sigtramp + 56
+4  libswiftCore.dylib       0x00000001b114cd4c $ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF + 216
+5  (error)                  0x000000011be017d0
+6  swift-frontend           0x00000001053e115c llvm::orc::runAsMain(int (*)(int, char**), llvm::ArrayRef<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>, std::__1::optional<llvm::StringRef>) + 908
+7  swift-frontend           0x00000001052e94a0 swift::SwiftJIT::runMain(llvm::ArrayRef<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>) + 636
+8  swift-frontend           0x00000001052f580c swift::RunImmediately(swift::CompilerInstance&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, swift::IRGenOptions const&, swift::SILOptions const&, std::__1::unique_ptr<swift::SILModule, std::__1::default_delete<swift::SILModule>>&&) + 964
+9  swift-frontend           0x0000000105267b7c processCommandLineAndRunImmediately(swift::CompilerInstance&, std::__1::unique_ptr<swift::SILModule, std::__1::default_delete<swift::SILModule>>&&, llvm::PointerUnion<swift::ModuleDecl*, swift::SourceFile*>, swift::FrontendObserver*, int&) + 484
+10 swift-frontend           0x0000000105260b98 performCompileStepsPostSILGen(swift::CompilerInstance&, std::__1::unique_ptr<swift::SILModule, std::__1::default_delete<swift::SILModule>>, llvm::PointerUnion<swift::ModuleDecl*, swift::SourceFile*>, swift::PrimarySpecificPaths const&, int&, swift::FrontendObserver*, llvm::ArrayRef<char const*>, llvm::ArrayRef<swift::PrimarySpecificPaths>) + 2408
+11 swift-frontend           0x000000010525fdd0 swift::performCompileStepsPostSema(swift::CompilerInstance&, int&, swift::FrontendObserver*, llvm::ArrayRef<char const*>) + 3944
+12 swift-frontend           0x0000000105265798 performCompile(swift::CompilerInstance&, int&, swift::FrontendObserver*, llvm::ArrayRef<char const*>) + 4268
+13 swift-frontend           0x0000000105261dc4 swift::performFrontend(llvm::ArrayRef<char const*>, char const*, void*, swift::FrontendObserver*) + 3776
+14 swift-frontend           0x00000001051e1008 swift::mainEntry(int, char const**) + 5600
+15 dyld                     0x000000019c6abe80 start + 6688

@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-15T01:15:56Z",
+  "installed": {
+    "native-jobs.py": "b490967d4d1e27fe81ebc6651c68e7d621d177cd00b0836ddbb40225140147a3",
+    "import-source.py": "8aa6aa5d28ec49fd7c71841cd07f80bc0804ed0ab2d84310e3aedf2aeac3a5f9",
+    "git_seed.py": "a79413ee35e1eaf0f99ce2352efc2d2c7193266e30d5f44404a0b891470ef8bb"
+  },
+  "recovery": {
+    "reason": "Continue the failed Git bridge in 50 bounded original-ref steps after native E2E and retained-input preflight; reuse all accepted source data",
+    "oldLimit": 3,
+    "newLimit": 4,
+    "previousAttempts": 3,
+    "remainingJobSeconds": 8372,
+    "sourceHttpCeiling": 12000,
+    "monthlyArtifactsCeiling": 2000,
+    "plannedPushes": 50,
+    "cumulativePushCeiling": 128,
+    "providerReservationsBefore": 213,
+    "newSourceWrites": 0,
+    "newGitHubClones": 0,
+    "planSha256": "7665b0a280c3f7ded72ea7eb1452ff4c9b7cb05874b5c34be8f937a827aabd59",
+    "oneTimeCostEstimateUpperUsd": 2,
+    "estimateExcludesOngoingStorage": true
+  },
+  "queued": false,
+  "service": "active"
+}

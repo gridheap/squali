@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {writeFile,readFile} from 'node:fs/promises';
+import {writeFile,readFile,mkdir} from 'node:fs/promises';
 import {startLocal} from '../scripts/local.ts';
 
 // Failure specification: counts pass despite missing refs/objects; native clone differs;
@@ -10,7 +10,8 @@ import {startLocal} from '../scripts/local.ts';
 // transient errors silently retry or expose credentials in the retained report;
 // a rename with an edit loses unchanged lines from the original path;
 // a correct Git export hides a corrupt canonical delta or parent mapping;
-// verification timing is missing, fabricated or replaced by a replay measurement.
+// verification timing is missing, fabricated or replaced by a replay measurement;
+// inherited Git HTTP tracing captures credentials during the verification clone.
 test('import verification checks complete native identity and reuses its successful transfer',async()=>{
  const server=await startLocal({port:0,test:true,source:true});const exec=promisify(execFile);
  try{
@@ -22,8 +23,15 @@ test('import verification checks complete native identity and reuses its success
   await fetch(server.url+'/api/projects',{method:'POST',headers:{authorization:'Bearer local-admin-test-token','content-type':'application/json'},body:JSON.stringify({id:'verify',name:'Verify import',storage:'source',import:true,files:[]})});
   const env={...process.env,SQUALI_URL:server.url,SQUALI_TOKEN:'local-admin-test-token'};
   await exec('python3',['scripts/import-source.py','verify',native,'--state',server.dir+'/ingest'],{env});
+  const bin=server.dir+'/git-probe';await mkdir(bin);await writeFile(bin+'/git',`#!/usr/bin/env python3
+import json,os,sys
+if len(sys.argv)>1 and sys.argv[1]=='clone':
+ with open(os.environ['SQUALI_CLONE_ENV_REPORT'],'w') as f:json.dump({k:os.environ[k] for k in ('GIT_CURL_VERBOSE','GIT_TRACE_CURL','GIT_TRACE_PACKET','GIT_TRACE_PACKFILE') if k in os.environ},f)
+os.execv('/usr/bin/git',['git',*sys.argv[1:]])
+`,{mode:0o700});
+  Object.assign(env,{PATH:bin+':'+process.env.PATH,GIT_CURL_VERBOSE:'1',GIT_TRACE_CURL:'1',GIT_TRACE_PACKET:'1',SQUALI_CLONE_ENV_REPORT:server.dir+'/clone-env.json'});
   const args=['scripts/verify-import.py','verify',native,'--state',server.dir+'/verification','--file','README.md','--write-smoke'];
-  const first=JSON.parse((await exec('python3',args,{env,timeout:60000})).stdout);assert.equal(first.complete,true);assert.equal(first.commits,2);assert.equal(first.refs,2);assert.equal(first.gitTransfers,1);assert.equal(first.nativeFsck,true);assert.equal(first.blameMatchesNative,true);assert.equal(first.objects,8);assert.equal(first.canonicalChangesetsVerified,2);
+  const first=JSON.parse((await exec('python3',args,{env,timeout:60000})).stdout);assert.deepEqual(JSON.parse(await readFile(server.dir+'/clone-env.json','utf8')),{},'Verification clone must disable inherited Git tracing');assert.equal(first.complete,true);assert.equal(first.commits,2);assert.equal(first.refs,2);assert.equal(first.gitTransfers,1);assert.equal(first.nativeFsck,true);assert.equal(first.blameMatchesNative,true);assert.equal(first.objects,8);assert.equal(first.canonicalChangesetsVerified,2);
   assert.equal(first.timings.apiResponses,first.httpAttempts);for(const key of ['apiTotalMs','canonicalApiMs','historyMs','blameMs','ancestryMs','mergeBaseMs','cloneMs','fsckMs'])assert.ok(Number.isFinite(first.timings[key])&&first.timings[key]>0,`Retain observed ${key}`);
   assert.equal(first.writeSmoke.status,'rejected');assert.equal(first.writeSmoke.publishedHeadUnchanged,true);assert.equal(first.writeSmoke.canonicalDeltaMatches,true);assert.equal(first.writeSmoke.rootTreeMatches,true);assert.ok(first.writeSmoke.proposalMs>0);
   const [proposal]=await server.sql`SELECT status,oid FROM weave_changes WHERE project='verify' AND id='source-write-verification'`;assert.equal(proposal.status,'rejected');assert.equal(proposal.oid,first.writeSmoke.oid);

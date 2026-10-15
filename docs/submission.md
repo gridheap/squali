@@ -41,13 +41,13 @@ Clerk handles GitHub sign-in. A connected user's authorized private repositories
 
 Follow [README](../README.md) and [source operations](source-operations.md). Local development defaults to the source store and needs PostgreSQL, Git, Python 3 and the pinned Node/pnpm toolchain. Fixture tokens are separate from production credentials.
 
-Run `node --import tsx --test --test-concurrency=4 tests/*.test.ts` for the complete API/CLI suite. The current retained report has [73 passing tests](evidence/2026-10-15-source/mainline-graph-full-e2e.txt). Rendered workflow, mobile, font-loading fallback, actual glyph provenance, native FUSE and failure/recovery evidence are indexed in [the evidence guide](evidence/2026-10-15-source/README.md).
+Run `node --import tsx --test --test-concurrency=4 tests/*.test.ts` for the complete API/CLI suite. The current retained report has [75 passing tests](evidence/2026-10-15-source/native-seed-final-e2e.txt). Rendered workflow, mobile, font-loading fallback, actual glyph provenance, native FUSE and failure/recovery evidence are indexed in [the evidence guide](evidence/2026-10-15-source/README.md).
 
 [Performance evidence](performance.md) separates current source results from earlier Git-adapter results. A production 64-change/8-client sample and an eight-change optimization follow-up are retained, including unfavorable latency and initial authorization failures. Different batch sizes are not a controlled speedup comparison. [The source budget](source-import-budget.md) distinguishes provider metrics, application reservations and ongoing Azure/storage costs.
 
 ## Remaining acceptance gates
 
-The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. Source ingestion is still running. The final verifier will compare all exported objects and refs, native fsck, source tree, selected history/blame results and a bounded canonical-delta sample against that frozen cache, using one retained clone and a bounded API journal.
+The private fixture contains 421,219 objects, 85,563 commits, 1,020 refs and 8.33 GB of raw history, with a 324.6 MB Git pack. Its existing native cache passed fsck. All source objects and canonical changesets are durable. The Git compatibility seed is recovering through bounded original-ref batches after a provider failure on the full push. The final verifier will compare all exported objects and refs, native fsck, source tree, selected history/blame results and a bounded canonical-delta sample against that frozen cache, using one retained clone and a bounded API journal.
 
 The [fixed Scion checklist](scion-acceptance.md) requires 19 of 20 fully verified items and all mandatory architecture gates. Tree, generation, graph, path and blame results share the same versioned dependency engine, with bounded vectorized adapters and retained eager/lazy reconstruction evidence. FUSE is read-only; changes use the sparse client or API. Text editing, graph queries and Git bridge exports have documented budgets. See [readiness](readiness.md) and [capability boundaries](scion-parity.md).
 

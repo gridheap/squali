@@ -27,7 +27,7 @@
     "title": "04 / Resolve conflicts explicitly",
     "caption": "A conflicting batch stops. The resolution retains context and requires fresh review.",
     "seconds": 65,
-    "text": "Two proposals now choose different retry limits in the same source file. They each make sense in isolation, but they cannot both land unchanged. The preview exposes that conflict and stops the batch. We request a revision on one candidate, then revise the other against current main. Its intent and context remain attached, and its approval is cleared. A reviewer approves the resolution before selecting and publishing it. Server-side continuous rebase uses the same principle: retain immutable inputs and a durable cursor, stop at a conflict, then resume from an explicit resolution. Revert and executable first-parent bisect are also available through bounded server and client workflows. No conflict is silently handed to a model to guess."
+    "text": "Two proposals now choose different retry limits in the same source file. They each make sense in isolation, but they cannot both land unchanged. The preview exposes that conflict and stops the batch. We reject one candidate, then revise the other against current main. Its intent and context remain attached, and its approval is cleared. A reviewer approves the resolution before selecting and publishing it. Server-side continuous rebase uses the same principle: retain immutable inputs and a durable cursor, stop at a conflict, then resume from an explicit resolution. Revert and executable first-parent bisect are also available through bounded server and client workflows. No conflict is silently handed to a model to guess."
   },
   {
     "title": "05 / Query history and protect meaning",

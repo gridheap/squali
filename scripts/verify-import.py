@@ -133,7 +133,8 @@ try:
  if not clone.exists():
   if s['gitTransfers']>=1:raise RuntimeError('The single Git transfer was already attempted; inspect its outcome before recovery')
   s['gitTransfers']+=1;save();http.close()
-  env={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_CONFIG_COUNT':'4','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Bearer '+token,'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false','GIT_CONFIG_KEY_2':'pack.threads','GIT_CONFIG_VALUE_2':'1','GIT_CONFIG_KEY_3':'core.deltaBaseCacheLimit','GIT_CONFIG_VALUE_3':'32m','GIT_TRACE':'0','GIT_TRACE_CURL':'0','GIT_CURL_VERBOSE':'0'};env.pop('SQUALI_TOKEN',None)
+  env={**os.environ,'GIT_TERMINAL_PROMPT':'0','GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_CONFIG_COUNT':'4','GIT_CONFIG_KEY_0':'http.extraHeader','GIT_CONFIG_VALUE_0':'Authorization: Bearer '+token,'GIT_CONFIG_KEY_1':'http.followRedirects','GIT_CONFIG_VALUE_1':'false','GIT_CONFIG_KEY_2':'pack.threads','GIT_CONFIG_VALUE_2':'1','GIT_CONFIG_KEY_3':'core.deltaBaseCacheLimit','GIT_CONFIG_VALUE_3':'32m','GIT_TRACE':'0'};env.pop('SQUALI_TOKEN',None)
+  for key in ('GIT_CURL_VERBOSE','GIT_TRACE_CURL','GIT_TRACE_PACKET','GIT_TRACE_PACKFILE'):env.pop(key,None)
   started=time.monotonic();result=subprocess.run(['git','clone','--mirror',origin+'/api/projects/'+a.project+'/git',str(clone)],env=env,capture_output=True,timeout=600);s['cloneMs']=round((time.monotonic()-started)*1000,3);save()
   if result.returncode:raise RuntimeError('Native clone stopped; retained partial data requires inspection')
  if not s.get('fsck'):
