@@ -1,0 +1,24 @@
+{
+  "command": "az vm run-command show --subscription 60c9ccef-5b83-48ca-887a-bf3b7ab738a1 -g RG-GRIDHEAP-COMMENTS --vm-name comments-vm --name squali-private-stop-7f0073f9 --expand instanceView",
+  "checkedAt": "2026-10-15T00:20:31Z",
+  "state": "failed",
+  "nativeAttempt": 1,
+  "elapsedSeconds": 20068,
+  "canonicalCount": 76800,
+  "acknowledgedCommits": 76800,
+  "objectsProcessed": 421219,
+  "httpAttempts": 9264,
+  "uploadedBytes": 3667925603,
+  "error": "Remote end closed connection without response",
+  "interpretation": "No HTTP response was received; the exact upstream reason for closing the connection is unknown. The database count equaled the acknowledged cursor at inspection.",
+  "localRecoveryEvidence": "changeset-disconnect-recovery.txt",
+  "recovery": {
+    "method": "Signed-in production UI: Resume pending imports",
+    "pendingImports": 1,
+    "nativeAttemptAfterResume": 2,
+    "stateAfterResume": "running",
+    "sameInputAndJournal": true,
+    "limitsUnchanged": true,
+    "screenshot": "private-import-resumed.jpg"
+  }
+}

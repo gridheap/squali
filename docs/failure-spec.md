@@ -130,3 +130,7 @@ The same first-parent shortcut is required for positive `/ancestry` queries thro
 ## Writing after private import
 
 The optional import verifier write smoke uses the public change, source and review APIs after its one native clone has passed. Failure cases: a readable import cannot create a change; the new canonical delta has the wrong parent, body, mode or hash; an unrelated root entry changes; proposing moves a published ref; a test proposal is left available for publication; replay creates another proposal or transfer. One fixed, explicitly named test file is added to an unpublished proposal and then rejected. The frozen input, published head and every imported ref remain unchanged. A durable journal retains this unique operation and its response timings; the combined verifier admits at most 48 HTTP attempts and one clone.
+
+## Disconnected changeset response
+
+The real native importer must stop after a connection closes without an HTTP response, whether the sealing transaction was accepted or never reached the service. It must not silently retry or advance its acknowledged cursor. An explicit invocation with the same input and journal must reconcile the immutable batch, finish with one canonical row per commit, and perform no additional blob upload. The failed request remains in the total attempt count. Exercise both disconnect positions through an HTTP proxy and compare the persisted source inventory with native Git.

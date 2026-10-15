@@ -227,6 +227,31 @@ test('a parent-ordered import seals 128 changesets in bounded database batches',
  }finally{await server.close();}
 });
 
+test('interrupted changeset responses require explicit journal resume without repeating source uploads',async()=>{
+ const {execFile}=await import('node:child_process'),{promisify}=await import('node:util'),{createServer}=await import('node:http'),{writeFile,readFile}=await import('node:fs/promises');const exec=promisify(execFile);
+ const server=await startLocal({port:0,test:true,source:true});const auth={authorization:'Bearer local-admin-test-token','content-type':'application/json'};
+ try{
+  const repo=server.dir+'/disconnect-native';await exec('git',['init','--initial-branch=main',repo]);const git=(...args:string[])=>exec('git',['-C',repo,...args]);await git('config','user.name','Fixture');await git('config','user.email','fixture@example.invalid');
+  for(const value of ['one','two']){await writeFile(repo+'/value.txt',value+'\n');await git('add','.');await git('commit','-m',value);}
+  const head=(await git('rev-parse','HEAD')).stdout.trim();
+  for(const position of ['before','after']){
+   const project='disconnect-'+position;await fetch(server.url+'/api/projects',{method:'POST',headers:auth,body:JSON.stringify({id:project,name:project,storage:'source',import:true,files:[]})});
+   let sealCalls=0,uploadCalls=0;
+   const proxy=createServer(async(req,res)=>{const parts=[];for await(const part of req)parts.push(part);const raw=Buffer.concat(parts),seal=req.url?.endsWith('/changesets');if(req.url?.endsWith('/objects'))uploadCalls++;if(seal&&++sealCalls===1&&position==='before'){req.socket.destroy();return;}const upstream=await fetch(server.url+req.url,{method:req.method,headers:req.headers as Record<string,string>,body:raw});const response=Buffer.from(await upstream.arrayBuffer());if(seal&&sealCalls===1&&position==='after'){assert.equal(upstream.status,200);req.socket.destroy();return;}res.writeHead(upstream.status,{'content-type':'application/json'});res.end(response);});await new Promise<void>(done=>proxy.listen(0,'127.0.0.1',done));
+   try{
+    const state=server.dir+'/'+project,args=['scripts/import-source.py',project,repo,'--state',state],env={...process.env,SQUALI_URL:'http://127.0.0.1:'+(proxy.address() as any).port,SQUALI_TOKEN:'local-admin-test-token'};
+    const stopped=await exec('python3',args,{env,timeout:30000}).then(r=>({code:0,...r}),e=>e);assert.equal(stopped.code,1);assert.match(stopped.stderr,/Remote end closed connection without response/);assert.equal(sealCalls,1,'A disconnected response never retries itself');
+    const checkpoint=JSON.parse(await readFile(state+'/state.json','utf8'));assert.equal(checkpoint.stage,'changesets');assert.equal(checkpoint.commitsProcessed,0);assert.equal(checkpoint.complete,false);
+    const [{count}]=await server.sql`SELECT count(*) FROM weave_changesets WHERE project=${project}`;assert.equal(Number(count),position==='after'?2:0);
+    const uploads=uploadCalls,usage=await server.sql`SELECT * FROM weave_source_usage ORDER BY kind`;
+    const recovered=JSON.parse((await exec('python3',args,{env,timeout:30000})).stdout);assert.equal(recovered.complete,true);assert.equal(recovered.commitsProcessed,2);assert.equal(recovered.httpAttempts,checkpoint.httpAttempts+2);assert.equal(uploadCalls,uploads);assert.deepEqual(await server.sql`SELECT * FROM weave_source_usage ORDER BY kind`,usage);
+    const [{count:finished}]=await server.sql`SELECT count(*) FROM weave_changesets WHERE project=${project}`;assert.equal(Number(finished),2);assert.equal((await fetch(server.url+'/api/projects/'+project,{headers:auth}).then(r=>r.json()) as any).head,head);
+    console.log(JSON.stringify({position,initialExit:stopped.code,error:stopped.stderr.trim(),acknowledgedCommits:checkpoint.commitsProcessed,committedBeforeResume:Number(count),recoveredCommits:2,additionalUploadCalls:uploadCalls-uploads,attempts:recovered.httpAttempts}));
+   }finally{proxy.closeAllConnections();await new Promise<void>(done=>proxy.close(()=>done()));}
+  }
+ }finally{await server.close();}
+});
+
 test('source import completes when its Git compatibility copy exceeds the provider budget',async()=>{
  const {execFile}=await import('node:child_process'),{promisify}=await import('node:util'),{writeFile}=await import('node:fs/promises');const exec=promisify(execFile);const server=await startLocal({port:0,test:true,source:true}),headers={authorization:'Bearer local-admin-test-token','content-type':'application/json'};
  try{

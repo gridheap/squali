@@ -1,0 +1,11 @@
+{"position":"before","initialExit":1,"error":"Remote end closed connection without response","acknowledgedCommits":0,"committedBeforeResume":0,"recoveredCommits":2,"additionalUploadCalls":0,"attempts":5}
+{"position":"after","initialExit":1,"error":"Remote end closed connection without response","acknowledgedCommits":0,"committedBeforeResume":2,"recoveredCommits":2,"additionalUploadCalls":0,"attempts":5}
+✔ interrupted changeset responses require explicit journal resume without repeating source uploads (819.825166ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 967.474792

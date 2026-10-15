@@ -31,7 +31,7 @@ The latest sample ran against Worker `40919ac2-91fe-490d-9843-6465a853843a`, aft
 
 The writer passes its known delta to the shared versioned derivation engine. Independent admission uses one atomic insert, while dependency admission retains its transaction. Graph shortcuts return only after proving a first-parent relationship; other cases keep all-parent traversal and native criss-cross comparisons. The graph fixture contains a 1,024-commit mainline with 128 merge commits. Cache authorization, revocation and workspace-state checks remain live.
 
-The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [73 passing tests](evidence/2026-10-15-source/mainline-graph-full-e2e.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
+The [local 64-change/eight-client source sample](evidence/2026-10-15-source/local-source.json) reaches 318.19 changes/s and p95 95.93 ms. It uses local PostgreSQL and the filesystem storage adapter, so it is not cloud throughput. The complete API/CLI/native suite has [74 passing tests](evidence/2026-10-15-source/disconnect-full-e2e.txt); the later [import write verifier](evidence/2026-10-15-source/private-write-verification-green.txt) has its own focused E2E.
 
 ## Database and cache interpretation
 
