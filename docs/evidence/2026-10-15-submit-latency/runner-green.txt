@@ -1,0 +1,28 @@
+✖ bounded latency runner reuses completed requests and verifies all eight changes over HTTP (1114.081625ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1293.615708
+
+✖ failing tests:
+
+test at tests/latency-runner.test.ts:1:398
+✖ bounded latency runner reuses completed requests and verifies all eight changes over HTTP (1114.081625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(report.phases[phase].samples.every((r:any)=>r.stages.app>=0&&r.stages.r2_put>=0))
+
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/latency-runner.test.ts:21:101)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

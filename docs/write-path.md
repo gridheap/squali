@@ -4,6 +4,13 @@ October 15, 2026. This checkpoint addresses Scion's requirement that small
 changesets be cheap to create. It does not establish full Scion parity or
 competition readiness. No competition entry is submitted.
 
+## Later production optimization
+
+The following record is the earlier 32 → 24 SQL checkpoint. The subsequent
+[production stage analysis](submission-latency.md) reduces this fixture to 14 SQL
+statements and measures a 19% lower client median with a bounded same-client
+comparison. Its complete suite has 96 passing tests; tail latency remains open.
+
 ## Changes
 
 Proposal visibility, changed-path records and the audit event now commit in one

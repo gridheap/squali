@@ -5,6 +5,9 @@ import {resolveDerivedBatch} from './derived-data.ts';
 import type {Commit,Repository,Sql} from './types.ts';
 
 type Node=Commit & {generation:number|null;depth:number;span:number;treeSpan:number;jumps:string[]};
+export function deriveGraphNode(input:Commit,parents:Node[]):Node{
+ const first=parents[0];return {...input,generation:1+Math.max(0,...parents.map(p=>p.generation!)),depth:first?first.depth+1:0,span:parents.length===1?first.span+1:0,treeSpan:first&&first.tree===input.tree?first.treeSpan+1:0,jumps:first?[first.oid]:[]};
+}
 const VERSION=1;
 const QUERY_NODES=50000;
 export function commitGraph(sql:Sql,project:string,repo:Pick<Repository,'commit'>){
@@ -167,7 +170,7 @@ export async function completeGraphBatch(sql:Sql|TransactionSql<{}>,project:stri
   },
   async compute(inputs,resolved){
    const values=new Map<string,Node>();
-   for(const {key,input,parents:ids} of inputs){const parents=ids.map(id=>resolved.get(id)!),first=parents[0];const node={...input,generation:1+Math.max(0,...parents.map(p=>p.generation!)),depth:first?first.depth+1:0,span:parents.length===1?first.span+1:0,treeSpan:first&&first.tree===input.tree?first.treeSpan+1:0,jumps:first?[first.oid]:[]};values.set(key,node);nodes.set(key,node);resolved.set(key,node);}
+   for(const {key,input,parents:ids} of inputs){const node=deriveGraphNode(input,ids.map(id=>resolved.get(id)!));values.set(key,node);nodes.set(key,node);resolved.set(key,node);}
    // One fetch per jump level, shared by all commits in the admitted batch.
    for(let level=1;level<32;level++){
     const active=[...values.values()].filter(node=>node.jumps.length===level);if(!active.length)break;

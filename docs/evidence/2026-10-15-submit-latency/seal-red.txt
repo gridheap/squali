@@ -1,0 +1,28 @@
+request failed Injected path marker failure
+{"command":"node --import tsx --test tests/prepared-seal.test.ts","depth":18,"counts":[23,24,24,25,25,25,25,26,26,26,26,26,26,26,27,27,27],"atomicFailure":true,"lazyMatchesEager":true,"missingParentRebuilt":true,"retryExtraPuts":0,"externalProviderCalls":0}
+✖ prepared sealing is bounded, atomic and identical to a lazy rebuild across deep ancestry (936.374542ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1185.925125
+
+✖ failing tests:
+
+test at tests/prepared-seal.test.ts:1:226
+✖ prepared sealing is bounded, atomic and identical to a lazy rebuild across deep ancestry (936.374542ms)
+  AssertionError [ERR_ASSERTION]: Prepared proposal SQL budget exceeded: 23,24,24,25,25,25,25,26,26,26,26,26,26,26,27,27,27
+      at TestContext.<anonymous> (/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/tests/prepared-seal.test.ts:33:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

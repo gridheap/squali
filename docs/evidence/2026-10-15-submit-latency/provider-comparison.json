@@ -1,0 +1,37 @@
+{
+  "before": {
+    "end": "2026-10-15T13:13:57.178040Z",
+    "sourceRequests": 12208,
+    "sourceCpuMs": 1466086.639,
+    "sourceErrors": 2,
+    "regionalRequests": 39,
+    "regionalCpuMs": 40.051,
+    "PutObject": 166187,
+    "GetObject": 214
+  },
+  "after": {
+    "end": "2026-10-15T13:46:03.243300Z",
+    "sourceRequests": 12238,
+    "sourceCpuMs": 1467505.796,
+    "sourceErrors": 2,
+    "regionalRequests": 75,
+    "regionalCpuMs": 65.854,
+    "PutObject": 166195,
+    "GetObject": 221
+  },
+  "delta": {
+    "sourceRequests": 30,
+    "sourceCpuMs": 1419.157,
+    "sourceErrors": 0,
+    "regionalRequests": 36,
+    "regionalCpuMs": 25.803,
+    "PutObject": 8,
+    "GetObject": 7
+  },
+  "application": {
+    "writes": 8,
+    "reads": 8,
+    "artifacts": 0
+  },
+  "note": "Adaptive provider totals lag/sample and include unrelated activity. PUT +8 agrees; observed GET +7 has not caught up with +8 reservations. No retry query was dispatched to force agreement."
+}

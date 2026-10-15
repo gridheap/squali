@@ -3,6 +3,9 @@ import {Problem,type Sql} from './types.ts';
 import {resolveDerivedBatch} from './derived-data.ts';
 
 type Paths={gitOid:string;firstParent:string|null;depth:number;count:number;paths?:string[]};
+export function derivePathValue(gitOid:string,firstParent:string|null,parent:Paths|undefined,paths:string[]):Paths{
+ return {gitOid,firstParent,depth:firstParent?parent!.depth+1:0,count:paths.length,paths};
+}
 type PreparedPathInput={firstParent:string|null;paths:string[];bytes:number};
 /** Path events use the same bounded dependency engine as graph/tree results.
  * A marker, including an empty delta, is stored only after its path rows exist. */
@@ -24,7 +27,7 @@ export async function completePathBatch(sql:Sql|TransactionSql<{}>,project:strin
    for(const key of keys){const value=prepared.get(key);if(value)loaded.set(key,{key,parents:value.firstParent?[value.firstParent]:[],input:{paths:value.paths}});}
    return loaded;
   },
-  async compute(inputs,resolved){const values=new Map<string,Paths>();for(const node of inputs){const firstParent=node.parents[0]??null,value={gitOid:node.key,firstParent,depth:firstParent?resolved.get(firstParent)!.depth+1:0,count:node.input.paths.length,paths:node.input.paths};values.set(node.key,value);resolved.set(node.key,value);}return values;},
+  async compute(inputs,resolved){const values=new Map<string,Paths>();for(const node of inputs){const firstParent=node.parents[0]??null,value=derivePathValue(node.key,firstParent,firstParent?resolved.get(firstParent):undefined,node.input.paths);values.set(node.key,value);resolved.set(node.key,value);}return values;},
   async save(values){
    const paths=[...values.values()].flatMap(value=>value.paths!.map(path=>({project,version:1,path,git_oid:value.gitOid})));
    for(let at=0;at<paths.length;at+=2000)await sql`INSERT INTO weave_source_paths ${sql(paths.slice(at,at+2000),'project','version','path','git_oid')} ON CONFLICT DO NOTHING`;

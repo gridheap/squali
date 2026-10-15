@@ -1,10 +1,13 @@
-import {createHash} from 'node:crypto';
+import {timed} from './timing.ts';
+import {sourceManifest} from './source-manifest.ts';
+import {sealPreparedSource} from './prepared-seal.ts';
 import {Problem,type Sql,type Commit,type TreeEntry,type RawObject,type SourceDelta} from './types.ts';
 import {completeGraphBatch} from './graph.ts';
 import {completePathBatch} from './path-index.ts';
 
 /** Import immutable deltas in batches; SQL work follows tree depth rather than file count. */
 export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decodeCommit:(id:string,raw:Uint8Array)=>Commit,decodeTree:(raw:Uint8Array)=>TreeEntry[],prepared?:{objects:RawObject[];delta:SourceDelta[]}){
+ if(prepared&&ids.length===1){const raw=prepared.objects.find(o=>o.oid===ids[0]&&o.type==='commit')?.data;if(raw&&await sealPreparedSource(sql,project,decodeCommit(ids[0],raw),raw,prepared.delta))return {completed:1};}
  const known=new Map<string,string>((await sql`SELECT git_oid,id FROM weave_changesets WHERE project=${project} AND git_oid=ANY(${ids})`).map(r=>[r.git_oid,r.id]));
  const pending=[...new Set(ids)].filter(id=>!known.has(id)),objects=new Map<string,any>();let metadataBytes=0,treeEntries=0;
  // Only the in-process writer supplies this delta, after admitting and verifying
@@ -46,15 +49,14 @@ export async function sealSourceBatch(sql:Sql,project:string,ids:string[],decode
  const blobIds=[...new Set([...files.values()].flat().filter(f=>f.mode&&f.mode!=='160000').map(f=>f.gitOid))],blobs=new Map<string,string>();
  for(let i=0;i<blobIds.length;i+=2000){const part=blobIds.slice(i,i+2000),rows=await sql`SELECT o.oid,o.blob FROM weave_source_objects o JOIN weave_source_blobs b ON b.hash=o.blob WHERE o.project=${project} AND o.kind='blob' AND o.oid=ANY(${part}) AND b.state='ready'`;if(rows.length!==part.length)throw new Problem(409,'source_incomplete','Changed blob is missing');for(const row of rows)blobs.set(row.oid,row.blob);}
  const manifests=commits.map(c=>{const delta=files.get(c.oid)!;delta.sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0);for(const file of delta)if(file.mode&&file.mode!=='160000')file.blob=blobs.get(file.gitOid);
-  const data=Buffer.from(objects.get(c.oid).raw),split=data.indexOf('\n\n'),metadata={rawSuffix:data.subarray(data.indexOf(10)+1).toString('base64'),headers:data.subarray(0,split).toString().split('\n').filter(line=>!line.startsWith('tree ')),message:c.message};
-  const parents=c.parents.map(id=>known.get(id)!),manifest={version:1,parents,files:delta,metadata},id=createHash('sha256').update(JSON.stringify(manifest)).digest('hex');known.set(c.oid,id);return {project,id,git_oid:c.oid,parents,files:sql.json(delta),metadata:sql.json(metadata)};
+  const manifest=sourceManifest(c,objects.get(c.oid).raw,c.parents.map(id=>known.get(id)!),delta);known.set(c.oid,manifest.id);return {project,id:manifest.id,git_oid:c.oid,parents:manifest.parents,files:sql.json(delta),metadata:sql.json(manifest.metadata)};
  });
  await sql.begin(async tx=>{
   if(manifests.length)await tx`INSERT INTO weave_changesets ${tx(manifests,'project','id','git_oid','parents','files','metadata')} ON CONFLICT DO NOTHING`;
   const graphInputs=new Map(commits.map(c=>[c.oid,{...c,generation:null,depth:0,span:0,treeSpan:0,jumps:[]}]));
-  await completeGraphBatch(tx,project,ids,graphInputs);
+  await timed('graph',()=>completeGraphBatch(tx,project,ids,graphInputs));
   const pathInputs=new Map(commits.map(c=>{const delta=files.get(c.oid)!;return [c.oid,{firstParent:c.parents[0]??null,paths:delta.map(f=>f.path),bytes:Buffer.byteLength(JSON.stringify(delta))}];}));
-  await completePathBatch(tx,project,ids,pathInputs);
+  await timed('paths',()=>completePathBatch(tx,project,ids,pathInputs));
  });
  return {completed:ids.length};
 }

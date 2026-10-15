@@ -1,0 +1,3 @@
+Base: 566096b
+Command: git apply --check --unidiff-zero --directory=<temporary baseline checkout> docs/evidence/2026-10-15-submit-latency/instrumentation-baseline.patch
+Exit: 0

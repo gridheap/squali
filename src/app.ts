@@ -1,3 +1,4 @@
+import {authorizeTiming,timeRequest,timed} from './timing.ts';
 import {authorizePaths,canPath,containsPath,parseScopes,parseRules} from './permissions.ts';
 import {metadataService} from './metadata.ts';
 import {randomBytes} from 'node:crypto';
@@ -36,14 +37,13 @@ export function createApp(config:Config){
  if(config.source)config={...config,artifacts:config.source.artifacts(config.artifacts)};
  const {sql,artifacts}=config;
  const getProject=async(pid:string,allowImport=false)=>{const [p]=await sql`SELECT * FROM weave_projects WHERE id=${pid}`;if(!p)throw new Problem(404,'project_missing','Workspace not found');if(p.state!=='ready'&&!(allowImport&&p.state==='importing'&&p.storage==='source'))throw new Problem(409,'project_pending','Workspace initialization is incomplete; retry the original creation request');return p;};
- return async(request:Request):Promise<Response>=>{
-  const start=performance.now();
+ return (request:Request):Promise<Response>=>timeRequest(request,async()=>{
   try{
    const url=new URL(request.url);if(!url.pathname.startsWith('/api/')){const res=await config.assets?.(request)??new Response('Squali API',{status:200});res.headers.set('x-content-type-options','nosniff');res.headers.set('referrer-policy','no-referrer');const clerkSource=config.clerk?' https://'+clerkDomain(config.clerk.publishableKey):'';res.headers.set('content-security-policy',`default-src 'self'; script-src 'self'${clerkSource}; style-src 'self' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; connect-src 'self'${clerkSource} https://use.typekit.net https://p.typekit.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`);return res;}
    if(url.pathname==='/api/auth/config'&&request.method==='GET')return json({publishableKey:config.clerk?.publishableKey??null,nativeImports:!!config.nativeImports});
-   const principal=await authenticate(request,config);
+   const principal=await timed('auth',()=>authenticate(request,config));authorizeTiming();
    const mutating=request.method!=='GET';if(mutating&&request.headers.has('origin')&&request.headers.get('origin')!==url.origin)throw new Problem(403,'origin','Cross-origin mutations are forbidden');
-   const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid&&resource==='projects'){id(pid);if(principal.projects.includes('*')){const [owned]=await sql`SELECT owner_id FROM weave_projects WHERE id=${pid}`;if(owned?.owner_id)throw new Problem(403,'scope','Use a workspace-specific credential for personal workspaces');}if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
+   const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid&&resource==='projects'){id(pid);if(principal.projects.includes('*')){const [owned]=await timed('scope',()=>sql`SELECT owner_id FROM weave_projects WHERE id=${pid}`);if(owned?.owner_id)throw new Problem(403,'scope','Use a workspace-specific credential for personal workspaces');}if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
    if(resource==='github'){const gh=githubService(config,principal);if(parts[2]==='repositories'&&request.method==='GET')return json(await gh.catalog(Number(url.searchParams.get('page')??1)));if(parts[2]==='imports'){if(parts[3]&&parts[4]==='pause'&&request.method==='POST')return json(await gh.pause(id(parts[3])));if(parts[3]&&parts[4]==='reconcile'&&request.method==='POST')return json(await gh.reconcile(id(parts[3])));if(parts[3]&&parts[4]==='run'&&request.method==='POST')return json(await gh.run(id(parts[3])));if(!parts[3]&&request.method==='GET')return json(await gh.list());if(!parts[3]&&request.method==='POST')return json(await gh.enqueue((await body(request)).repositoryIds),201);}}
    const requireRole=(roles:string[])=>{if(!roles.includes(principal.role))throw new Problem(403,'role','Your role does not allow this operation');};
    if(resource==='usage'&&request.method==='GET'){const [usage]=await sql`SELECT attempts FROM weave_usage WHERE month=${new Date().toISOString().slice(0,7)}`;const cache=await sql`SELECT kind,reservations FROM weave_cache_usage WHERE month=${new Date().toISOString().slice(0,7)}`;const source=await sql`SELECT kind,attempts FROM weave_source_usage WHERE month=${new Date().toISOString().slice(0,7)}`;return json({source:{readCap:config.source?.caps.reads??0,writeCap:config.source?.caps.writes??0,reads:Number(source.find(r=>r.kind==='reads')?.attempts??0),writes:Number(source.find(r=>r.kind==='writes')?.attempts??0)},attempts:Number(usage?.attempts??0),cap:config.monthlyOps,mode:config.mode,cache:{reservedReads:Number(cache.find(r=>r.kind==='reads')?.reservations??0),reservedWrites:Number(cache.find(r=>r.kind==='writes')?.reservations??0),readCap:config.cacheBudget?.reads??null,writeCap:config.cacheBudget?.writes??null}});}
@@ -59,7 +59,7 @@ export function createApp(config:Config){
     })();return json(result,201);
    }
    if(resource==='projects'&&pid){
-    const p=await getProject(pid,parts[3]==='source');const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const action=parts[3];
+    const p=await timed('project',()=>getProject(pid,parts[3]==='source'));const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const action=parts[3];
     const unrestricted=()=>{if(principal.paths)throw new Problem(403,'path_scope','This endpoint requires access to the whole workspace');};
     const checkChanges=async(ids:string[])=>{if(!principal.paths)return;const seen=new Set<string>();let pending=ids;while(pending.length){const next=[...new Set(pending)].filter(id=>!seen.has(id));if(!next.length)break;if(seen.size+next.length>64)throw new Problem(400,'scope_graph','Directory-scoped operations inspect at most 64 dependency records');next.forEach(id=>seen.add(id));const rows=await sql`SELECT files,dependencies FROM weave_changes WHERE project=${pid} AND id=ANY(${next})`;for(const row of rows)authorizePaths(principal,row.files.map((f:any)=>f.path));pending=rows.flatMap(row=>row.dependencies);}};
     if(action==='policy'){
@@ -159,5 +159,5 @@ export function createApp(config:Config){
    }
    throw new Problem(404,'not_found','API route not found');
   }catch(e){if(e instanceof Problem)return json({error:e.code,message:e.message,details:e.details},e.status);console.error('request failed',e instanceof Error?e.message:'unknown');return json({error:'internal_error',message:'Request failed; retry with the same operation ID.'},500);}
- };
+ });
 }

@@ -1,3 +1,4 @@
+import {timed} from './timing.ts';
 import {sourceSnapshots} from './source-snapshot.ts';
 import {sealSourceBatch} from './source-seal.ts';
 import {sourceExporter} from './source-export.ts';
@@ -76,7 +77,7 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
   for(const value of values){immutable(value.oid);bytes+=value.data.length;if(value.data.length>32*1024*1024||bytes>64*1024*1024)throw new Problem(413,'source_objects','Object upload exceeds its bound');if(!['commit','tree','blob','tag'].includes(value.type)||oid(value.type,value.data)!==value.oid)throw new Problem(400,'source_hash','Git object identity mismatch');if(value.type==='commit')decodeCommit(value.oid,value.data);if(value.type==='tree')decodeTree(value.data);}
   const prepared=[...new Map(values.map(value=>[value.oid,value])).values()].map(value=>({...value,blob:value.type==='blob'?hash('sha256',value.data):null,compressed:value.type==='blob'?(value.compressed??gzipSync(value.data,{level:1})):null}));
   if(!prepared.length)return {accepted:0,received:values.length};
-  const [claim,inserted]=await sql.begin(async tx=>{
+  const [claim,inserted]=await timed('admission',()=>sql.begin(async tx=>{
    const blobs=prepared.filter(v=>v.blob).map(v=>({hash:v.blob!,size:v.data.length,compressed_size:v.compressed!.length}));
    const uniqueBlobs=[...new Map(blobs.map(v=>[v.hash,v])).values()];
    if(uniqueBlobs.length&&(!Number.isSafeInteger(caps.writes)||caps.writes<1))throw new Problem(503,'source_config','Source operation budget is not configured');
@@ -110,12 +111,12 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
    if(!admission.quota_ok)throw new Problem(413,'source_repository_size','Source repository byte budget exceeded');
    if(!admission.budget_ok)throw new Problem(429,'source_budget','Authoritative source operation budget exhausted');
    return [(admission.claimed as string[]).map(hash=>({hash})),Number(admission.objects)] as const;
-  });
+  }));
   const claimed=new Set(claim.map(r=>r.hash)),ready:string[]=[];const uploads=prepared.filter(v=>v.blob&&claimed.has(v.blob));
   // Refill each slot as soon as it completes. A slow object must not stall
   // an entire wave; six slots match Workers' pending connection allowance.
-  let failed=false,next=0;await Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}}));
-  if(ready.length)await sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=ANY(${ready})`;
+  let failed=false,next=0;await timed('r2_put',()=>Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}})));
+  if(ready.length)await timed('blob_ready',()=>sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=ANY(${ready})`);
   if(failed)throw new Problem(503,'source_upload','Some blob uploads did not complete; resume checks each immutable identity');
   const unclaimed=prepared.filter(v=>v.blob&&!claimed.has(v.blob));
   if(unclaimed.length){const pending=await sql`SELECT hash,compressed_size FROM weave_source_blobs WHERE hash=ANY(${unclaimed.map(v=>v.blob!)}) AND state<>'ready'`;for(const value of pending){await reserve('reads');const found=await bucket.head('blobs/v1/'+value.hash);if(found&&found.customMetadata?.sha256===value.hash&&found.size===Number(value.compressed_size))await sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=${value.hash}`;else {
@@ -261,7 +262,7 @@ export function sourceStore(sql:Sql,bucket:SourceBucket,caps:{reads:number;write
     async commit(id){const p=await project(name);return p?commit(p.id,id):original.commit(id);},
     async tree(id){const p=await project(name);return p?tree(p.id,id):original.tree(id);},
     async blob(id){const p=await project(name);return p?raw(p.id,id):original.blob(id);},
-    async persist(id,values,delta){const p=await project(name);if(!p)return false;await objects(p.id,values);await sealSourceBatch(sql,p.id,[id],decodeCommit,decodeTree,delta?{objects:values,delta}:undefined);return true;},
+    async persist(id,values,delta){const p=await project(name);if(!p)return false;await objects(p.id,values);await timed('seal',()=>sealSourceBatch(sql,p.id,[id],decodeCommit,decodeTree,delta?{objects:values,delta}:undefined));return true;},
     async push(ref,old,id,pack){const p=await project(name);if(!p)return original.push(ref,old,id,pack);await objects(p.id,unpackWrittenPack(pack));await sealBatch(p.id,[id]);await sql.begin(async tx=>{const [current]=await tx`SELECT oid FROM weave_source_refs WHERE project=${p.id} AND name=${ref} FOR UPDATE`;if(current?.oid===id)return;if((current?.oid??null)!==old)throw new Problem(409,'head_moved','The source ref changed');if(current){const result=await tx`UPDATE weave_source_refs SET oid=${id} WHERE project=${p.id} AND name=${ref} AND oid=${old} RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref changed');}else {const result=await tx`INSERT INTO weave_source_refs(project,name,oid) VALUES(${p.id},${ref},${id}) ON CONFLICT DO NOTHING RETURNING name`;if(!result.length)throw new Problem(409,'head_moved','The source ref was created concurrently');}});},
     async receive(refs,stream){if(!await project(name))return original.receive(refs,stream);await stream.cancel();throw new Problem(409,'source_import','Use the resumable source object importer');},
     async git(request,suffix){const p=await project(name);return p?(await snapshots.git(p,request,suffix)??await exporter.git(p,request,suffix)):original.git(request,suffix);}

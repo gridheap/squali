@@ -1,0 +1,4 @@
+Base: 566096b
+Command: git apply --check --unidiff-zero --directory=<temporary baseline checkout> docs/evidence/2026-10-15-submit-latency/instrumentation-baseline.patch
+Exit: 128
+error: invalid path '/Users/binbinsh/Documents/Codex/2026-10-14/https-www-anthropic-com-engineering-redesigning/outputs/weave/work/timing-patch-650_d4yo/src/app.ts'

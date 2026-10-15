@@ -28,7 +28,7 @@ The separate `squali-regional` Worker implements the same source RPC as the node
 
 ## Work still required
 
-1. **Production latency:** the new eight-change smoke observes proposal p95 4.531 seconds from the workstation; the earlier 3.369 seconds used an Azure client. These are different locations/principals and cannot establish a before/after speedup. Cold README blame remains 20.995 seconds. The next priority is measuring time in authentication, database admission, R2 acceptance and derivation on the production request path, so the next optimization targets observed work. Reuse valid data and do not purge caches or repeat successful paid workloads for measurement.
+1. **Production latency:** stage timing and atomic sealing now reduce the same-client submission median from 1.833 to 1.488 seconds (four sequential samples per version). Sealing falls 384 → 84 ms. R2 PUT remains about 300 ms, first database access ranges 67–239 ms after deployment, and client/platform forwarding adds variable delay. Next isolate database setup and regional forwarding, and assess R2 placement without recreating storage or duplicating imports. Production p95/p99 and cold README blame (last 20.995 seconds) remain open. [Evidence](submission-latency.md).
 2. **Regional capacity:** actual workerd now has a 512-blob working-set measurement, 16,384 additional cache-hit reads, process CPU/RSS and identified regional JS heap readings. Global/per-location scaling and long-duration behavior remain unmeasured. Objects larger than 1 MiB stream without regional retention. No 99% fleet hit rate has been established.
 3. **Client completeness:** in-place dirty-workspace rebase now passes native Git and crash-recovery acceptance. It requires pausing the workspace command and Linux mount capability; arbitrary binary/symlink writes remain unsupported. Existing text/file limits still apply.
 4. **Changeset cost at larger scale:** the 4,097-file/129-commit fixture now covers 768 writes at 8/32/128 concurrency, 12 publications, SQL counts, CPU, memory and storage calls. It recommends 32 concurrent bulk writers for the measured eight-connection pool. This single-host result does not establish horizontal scalability across regions or the best possible cost/performance.
@@ -65,3 +65,14 @@ Git export. The production fixture publishes eight changes using eight R2 writes
 one read and zero Artifacts calls. Its retained 35 attempts include eight scope
 denials, one network failure and a read-only review reconciliation. Production
 latency remains an open item. [Detailed assessment](write-path.md).
+
+## Production stage-timing checkpoint
+
+Source `7218bc81-1798-4158-95fa-06243110b4a8` adds opt-in request-local timing and a
+two-statement sealing path for admitted single-parent changes. Recursive fallback,
+canonical identity and the common versioned derivation rules are preserved. All
+96 regression tests pass. Eight new production files are reviewed, published and
+read back with 32 successful HTTP attempts and eight R2 writes/eight reads. No
+Artifacts operation, quota change or repeated large import is needed. The measured
+sealing improvement is 78%; client median improves 19%, while tail latency remains
+unproven. [Measured stages, costs and limits](submission-latency.md).

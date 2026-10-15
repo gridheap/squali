@@ -1,0 +1,119 @@
+--- a/src/app.ts
++++ b/src/app.ts
+@@ -0,0 +1 @@
++import {authorizeTiming,timeRequest,timed} from './timing.ts';
+@@ -39,2 +40 @@
+- return async(request:Request):Promise<Response>=>{
+-  const start=performance.now();
++ return (request:Request):Promise<Response>=>timeRequest(request,async()=>{
+@@ -44 +44 @@
+-   const principal=await authenticate(request,config);
++   const principal=await timed('auth',()=>authenticate(request,config));authorizeTiming();
+@@ -46 +46 @@
+-   const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid&&resource==='projects'){id(pid);if(principal.projects.includes('*')){const [owned]=await sql`SELECT owner_id FROM weave_projects WHERE id=${pid}`;if(owned?.owner_id)throw new Problem(403,'scope','Use a workspace-specific credential for personal workspaces');}if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
++   const parts=url.pathname.split('/').filter(Boolean);const resource=parts[1],pid=parts[2];if(pid&&resource==='projects'){id(pid);if(principal.projects.includes('*')){const [owned]=await timed('scope',()=>sql`SELECT owner_id FROM weave_projects WHERE id=${pid}`);if(owned?.owner_id)throw new Problem(403,'scope','Use a workspace-specific credential for personal workspaces');}if(!principal.projects.includes('*')&&!principal.projects.includes(pid))throw new Problem(403,'scope','This token cannot access this workspace');}
+@@ -62 +62 @@
+-    const p=await getProject(pid,parts[3]==='source');const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const action=parts[3];
++    const p=await timed('project',()=>getProject(pid,parts[3]==='source'));const storage=artifacts.repo(p.artifact);const repo={...storage,head:(ref?:string)=>storage.head(ref??p.main_ref)};const g=new GitSession(repo);const action=parts[3];
+@@ -162 +162 @@
+- };
++ });
+--- a/src/changes.ts
++++ b/src/changes.ts
+@@ -0,0 +1 @@
++import {startStage,timed} from './timing.ts';
+@@ -16 +17 @@
+-  const [existing]=await sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`;
++  const [existing]=await timed('lookup',()=>sql`SELECT * FROM weave_changes WHERE project=${pid} AND id=${input.id}`);
+@@ -20,0 +22 @@
++  const endBase=startStage('base');
+@@ -22,0 +25 @@
++  endBase();
+@@ -27 +30 @@
+-  const admitted=input.dependencies.length?await sql.begin(async tx=>{
++  const admitted=await timed('journal',async()=>input.dependencies.length?await sql.begin(async tx=>{
+@@ -31 +34 @@
+-  }):await insert(sql);
++  }):await insert(sql));
+@@ -35 +38,2 @@
+-   const built=await g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000));
++   const built=await timed('build',()=>g.build(c.base===ZERO?null:c.base,input.files,`${input.title}\n\nSquali-Change: ${input.id}\nIntent: ${input.intent}`,principal.id,Math.floor(new Date(c.created_at).getTime()/1000)));
++   const endDelta=startStage('delta');
+@@ -37 +41,2 @@
+-   if(!await repo.persist?.(built.oid,built.rawObjects,delta)){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
++   endDelta();
++   if(!await timed('persist',async()=>repo.persist?.(built.oid,built.rawObjects,delta))){const ref=`refs/heads/weave/${input.id}`;if(await repo.head(ref)!==built.oid)await repo.push(ref,null,built.oid,built.pack);}
+@@ -41 +46 @@
+-   const [ready]=await sql`WITH ready AS (
++   const [ready]=await timed('finalize',()=>sql`WITH ready AS (
+@@ -51 +56 @@
+-   ) SELECT * FROM ready`;
++   ) SELECT * FROM ready`);
+--- a/src/source-store.ts
++++ b/src/source-store.ts
+@@ -0,0 +1 @@
++import {timed} from './timing.ts';
+@@ -79 +80 @@
+-  const [claim,inserted]=await sql.begin(async tx=>{
++  const [claim,inserted]=await timed('admission',()=>sql.begin(async tx=>{
+@@ -113 +114 @@
+-  });
++  }));
+@@ -117,2 +118,2 @@
+-  let failed=false,next=0;await Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}}));
+-  if(ready.length)await sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=ANY(${ready})`;
++  let failed=false,next=0;await timed('r2_put',()=>Promise.all(Array.from({length:Math.min(6,uploads.length)},async()=>{while(next<uploads.length){const value=uploads[next++];try{await bucket.put('blobs/v1/'+value.blob,value.compressed!,{customMetadata:{sha256:value.blob!,size:String(value.data.length)},httpMetadata:{contentType:'application/gzip'}});ready.push(value.blob!);}catch{failed=true;}}})));
++  if(ready.length)await timed('blob_ready',()=>sql`UPDATE weave_source_blobs SET state='ready' WHERE hash=ANY(${ready})`);
+@@ -264 +265 @@
+-    async persist(id,values,delta){const p=await project(name);if(!p)return false;await objects(p.id,values);await sealSourceBatch(sql,p.id,[id],decodeCommit,decodeTree,delta?{objects:values,delta}:undefined);return true;},
++    async persist(id,values,delta){const p=await project(name);if(!p)return false;await objects(p.id,values);await timed('seal',()=>sealSourceBatch(sql,p.id,[id],decodeCommit,decodeTree,delta?{objects:values,delta}:undefined));return true;},
+--- a/src/source-seal.ts
++++ b/src/source-seal.ts
+@@ -0,0 +1 @@
++import {timed} from './timing.ts';
+@@ -55 +56 @@
+-  await completeGraphBatch(tx,project,ids,graphInputs);
++  await timed('graph',()=>completeGraphBatch(tx,project,ids,graphInputs));
+@@ -57 +58 @@
+-  await completePathBatch(tx,project,ids,pathInputs);
++  await timed('paths',()=>completePathBatch(tx,project,ids,pathInputs));
+--- a/src/worker.ts
++++ b/src/worker.ts
+@@ -18,0 +19 @@
++  const started=performance.now();
+@@ -25 +26,4 @@
+-   return await createApp({sql,nativeImports:env.NATIVE_IMPORTS==='true',source:env.SOURCE?sourceStore(sql,env.SOURCE,{reads:Number(env.MONTHLY_SOURCE_READ_CAP),writes:Number(env.MONTHLY_SOURCE_WRITE_CAP),repositoryBytes:Number(env.SOURCE_REPOSITORY_BYTE_CAP)},sourceCache):undefined,clerk:env.CLERK_SECRET_KEY&&env.CLERK_PUBLISHABLE_KEY?{publishableKey:env.CLERK_PUBLISHABLE_KEY,secretKey:env.CLERK_SECRET_KEY,jwtKey:env.CLERK_JWT_KEY,appOrigin:'https://squa.li'}:undefined,artifacts:cachedArtifacts(cachedArtifacts(cachedArtifacts(cloudArtifacts(env.ARTIFACTS,sql,Number(env.MONTHLY_ARTIFACT_CALL_CAP)),r2ObjectCache(env.OBJECTS,sql,{reads:Number(env.MONTHLY_R2_READ_CAP),writes:Number(env.MONTHLY_R2_WRITE_CAP)})),edgeCache(await caches.open('weave-objects-v1'))),isolateObjects),principals,mode:'Cloudflare Workers + Artifacts + R2 + PostgreSQL',maxProjects:Number(env.MAX_PROJECTS),monthlyOps:Number(env.MONTHLY_ARTIFACT_CALL_CAP),cacheBudget:{reads:Number(env.MONTHLY_R2_READ_CAP),writes:Number(env.MONTHLY_R2_WRITE_CAP)},adobeKit:env.ADOBE_KIT_ID})(request);
++   const app=createApp({sql,nativeImports:env.NATIVE_IMPORTS==='true',source:env.SOURCE?sourceStore(sql,env.SOURCE,{reads:Number(env.MONTHLY_SOURCE_READ_CAP),writes:Number(env.MONTHLY_SOURCE_WRITE_CAP),repositoryBytes:Number(env.SOURCE_REPOSITORY_BYTE_CAP)},sourceCache):undefined,clerk:env.CLERK_SECRET_KEY&&env.CLERK_PUBLISHABLE_KEY?{publishableKey:env.CLERK_PUBLISHABLE_KEY,secretKey:env.CLERK_SECRET_KEY,jwtKey:env.CLERK_JWT_KEY,appOrigin:'https://squa.li'}:undefined,artifacts:cachedArtifacts(cachedArtifacts(cachedArtifacts(cloudArtifacts(env.ARTIFACTS,sql,Number(env.MONTHLY_ARTIFACT_CALL_CAP)),r2ObjectCache(env.OBJECTS,sql,{reads:Number(env.MONTHLY_R2_READ_CAP),writes:Number(env.MONTHLY_R2_WRITE_CAP)})),edgeCache(await caches.open('weave-objects-v1'))),isolateObjects),principals,mode:'Cloudflare Workers + Artifacts + R2 + PostgreSQL',maxProjects:Number(env.MAX_PROJECTS),monthlyOps:Number(env.MONTHLY_ARTIFACT_CALL_CAP),cacheBudget:{reads:Number(env.MONTHLY_R2_READ_CAP),writes:Number(env.MONTHLY_R2_WRITE_CAP)},adobeKit:env.ADOBE_KIT_ID});
++   const setup=performance.now()-started,response=await app(request);
++   if(response.headers.has('server-timing'))response.headers.append('server-timing',`setup;dur=${setup.toFixed(2)}, worker;dur=${(performance.now()-started).toFixed(2)}`);
++   return response;
+--- /dev/null
++++ b/src/timing.ts
+@@ -0,0 +1,27 @@
++import {AsyncLocalStorage} from 'node:async_hooks';
++
++type Stage='auth'|'scope'|'project'|'lookup'|'base'|'journal'|'build'|'delta'|'persist'|'admission'|'r2_put'|'blob_ready'|'seal'|'seal_read'|'seal_write'|'graph'|'paths'|'finalize'|'app';
++type Trace={authorized:boolean;durations:Map<Stage,number>};
++const traces=new AsyncLocalStorage<Trace>();
++const noop=()=>{};
++export function startStage(name:Stage){
++ const trace=traces.getStore();if(!trace)return noop;
++ const start=performance.now();
++ return ()=>trace.durations.set(name,(trace.durations.get(name)??0)+performance.now()-start);
++}
++export async function timed<T>(name:Stage,run:()=>PromiseLike<T>):Promise<T>{
++ const end=startStage(name);try{return await run();}finally{end();}
++}
++export function authorizeTiming(){const trace=traces.getStore();if(trace)trace.authorized=true;}
++/** Opt-in, fixed-name, bounded response metadata. No logs, extra storage calls,
++ * input values or cross-request state. Parent spans include their children.
++ * Workers' clock advances with I/O; these are wall timings, not CPU samples. */
++export function timeRequest(request:Request,run:()=>Promise<Response>):Promise<Response>{
++ if(request.headers.get('x-squali-timing')!=='1'||request.method!=='POST'||!/^\/api\/projects\/[^/]+\/changes$/.test(new URL(request.url).pathname))return run();
++ const trace:Trace={authorized:false,durations:new Map()};
++ return traces.run(trace,async()=>{
++  const response=await timed('app',run);
++  if(trace.authorized){response.headers.set('server-timing',[...trace.durations].map(([name,ms])=>`${name};dur=${ms.toFixed(2)}`).join(', '));response.headers.set('cache-control','private, no-store');}
++  return response;
++ });
++}

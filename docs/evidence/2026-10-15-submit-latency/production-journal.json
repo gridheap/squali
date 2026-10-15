@@ -1,0 +1,1642 @@
+{
+  "identity": {
+    "origin": "https://squa.li",
+    "project": "source-acceptance-20261015",
+    "version": 1,
+    "samplesPerPhase": 4,
+    "concurrency": 1,
+    "maxRequests": 48
+  },
+  "operations": {
+    "before-usage-start": {
+      "fingerprint": "e4697512003989d62826d21d01c604b048bc33523dca34b4675bc06b7dfb5bb5",
+      "attempts": [
+        {
+          "started": 1792071167.9474208,
+          "status": 200,
+          "clientMs": 949.578,
+          "stages": {},
+          "ray": "a4af31222c1e5126-LAX",
+          "ended": 1792071168.8972769
+        }
+      ],
+      "complete": true,
+      "body": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166511
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "project": {
+      "fingerprint": "b6365c1efa648712b0c6abb5aef5e839ece21dc48e4949c0e890aabe636ec88a",
+      "attempts": [
+        {
+          "started": 1792071168.89787,
+          "status": 200,
+          "clientMs": 471.653,
+          "stages": {},
+          "ray": "a4af31261e0c5126-LAX",
+          "ended": 1792071169.369823
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "source-acceptance-20261015",
+        "name": "Bounded source acceptance",
+        "head": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "remote": "https://squa.li/api/projects/source-acceptance-20261015/git",
+        "state": "ready",
+        "storage": "source"
+      }
+    },
+    "before-0": {
+      "fingerprint": "565d8a3a2606f42f29f5ab2c5a55306b2e1769146beab4ccf2e868e3dab61802",
+      "attempts": [
+        {
+          "started": 1792071169.370812,
+          "status": 201,
+          "clientMs": 2032.087,
+          "stages": {
+            "auth": 0.0,
+            "scope": 194.0,
+            "project": 34.0,
+            "lookup": 35.0,
+            "base": 76.0,
+            "journal": 42.0,
+            "build": 33.0,
+            "delta": 0.0,
+            "admission": 88.0,
+            "r2_put": 350.0,
+            "blob_ready": 37.0,
+            "graph": 113.0,
+            "paths": 138.0,
+            "seal": 617.0,
+            "persist": 1092.0,
+            "finalize": 37.0,
+            "app": 1543.0,
+            "setup": 0.0,
+            "worker": 1543.0
+          },
+          "ray": "a4af31290dc05126-LAX",
+          "ended": 1792071171.40312
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-0",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "fadc5ffb8a029eebd7e87df06611ccb730ded045",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:49.952Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-0.txt",
+            "after": "6b57885bf6d7ed9d7536c845ae1b6bf0d29e768c",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "before-1": {
+      "fingerprint": "8271fadd6ba8bac68c5a5fbbcefecc61267ae6d8155c963699a9f4ad09c124ce",
+      "attempts": [
+        {
+          "started": 1792071171.403887,
+          "status": 201,
+          "clientMs": 1416.218,
+          "stages": {
+            "auth": 0.0,
+            "scope": 61.0,
+            "project": 37.0,
+            "lookup": 35.0,
+            "base": 35.0,
+            "journal": 35.0,
+            "build": 0.0,
+            "delta": 0.0,
+            "admission": 83.0,
+            "r2_put": 283.0,
+            "blob_ready": 34.0,
+            "graph": 95.0,
+            "paths": 100.0,
+            "seal": 333.0,
+            "persist": 733.0,
+            "finalize": 35.0,
+            "app": 971.0,
+            "setup": 0.0,
+            "worker": 971.0
+          },
+          "ray": "a4af3135b87c5126-LAX",
+          "ended": 1792071172.820369
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-1",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "0de7034b5bd92a10ab554431b62e364288d2347e",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:51.742Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-1.txt",
+            "after": "675ac9d0c3d1c15124a402c69ece84aab98abf27",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "before-2": {
+      "fingerprint": "fb1909330d232aad3dbdf076a34fe4ef6e9f272d4a149c05cb0bd758db3ac243",
+      "attempts": [
+        {
+          "started": 1792071172.8212,
+          "status": 201,
+          "clientMs": 1663.118,
+          "stages": {
+            "auth": 0.0,
+            "scope": 68.0,
+            "project": 38.0,
+            "lookup": 35.0,
+            "base": 80.0,
+            "journal": 36.0,
+            "build": 38.0,
+            "delta": 0.0,
+            "admission": 92.0,
+            "r2_put": 309.0,
+            "blob_ready": 40.0,
+            "graph": 101.0,
+            "paths": 130.0,
+            "seal": 396.0,
+            "persist": 837.0,
+            "finalize": 34.0,
+            "app": 1166.0,
+            "setup": 0.0,
+            "worker": 1166.0
+          },
+          "ray": "a4af313e993c5126-LAX",
+          "ended": 1792071174.4846
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-2",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "7f90ebc02ae926d5c7154412cedc49dc50c4482d",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:53.283Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-2.txt",
+            "after": "dd4bc3385d683deecf5430a76b7a5d94fce61b95",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "before-3": {
+      "fingerprint": "cfababc53d119947e0010a3b284969971c935f2101aa63d1747de1e22a28d542",
+      "attempts": [
+        {
+          "started": 1792071174.4851499,
+          "status": 201,
+          "clientMs": 2003.813,
+          "stages": {
+            "auth": 0.0,
+            "scope": 65.0,
+            "project": 37.0,
+            "lookup": 34.0,
+            "base": 55.0,
+            "journal": 39.0,
+            "build": 38.0,
+            "delta": 0.0,
+            "admission": 83.0,
+            "r2_put": 292.0,
+            "blob_ready": 30.0,
+            "graph": 94.0,
+            "paths": 132.0,
+            "seal": 372.0,
+            "persist": 777.0,
+            "finalize": 51.0,
+            "app": 1096.0,
+            "setup": 0.0,
+            "worker": 1096.0
+          },
+          "ray": "a4af31492c9f5126-LAX",
+          "ended": 1792071176.489262
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-3",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "987200998bf324f8eb84a4a1f6ab3267734030cc",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:54.913Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-3.txt",
+            "after": "611f9e165efc71f4eb0d174cb801504241c32d95",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "before-usage-end": {
+      "fingerprint": "e4697512003989d62826d21d01c604b048bc33523dca34b4675bc06b7dfb5bb5",
+      "attempts": [
+        {
+          "started": 1792071176.489991,
+          "status": 200,
+          "clientMs": 561.291,
+          "stages": {},
+          "ray": "a4af3155ae185126-LAX",
+          "ended": 1792071177.0517042
+        }
+      ],
+      "complete": true,
+      "body": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166515
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "after-usage-start": {
+      "fingerprint": "e4697512003989d62826d21d01c604b048bc33523dca34b4675bc06b7dfb5bb5",
+      "attempts": [
+        {
+          "started": 1792071701.860658,
+          "status": 200,
+          "clientMs": 8312.126,
+          "stages": {},
+          "ray": "a4af3e585aab9672-KIX",
+          "ended": 1792071710.173307
+        }
+      ],
+      "complete": true,
+      "body": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166515
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "after-0": {
+      "fingerprint": "0d2ff20dadeb037b3d2463306baf4f5bb0b21484a3cd5a49afbf2aa66148add2",
+      "attempts": [
+        {
+          "started": 1792071710.17547,
+          "status": 201,
+          "clientMs": 1485.658,
+          "stages": {
+            "auth": 0.0,
+            "scope": 239.0,
+            "project": 27.0,
+            "lookup": 35.0,
+            "base": 60.0,
+            "journal": 46.0,
+            "build": 28.0,
+            "delta": 0.0,
+            "admission": 91.0,
+            "r2_put": 300.0,
+            "blob_ready": 52.0,
+            "seal_read": 46.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 41.0,
+            "seal": 87.0,
+            "persist": 530.0,
+            "finalize": 37.0,
+            "app": 1002.0,
+            "setup": 0.0,
+            "worker": 1002.0
+          },
+          "ray": "a4af3e5ce8fa9672-KIX",
+          "ended": 1792071711.66224
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-0",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "6d226acfea24988e2180f1439a0cdfed22fee543",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:50.847Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-0.txt",
+            "after": "86ea4748438c210e37593f1413da6b4f005a0843",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "after-1": {
+      "fingerprint": "ea48ca84f9c7f8149703667341e0d4342a8ea6174a9ec1c3b9fde141f716653b",
+      "attempts": [
+        {
+          "started": 1792071711.6639628,
+          "status": 201,
+          "clientMs": 1489.855,
+          "stages": {
+            "auth": 0.0,
+            "scope": 236.0,
+            "project": 29.0,
+            "lookup": 41.0,
+            "base": 60.0,
+            "journal": 36.0,
+            "build": 21.0,
+            "delta": 0.0,
+            "admission": 75.0,
+            "r2_put": 305.0,
+            "blob_ready": 39.0,
+            "seal_read": 36.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 45.0,
+            "seal": 81.0,
+            "persist": 500.0,
+            "finalize": 34.0,
+            "app": 957.0,
+            "setup": 0.0,
+            "worker": 957.0
+          },
+          "ray": "a4af3e662d059672-KIX",
+          "ended": 1792071713.1548889
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-1",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "6f233d5345ce462e3dfa440ee4d7267ef705a430",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:52.362Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-1.txt",
+            "after": "c691ea134c1824f992d564da176e3bdd40b6a23e",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "after-2": {
+      "fingerprint": "ec02889d607cb0bd20a4845f22386a7423d95a545e2e222e754792dbd10a6b0f",
+      "attempts": [
+        {
+          "started": 1792071713.160178,
+          "status": 201,
+          "clientMs": 2629.453,
+          "stages": {
+            "auth": 0.0,
+            "scope": 211.0,
+            "project": 29.0,
+            "lookup": 33.0,
+            "base": 58.0,
+            "journal": 31.0,
+            "build": 25.0,
+            "delta": 0.0,
+            "admission": 81.0,
+            "r2_put": 307.0,
+            "blob_ready": 36.0,
+            "seal_read": 35.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 44.0,
+            "seal": 79.0,
+            "persist": 503.0,
+            "finalize": 38.0,
+            "app": 928.0,
+            "setup": 0.0,
+            "worker": 928.0
+          },
+          "ray": "a4af3e6f8a2a9672-KIX",
+          "ended": 1792071715.792195
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-2",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "f7c37f5ee332a84cbcc188ab23d0cb876b454da5",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:55.004Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-2.txt",
+            "after": "116fd45a8432581049765a3b0872ca63faf62472",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "after-3": {
+      "fingerprint": "a673f7b0c6384fde39d59c89b66a37ddb930c725cbb739fd971e9b13035a5f70",
+      "attempts": [
+        {
+          "started": 1792071715.797038,
+          "status": 201,
+          "clientMs": 1277.141,
+          "stages": {
+            "auth": 0.0,
+            "scope": 67.0,
+            "project": 36.0,
+            "lookup": 35.0,
+            "base": 65.0,
+            "journal": 35.0,
+            "build": 22.0,
+            "delta": 0.0,
+            "admission": 80.0,
+            "r2_put": 294.0,
+            "blob_ready": 37.0,
+            "seal_read": 45.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 43.0,
+            "seal": 88.0,
+            "persist": 499.0,
+            "finalize": 35.0,
+            "app": 794.0,
+            "setup": 0.0,
+            "worker": 794.0
+          },
+          "ray": "a4af3e803f9f9672-KIX",
+          "ended": 1792071717.075788
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-3",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "c7bd32c9e493ebfaae6abb5223de126268daaa9e",
+        "author": "owner",
+        "status": "proposed",
+        "reviewer": null,
+        "reviewNote": null,
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:56.282Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-3.txt",
+            "after": "a5cc3a093ae39436d1154d0bd02a26d1edef98b2",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "after-usage-end": {
+      "fingerprint": "e4697512003989d62826d21d01c604b048bc33523dca34b4675bc06b7dfb5bb5",
+      "attempts": [
+        {
+          "started": 1792071717.078333,
+          "status": 200,
+          "clientMs": 724.175,
+          "stages": {},
+          "ray": "a4af3e880a0c9672-KIX",
+          "ended": 1792071717.804134
+        }
+      ],
+      "complete": true,
+      "body": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166519
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "head-before-publish": {
+      "fingerprint": "b6365c1efa648712b0c6abb5aef5e839ece21dc48e4949c0e890aabe636ec88a",
+      "attempts": [
+        {
+          "started": 1792071809.706091,
+          "status": 200,
+          "clientMs": 2275.124,
+          "stages": {},
+          "ray": "a4af40d25c10966e-KIX",
+          "ended": 1792071811.9816132
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "source-acceptance-20261015",
+        "name": "Bounded source acceptance",
+        "head": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "remote": "https://squa.li/api/projects/source-acceptance-20261015/git",
+        "state": "ready",
+        "storage": "source"
+      }
+    },
+    "review-latency-before-0": {
+      "fingerprint": "5bc60271b803e3c7135363178c3548d43804bc235a97adb5c7658da26be3cba9",
+      "attempts": [
+        {
+          "started": 1792071811.982559,
+          "status": 200,
+          "clientMs": 797.721,
+          "stages": {},
+          "ray": "a4af40d92db5966e-KIX",
+          "ended": 1792071812.780726
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-0",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "fadc5ffb8a029eebd7e87df06611ccb730ded045",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:49.952Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-0.txt",
+            "after": "6b57885bf6d7ed9d7536c845ae1b6bf0d29e768c",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-before-1": {
+      "fingerprint": "d12f5b761e9158af7cc19d50e77117b0cc18e12a293784e06ac62ad96c1e17a2",
+      "attempts": [
+        {
+          "started": 1792071812.783585,
+          "status": 200,
+          "clientMs": 861.512,
+          "stages": {},
+          "ray": "a4af40de2d19966e-KIX",
+          "ended": 1792071813.646432
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-1",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "0de7034b5bd92a10ab554431b62e364288d2347e",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:51.742Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-1.txt",
+            "after": "675ac9d0c3d1c15124a402c69ece84aab98abf27",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-before-2": {
+      "fingerprint": "58347a24bddb5da0ea98353e3499e4d0bce687712c7d5aaed3347738def859a4",
+      "attempts": [
+        {
+          "started": 1792071813.652164,
+          "status": 200,
+          "clientMs": 746.948,
+          "stages": {},
+          "ray": "a4af40e39c52966e-KIX",
+          "ended": 1792071814.400511
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-2",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "7f90ebc02ae926d5c7154412cedc49dc50c4482d",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:53.283Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-2.txt",
+            "after": "dd4bc3385d683deecf5430a76b7a5d94fce61b95",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-before-3": {
+      "fingerprint": "9706b4a73155767f79f9848495ec076804f058499629cf0322e07d42789776ea",
+      "attempts": [
+        {
+          "started": 1792071814.401404,
+          "status": 200,
+          "clientMs": 925.077,
+          "stages": {},
+          "ray": "a4af40e84acb966e-KIX",
+          "ended": 1792071815.326874
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-before-3",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "987200998bf324f8eb84a4a1f6ab3267734030cc",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:32:54.913Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-before-3.txt",
+            "after": "611f9e165efc71f4eb0d174cb801504241c32d95",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-after-0": {
+      "fingerprint": "7832b31b7f5611d56f3dfef1f32f7f7ac33b496febc48f61d23ca7088c3d147e",
+      "attempts": [
+        {
+          "started": 1792071815.330664,
+          "status": 200,
+          "clientMs": 776.479,
+          "stages": {},
+          "ray": "a4af40ee1b32966e-KIX",
+          "ended": 1792071816.109758
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-0",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "6d226acfea24988e2180f1439a0cdfed22fee543",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:50.847Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-0.txt",
+            "after": "86ea4748438c210e37593f1413da6b4f005a0843",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-after-1": {
+      "fingerprint": "34d5a903b9327fd4a2d59973f46913d7c19324abdfdaf708299002ba1b1ae3a1",
+      "attempts": [
+        {
+          "started": 1792071816.112374,
+          "status": 200,
+          "clientMs": 1190.394,
+          "stages": {},
+          "ray": "a4af40f2fa4f966e-KIX",
+          "ended": 1792071817.304975
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-1",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "6f233d5345ce462e3dfa440ee4d7267ef705a430",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:52.362Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-1.txt",
+            "after": "c691ea134c1824f992d564da176e3bdd40b6a23e",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-after-2": {
+      "fingerprint": "83a025a9a71c956915693fd450a9cf0fa433ab57c5567892f4f497326481d881",
+      "attempts": [
+        {
+          "started": 1792071817.306294,
+          "status": 200,
+          "clientMs": 930.678,
+          "stages": {},
+          "ray": "a4af40fa7d36966e-KIX",
+          "ended": 1792071818.238053
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-2",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "f7c37f5ee332a84cbcc188ab23d0cb876b454da5",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:55.004Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-2.txt",
+            "after": "116fd45a8432581049765a3b0872ca63faf62472",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "review-latency-after-3": {
+      "fingerprint": "877c7fe79546dd86c7da4c921dfbba192673ad04185e9e0fab1ce93569bb4d4f",
+      "attempts": [
+        {
+          "started": 1792071818.2391071,
+          "status": 200,
+          "clientMs": 762.638,
+          "stages": {},
+          "ray": "a4af41004c5d966e-KIX",
+          "ended": 1792071819.002233
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-after-3",
+        "project": "source-acceptance-20261015",
+        "title": "Submission stage profile",
+        "intent": "Fixed-base bounded production latency measurement",
+        "context": {
+          "fixture": true
+        },
+        "dependencies": [],
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "c7bd32c9e493ebfaae6abb5223de126268daaa9e",
+        "author": "owner",
+        "status": "approved",
+        "reviewer": "owner",
+        "reviewNote": "Bounded stage profiling fixture",
+        "publication": null,
+        "createdAt": "2026-10-15T13:41:56.282Z",
+        "files": [
+          {
+            "mode": "100644",
+            "path": "agents/latency-after-3.txt",
+            "after": "a5cc3a093ae39436d1154d0bd02a26d1edef98b2",
+            "before": null,
+            "afterBytes": 400,
+            "beforeMode": null
+          }
+        ]
+      }
+    },
+    "publish": {
+      "fingerprint": "d5d21c997cb75ffcf98a372bb08997020304409023bf10ca02b4aa1920164294",
+      "attempts": [
+        {
+          "started": 1792071819.004736,
+          "status": 201,
+          "clientMs": 2278.456,
+          "stages": {},
+          "ray": "a4af41051b2e966e-KIX",
+          "ended": 1792071821.285248
+        }
+      ],
+      "complete": true,
+      "body": {
+        "id": "latency-profile-publish",
+        "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93",
+        "oid": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "changes": [
+          "latency-before-0",
+          "latency-before-1",
+          "latency-before-2",
+          "latency-before-3",
+          "latency-after-0",
+          "latency-after-1",
+          "latency-after-2",
+          "latency-after-3"
+        ],
+        "state": "published",
+        "cancellationHead": null,
+        "metrics": {
+          "objects": 3,
+          "bytes": 3364,
+          "changes": 8
+        }
+      }
+    },
+    "file-latency-before-0": {
+      "fingerprint": "98228a943ddfeb469b74ca4f489e5568828d41a56b35c06ce0aaddb485b884ea",
+      "attempts": [
+        {
+          "started": 1792071821.287271,
+          "status": 200,
+          "clientMs": 1689.92,
+          "stages": {},
+          "ray": "a4af41135886966e-KIX",
+          "ended": 1792071822.9783309
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-before-0.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\nlatency fixture before 0\n",
+        "oid": "6b57885bf6d7ed9d7536c845ae1b6bf0d29e768c",
+        "mode": "100644"
+      }
+    },
+    "file-latency-before-1": {
+      "fingerprint": "58f4fec3baa2d0a2b663d2441e6314ca8f4c060a8ea587f76d50ac1b1b7fe87c",
+      "attempts": [
+        {
+          "started": 1792071822.9802969,
+          "status": 200,
+          "clientMs": 1127.338,
+          "stages": {},
+          "ray": "a4af41200b6e966e-KIX",
+          "ended": 1792071824.1089861
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-before-1.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\nlatency fixture before 1\n",
+        "oid": "675ac9d0c3d1c15124a402c69ece84aab98abf27",
+        "mode": "100644"
+      }
+    },
+    "file-latency-before-2": {
+      "fingerprint": "128c6b0441c063aa5514b5b4449ddfb044614621d117b3e3626e70b65d1074f5",
+      "attempts": [
+        {
+          "started": 1792071824.109914,
+          "status": 200,
+          "clientMs": 1209.846,
+          "stages": {},
+          "ray": "a4af4124fa49966e-KIX",
+          "ended": 1792071825.320222
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-before-2.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\nlatency fixture before 2\n",
+        "oid": "dd4bc3385d683deecf5430a76b7a5d94fce61b95",
+        "mode": "100644"
+      }
+    },
+    "file-latency-before-3": {
+      "fingerprint": "6dfffa818b42b8dde1d2bb1128394f95f9476032b6eba8338824f17b8d123b47",
+      "attempts": [
+        {
+          "started": 1792071825.323678,
+          "status": 200,
+          "clientMs": 810.825,
+          "stages": {},
+          "ray": "a4af412c9d56966e-KIX",
+          "ended": 1792071826.1372201
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-before-3.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\nlatency fixture before 3\n",
+        "oid": "611f9e165efc71f4eb0d174cb801504241c32d95",
+        "mode": "100644"
+      }
+    },
+    "file-latency-after-0": {
+      "fingerprint": "b1fc9553501503e52d225caf1b0811b961508cc0655cb67a02d9e35c1f9aa5d4",
+      "attempts": [
+        {
+          "started": 1792071826.139231,
+          "status": 200,
+          "clientMs": 894.089,
+          "stages": {},
+          "ray": "a4af4131ac57966e-KIX",
+          "ended": 1792071827.0345972
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-after-0.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\nlatency fixture after  0\n",
+        "oid": "86ea4748438c210e37593f1413da6b4f005a0843",
+        "mode": "100644"
+      }
+    },
+    "file-latency-after-1": {
+      "fingerprint": "bae825b26f92de3adc2e5c20748c5e2d9173a1a2c83870987926ce8232b2d9de",
+      "attempts": [
+        {
+          "started": 1792071827.037958,
+          "status": 200,
+          "clientMs": 969.704,
+          "stages": {},
+          "ray": "a4af41374d87966e-KIX",
+          "ended": 1792071828.010699
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-after-1.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\nlatency fixture after  1\n",
+        "oid": "c691ea134c1824f992d564da176e3bdd40b6a23e",
+        "mode": "100644"
+      }
+    },
+    "file-latency-after-2": {
+      "fingerprint": "efada782f5de2d9f92719ec8d1b4abfa5f62f2bdf3b61ed07c31f178a60e0916",
+      "attempts": [
+        {
+          "started": 1792071828.013471,
+          "status": 200,
+          "clientMs": 786.007,
+          "stages": {},
+          "ray": "a4af413d5f12966e-KIX",
+          "ended": 1792071828.802232
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-after-2.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\nlatency fixture after  2\n",
+        "oid": "116fd45a8432581049765a3b0872ca63faf62472",
+        "mode": "100644"
+      }
+    },
+    "file-latency-after-3": {
+      "fingerprint": "45c8bb8451ce00dd25f215ba00a62e05fcd441926e961cde5325d26f0c92ca73",
+      "attempts": [
+        {
+          "started": 1792071828.805938,
+          "status": 200,
+          "clientMs": 1501.969,
+          "stages": {},
+          "ray": "a4af41441922966e-KIX",
+          "ended": 1792071830.310019
+        }
+      ],
+      "complete": true,
+      "body": {
+        "path": "agents/latency-after-3.txt",
+        "ref": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+        "content": "latency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\nlatency fixture after  3\n",
+        "oid": "a5cc3a093ae39436d1154d0bd02a26d1edef98b2",
+        "mode": "100644"
+      }
+    },
+    "final-usage": {
+      "fingerprint": "e4697512003989d62826d21d01c604b048bc33523dca34b4675bc06b7dfb5bb5",
+      "attempts": [
+        {
+          "started": 1792071830.3120089,
+          "status": 200,
+          "clientMs": 535.645,
+          "stages": {},
+          "ray": "a4af414bbc7d966e-KIX",
+          "ended": 1792071830.849171
+        }
+      ],
+      "complete": true,
+      "body": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 229,
+          "writes": 166519
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    }
+  },
+  "phases": {
+    "before": {
+      "deployment": "108bfa49-79e9-491c-a548-551ea8f897d4",
+      "command": "python3 scripts/profile-submissions.py source-acceptance-20261015 --state work/submission-profile --phase before --deployment 108bfa49-79e9-491c-a548-551ea8f897d4",
+      "complete": true,
+      "samples": [
+        {
+          "id": "latency-before-0",
+          "oid": "fadc5ffb8a029eebd7e87df06611ccb730ded045",
+          "started": 1792071169.370812,
+          "status": 201,
+          "clientMs": 2032.087,
+          "stages": {
+            "auth": 0.0,
+            "scope": 194.0,
+            "project": 34.0,
+            "lookup": 35.0,
+            "base": 76.0,
+            "journal": 42.0,
+            "build": 33.0,
+            "delta": 0.0,
+            "admission": 88.0,
+            "r2_put": 350.0,
+            "blob_ready": 37.0,
+            "graph": 113.0,
+            "paths": 138.0,
+            "seal": 617.0,
+            "persist": 1092.0,
+            "finalize": 37.0,
+            "app": 1543.0,
+            "setup": 0.0,
+            "worker": 1543.0
+          },
+          "ray": "a4af31290dc05126-LAX",
+          "ended": 1792071171.40312
+        },
+        {
+          "id": "latency-before-1",
+          "oid": "0de7034b5bd92a10ab554431b62e364288d2347e",
+          "started": 1792071171.403887,
+          "status": 201,
+          "clientMs": 1416.218,
+          "stages": {
+            "auth": 0.0,
+            "scope": 61.0,
+            "project": 37.0,
+            "lookup": 35.0,
+            "base": 35.0,
+            "journal": 35.0,
+            "build": 0.0,
+            "delta": 0.0,
+            "admission": 83.0,
+            "r2_put": 283.0,
+            "blob_ready": 34.0,
+            "graph": 95.0,
+            "paths": 100.0,
+            "seal": 333.0,
+            "persist": 733.0,
+            "finalize": 35.0,
+            "app": 971.0,
+            "setup": 0.0,
+            "worker": 971.0
+          },
+          "ray": "a4af3135b87c5126-LAX",
+          "ended": 1792071172.820369
+        },
+        {
+          "id": "latency-before-2",
+          "oid": "7f90ebc02ae926d5c7154412cedc49dc50c4482d",
+          "started": 1792071172.8212,
+          "status": 201,
+          "clientMs": 1663.118,
+          "stages": {
+            "auth": 0.0,
+            "scope": 68.0,
+            "project": 38.0,
+            "lookup": 35.0,
+            "base": 80.0,
+            "journal": 36.0,
+            "build": 38.0,
+            "delta": 0.0,
+            "admission": 92.0,
+            "r2_put": 309.0,
+            "blob_ready": 40.0,
+            "graph": 101.0,
+            "paths": 130.0,
+            "seal": 396.0,
+            "persist": 837.0,
+            "finalize": 34.0,
+            "app": 1166.0,
+            "setup": 0.0,
+            "worker": 1166.0
+          },
+          "ray": "a4af313e993c5126-LAX",
+          "ended": 1792071174.4846
+        },
+        {
+          "id": "latency-before-3",
+          "oid": "987200998bf324f8eb84a4a1f6ab3267734030cc",
+          "started": 1792071174.4851499,
+          "status": 201,
+          "clientMs": 2003.813,
+          "stages": {
+            "auth": 0.0,
+            "scope": 65.0,
+            "project": 37.0,
+            "lookup": 34.0,
+            "base": 55.0,
+            "journal": 39.0,
+            "build": 38.0,
+            "delta": 0.0,
+            "admission": 83.0,
+            "r2_put": 292.0,
+            "blob_ready": 30.0,
+            "graph": 94.0,
+            "paths": 132.0,
+            "seal": 372.0,
+            "persist": 777.0,
+            "finalize": 51.0,
+            "app": 1096.0,
+            "setup": 0.0,
+            "worker": 1096.0
+          },
+          "ray": "a4af31492c9f5126-LAX",
+          "ended": 1792071176.489262
+        }
+      ],
+      "medianClientMs": 1833.4655,
+      "medianStages": {
+        "delta": 0.0,
+        "paths": 131.0,
+        "setup": 0.0,
+        "finalize": 36.0,
+        "app": 1131.0,
+        "build": 35.5,
+        "graph": 98.0,
+        "auth": 0.0,
+        "worker": 1131.0,
+        "seal": 384.0,
+        "persist": 807.0,
+        "lookup": 35.0,
+        "scope": 66.5,
+        "r2_put": 300.5,
+        "blob_ready": 35.5,
+        "journal": 37.5,
+        "admission": 85.5,
+        "project": 37.0,
+        "base": 65.5
+      },
+      "usageStart": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166511
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      },
+      "usageEnd": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166515
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "after": {
+      "deployment": "7218bc81-1798-4158-95fa-06243110b4a8",
+      "command": "python3 scripts/profile-submissions.py source-acceptance-20261015 --state work/submission-profile --phase after --deployment 7218bc81-1798-4158-95fa-06243110b4a8",
+      "complete": true,
+      "samples": [
+        {
+          "id": "latency-after-0",
+          "oid": "6d226acfea24988e2180f1439a0cdfed22fee543",
+          "started": 1792071710.17547,
+          "status": 201,
+          "clientMs": 1485.658,
+          "stages": {
+            "auth": 0.0,
+            "scope": 239.0,
+            "project": 27.0,
+            "lookup": 35.0,
+            "base": 60.0,
+            "journal": 46.0,
+            "build": 28.0,
+            "delta": 0.0,
+            "admission": 91.0,
+            "r2_put": 300.0,
+            "blob_ready": 52.0,
+            "seal_read": 46.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 41.0,
+            "seal": 87.0,
+            "persist": 530.0,
+            "finalize": 37.0,
+            "app": 1002.0,
+            "setup": 0.0,
+            "worker": 1002.0
+          },
+          "ray": "a4af3e5ce8fa9672-KIX",
+          "ended": 1792071711.66224
+        },
+        {
+          "id": "latency-after-1",
+          "oid": "6f233d5345ce462e3dfa440ee4d7267ef705a430",
+          "started": 1792071711.6639628,
+          "status": 201,
+          "clientMs": 1489.855,
+          "stages": {
+            "auth": 0.0,
+            "scope": 236.0,
+            "project": 29.0,
+            "lookup": 41.0,
+            "base": 60.0,
+            "journal": 36.0,
+            "build": 21.0,
+            "delta": 0.0,
+            "admission": 75.0,
+            "r2_put": 305.0,
+            "blob_ready": 39.0,
+            "seal_read": 36.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 45.0,
+            "seal": 81.0,
+            "persist": 500.0,
+            "finalize": 34.0,
+            "app": 957.0,
+            "setup": 0.0,
+            "worker": 957.0
+          },
+          "ray": "a4af3e662d059672-KIX",
+          "ended": 1792071713.1548889
+        },
+        {
+          "id": "latency-after-2",
+          "oid": "f7c37f5ee332a84cbcc188ab23d0cb876b454da5",
+          "started": 1792071713.160178,
+          "status": 201,
+          "clientMs": 2629.453,
+          "stages": {
+            "auth": 0.0,
+            "scope": 211.0,
+            "project": 29.0,
+            "lookup": 33.0,
+            "base": 58.0,
+            "journal": 31.0,
+            "build": 25.0,
+            "delta": 0.0,
+            "admission": 81.0,
+            "r2_put": 307.0,
+            "blob_ready": 36.0,
+            "seal_read": 35.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 44.0,
+            "seal": 79.0,
+            "persist": 503.0,
+            "finalize": 38.0,
+            "app": 928.0,
+            "setup": 0.0,
+            "worker": 928.0
+          },
+          "ray": "a4af3e6f8a2a9672-KIX",
+          "ended": 1792071715.792195
+        },
+        {
+          "id": "latency-after-3",
+          "oid": "c7bd32c9e493ebfaae6abb5223de126268daaa9e",
+          "started": 1792071715.797038,
+          "status": 201,
+          "clientMs": 1277.141,
+          "stages": {
+            "auth": 0.0,
+            "scope": 67.0,
+            "project": 36.0,
+            "lookup": 35.0,
+            "base": 65.0,
+            "journal": 35.0,
+            "build": 22.0,
+            "delta": 0.0,
+            "admission": 80.0,
+            "r2_put": 294.0,
+            "blob_ready": 37.0,
+            "seal_read": 45.0,
+            "graph": 0.0,
+            "paths": 0.0,
+            "seal_write": 43.0,
+            "seal": 88.0,
+            "persist": 499.0,
+            "finalize": 35.0,
+            "app": 794.0,
+            "setup": 0.0,
+            "worker": 794.0
+          },
+          "ray": "a4af3e803f9f9672-KIX",
+          "ended": 1792071717.075788
+        }
+      ],
+      "medianClientMs": 1487.7565,
+      "medianStages": {
+        "seal_read": 40.5,
+        "lookup": 35.0,
+        "seal": 84.0,
+        "journal": 35.5,
+        "delta": 0.0,
+        "seal_write": 43.5,
+        "setup": 0.0,
+        "scope": 223.5,
+        "project": 29.0,
+        "r2_put": 302.5,
+        "blob_ready": 38.0,
+        "auth": 0.0,
+        "base": 60.0,
+        "app": 942.5,
+        "build": 23.5,
+        "finalize": 36.0,
+        "worker": 942.5,
+        "paths": 0.0,
+        "admission": 80.5,
+        "graph": 0.0,
+        "persist": 501.5
+      },
+      "usageStart": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166515
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      },
+      "usageEnd": {
+        "source": {
+          "readCap": 200000,
+          "writeCap": 200000,
+          "reads": 221,
+          "writes": 166519
+        },
+        "attempts": 345,
+        "cap": 2000,
+        "mode": "Cloudflare Workers + Artifacts + R2 + PostgreSQL",
+        "cache": {
+          "reservedReads": 32,
+          "reservedWrites": 20,
+          "readCap": 20000,
+          "writeCap": 2000
+        }
+      }
+    },
+    "verify": {
+      "deployment": "7218bc81-1798-4158-95fa-06243110b4a8",
+      "command": "python3 scripts/profile-submissions.py source-acceptance-20261015 --state work/submission-profile --phase verify --deployment 7218bc81-1798-4158-95fa-06243110b4a8",
+      "complete": true,
+      "publishedHead": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd",
+      "verifiedFiles": 8
+    }
+  },
+  "httpAttempts": 32,
+  "base": "d69e31cc59a78db4d2853c8afc9fc175b713ee93"
+}

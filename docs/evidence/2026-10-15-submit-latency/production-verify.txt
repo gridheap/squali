@@ -1,0 +1,1 @@
+{"deployment": "7218bc81-1798-4158-95fa-06243110b4a8", "command": "python3 scripts/profile-submissions.py source-acceptance-20261015 --state work/submission-profile --phase verify --deployment 7218bc81-1798-4158-95fa-06243110b4a8", "complete": true, "publishedHead": "742170a5438c8fe5cfc675409fac3b4bdf2a4efd", "verifiedFiles": 8}
