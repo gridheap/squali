@@ -21,3 +21,5 @@ Commands use the repository's pinned Node 24.21.0 and pnpm 11.25.0.
 The eight-client production benchmark and full private import remain in the previous evidence directory. They have not been rerun or relabeled as measurements of this checkpoint. The original failing reports are retained, including implementation and harness failures.
 
 Production deployment is separate from the local workloads. `production-smoke.json` records two bounded CLI probes (401 and 403), neither an authenticated performance measurement. No automatic retry, provider cache purge, quota increase or new recurring job was made.
+
+The subsequent signed-in production browser check returned HTTP 200 for the private README blame and matched all 75 retained line identities. `production-blame-verification.json` records that comparison. It reuses the existing v4 cache and does not measure a fresh cold computation.

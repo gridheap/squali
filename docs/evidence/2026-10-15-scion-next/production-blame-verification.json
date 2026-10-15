@@ -1,0 +1,9 @@
+{
+  "command": "Production UI: Source → README.md → Blame lines; CDP captured response projected to immutable line identities",
+  "workerVersion": "ba605dad-e0af-419d-afda-be13e901303f",
+  "httpStatus": 200,
+  "lines": 75,
+  "equalsRetainedV4": true,
+  "cachePolicy": "Existing version-4 result reused; no invalidation or fresh cold-latency claim",
+  "timestamp": "2026-10-15T08:39:56.750Z"
+}
